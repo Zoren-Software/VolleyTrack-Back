@@ -55,6 +55,20 @@ services:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
             timeout: 5s
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: planneranimal.phpmyadmin
+        links:
+          - mariadb:mariadb
+        ports:
+          - 8100:80
+        environment:
+          MYSQL_USERNAME: "${DB01_USERNAME}"
+          MYSQL_ROOT_PASSWORD: "${DB01_PASSWORD}"
+          PMA_HOST: mariadb
+        networks:
+          - sail
 networks:
     sail:
         driver: bridge

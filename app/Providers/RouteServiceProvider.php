@@ -20,6 +20,15 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/home';
 
     /**
+     * The controller namespace for the application.
+     *
+     * When present, controller route declarations will automatically be prefixed with this namespace.
+     *
+     * @var string|null
+     */
+    protected $namespace = 'App\Http\Controllers';
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
@@ -28,14 +37,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
-        $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
+        $this->mapWebRoutes();
+        $this->mapApiRoutes();
     }
 
     /**
@@ -48,5 +51,50 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+    }
+
+    protected function mapWebRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
+            Route::middleware('web')
+                ->domain($domain)
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
+        }
+
+        foreach ($this->rotasWeb() as $arquivoDeRota) {
+            Route::middleware([
+                'web',
+                'check.usuario',
+                'check.password',
+                InitializeTenancyByDomain::class,
+                PreventAccessFromCentralDomains::class,
+                CheckTenantForMaintenanceMode::class,
+            ])
+            ->prefix('/')->name('app.')
+            ->namespace("{$this->namespace}")
+            ->group(base_path("routes/v1/web/$arquivoDeRota"));
+        }
+    }
+
+    protected function mapApiRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
+            Route::prefix('api')
+                ->domain($domain)
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
+        }
+    }
+
+    protected function centralDomains(): array
+    {
+        return config('tenancy.central_domains');
+    }
+
+    private function rotasWeb(): array
+    {
+        return array_diff(scandir(base_path('routes/v1/web')), ['.', '..']);
     }
 }
