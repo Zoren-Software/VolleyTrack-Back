@@ -7,6 +7,9 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Middleware\CheckTenantForMaintenanceMode;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -39,6 +42,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
         $this->mapApiRoutes();
+
+        parent::boot();
     }
 
     /**
@@ -55,24 +60,24 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapWebRoutes()
     {
-        foreach ($this->centralDomains() as $domain) {
-            Route::middleware('web')
-                ->domain($domain)
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-        }
+        Route::middleware([
+            'web',
+            InitializeTenancyByDomain::class,
+            PreventAccessFromCentralDomains::class,
+            CheckTenantForMaintenanceMode::class,
+        ])
+        ->namespace($this->namespace)
+        ->group(base_path('routes/web.php'));
 
         foreach ($this->rotasWeb() as $arquivoDeRota) {
             Route::middleware([
                 'web',
-                'check.usuario',
-                'check.password',
                 InitializeTenancyByDomain::class,
                 PreventAccessFromCentralDomains::class,
                 CheckTenantForMaintenanceMode::class,
             ])
             ->prefix('/')->name('app.')
-            ->namespace("{$this->namespace}")
+            ->namespace("{$this->namespace}\App")
             ->group(base_path("routes/v1/web/$arquivoDeRota"));
         }
     }
