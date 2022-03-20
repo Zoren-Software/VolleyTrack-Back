@@ -3,8 +3,8 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Stancl\Tenancy\Database\Models\Tenant;
-//use App\Models\Tenant;
+//use Stancl\Tenancy\Database\Models\Tenant;
+use App\Models\Tenant;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -29,7 +29,7 @@ abstract class TestCase extends BaseTestCase
 
         if(!Tenant::find($domain)) {
             $tenant = Tenant::create(['id' =>  env('TENANT_TEST', 'test')]);
-            $tenant->domains()->create(['domain' =>  env('TENANT_TEST', 'test')]);
+            $tenant->domains()->create(['domain' =>  env('TENANT_TEST', 'test') . '.' . env('APP_HOST', 'planneranimal.local')]);
             $domain = $tenant;
         }
 
