@@ -9,7 +9,7 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
-    protected $graphql = false;
+    protected $graphql = true;
     protected $tenancy = true;
 
     /**
@@ -19,7 +19,7 @@ class UserTest extends TestCase
      */
     public function test_user_list()
     {
-        User::factory()->make();
+        User::factory()->make()->save();
         $response = $this->graphQL(/** @lang GraphQL */ '
             {
                 users {
@@ -46,8 +46,7 @@ class UserTest extends TestCase
         ')->assertJsonStructure([
             'data' => [
                 'users' => [
-                    'paginatorInfo' =>
-                    [
+                    'paginatorInfo' => [
                         'count',
                         'currentPage',
                         'firstItem',
@@ -55,10 +54,20 @@ class UserTest extends TestCase
                         'lastItem',
                         'lastPage',
                         'perPage',
-                        'total',
+                        'total'
                     ],
+                    'data' => [
+                        '*' => [
+                            "id",
+                            "name",
+                            "email",
+                            "email_verified_at",
+                            "created_at",
+                            "updated_at"
+                        ]
+                    ]
                 ],
             ],
-        ]);
+        ])->assertStatus(200);
     }
 }
