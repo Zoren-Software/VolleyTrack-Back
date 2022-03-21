@@ -21,13 +21,13 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        if ($this->graphql) {
-            $this->bootRefreshesSchemaCache();
-        }
-
         if ($this->tenancy) {
             $this->initializeTenancy();
             $this->tenantUrl = 'http://' . env('TENANT_TEST', 'test') . '.' . env('APP_HOST');
+        }
+
+        if ($this->graphql) {
+            $this->bootRefreshesSchemaCache();
         }
     }
 
@@ -42,5 +42,18 @@ abstract class TestCase extends BaseTestCase
         }
 
         tenancy()->initialize($domain);
+    }
+
+    public function graphQL(String $objectString){
+
+        return $this->withHeaders([
+            'x-tenant' => env('TENANT_TEST', 'test'),
+        ])->postJson($this->tenantUrl . '/graphql',
+        [
+            'query' => <<<GQL
+            $objectString
+            GQL
+          ]
+        );
     }
 }
