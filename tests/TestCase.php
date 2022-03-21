@@ -51,7 +51,9 @@ abstract class TestCase extends BaseTestCase
         ])->postJson($this->tenantUrl . '/graphql',
         [
             'query' => <<<GQL
-            $objectString
+            {
+                $objectString
+            }
             GQL
           ]
         );
