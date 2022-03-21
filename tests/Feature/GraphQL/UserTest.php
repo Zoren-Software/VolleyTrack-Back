@@ -13,36 +13,34 @@ class UserTest extends TestCase
     protected $tenancy = true;
 
     /**
-     * A basic feature test example.
+     * Listagem de todos os usuários.
      *
      * @return void
      */
-    public function test_user_list()
+    public function test_users_list()
     {
         User::factory()->make()->save();
         $response = $this->graphQL(/** @lang GraphQL */ '
-            {
-                users {
-                  paginatorInfo {
-                    count
-                    currentPage
-                    firstItem
-                    hasMorePages
-                    lastItem
-                    lastPage
-                    perPage
-                    total
-                  }
-                  data {
-                    id
-                    name
-                    email
-                    email_verified_at
-                    created_at
-                    updated_at
-                  }
+            users {
+                paginatorInfo {
+                count
+                currentPage
+                firstItem
+                hasMorePages
+                lastItem
+                lastPage
+                perPage
+                total
                 }
-              }
+                data {
+                id
+                name
+                email
+                email_verified_at
+                created_at
+                updated_at
+                }
+            }
         ')->assertJsonStructure([
             'data' => [
                 'users' => [
@@ -66,6 +64,42 @@ class UserTest extends TestCase
                             "updated_at"
                         ]
                     ]
+                ],
+            ],
+        ])->assertStatus(200);
+    }
+
+    /**
+     * Listagem de um usuário
+     *
+     * @return void
+     */
+    public function test_user_list()
+    {
+        $this->withoutExceptionHandling();
+        // $user = User::factory()->make();
+        // $user->save();
+
+        $response = $this->graphQL(/** @lang GraphQL */ "
+            user (id: 11) {
+                id
+                name
+                email
+                email_verified_at
+                created_at
+                updated_at
+            }
+        ");
+
+        $response->assertJsonStructure([
+            'data' => [
+                'user' => [
+                    "id",
+                    "name",
+                    "email",
+                    "email_verified_at",
+                    "created_at",
+                    "updated_at"
                 ],
             ],
         ])->assertStatus(200);
