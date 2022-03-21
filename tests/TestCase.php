@@ -2,20 +2,28 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-//use Stancl\Tenancy\Database\Models\Tenant;
 use App\Models\Tenant;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
+use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use MakesGraphQLRequests;
+    use RefreshesSchemaCache;
 
     protected $tenancy = false;
+    protected $graphql = false;
     public $tenantUrl;
 
     public function setUp(): void
     {
         parent::setUp();
+
+        if ($this->graphql) {
+            $this->bootRefreshesSchemaCache();
+        }
 
         if ($this->tenancy) {
             $this->initializeTenancy();
