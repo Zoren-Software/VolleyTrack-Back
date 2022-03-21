@@ -10,6 +10,7 @@
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "nuwave/lighthouse": "^5.44",
         "stancl/tenancy": "^3.5"
     },
     "require-dev": {
@@ -52,9 +53,6 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ],
-        "test" : [
-            "./vendor/bin/phpunit"
         ]
     },
     "extra": {
