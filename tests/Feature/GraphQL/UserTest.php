@@ -23,22 +23,22 @@ class UserTest extends TestCase
         $response = $this->graphQL(/** @lang GraphQL */ '
             users {
                 paginatorInfo {
-                count
-                currentPage
-                firstItem
-                hasMorePages
-                lastItem
-                lastPage
-                perPage
-                total
+                    count
+                    currentPage
+                    firstItem
+                    hasMorePages
+                    lastItem
+                    lastPage
+                    perPage
+                    total
                 }
                 data {
-                id
-                name
-                email
-                email_verified_at
-                created_at
-                updated_at
+                    id
+                    name
+                    email
+                    email_verified_at
+                    created_at
+                    updated_at
                 }
             }
         ')->assertJsonStructure([
@@ -76,12 +76,12 @@ class UserTest extends TestCase
      */
     public function test_user_list()
     {
-        $this->withoutExceptionHandling();
-        // $user = User::factory()->make();
-        // $user->save();
+        //$this->withoutExceptionHandling();
+        $user = User::factory()->make();
+        $user->save();
 
         $response = $this->graphQL(/** @lang GraphQL */ "
-            user (id: 11) {
+            user (id: $user->id) {
                 id
                 name
                 email
