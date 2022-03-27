@@ -22,7 +22,7 @@
     </coverage>
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="APP_HOST" value="planneranimal.local"/>
+        <env name="APP_HOST" value="clubtraining.local"/>
         <env name="TENANT_TEST" value="test"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
