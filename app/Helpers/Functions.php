@@ -2,5 +2,5 @@
 
 function appHost()
 {
-    return env('APP_HOST', 'planneranimal.com.br');
+    return env('APP_HOST', 'clubtraining.com.br');
 }
