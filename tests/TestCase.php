@@ -37,7 +37,7 @@ abstract class TestCase extends BaseTestCase
 
         if(!Tenant::find($domain)) {
             $tenant = Tenant::create(['id' =>  env('TENANT_TEST', 'test')]);
-            $tenant->domains()->create(['domain' =>  env('TENANT_TEST', 'test') . '.' . env('APP_HOST', 'planneranimal.local')]);
+            $tenant->domains()->create(['domain' =>  env('TENANT_TEST', 'test') . '.' . env('APP_HOST', 'clubtraining.local')]);
             $domain = $tenant;
         }
 
