@@ -58,7 +58,7 @@ services:
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: planneranimal.phpmyadmin
+        container_name: clubtraining.phpmyadmin
         links:
           - mariadb:mariadb
         ports:
