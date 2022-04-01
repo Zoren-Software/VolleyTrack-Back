@@ -9,7 +9,7 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     protected $graphql = true;
     protected $tenancy = true;
@@ -115,19 +115,17 @@ class UserTest extends TestCase
     public function test_user_create()
     {
         $response = $this->graphQL(/** @lang GraphQL */ '
-            mutation {
-                userCreate (
-                    name: "Maicon"
-                    email: "dev.cerutti.maicon@gmail.com"
-                    password: "password"
-                ) {
-                    id
-                    name
-                    email
-                    email_verified_at
-                    created_at
-                    updated_at
-                }
+            userCreate (
+                name: "Maicon"
+                email: "dev.cerutti.maicon@gmail.com"
+                password: "password"
+            ) {
+                id
+                name
+                email
+                email_verified_at
+                created_at
+                updated_at
             }
         ', "mutation");
 

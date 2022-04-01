@@ -49,7 +49,10 @@ abstract class TestCase extends BaseTestCase
         switch ($type) {
             case 'mutation':
                 $post = [
-                    "query" => "$objectString"
+                    "query" => "
+                        mutation {
+                            $objectString
+                        }"
                 ];
                 break;
             case 'query':
