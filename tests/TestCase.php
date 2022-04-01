@@ -44,18 +44,36 @@ abstract class TestCase extends BaseTestCase
         tenancy()->initialize($domain);
     }
 
-    public function graphQL(String $objectString){
+    public function graphQL(String $objectString, String $type = "query")
+    {
+        switch ($type) {
+            case 'mutation':
+                $post = [
+                    "query" => "
+                        mutation {
+                            $objectString
+                        }"
+                ];
+                break;
+            case 'query':
+                $post = [
+                    'query' => <<<GQL
+                    {
+                        $objectString
+                    }
+                    GQL
+                ];
+                break;
+            default:
+                break;
+        }
 
         return $this->withHeaders([
             'x-tenant' => env('TENANT_TEST', 'test'),
-        ])->postJson($this->tenantUrl . '/graphql',
-        [
-            'query' => <<<GQL
-            {
-                $objectString
-            }
-            GQL
-          ]
+            'content-type' => 'application/json',
+        ])->postJson(
+            $this->tenantUrl . '/graphql',
+            $post
         );
     }
 }
