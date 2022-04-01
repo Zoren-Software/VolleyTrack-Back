@@ -9,6 +9,8 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
+    // use RefreshDatabase;
+
     protected $graphql = true;
     protected $tenancy = true;
 
@@ -20,7 +22,7 @@ class UserTest extends TestCase
     public function test_users_list()
     {
         User::factory()->make()->save();
-        $response = $this->graphQL(/** @lang GraphQL */ '
+        $response = $this->graphQL(/** @lang GraphQL */ "
             users {
                 paginatorInfo {
                     count
@@ -41,7 +43,7 @@ class UserTest extends TestCase
                     updated_at
                 }
             }
-        ')->assertJsonStructure([
+        ")->assertJsonStructure([
             'data' => [
                 'users' => [
                     'paginatorInfo' => [
@@ -89,11 +91,47 @@ class UserTest extends TestCase
                 created_at
                 updated_at
             }
-        ");
+        ");        
 
         $response->assertJsonStructure([
             'data' => [
                 'user' => [
+                    "id",
+                    "name",
+                    "email",
+                    "email_verified_at",
+                    "created_at",
+                    "updated_at"
+                ],
+            ],
+        ])->assertStatus(200);
+    }
+
+    /**
+     * Listagem de um usuário
+     *
+     * @return void
+     */
+    public function test_user_create()
+    {
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            userCreate (
+                name: "Maicon"
+                email: "dev.cerutti.maicon@gmail.com"
+                password: "password"
+            ) {
+                id
+                name
+                email
+                email_verified_at
+                created_at
+                updated_at
+            }
+        ', "mutation");
+
+        $response->assertJsonStructure([
+            'data' => [
+                'userCreate' => [
                     "id",
                     "name",
                     "email",
