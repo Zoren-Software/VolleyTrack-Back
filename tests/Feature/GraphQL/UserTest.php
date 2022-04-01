@@ -9,7 +9,7 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
-    //use RefreshDatabase;
+    use RefreshDatabase;
 
     protected $graphql = true;
     protected $tenancy = true;
@@ -91,7 +91,7 @@ class UserTest extends TestCase
                 created_at
                 updated_at
             }
-        ");
+        ");        
 
         $response->assertJsonStructure([
             'data' => [
@@ -118,7 +118,7 @@ class UserTest extends TestCase
             mutation {
                 userCreate (
                     name: "Maicon"
-                    email: "dev.cerutti.maicon66886@gmail.com"
+                    email: "dev.cerutti.maicon@gmail.com"
                     password: "password"
                 ) {
                     id
@@ -129,22 +129,19 @@ class UserTest extends TestCase
                     updated_at
                 }
             }
+        ', "mutation");
 
-        ', "query");
-
-        dd($response);
-
-        // $response->assertJsonStructure([
-        //     'data' => [
-        //         'userCreate' => [
-        //             "id",
-        //             "name",
-        //             "email",
-        //             "email_verified_at",
-        //             "created_at",
-        //             "updated_at"
-        //         ],
-        //     ],
-        // ])->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'userCreate' => [
+                    "id",
+                    "name",
+                    "email",
+                    "email_verified_at",
+                    "created_at",
+                    "updated_at"
+                ],
+            ],
+        ])->assertStatus(200);
     }
 }
