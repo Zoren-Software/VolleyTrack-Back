@@ -22,7 +22,7 @@ class UserTest extends TestCase
     public function test_users_list()
     {
         User::factory()->make()->save();
-        $response = $this->graphQLQuery(/** @lang GraphQL */ "
+        $response = $this->graphQL(/** @lang GraphQL */ "
             users {
                 paginatorInfo {
                     count
@@ -43,7 +43,7 @@ class UserTest extends TestCase
                     updated_at
                 }
             }
-        ", "query")->assertJsonStructure([
+        ")->assertJsonStructure([
             'data' => [
                 'users' => [
                     'paginatorInfo' => [
@@ -82,7 +82,7 @@ class UserTest extends TestCase
         $user = User::factory()->make();
         $user->save();
 
-        $response = $this->graphQLQuery(/** @lang GraphQL */ "
+        $response = $this->graphQL(/** @lang GraphQL */ "
             user (id: $user->id) {
                 id
                 name
@@ -91,7 +91,7 @@ class UserTest extends TestCase
                 created_at
                 updated_at
             }
-        ", "query");
+        ");
 
         $response->assertJsonStructure([
             'data' => [
@@ -114,30 +114,37 @@ class UserTest extends TestCase
      */
     public function test_user_create()
     {
-        $response = $this->graphQL(/** @lang GraphQL */ "
-            userCreate (
-                name: 'Maicon'
-                email: 'dev.cerutti.maicon4848@gmail.com'
-                password: 'password'
-            ) {
-                id
-                name
-                email
-                email_verified_at
-                created_at
-                updated_at
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            mutation {
+                userCreate (
+                    name: "Maicon"
+                    email: "dev.cerutti.maicon66886@gmail.com"
+                    password: "password"
+                ) {
+                    id
+                    name
+                    email
+                    email_verified_at
+                    created_at
+                    updated_at
+                }
             }
-        ", "mutation")->assertJsonStructure([
-            'data' => [
-                'userCreate' => [
-                    "id",
-                    "name",
-                    "email",
-                    "email_verified_at",
-                    "created_at",
-                    "updated_at"
-                ],
-            ],
-        ])->assertStatus(200);
+
+        ', "query");
+
+        dd($response);
+
+        // $response->assertJsonStructure([
+        //     'data' => [
+        //         'userCreate' => [
+        //             "id",
+        //             "name",
+        //             "email",
+        //             "email_verified_at",
+        //             "created_at",
+        //             "updated_at"
+        //         ],
+        //     ],
+        // ])->assertStatus(200);
     }
 }
