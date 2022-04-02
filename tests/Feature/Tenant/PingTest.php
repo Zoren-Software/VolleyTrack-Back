@@ -2,13 +2,12 @@
 
 namespace Tests\Feature\Tenant;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class TestExemple extends TestCase
 {
     protected $tenancy = true;
+
     /**
      * A basic feature test example.
      *
