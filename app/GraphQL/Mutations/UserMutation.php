@@ -2,8 +2,8 @@
 
 namespace App\GraphQL\Mutations;
 
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Illuminate\Support\Facades\Hash;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class UserMutation
 {
@@ -13,7 +13,7 @@ class UserMutation
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $args["password"] = Hash::make($args["password"]);
+        $args['password'] = Hash::make($args['password']);
 
         $user = \App\Models\User::create($args);
 
