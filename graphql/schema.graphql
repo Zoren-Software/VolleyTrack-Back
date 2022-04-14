@@ -1,2 +1,2 @@
-#import users/*.graphql
-#import sanctum.graphql
+#import user/*.graphql
+#import sanctum/*.graphql

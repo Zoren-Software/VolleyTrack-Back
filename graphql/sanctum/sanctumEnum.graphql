@@ -1,0 +1,37 @@
+enum LogoutStatus {
+    """TOKEN_REVOKED"""
+    TOKEN_REVOKED
+}
+
+enum RegisterStatus {
+    """MUST_VERIFY_EMAIL"""
+    MUST_VERIFY_EMAIL
+
+    """SUCCESS"""
+    SUCCESS
+}
+
+enum EmailVerificationStatus {
+    """VERIFIED"""
+    VERIFIED
+}
+
+enum ResendEmailVerificationStatus {
+    """EMAIL_SENT"""
+    EMAIL_SENT
+}
+
+enum ForgotPasswordStatus {
+    """EMAIL_SENT"""
+    EMAIL_SENT
+}
+
+enum ResetPasswordStatus {
+    """PASSWORD_RESET"""
+    PASSWORD_RESET
+}
+
+enum UpdatePasswordStatus {
+    """PASSWORD_UPDATED"""
+    PASSWORD_UPDATED
+}
