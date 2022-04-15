@@ -49,7 +49,7 @@ class SanctumTest extends TestCase
     }
 
     /**
-     * Teste da rota de login.
+     * Teste da rota de logout.
      *
      * @return void
      */
