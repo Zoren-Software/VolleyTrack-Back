@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use Faker\Factory as Faker;
 
 class SanctumTest extends TestCase
 {
@@ -55,9 +56,6 @@ class SanctumTest extends TestCase
      */
     public function test_logout()
     {
-        $user = User::first();
-
-        // Testar rota que precisa de autenticação
         $this->login = true;
         
         $response = $this->graphQL(/** @lang GraphQL */ '
@@ -72,6 +70,39 @@ class SanctumTest extends TestCase
                 'logout' => [
                     'status',
                     'message'
+                ],
+            ],
+        ])->assertStatus(200);
+    }
+
+    /**
+     * Teste da rota de registro de usuários.
+     *
+     * @return void
+     */
+    public function test_register()
+    {
+        $faker = Faker::create();
+        
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            register(
+                input: {
+                  name: "' . $faker->name . '"
+                  email: "' . $faker->email . '"
+                  password: "password"
+                  password_confirmation: "password"
+                }
+              ) {
+                token
+                status
+              }
+        ', 'mutation');
+
+        $response->assertJsonStructure([
+            'data' => [
+                'register' => [
+                    'token',
+                    'status'
                 ],
             ],
         ])->assertStatus(200);
