@@ -94,18 +94,19 @@ abstract class TestCase extends BaseTestCase
     }
 
     public function loginGraphQL(): void { 
-        $user = User::first();
+        $user = User::factory()->make();
+        $user->save();
         
         $response = $this->graphQL(/** @lang GraphQL */ '
             login(input: {
-                email: "'.$user->email.'"
+                email: "' . $user->email . '"
                 password: "password"
             }) {
                 token
             }
             
         ', 'mutation');
-        
+
         $this->token = $response->json()['data']['login']['token'];
     }
 }
