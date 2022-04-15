@@ -3,9 +3,9 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Faker\Factory as Faker;
 
 class UserTest extends TestCase
 {
@@ -116,7 +116,7 @@ class UserTest extends TestCase
     public function test_user_create()
     {
         $faker = Faker::create();
-        
+
         $response = $this->graphQL(/** @lang GraphQL */ '
             userCreate (
                 name: "' . $faker->name . '"
