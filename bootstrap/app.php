@@ -41,9 +41,6 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-// NOTE - Adicionado GraphQL Playground
-//$app->register(MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider::class);
-
 /*
 |--------------------------------------------------------------------------
 | Return The Application
