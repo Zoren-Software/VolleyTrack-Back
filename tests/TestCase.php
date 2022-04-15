@@ -6,6 +6,7 @@ use App\Models\Tenant;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
+use App\Models\User;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -18,6 +19,12 @@ abstract class TestCase extends BaseTestCase
     protected $tenancy = false;
 
     protected $graphql = false;
+
+    protected $login = false;
+
+    protected $token = '';
+
+    protected $user = null;
 
     public $tenantUrl;
 
@@ -32,6 +39,7 @@ abstract class TestCase extends BaseTestCase
 
         if ($this->graphql) {
             $this->bootRefreshesSchemaCache();
+            $this->loginGraphQL();
         }
     }
 
@@ -72,12 +80,37 @@ abstract class TestCase extends BaseTestCase
                 break;
         }
 
-        return $this->withHeaders([
+        $headers= [
             'x-tenant' => env('TENANT_TEST', 'test'),
             'content-type' => 'application/json',
-        ])->postJson(
+        ];
+
+        if ($this->token != '' && $this->login) {
+            $headers['Authorization'] = 'Bearer ' . $this->token;
+        }
+
+        return $this->withHeaders($headers)->postJson(
             $this->tenantUrl . '/graphql',
             $post
         );
+    }
+
+    public function loginGraphQL(): void { 
+        $user = User::factory()->make();
+        $user->save();
+        
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            login(input: {
+                email: "' . $user->email . '"
+                password: "password"
+            }) {
+                token
+            }
+            
+        ', 'mutation');
+
+        $this->user = $user;
+
+        $this->token = $response->json()['data']['login']['token'];
     }
 }
