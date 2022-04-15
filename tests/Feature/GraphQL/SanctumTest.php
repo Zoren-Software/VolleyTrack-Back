@@ -132,7 +132,7 @@ class SanctumTest extends TestCase
         ])->assertStatus(200);
     }
 
-        /**
+    /**
      * Teste de reenvio de email para recuperar senha.
      *
      * @return void
@@ -153,6 +153,38 @@ class SanctumTest extends TestCase
                 'forgotPassword' => [
                     'status',
                     'message'
+                ],
+            ],
+        ])->assertStatus(200);
+    }
+
+    /**
+     * Teste de reenvio de email para recuperar senha.
+     *
+     * @return void
+     */
+    public function test_update_password()
+    {
+        $user = User::whereId(2)->first();
+
+        $this->login = true;
+        
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            updatePassword(
+                input: {
+                    current_password: "password"
+                    password: "password2"
+                    password_confirmation: "password2"
+                  }
+            ) {
+                status
+            }
+        ', 'mutation');
+
+        $response->assertJsonStructure([
+            'data' => [
+                'updatePassword' => [
+                    'status'
                 ],
             ],
         ])->assertStatus(200);
