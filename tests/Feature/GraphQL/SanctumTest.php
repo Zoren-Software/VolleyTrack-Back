@@ -107,4 +107,28 @@ class SanctumTest extends TestCase
             ],
         ])->assertStatus(200);
     }
+
+    /**
+     * Teste de reenvio de email de verificação.
+     *
+     * @return void
+     */
+    public function test_resend_email_verification()
+    {
+        $user = User::first();
+        
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            resendEmailVerification(input: { email: "'. $user->email .'" }) {
+                status
+            }
+        ', 'mutation');
+
+        $response->assertJsonStructure([
+            'data' => [
+                'resendEmailVerification' => [
+                    'status'
+                ],
+            ],
+        ])->assertStatus(200);
+    }
 }
