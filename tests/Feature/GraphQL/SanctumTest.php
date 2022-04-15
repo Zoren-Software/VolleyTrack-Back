@@ -13,8 +13,15 @@ class SanctumTest extends TestCase
      * @var bool
      */
     protected $tenancy = true;
+    
+
     /**
-     * A basic feature test example.
+     * @var bool
+     */
+    protected $graphql = true;
+
+    /**
+     * Teste da rota de login.
      *
      * @return void
      */
@@ -36,6 +43,35 @@ class SanctumTest extends TestCase
             'data' => [
                 'login' => [
                     'token'
+                ],
+            ],
+        ])->assertStatus(200);
+    }
+
+    /**
+     * Teste da rota de login.
+     *
+     * @return void
+     */
+    public function test_logout()
+    {
+        $user = User::first();
+
+        // Testar rota que precisa de autenticação
+        $this->login = true;
+        
+        $response = $this->graphQL(/** @lang GraphQL */ '
+            logout {
+                status
+                message
+            }
+        ', 'mutation');
+
+        $response->assertJsonStructure([
+            'data' => [
+                'logout' => [
+                    'status',
+                    'message'
                 ],
             ],
         ])->assertStatus(200);
