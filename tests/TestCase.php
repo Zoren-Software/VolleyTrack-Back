@@ -3,10 +3,10 @@
 namespace Tests;
 
 use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
-use App\Models\User;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -80,7 +80,7 @@ abstract class TestCase extends BaseTestCase
                 break;
         }
 
-        $headers= [
+        $headers = [
             'x-tenant' => env('TENANT_TEST', 'test'),
             'content-type' => 'application/json',
         ];
@@ -95,10 +95,11 @@ abstract class TestCase extends BaseTestCase
         );
     }
 
-    public function loginGraphQL(): void { 
+    public function loginGraphQL(): void
+    {
         $user = User::factory()->make();
         $user->save();
-        
+
         $response = $this->graphQL(/** @lang GraphQL */ '
             login(input: {
                 email: "' . $user->email . '"

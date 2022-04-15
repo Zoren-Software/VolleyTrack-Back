@@ -2,11 +2,9 @@
 
 namespace Tests\Feature\GraphQL;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\User;
 use Faker\Factory as Faker;
+use Tests\TestCase;
 
 class SanctumTest extends TestCase
 {
@@ -14,7 +12,6 @@ class SanctumTest extends TestCase
      * @var bool
      */
     protected $tenancy = true;
-    
 
     /**
      * @var bool
@@ -30,10 +27,10 @@ class SanctumTest extends TestCase
     {
         $user = User::factory()->make();
         $user->save();
-        
+
         $response = $this->graphQL(/** @lang GraphQL */ '
             login(input: {
-                email: "'.$user->email.'"
+                email: "' . $user->email . '"
                 password: "password"
             }) {
                 token
@@ -58,7 +55,7 @@ class SanctumTest extends TestCase
     public function test_logout()
     {
         $this->login = true;
-        
+
         $response = $this->graphQL(/** @lang GraphQL */ '
             logout {
                 status
@@ -84,7 +81,7 @@ class SanctumTest extends TestCase
     public function test_register()
     {
         $faker = Faker::create();
-        
+
         $response = $this->graphQL(/** @lang GraphQL */ '
             register(
                 input: {
@@ -117,7 +114,7 @@ class SanctumTest extends TestCase
     public function test_resend_email_verification()
     {
         $response = $this->graphQL(/** @lang GraphQL */ '
-            resendEmailVerification(input: { email: "'. $this->user->email .'" }) {
+            resendEmailVerification(input: { email: "' . $this->user->email . '" }) {
                 status
             }
         ', 'mutation');
@@ -139,9 +136,9 @@ class SanctumTest extends TestCase
     public function test_forgot_password()
     {
         $this->login = true;
-        
+
         $response = $this->graphQL(/** @lang GraphQL */ '
-            forgotPassword(input: { email: "' . $this->user->email .'" }) {
+            forgotPassword(input: { email: "' . $this->user->email . '" }) {
                 status
                 message
               }
@@ -167,7 +164,7 @@ class SanctumTest extends TestCase
         $user = User::whereId(2)->first();
 
         $this->login = true;
-        
+
         $response = $this->graphQL(/** @lang GraphQL */ '
             updatePassword(
                 input: {
