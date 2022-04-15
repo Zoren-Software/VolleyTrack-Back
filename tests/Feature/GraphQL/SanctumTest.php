@@ -155,7 +155,7 @@ class SanctumTest extends TestCase
     }
 
     /**
-     * Teste de reenvio de email para recuperar senha.
+     * Teste de reenvio de email para atualizar senha.
      *
      * @return void
      */
