@@ -28,7 +28,8 @@ class SanctumTest extends TestCase
      */
     public function test_login()
     {
-        $user = User::first();
+        $user = User::factory()->make();
+        $user->save();
         
         $response = $this->graphQL(/** @lang GraphQL */ '
             login(input: {
@@ -115,10 +116,8 @@ class SanctumTest extends TestCase
      */
     public function test_resend_email_verification()
     {
-        $user = User::first();
-        
         $response = $this->graphQL(/** @lang GraphQL */ '
-            resendEmailVerification(input: { email: "'. $user->email .'" }) {
+            resendEmailVerification(input: { email: "'. $this->user->email .'" }) {
                 status
             }
         ', 'mutation');
@@ -139,10 +138,10 @@ class SanctumTest extends TestCase
      */
     public function test_forgot_password()
     {
-        $user = User::first();
+        $this->login = true;
         
         $response = $this->graphQL(/** @lang GraphQL */ '
-            forgotPassword(input: { email: "' . $user->email .'" }) {
+            forgotPassword(input: { email: "' . $this->user->email .'" }) {
                 status
                 message
               }
