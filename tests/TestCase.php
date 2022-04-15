@@ -24,6 +24,8 @@ abstract class TestCase extends BaseTestCase
 
     protected $token = '';
 
+    protected $user = null;
+
     public $tenantUrl;
 
     public function setUp(): void
@@ -106,6 +108,8 @@ abstract class TestCase extends BaseTestCase
             }
             
         ', 'mutation');
+
+        $this->user = $user;
 
         $this->token = $response->json()['data']['login']['token'];
     }
