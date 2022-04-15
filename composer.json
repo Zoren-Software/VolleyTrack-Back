@@ -11,6 +11,7 @@
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.7",
+        "mll-lab/laravel-graphql-playground": "^2.6",
         "nuwave/lighthouse": "^5.44",
         "stancl/tenancy": "^3.5"
     },
