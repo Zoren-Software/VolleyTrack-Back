@@ -15,3 +15,4 @@ yarn-error.log
 /.vscode
 /reports
 .php-cs-fixer.cache
+html
