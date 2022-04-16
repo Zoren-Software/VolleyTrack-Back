@@ -64,8 +64,8 @@ services:
         ports:
           - 8100:80
         environment:
-          MYSQL_USERNAME: "${DB01_USERNAME}"
-          MYSQL_ROOT_PASSWORD: "${DB01_PASSWORD}"
+          MYSQL_USERNAME: "${DB_USERNAME}"
+          MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
           PMA_HOST: mariadb
         networks:
           - sail
