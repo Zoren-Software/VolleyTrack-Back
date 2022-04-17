@@ -158,7 +158,7 @@ class UserTest extends TestCase
         $emailExistent = $faker->email;
 
         return [
-            'text password less than 6 characters' => [
+            'text password less than 6 characters, expected error' => [
                 'password' => '12345',
                 'email' => $faker->email,
                 'type_message_error' => 'password',
@@ -178,7 +178,7 @@ class UserTest extends TestCase
                     ]
                 ],
             ],
-            'no text password' => [
+            'no text password, expected error' => [
                 'password' => '',
                 'email' => $faker->email,
                 'type_message_error' => 'password',
@@ -198,7 +198,7 @@ class UserTest extends TestCase
                     ]
                 ],
             ],
-            'create user' => [
+            'create user, success' => [
                 'password' => '123456',
                 'email' => $emailExistent,
                 'type_message_error' => false,
@@ -216,7 +216,7 @@ class UserTest extends TestCase
                     ],
                 ],
             ],
-            'text password with 6 characters' => [
+            'text password with 6 characters, success' => [
                 'password' => '123456',
                 'email' => $faker->email,
                 'type_message_error' => false,
@@ -234,7 +234,7 @@ class UserTest extends TestCase
                     ],
                 ],
             ],
-            'email field is required' => [
+            'email field is required, expected error' => [
                 'password' => '123456',
                 'email' => '',
                 'type_message_error' => 'email',
@@ -254,7 +254,7 @@ class UserTest extends TestCase
                     ]
                 ],
             ],
-            'email field is not unique' => [
+            'email field is not unique, expected error' => [
                 'password' => '123456',
                 'email' => $emailExistent,
                 'type_message_error' => 'email',
@@ -274,7 +274,7 @@ class UserTest extends TestCase
                     ]
                 ],
             ],
-            'email field is not email valid' => [
+            'email field is not email valid, expected error' => [
                 'password' => '123456',
                 'email' => 'notemail.com',
                 'type_message_error' => 'email',
