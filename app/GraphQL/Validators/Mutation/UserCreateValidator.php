@@ -36,7 +36,7 @@ class UserCreateValidator extends Validator
             'password.min' => trans('UserCreate.password_min_6'),
             'email.required' => trans('UserCreate.email_required'),
             'email.email' => trans('UserCreate.email_is_valid'),
-            'email.unique' => trans('UserCreate.unique'),
+            'email.unique' => trans('UserCreate.email_unique'),
         ];
     }
 }
