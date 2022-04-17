@@ -276,7 +276,7 @@ class UserTest extends TestCase
             ],
             'email field is not email valid' => [
                 'password' => '123456',
-                'email' => 'naosouemail.com',
+                'email' => 'notemail.com',
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_is_valid',
                 'expected' => [
