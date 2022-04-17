@@ -17,7 +17,7 @@ class UserTest extends TestCase
 
     /**
      * Listagem de todos os usuários.
-     * 
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -76,7 +76,7 @@ class UserTest extends TestCase
 
     /**
      * Listagem de um usuário
-     * 
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -114,13 +114,13 @@ class UserTest extends TestCase
 
     /**
      * Listagem de um usuário
-     * 
+     *
      * @dataProvider userCreateProvider
      * @author Maicon Cerutti
-     * 
+     *
      * @return void
      */
-    public function test_user_create($password, $email, $expected)
+    public function test_user_create($password, $email, $type_message_error, $expected_message, $expected)
     {
         $faker = Faker::create();
 
@@ -138,14 +138,18 @@ class UserTest extends TestCase
                 updated_at
             }
         ', 'mutation');
-        
+
+        if ($type_message_error) {
+            $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+        }
+
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
     }
 
     /**
-     * 
+     *
      * @return Array
      */
     public function userCreateProvider()
@@ -157,6 +161,8 @@ class UserTest extends TestCase
             'text password less than 6 characters' => [
                 'password' => '12345',
                 'email' => $faker->email,
+                'type_message_error' => 'password',
+                'expected_message' => 'UserCreate.password_min_6',
                 'expected' => [
                     'errors' => [
                         '*' => [
@@ -175,6 +181,8 @@ class UserTest extends TestCase
             'no text password' => [
                 'password' => '',
                 'email' => $faker->email,
+                'type_message_error' => 'password',
+                'expected_message' => 'UserCreate.password_required',
                 'expected' => [
                     'errors' => [
                         '*' => [
@@ -193,6 +201,8 @@ class UserTest extends TestCase
             'create user' => [
                 'password' => '123456',
                 'email' => $emailExistent,
+                'type_message_error' => false,
+                'expected_message' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => [
@@ -209,6 +219,8 @@ class UserTest extends TestCase
             'text password with 6 characters' => [
                 'password' => '123456',
                 'email' => $faker->email,
+                'type_message_error' => false,
+                'expected_message' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => [
@@ -225,24 +237,8 @@ class UserTest extends TestCase
             'email field is required' => [
                 'password' => '123456',
                 'email' => '',
-                'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
-                ],
-            ],
-            'email field is required' => [
-                'password' => '123456',
-                'email' => '',
+                'type_message_error' => 'email',
+                'expected_message' => 'UserCreate.email_required',
                 'expected' => [
                     'errors' => [
                         '*' => [
@@ -261,6 +257,8 @@ class UserTest extends TestCase
             'email field is not unique' => [
                 'password' => '123456',
                 'email' => $emailExistent,
+                'type_message_error' => 'email',
+                'expected_message' => 'UserCreate.email_unique',
                 'expected' => [
                     'errors' => [
                         '*' => [
@@ -279,6 +277,8 @@ class UserTest extends TestCase
             'email field is not email valid' => [
                 'password' => '123456',
                 'email' => 'naosouemail.com',
+                'type_message_error' => 'email',
+                'expected_message' => 'UserCreate.email_is_valid',
                 'expected' => [
                     'errors' => [
                         '*' => [
