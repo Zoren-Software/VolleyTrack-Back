@@ -17,6 +17,8 @@ class UserTest extends TestCase
 
     /**
      * Listagem de todos os usuários.
+     * 
+     * @author Maicon Cerutti
      *
      * @return void
      */
@@ -74,10 +76,12 @@ class UserTest extends TestCase
 
     /**
      * Listagem de um usuário
+     * 
+     * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_user_list()
+    public function test_user_info()
     {
         //$this->withoutExceptionHandling();
         $user = User::factory()->make();
@@ -110,18 +114,21 @@ class UserTest extends TestCase
 
     /**
      * Listagem de um usuário
-     *
+     * 
+     * @dataProvider userCreateProvider
+     * @author Maicon Cerutti
+     * 
      * @return void
      */
-    public function test_user_create()
+    public function test_user_create($password, $email, $expected)
     {
         $faker = Faker::create();
 
         $response = $this->graphQL(/** @lang GraphQL */ '
             userCreate (
                 name: "' . $faker->name . '"
-                email: "' . $faker->email . '"
-                password: "password"
+                email: "' . $email . '"
+                password: "' . $password . '"
             ) {
                 id
                 name
@@ -131,18 +138,162 @@ class UserTest extends TestCase
                 updated_at
             }
         ', 'mutation');
+        
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
 
-        $response->assertJsonStructure([
-            'data' => [
-                'userCreate' => [
-                    'id',
-                    'name',
-                    'email',
-                    'email_verified_at',
-                    'created_at',
-                    'updated_at'
+    /**
+     * 
+     * @return Array
+     */
+    public function userCreateProvider()
+    {
+        $faker = Faker::create();
+        $emailExistent = $faker->email;
+
+        return [
+            'text password less than 6 characters' => [
+                'password' => '12345',
+                'email' => $faker->email,
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
                 ],
             ],
-        ])->assertStatus(200);
+            'no text password' => [
+                'password' => '',
+                'email' => $faker->email,
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+            ],
+            'create user' => [
+                'password' => '123456',
+                'email' => $emailExistent,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => [
+                            'id',
+                            'name',
+                            'email',
+                            'email_verified_at',
+                            'created_at',
+                            'updated_at'
+                        ],
+                    ],
+                ],
+            ],
+            'text password with 6 characters' => [
+                'password' => '123456',
+                'email' => $faker->email,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => [
+                            'id',
+                            'name',
+                            'email',
+                            'email_verified_at',
+                            'created_at',
+                            'updated_at'
+                        ],
+                    ],
+                ],
+            ],
+            'email field is required' => [
+                'password' => '123456',
+                'email' => '',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+            ],
+            'email field is required' => [
+                'password' => '123456',
+                'email' => '',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+            ],
+            'email field is not unique' => [
+                'password' => '123456',
+                'email' => $emailExistent,
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+            ],
+            'email field is not email valid' => [
+                'password' => '123456',
+                'email' => 'naosouemail.com',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+            ],
+        ];
     }
 }
