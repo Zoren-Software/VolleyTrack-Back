@@ -32,11 +32,11 @@ class UserCreateValidator extends Validator
     public function messages(): array
     {
         return [
-            'password.required' => 'O campo senha é obrigatório.',
-            'password.min' => 'A senha precisa ter no mínimo 6 caracteres.',
-            'email.required' => 'O campo e-mail é obrigatório.',
-            'email.email' => 'O campo e-mail deve ser um e-mail válido.',
-            'email.unique' => 'Este e-mail já foi registrado.',
+            'password.required' => trans('UserCreate.password_required'),
+            'password.min' => trans('UserCreate.password_min_6'),
+            'email.required' => trans('UserCreate.email_required'),
+            'email.email' => trans('UserCreate.email_is_valid'),
+            'email.unique' => trans('UserCreate.unique'),
         ];
     }
 }
