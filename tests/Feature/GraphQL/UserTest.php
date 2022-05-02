@@ -46,7 +46,9 @@ class UserTest extends TestCase
                     updated_at
                 }
             }
-        ')->assertJsonStructure([
+        ');
+        //dd($response);
+        $response->assertJsonStructure([
             'data' => [
                 'users' => [
                     'paginatorInfo' => [

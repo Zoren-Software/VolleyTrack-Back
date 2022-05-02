@@ -1,0 +1,14 @@
+"Teams "
+type Team {
+    "Unique primary key."
+    id: ID!
+
+    "Unique name."
+    name: String!
+
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
