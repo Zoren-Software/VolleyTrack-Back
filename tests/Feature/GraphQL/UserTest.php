@@ -25,6 +25,17 @@ class UserTest extends TestCase
     public function test_users_list()
     {
         User::factory()->make()->save();
+
+        $response = $this->graphQL(
+            'users', 
+            [
+                'email' => $user->email,
+                'password' => 'password',
+            ], 
+            ['token'], 
+            'query', 
+            false
+        );
         $response = $this->graphQL(/** @lang GraphQL */ '
             users {
                 paginatorInfo {

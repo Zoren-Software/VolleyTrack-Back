@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
-
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
@@ -56,15 +55,14 @@ abstract class TestCase extends BaseTestCase
         tenancy()->initialize($domain);
     }
 
-    public function graphQL(String $objectString, String $type = 'query')
+    public function graphQL(String $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, String $type = 'query', bool $input): object
     {
+        $objectString = $this->converteDadosEmStringGraphQL($nomeQueryGraphQL, $dadosEntrada, $dadosSaida, $input);
+
         switch ($type) {
             case 'mutation':
                 $post = [
-                    'query' => "
-                        mutation {
-                            $objectString
-                        }"
+                    'query' => " mutation { $objectString }"
                 ];
                 break;
             case 'query':
@@ -99,19 +97,79 @@ abstract class TestCase extends BaseTestCase
     {
         $user = User::factory()->make();
         $user->save();
-
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            login(input: {
-                email: "' . $user->email . '"
-                password: "password"
-            }) {
-                token
-            }
-            
-        ', 'mutation');
+        
+        $response = $this->graphQL(
+            'login', 
+            [
+                'email' => $user->email,
+                'password' => 'password',
+            ], 
+            ['token'], 
+            'mutation', 
+            true
+        );
 
         $this->user = $user;
 
         $this->token = $response->json()['data']['login']['token'];
+    }
+
+    private function converteDadosEmStringGraphQL(String $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, $input): String
+    {
+        $inputOpen = $input ? '( input: {' : '{';
+        $inputClose = $input ? '})' : '}';
+
+        $query = "$nomeQueryGraphQL $inputOpen";
+
+        foreach ($dadosEntrada as $key => $value) {
+
+            if(!$input) {
+
+                if (is_array($value)) {
+                    $query .= "    {$key}: [";
+                    $count = 0;
+                    $total = count($value);
+                    foreach ($value as $value2) {
+                        $count++;
+                        $virgula = $count < $total ? ', ' : '';
+                        $query .= "{$value2}{$virgula}";
+                    }
+                    $query .= "]";
+                } else if(is_string($value)) {
+                    $query .=  $value . " ";
+                } 
+            } else {
+
+                if (is_array($value)) {
+                    $query .= "    {$key}: [";
+                    $count = 0;
+                    $total = count($value);
+                    foreach ($value as $value2) {
+                        $count++;
+                        $virgula = $count < $total ? ', ' : '';
+                        $query .= "{$value2}{$virgula}";
+                    }
+                    $query .= "]";
+                } else if(is_string($value)) {
+                    $query .= $key . ': ' . '"' . $value . '" ';
+                } else {
+                    $query .= " {$key}: {$value} ";
+                }
+            }
+
+        }
+
+        $closeOpen = $input ? '{' : '';
+        $closeExit = $input ? '}' : '';
+
+        $query .= "{$inputClose}{$closeOpen}";
+
+        foreach ($dadosSaida as $value) {
+            $query .= " $value ";
+        }
+
+        $query .= "{$closeExit}";
+
+        return $query;
     }
 }

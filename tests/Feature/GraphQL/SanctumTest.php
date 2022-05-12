@@ -28,15 +28,16 @@ class SanctumTest extends TestCase
         $user = User::factory()->make();
         $user->save();
 
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            login(input: {
-                email: "' . $user->email . '"
-                password: "password"
-            }) {
-                token
-            }
-            
-        ', 'mutation');
+        $response = $this->graphQL(
+            'login', 
+            [
+                'email' => $user->email,
+                'password' => 'password',
+            ], 
+            ['token'], 
+            'mutation', 
+            true
+        );
 
         $response->assertJsonStructure([
             'data' => [
@@ -56,12 +57,16 @@ class SanctumTest extends TestCase
     {
         $this->login = true;
 
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            logout {
-                status
-                message
-            }
-        ', 'mutation');
+        $response = $this->graphQL(
+            'logout', 
+            [
+                'status',
+                'message'
+            ], 
+            [], 
+            'mutation', 
+            false
+        );
 
         $response->assertJsonStructure([
             'data' => [
@@ -82,19 +87,18 @@ class SanctumTest extends TestCase
     {
         $faker = Faker::create();
 
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            register(
-                input: {
-                  name: "' . $faker->name . '"
-                  email: "' . $faker->email . '"
-                  password: "password"
-                  password_confirmation: "password"
-                }
-              ) {
-                token
-                status
-              }
-        ', 'mutation');
+        $response = $this->graphQL(
+            'register', 
+            [
+                'name' => $faker->name,
+                'email' => $faker->email,
+                'password' => 'password',
+                'password_confirmation' => 'password',
+            ], 
+            ['token', 'status'], 
+            'mutation', 
+            true
+        );
 
         $response->assertJsonStructure([
             'data' => [
@@ -113,11 +117,15 @@ class SanctumTest extends TestCase
      */
     public function test_resend_email_verification()
     {
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            resendEmailVerification(input: { email: "' . $this->user->email . '" }) {
-                status
-            }
-        ', 'mutation');
+        $response = $this->graphQL(
+            'resendEmailVerification', 
+            [
+                'email' => $this->user->email,
+            ], 
+            ['status'], 
+            'mutation', 
+            true
+        );
 
         $response->assertJsonStructure([
             'data' => [
@@ -137,12 +145,15 @@ class SanctumTest extends TestCase
     {
         $this->login = true;
 
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            forgotPassword(input: { email: "' . $this->user->email . '" }) {
-                status
-                message
-              }
-        ', 'mutation');
+        $response = $this->graphQL(
+            'forgotPassword', 
+            [
+                'email' => $this->user->email,
+            ], 
+            ['status', 'message'], 
+            'mutation', 
+            true
+        );
 
         $response->assertJsonStructure([
             'data' => [
@@ -165,17 +176,17 @@ class SanctumTest extends TestCase
 
         $this->login = true;
 
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            updatePassword(
-                input: {
-                    current_password: "password"
-                    password: "password2"
-                    password_confirmation: "password2"
-                  }
-            ) {
-                status
-            }
-        ', 'mutation');
+        $response = $this->graphQL(
+            'updatePassword', 
+            [
+                'current_password' => 'password',
+                'password' => 'password2',
+                'password_confirmation' => 'password2',
+            ], 
+            ['status'], 
+            'mutation', 
+            true
+        );
 
         $response->assertJsonStructure([
             'data' => [
