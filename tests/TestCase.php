@@ -123,40 +123,11 @@ abstract class TestCase extends BaseTestCase
 
         foreach ($dadosEntrada as $key => $value) {
 
-            if(!$input) {
-
-                if (is_array($value)) {
-                    $query .= "    {$key}: [";
-                    $count = 0;
-                    $total = count($value);
-                    foreach ($value as $value2) {
-                        $count++;
-                        $virgula = $count < $total ? ', ' : '';
-                        $query .= "{$value2}{$virgula}";
-                    }
-                    $query .= "]";
-                } else if(is_string($value)) {
-                    $query .=  $value . " ";
-                } 
-            } else {
-
-                if (is_array($value)) {
-                    $query .= "    {$key}: [";
-                    $count = 0;
-                    $total = count($value);
-                    foreach ($value as $value2) {
-                        $count++;
-                        $virgula = $count < $total ? ', ' : '';
-                        $query .= "{$value2}{$virgula}";
-                    }
-                    $query .= "]";
-                } else if(is_string($value)) {
-                    $query .= $key . ': ' . '"' . $value . '" ';
-                } else {
-                    $query .= " {$key}: {$value} ";
-                }
-            }
-
+            if (is_array($value)) {
+                $query .= $this->converteDadosArray($query, $key, $value, $input);
+            } else if($value) {
+                $query .=  $this->converteDadosString($query, $key, $value, $input);
+            } 
         }
 
         $closeOpen = $input ? '{' : '';
@@ -171,5 +142,37 @@ abstract class TestCase extends BaseTestCase
         $query .= "{$closeExit}";
 
         return $query;
+    }
+
+    private function converteDadosArray(String $query, String $key, array $value, Bool $input): String
+    {
+        if($input) {
+            $query .= "    {$key}: [";
+            $count = 0;
+            $total = count($value);
+            foreach ($value as $value2) {
+                $count++;
+                $virgula = $count < $total ? ', ' : '';
+                $query .= "{$value2}{$virgula}";
+            }
+            $query .= "]";
+        } else {
+            $query .= "    {$key}: [";
+            $count = 0;
+            $total = count($value);
+            foreach ($value as $value2) {
+                $count++;
+                $virgula = $count < $total ? ', ' : '';
+                $query .= "{$value2}{$virgula}";
+            }
+            $query .= "]";
+        }
+
+        return $query;
+    }
+
+    private function converteDadosString(String $query, $key, $value, Bool $input): String
+    {
+        return $input ? $key . ": " . '"' . $value . '" ' : $value . " ";
     }
 }
