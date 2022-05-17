@@ -29,13 +29,13 @@ class SanctumTest extends TestCase
         $user->save();
 
         $response = $this->graphQL(
-            'login', 
+            'login',
             [
                 'email' => $user->email,
                 'password' => 'password',
-            ], 
-            ['token'], 
-            'mutation', 
+            ],
+            ['token'],
+            'mutation',
             true
         );
 
@@ -58,13 +58,13 @@ class SanctumTest extends TestCase
         $this->login = true;
 
         $response = $this->graphQL(
-            'logout', 
+            'logout',
             [
                 'status',
                 'message'
-            ], 
-            [], 
-            'mutation', 
+            ],
+            [],
+            'mutation',
             false
         );
 
@@ -88,15 +88,15 @@ class SanctumTest extends TestCase
         $faker = Faker::create();
 
         $response = $this->graphQL(
-            'register', 
+            'register',
             [
                 'name' => $faker->name,
                 'email' => $faker->email,
                 'password' => 'password',
                 'password_confirmation' => 'password',
-            ], 
-            ['token', 'status'], 
-            'mutation', 
+            ],
+            ['token', 'status'],
+            'mutation',
             true
         );
 
@@ -118,12 +118,12 @@ class SanctumTest extends TestCase
     public function test_resend_email_verification()
     {
         $response = $this->graphQL(
-            'resendEmailVerification', 
+            'resendEmailVerification',
             [
                 'email' => $this->user->email,
-            ], 
-            ['status'], 
-            'mutation', 
+            ],
+            ['status'],
+            'mutation',
             true
         );
 
@@ -146,12 +146,12 @@ class SanctumTest extends TestCase
         $this->login = true;
 
         $response = $this->graphQL(
-            'forgotPassword', 
+            'forgotPassword',
             [
                 'email' => $this->user->email,
-            ], 
-            ['status', 'message'], 
-            'mutation', 
+            ],
+            ['status', 'message'],
+            'mutation',
             true
         );
 
@@ -177,14 +177,14 @@ class SanctumTest extends TestCase
         $this->login = true;
 
         $response = $this->graphQL(
-            'updatePassword', 
+            'updatePassword',
             [
                 'current_password' => 'password',
                 'password' => 'password2',
                 'password_confirmation' => 'password2',
-            ], 
-            ['status'], 
-            'mutation', 
+            ],
+            ['status'],
+            'mutation',
             true
         );
 

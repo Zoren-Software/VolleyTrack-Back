@@ -27,38 +27,37 @@ class UserTest extends TestCase
         User::factory()->make()->save();
 
         $response = $this->graphQL(
-            'users', 
+            'users',
             [
-                'email' => $user->email,
-                'password' => 'password',
-            ], 
-            ['token'], 
-            'query', 
+                'name' => '%%',
+                'first' => 10,
+                'page' => 1,
+            ],
+            [
+                'paginatorInfo' => [
+                    'count',
+                    'currentPage',
+                    'firstItem',
+                    'lastItem',
+                    'lastPage',
+                    'perPage',
+                    'total',
+                    'hasMorePages'
+                ],
+                'data' => [
+
+                    'id',
+                    'name',
+                    'email',
+                    'created_at',
+                    'updated_at',
+
+                ],
+            ],
+            'query',
             false
         );
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            users {
-                paginatorInfo {
-                    count
-                    currentPage
-                    firstItem
-                    hasMorePages
-                    lastItem
-                    lastPage
-                    perPage
-                    total
-                }
-                data {
-                    id
-                    name
-                    email
-                    email_verified_at
-                    created_at
-                    updated_at
-                }
-            }
-        ');
-        //dd($response);
+
         $response->assertJsonStructure([
             'data' => [
                 'users' => [
@@ -66,18 +65,17 @@ class UserTest extends TestCase
                         'count',
                         'currentPage',
                         'firstItem',
-                        'hasMorePages',
                         'lastItem',
                         'lastPage',
                         'perPage',
-                        'total'
+                        'total',
+                        'hasMorePages',
                     ],
                     'data' => [
                         '*' => [
                             'id',
                             'name',
                             'email',
-                            'email_verified_at',
                             'created_at',
                             'updated_at'
                         ]
@@ -100,27 +98,28 @@ class UserTest extends TestCase
         $user = User::factory()->make();
         $user->save();
 
-        $response = $this->graphQL(/** @lang GraphQL */ "
-            user (id: $user->id) {
-                id
-                name
-                email
-                email_verified_at
-                created_at
-                updated_at
-            }
-        ");
+        $saida = [
+            'id',
+            'name',
+            'email',
+            'email_verified_at',
+            'created_at',
+            'updated_at'
+        ];
+
+        $response = $this->graphQL(
+            'user',
+            [
+                'id' => $user->id,
+            ],
+            $saida,
+            'query',
+            false
+        );
 
         $response->assertJsonStructure([
             'data' => [
-                'user' => [
-                    'id',
-                    'name',
-                    'email',
-                    'email_verified_at',
-                    'created_at',
-                    'updated_at'
-                ],
+                'user' => $saida,
             ],
         ])->assertStatus(200);
     }
@@ -137,20 +136,25 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
-        $response = $this->graphQL(/** @lang GraphQL */ '
-            userCreate (
-                name: "' . $faker->name . '"
-                email: "' . $email . '"
-                password: "' . $password . '"
-            ) {
-                id
-                name
-                email
-                email_verified_at
-                created_at
-                updated_at
-            }
-        ', 'mutation');
+        $response = $this->graphQL(
+            'userCreate',
+            [
+                'name' => $faker->name,
+                'email' => $email,
+                'password' => $password,
+            ],
+            [
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+                'updated_at'
+            ],
+            'mutation',
+            false,
+            true
+        );
 
         if ($type_message_error) {
             $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
@@ -191,26 +195,26 @@ class UserTest extends TestCase
                     ]
                 ],
             ],
-            'no text password, expected error' => [
-                'password' => '',
-                'email' => $faker->email,
-                'type_message_error' => 'password',
-                'expected_message' => 'UserCreate.password_required',
-                'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
-                ],
-            ],
+            // 'no text password, expected error' => [
+            //     'password' => '',
+            //     'email' => $faker->email,
+            //     'type_message_error' => 'password',
+            //     'expected_message' => 'UserCreate.password_required',
+            //     'expected' => [
+            //         'errors' => [
+            //             '*' => [
+            //                 'message',
+            //                 'locations',
+            //                 'extensions',
+            //                 'path',
+            //                 'trace'
+            //             ]
+            //         ],
+            //         'data' => [
+            //             'userCreate'
+            //         ]
+            //     ],
+            // ],
             'create user, success' => [
                 'password' => '123456',
                 'email' => $emailExistent,
@@ -247,26 +251,26 @@ class UserTest extends TestCase
                     ],
                 ],
             ],
-            'email field is required, expected error' => [
-                'password' => '123456',
-                'email' => '',
-                'type_message_error' => 'email',
-                'expected_message' => 'UserCreate.email_required',
-                'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
-                ],
-            ],
+            // 'email field is required, expected error' => [
+            //     'password' => '123456',
+            //     'email' => '',
+            //     'type_message_error' => 'email',
+            //     'expected_message' => 'UserCreate.email_required',
+            //     'expected' => [
+            //         'errors' => [
+            //             '*' => [
+            //                 'message',
+            //                 'locations',
+            //                 'extensions',
+            //                 'path',
+            //                 'trace'
+            //             ]
+            //         ],
+            //         'data' => [
+            //             'userCreate'
+            //         ]
+            //     ],
+            // ],
             'email field is not unique, expected error' => [
                 'password' => '123456',
                 'email' => $emailExistent,
