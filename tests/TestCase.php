@@ -128,7 +128,7 @@ abstract class TestCase extends BaseTestCase
 
                 if ($parametrosEntrada) {
                     $inputOpen = '(';
-                    $inputClose = '){';
+                    $inputClose = ') {';
                 }
             } else {
                 $inputOpen = '(';
