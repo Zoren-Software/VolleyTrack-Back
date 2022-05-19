@@ -4,13 +4,10 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\User;
 use Faker\Factory as Faker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    // use RefreshDatabase;
-
     protected $graphql = true;
 
     protected $tenancy = true;
@@ -49,8 +46,8 @@ class UserTest extends TestCase
                     'id',
                     'name',
                     'email',
-                    'created_at',
-                    'updated_at',
+                    'createdAt',
+                    'updatedAt',
 
                 ],
             ],
@@ -76,8 +73,8 @@ class UserTest extends TestCase
                             'id',
                             'name',
                             'email',
-                            'created_at',
-                            'updated_at'
+                            'createdAt',
+                            'updatedAt'
                         ]
                     ]
                 ],
@@ -94,7 +91,6 @@ class UserTest extends TestCase
      */
     public function test_user_info()
     {
-        //$this->withoutExceptionHandling();
         $user = User::factory()->make();
         $user->save();
 
@@ -102,9 +98,9 @@ class UserTest extends TestCase
             'id',
             'name',
             'email',
-            'email_verified_at',
-            'created_at',
-            'updated_at'
+            'emailVerifiedAt',
+            'createdAt',
+            'updatedAt'
         ];
 
         $response = $this->graphQL(
@@ -125,7 +121,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Listagem de um usuário
+     * Método de criação de um usuário.
      *
      * @dataProvider userCreateProvider
      * @author Maicon Cerutti
@@ -147,9 +143,9 @@ class UserTest extends TestCase
                 'id',
                 'name',
                 'email',
-                'email_verified_at',
-                'created_at',
-                'updated_at'
+                'emailVerifiedAt',
+                'createdAt',
+                'updatedAt'
             ],
             'mutation',
             false,
@@ -226,9 +222,9 @@ class UserTest extends TestCase
                             'id',
                             'name',
                             'email',
-                            'email_verified_at',
-                            'created_at',
-                            'updated_at'
+                            'emailVerifiedAt',
+                            'createdAt',
+                            'updatedAt'
                         ],
                     ],
                 ],
@@ -244,9 +240,9 @@ class UserTest extends TestCase
                             'id',
                             'name',
                             'email',
-                            'email_verified_at',
-                            'created_at',
-                            'updated_at'
+                            'emailVerifiedAt',
+                            'createdAt',
+                            'updatedAt'
                         ],
                     ],
                 ],

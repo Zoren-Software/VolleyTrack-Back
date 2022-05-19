@@ -10,11 +10,11 @@ type User {
     email: String!
 
     "When the email was verified."
-    email_verified_at: DateTime
+    emailVerifiedAt: DateTime @rename(attribute: "email_verified_at")
 
-    "When the account was created."
-    created_at: DateTime!
-
-    "When the account was last updated."
-    updated_at: DateTime!
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
 }
