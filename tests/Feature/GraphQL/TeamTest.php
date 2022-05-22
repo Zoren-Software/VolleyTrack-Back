@@ -123,16 +123,13 @@ class TeamTest extends TestCase
      *
      * @return void
      */
-    public function test_team_create($name, $type_message_error, $expected_message, $expected)
+    public function test_team_create($parameters, $type_message_error, $expected_message, $expected)
     {
         $user = User::first();
 
         $response = $this->graphQL(
             'teamCreate',
-            [
-                'name' => $name,
-                'userId' => $user->id,
-            ],
+            $parameters,
             [
                 'id',
                 'name',
@@ -146,7 +143,13 @@ class TeamTest extends TestCase
         );
 
         if ($type_message_error) {
-            $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+            try {
+                //code...
+                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+            } catch (\Throwable $th) {
+                //throw $th;
+                dd($response->json());
+            }
         }
 
         $response
@@ -161,11 +164,15 @@ class TeamTest extends TestCase
     public function teamCreateProvider()
     {        
         $faker = Faker::create();
+        $userId = 1;
         $nameExistent = $faker->name . ' TEAM';
 
         return [
             'create team, success' => [
-                'name' => $nameExistent,
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
@@ -181,7 +188,10 @@ class TeamTest extends TestCase
                 ],
             ],
             'name field is not unique, expected error' => [
-                'name' => $nameExistent,
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_unique',
                 'expected' => [
@@ -199,7 +209,50 @@ class TeamTest extends TestCase
                     ]
                 ],
             ],
-            
+            'name field is required, expected error' => [
+                [
+                    'name' => ' ',
+                    'userId' => $userId,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'TeamCreate.name_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'teamCreate'
+                    ]
+                ],
+            ],
+            'name field is min 3 characteres, expected error' => [
+                [
+                    'name' => 'AB',
+                    'userId' => $userId,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'TeamCreate.name_min',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'teamCreate'
+                    ]
+                ],
+            ],
         ];
     }
 }
