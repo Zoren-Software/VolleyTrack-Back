@@ -85,10 +85,6 @@ abstract class TestCase extends BaseTestCase
             $headers['Authorization'] = 'Bearer ' . $this->token;
         }
 
-        // if($nomeQueryGraphQL == "userCreate") {
-        //     dd($post);
-        // }
-
         return $this->withHeaders($headers)->postJson(
             $this->tenantUrl . '/graphql',
             $post
