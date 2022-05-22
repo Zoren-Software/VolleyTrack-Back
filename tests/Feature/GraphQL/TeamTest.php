@@ -14,42 +14,6 @@ class TeamTest extends TestCase
     protected $tenancy = true;
 
     /**
-     * Listagem de um time
-     *
-     * @author Maicon Cerutti
-     *
-     * @return void
-     */
-    public function test_team_info()
-    {
-        $team = Team::factory()->make();
-        $team->save();
-
-        $saida = [
-            'id',
-            'name',
-            'createdAt',
-            'updatedAt'
-        ];
-
-        $response = $this->graphQL(
-            'team',
-            [
-                'id' => $team->id,
-            ],
-            $saida,
-            'query',
-            false
-        );
-
-        $response->assertJsonStructure([
-            'data' => [
-                'team' => $saida,
-            ],
-        ])->assertStatus(200);
-    }
-
-    /**
      * Listagem de todos os times.
      *
      * @author Maicon Cerutti
@@ -111,6 +75,42 @@ class TeamTest extends TestCase
                         ]
                     ]
                 ],
+            ],
+        ])->assertStatus(200);
+    }
+
+    /**
+     * Listagem de um time
+     *
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function test_team_info()
+    {
+        $team = Team::factory()->make();
+        $team->save();
+
+        $saida = [
+            'id',
+            'name',
+            'createdAt',
+            'updatedAt'
+        ];
+
+        $response = $this->graphQL(
+            'team',
+            [
+                'id' => $team->id,
+            ],
+            $saida,
+            'query',
+            false
+        );
+
+        $response->assertJsonStructure([
+            'data' => [
+                'team' => $saida,
             ],
         ])->assertStatus(200);
     }

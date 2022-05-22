@@ -169,6 +169,27 @@ class UserTest extends TestCase
         $emailExistent = $faker->email;
 
         return [
+            'create user, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $emailExistent,
+                    'password' => '123456',
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => [
+                            'id',
+                            'name',
+                            'email',
+                            'emailVerifiedAt',
+                            'createdAt',
+                            'updatedAt'
+                        ],
+                    ],
+                ],
+            ],
             'text password less than 6 characters, expected error' => [
                 [
                     'name' => $faker->name,
@@ -212,27 +233,6 @@ class UserTest extends TestCase
                     'data' => [
                         'userCreate'
                     ]
-                ],
-            ],
-            'create user, success' => [
-                [
-                    'name' => $faker->name,
-                    'email' => $emailExistent,
-                    'password' => '123456',
-                ],
-                'type_message_error' => false,
-                'expected_message' => false,
-                'expected' => [
-                    'data' => [
-                        'userCreate' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
-                    ],
                 ],
             ],
             'text password with 6 characters, success' => [
