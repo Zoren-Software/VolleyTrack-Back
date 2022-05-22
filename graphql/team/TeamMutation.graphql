@@ -1,0 +1,8 @@
+
+extend type Mutation {
+    teamCreate(
+        name: String!
+        userId: Int! @rename(attribute: "user_id") 
+    ): Team
+    @field(resolver: "TeamMutation@create") @validator
+}
