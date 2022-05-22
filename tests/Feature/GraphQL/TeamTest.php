@@ -162,7 +162,7 @@ class TeamTest extends TestCase
      * @return Array
      */
     public function teamCreateProvider()
-    {        
+    {
         $faker = Faker::create();
         $userId = 1;
         $nameExistent = $faker->name . ' TEAM';

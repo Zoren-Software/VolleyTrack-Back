@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +17,7 @@ class TeamFactory extends Factory
     public function definition()
     {
         return [
-            'name' => "LALA",
+            'name' => 'LALA',
             'user_id' => 1,
         ];
     }
