@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Team>
@@ -17,8 +18,8 @@ class TeamFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'LALA',
-            'user_id' => 1,
+            'name' => $this->faker->name() . ' TEAM',
+            'user_id' => User::first()->id,
         ];
     }
 }
