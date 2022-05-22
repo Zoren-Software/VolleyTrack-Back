@@ -191,26 +191,26 @@ class UserTest extends TestCase
                     ]
                 ],
             ],
-            // 'no text password, expected error' => [
-            //     'password' => '',
-            //     'email' => $faker->email,
-            //     'type_message_error' => 'password',
-            //     'expected_message' => 'UserCreate.password_required',
-            //     'expected' => [
-            //         'errors' => [
-            //             '*' => [
-            //                 'message',
-            //                 'locations',
-            //                 'extensions',
-            //                 'path',
-            //                 'trace'
-            //             ]
-            //         ],
-            //         'data' => [
-            //             'userCreate'
-            //         ]
-            //     ],
-            // ],
+            'no text password, expected error' => [
+                'password' => ' ',
+                'email' => $faker->email,
+                'type_message_error' => 'password',
+                'expected_message' => 'UserCreate.password_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+            ],
             'create user, success' => [
                 'password' => '123456',
                 'email' => $emailExistent,
@@ -247,26 +247,26 @@ class UserTest extends TestCase
                     ],
                 ],
             ],
-            // 'email field is required, expected error' => [
-            //     'password' => '123456',
-            //     'email' => '',
-            //     'type_message_error' => 'email',
-            //     'expected_message' => 'UserCreate.email_required',
-            //     'expected' => [
-            //         'errors' => [
-            //             '*' => [
-            //                 'message',
-            //                 'locations',
-            //                 'extensions',
-            //                 'path',
-            //                 'trace'
-            //             ]
-            //         ],
-            //         'data' => [
-            //             'userCreate'
-            //         ]
-            //     ],
-            // ],
+            'email field is required, expected error' => [
+                'password' => '123456',
+                'email' => ' ',
+                'type_message_error' => 'email',
+                'expected_message' => 'UserCreate.email_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+            ],
             'email field is not unique, expected error' => [
                 'password' => '123456',
                 'email' => $emailExistent,

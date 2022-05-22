@@ -145,8 +145,6 @@ class TeamTest extends TestCase
             true
         );
 
-        dd($response);
-
         if ($type_message_error) {
             $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
         }
@@ -161,12 +159,27 @@ class TeamTest extends TestCase
      * @return Array
      */
     public function teamCreateProvider()
-    {
-        $faker = User::factory()->make();
-        $faker->save();
-        $nameExistent = $faker->name;
+    {        
+        $faker = Faker::create();
+        $nameExistent = $faker->name . ' TEAM';
 
         return [
+            'create team, success' => [
+                'name' => $nameExistent,
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'teamCreate' => [
+                            'id',
+                            'name',
+                            'userId',
+                            'createdAt',
+                            'updatedAt'
+                        ],
+                    ],
+                ],
+            ],
             'name field is not unique, expected error' => [
                 'name' => $nameExistent,
                 'type_message_error' => 'name',
@@ -186,22 +199,7 @@ class TeamTest extends TestCase
                     ]
                 ],
             ],
-            'create team, success' => [
-                'name' => $faker->name . ' TEAM',
-                'type_message_error' => false,
-                'expected_message' => false,
-                'expected' => [
-                    'data' => [
-                        'teamCreate' => [
-                            'id',
-                            'name',
-                            'userId',
-                            'createdAt',
-                            'updatedAt'
-                        ],
-                    ],
-                ],
-            ],
+            
         ];
     }
 }

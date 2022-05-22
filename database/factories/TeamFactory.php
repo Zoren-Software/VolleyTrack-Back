@@ -18,8 +18,8 @@ class TeamFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->name(),
-            'user_id' => User::first()->id,
+            'name' => "LALA",
+            'user_id' => 1,
         ];
     }
 }
