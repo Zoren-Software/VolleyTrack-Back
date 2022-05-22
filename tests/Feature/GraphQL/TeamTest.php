@@ -143,13 +143,7 @@ class TeamTest extends TestCase
         );
 
         if ($type_message_error) {
-            try {
-                //code...
-                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
-            } catch (\Throwable $th) {
-                //throw $th;
-                dd($response->json());
-            }
+            $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
         }
 
         $response
