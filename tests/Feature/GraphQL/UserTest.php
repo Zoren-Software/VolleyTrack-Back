@@ -327,4 +327,223 @@ class UserTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * Método de edição de um usuário.
+     *
+     * @dataProvider userEditProvider
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function test_user_edit($parameters, $type_message_error, $expected_message, $expected)
+    {
+        $userExist = User::factory()->make();
+        $userExist->save();
+        $user = User::factory()->make();
+        $user->save();
+
+        $parameters['id'] = $user->id;
+
+        if($expected_message == 'UserEdit.email_unique') {
+            $parameters['email'] = $userExist->email;
+        }
+
+        $response = $this->graphQL(
+            'userEdit',
+            $parameters,
+            [
+                'id',
+                'name',
+                'email',
+                'emailVerifiedAt',
+                'createdAt',
+                'updatedAt'
+            ],
+            'mutation',
+            false,
+            true
+        );
+
+        if ($type_message_error) {
+            try {
+                //code...
+                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+            } catch (\Throwable $th) {
+                dd($response->json());
+            }
+        }
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     *
+     * @return Array
+     */
+    public function userEditProvider()
+    {
+        $faker = Faker::create();
+
+        return [
+            'edit user, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => '123456',
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => [
+                            'id',
+                            'name',
+                            'email',
+                            'emailVerifiedAt',
+                            'createdAt',
+                            'updatedAt'
+                        ],
+                    ],
+                ],
+            ],
+            'text password less than 6 characters, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => '12345',
+                ],
+                'type_message_error' => 'password',
+                'expected_message' => 'UserEdit.password_min_6',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userEdit'
+                    ]
+                ],
+            ],
+            'no text password, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'password' => ' ',
+                    'email' => $faker->email,
+                ],
+                'type_message_error' => 'password',
+                'expected_message' => 'UserEdit.password_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userEdit'
+                    ]
+                ],
+            ],
+            'text password with 6 characters, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => '123456',
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => [
+                            'id',
+                            'name',
+                            'email',
+                            'emailVerifiedAt',
+                            'createdAt',
+                            'updatedAt'
+                        ],
+                    ],
+                ],
+            ],
+            'email field is required, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'password' => '123456',
+                    'email' => ' ',
+                ],
+                'type_message_error' => 'email',
+                'expected_message' => 'UserEdit.email_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userEdit'
+                    ]
+                ],
+            ],
+            'email field is not unique, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'password' => '123456',
+                ],
+                'type_message_error' => 'email',
+                'expected_message' => 'UserEdit.email_unique',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userEdit'
+                    ]
+                ],
+            ],
+            'email field is not email valid, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'password' => '123456',
+                    'email' => 'notemail.com',
+                ],
+                'type_message_error' => 'email',
+                'expected_message' => 'UserEdit.email_is_valid',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userEdit'
+                    ]
+                ],
+            ],
+        ];
+    }
 }
