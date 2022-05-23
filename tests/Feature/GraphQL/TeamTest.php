@@ -249,4 +249,146 @@ class TeamTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * Método de edição de um time.
+     *
+     * @dataProvider teamEditProvider
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function test_team_edit($parameters, $type_message_error, $expected_message, $expected)
+    {
+        $teamExist = Team::factory()->make();
+        $teamExist->save();
+        $team = Team::factory()->make();
+        $team->save();
+
+        $parameters['id'] = $team->id;
+
+        if($expected_message == 'TeamEdit.name_unique') {
+            $parameters['name'] = $teamExist->name;
+        }
+
+        $response = $this->graphQL(
+            'teamEdit',
+            $parameters,
+            [
+                'id',
+                'name',
+                'userId',
+                'createdAt',
+                'updatedAt'
+            ],
+            'mutation',
+            false,
+            true
+        );
+
+        if ($type_message_error) {
+            $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+        }
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     *
+     * @return Array
+     */
+    public function teamEditProvider()
+    {
+        $faker = Faker::create();
+        $userId = 2;
+
+        return [
+            'edit team, success' => [
+                [
+                    'name' => $faker->name . ' TEAM',
+                    'userId' => $userId,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'teamEdit' => [
+                            'id',
+                            'name',
+                            'userId',
+                            'createdAt',
+                            'updatedAt'
+                        ],
+                    ],
+                ],
+            ],
+            'name field is not unique, expected error' => [
+                [
+                    'userId' => $userId,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'TeamEdit.name_unique',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'teamEdit'
+                    ]
+                ],
+            ],
+            'name field is required, expected error' => [
+                [
+                    'name' => ' ',
+                    'userId' => $userId,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'TeamCreate.name_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'teamEdit'
+                    ]
+                ],
+            ],
+            'name field is min 3 characteres, expected error' => [
+                [
+                    'name' => 'AB',
+                    'userId' => $userId,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'TeamEdit.name_min',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'teamEdit'
+                    ]
+                ],
+            ],
+        ];
+    }
 }
