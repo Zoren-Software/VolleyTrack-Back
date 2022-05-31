@@ -267,7 +267,7 @@ class TeamTest extends TestCase
 
         $parameters['id'] = $team->id;
 
-        if($expected_message == 'TeamEdit.name_unique') {
+        if ($expected_message == 'TeamEdit.name_unique') {
             $parameters['name'] = $teamExist->name;
         }
 

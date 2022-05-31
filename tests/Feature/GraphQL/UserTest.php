@@ -345,7 +345,7 @@ class UserTest extends TestCase
 
         $parameters['id'] = $user->id;
 
-        if($expected_message == 'UserEdit.email_unique') {
+        if ($expected_message == 'UserEdit.email_unique') {
             $parameters['email'] = $userExist->email;
         }
 
