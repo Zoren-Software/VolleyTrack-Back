@@ -32,7 +32,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "classmap": [
-            "database/seeders/tenants",
+            "database/seeders/",
+            "database/seeders/tenants/",
             "app/Helpers"
         ],
         "files": [
