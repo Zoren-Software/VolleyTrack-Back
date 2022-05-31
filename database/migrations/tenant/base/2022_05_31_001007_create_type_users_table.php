@@ -13,7 +13,7 @@ return new class () extends Migration {
     public function up()
     {
         Schema::create('type_users', function (Blueprint $table) {
-            $table->unsignedTinyInteger('id');
+            $table->smallIncrements('id');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
