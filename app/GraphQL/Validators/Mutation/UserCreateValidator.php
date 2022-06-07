@@ -23,7 +23,7 @@ class UserCreateValidator extends Validator
                 'email',
                 'unique:users,email',
             ],
-        ];
+        ]; 
     }
 
     /**
