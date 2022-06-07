@@ -130,6 +130,8 @@ class UserTest extends TestCase
      */
     public function test_user_create($parameters, $type_message_error, $expected_message, $expected)
     {
+        $this->login = true;
+
         $faker = Faker::create();
 
         $parameters['name'] = $faker->name;
@@ -338,6 +340,8 @@ class UserTest extends TestCase
      */
     public function test_user_edit($parameters, $type_message_error, $expected_message, $expected)
     {
+        $this->login = true;
+
         $userExist = User::factory()->make();
         $userExist->save();
         $user = User::factory()->make();

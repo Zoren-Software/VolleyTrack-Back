@@ -1,5 +1,5 @@
 
-extend type Mutation {
+extend type Mutation @guard {
     userCreate(
         name: String!
         email: String! @rules(apply: ["email", "unique:users"])
