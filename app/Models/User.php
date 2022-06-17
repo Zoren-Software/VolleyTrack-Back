@@ -30,8 +30,6 @@ class User extends Authenticatable implements HasApiTokensContract
         'password',
     ];
 
-    protected $guard_name = 'web';
-
     /**
      * The attributes that should be hidden for serialization.
      *
