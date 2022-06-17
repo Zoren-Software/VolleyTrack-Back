@@ -16,8 +16,8 @@ class DatabaseTenantSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         $this->call([
-            TypeUserSeeder::class,
             PermissionSeeder::class,
+            UserTableSeeder::class,
         ]);
     }
 }
