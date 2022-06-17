@@ -18,10 +18,10 @@ class PermissionSeeder extends Seeder
         /*
          *Já estará como perfil de super administrador, e não precisará relacionar permissões neste perfil
          */
-        Role::updateOrCreate(['id' => 1], ['name' => 'Administrador']);
+        Role::updateOrCreate(['id' => 1], ['name' => 'Administrador', 'guard_name' => 'sanctum']);
 
-        $technician =Role::updateOrCreate(['id' => 2], ['name' => 'Técnico']);
-        $player = Role::updateOrCreate(['id' => 3], ['name' => 'Jogador']);
+        $technician =Role::updateOrCreate(['id' => 2], ['name' => 'Técnico', 'guard_name' => 'sanctum']);
+        $player = Role::updateOrCreate(['id' => 3], ['name' => 'Jogador', 'guard_name' => 'sanctum']);
         
         /*
          * Permissões Usuário
@@ -41,7 +41,7 @@ class PermissionSeeder extends Seeder
         $team[] = Permission::updateOrCreate(['id' => 7], ['name' => 'list team']);
         $team[] = Permission::updateOrCreate(['id' => 8], ['name' => 'list teams']);
 
-        $this->sync($technician, $user);
+        $this->sync($technician, $team);
         
     }
 
