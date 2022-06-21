@@ -131,6 +131,13 @@ class UserTest extends TestCase
     public function test_user_create($parameters, $type_message_error, $expected_message, $expected)
     {
         $this->login = true;
+        
+        // alterar valor permission para true para testar o usuário com permissão
+        $this->permission = false;
+
+        dd($this->email);
+
+        // TODO - Pensar em outra maneira de fazer a verificação da permissão na rota
 
         $faker = Faker::create();
 

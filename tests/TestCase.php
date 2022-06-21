@@ -22,6 +22,8 @@ abstract class TestCase extends BaseTestCase
 
     protected $login = false;
 
+    protected $permission = true;
+
     protected $email = null;
 
     protected $token = '';
@@ -95,12 +97,13 @@ abstract class TestCase extends BaseTestCase
 
     public function loginGraphQL(): void
     {
-        if (env('EMAIL_FROM_TEST_TECHNICIAN') != '') {
-            $user = User::where('email', env('EMAIL_FROM_TEST_TECHNICIAN'))->first();
+        if ($this->permission) {
+            $user = User::where('email', env('MAIL_FROM_TEST_TECHNICIAN'))->first();
         } else {
-            $user = User::factory()->make();
-            $user->save();
+            $user = User::where('email', env('MAIL_FROM_NO_PERMISSION'))->first();
         }
+
+        $this->email = $user->email;
 
         $response = $this->graphQL(
             'login',
