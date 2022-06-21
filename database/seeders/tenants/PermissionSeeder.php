@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -20,9 +21,9 @@ class PermissionSeeder extends Seeder
          */
         Role::updateOrCreate(['id' => 1], ['name' => 'Administrador', 'guard_name' => 'sanctum']);
 
-        $technician =Role::updateOrCreate(['id' => 2], ['name' => 'Técnico', 'guard_name' => 'sanctum']);
+        $technician = Role::updateOrCreate(['id' => 2], ['name' => 'Técnico', 'guard_name' => 'sanctum']);
         $player = Role::updateOrCreate(['id' => 3], ['name' => 'Jogador', 'guard_name' => 'sanctum']);
-        
+
         /*
          * Permissões Usuário
          */
@@ -32,7 +33,7 @@ class PermissionSeeder extends Seeder
         $user[] = Permission::updateOrCreate(['id' => 4], ['name' => 'list users']);
 
         $this->sync($technician, $user);
-        
+
         /*
          * Permissões Time
          */
@@ -42,12 +43,25 @@ class PermissionSeeder extends Seeder
         $team[] = Permission::updateOrCreate(['id' => 8], ['name' => 'list teams']);
 
         $this->sync($technician, $team);
-        
+
+        /*
+         * Definir user como perfil de administrador
+         */
+        User::whereEmail(env('MAIL_FROM_ADDRESS'))->first()->assignRole('Administrador');
+        User::whereEmail(env('MAIL_FROM_ADMIN'))->first()->assignRole('Administrador');
+
+        /*
+         * Definir user como perfil de técnico
+         */
+        if (env('APP_DEBUG')) {
+            User::whereEmail(env('MAIL_FROM_TEST_TECHNICIAN'))->first()->assignRole('Técnico');
+            User::whereEmail(env('MAIL_FROM_TEST_PLAYER'))->first()->assignRole('Jogador');
+        }
     }
 
     public function sync($role, $permissions)
     {
-        foreach($permissions as $permission) {
+        foreach ($permissions as $permission) {
             $role->givePermissionTo($permission);
         }
     }

@@ -48,4 +48,6 @@ class User extends Authenticatable implements HasApiTokensContract
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $guard_name = 'sanctum';
 }
