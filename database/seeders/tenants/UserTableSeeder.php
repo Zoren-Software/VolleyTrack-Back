@@ -51,11 +51,23 @@ class UserTableSeeder extends Seeder
                     'remember_token' => Str::random(10),
                 ]
             );
+
             \App\Models\User::updateOrCreate(
                 ['id' => 4],
                 [
                     'name' => 'Usuário Teste Jogador',
                     'email' => env('MAIL_FROM_TEST_PLAYER'),
+                    'password' => Hash::make('password'),
+                    'email_verified_at' => now(),
+                    'remember_token' => Str::random(10),
+                ]
+            );
+
+            \App\Models\User::updateOrCreate(
+                ['id' => 5],
+                [
+                    'name' => 'Usuário Sem Permissao',
+                    'email' => env('MAIL_FROM_NO_PERMISSION'),
                     'password' => Hash::make('password'),
                     'email_verified_at' => now(),
                     'remember_token' => Str::random(10),

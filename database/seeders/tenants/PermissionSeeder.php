@@ -16,6 +16,8 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         /*
          *Já estará como perfil de super administrador, e não precisará relacionar permissões neste perfil
          */
@@ -27,20 +29,20 @@ class PermissionSeeder extends Seeder
         /*
          * Permissões Usuário
          */
-        $user[] = Permission::updateOrCreate(['id' => 1], ['name' => 'create user']);
-        $user[] = Permission::updateOrCreate(['id' => 2], ['name' => 'edit user']);
-        $user[] = Permission::updateOrCreate(['id' => 3], ['name' => 'list user']);
-        $user[] = Permission::updateOrCreate(['id' => 4], ['name' => 'list users']);
+        $user[] = Permission::updateOrCreate(['id' => 1], ['name' => 'create-user']);
+        $user[] = Permission::updateOrCreate(['id' => 2], ['name' => 'edit-user']);
+        $user[] = Permission::updateOrCreate(['id' => 3], ['name' => 'list-user']);
+        $user[] = Permission::updateOrCreate(['id' => 4], ['name' => 'list-users']);
 
         $this->sync($technician, $user);
 
         /*
          * Permissões Time
          */
-        $team[] = Permission::updateOrCreate(['id' => 5], ['name' => 'create team']);
-        $team[] = Permission::updateOrCreate(['id' => 6], ['name' => 'edit team']);
-        $team[] = Permission::updateOrCreate(['id' => 7], ['name' => 'list team']);
-        $team[] = Permission::updateOrCreate(['id' => 8], ['name' => 'list teams']);
+        $team[] = Permission::updateOrCreate(['id' => 5], ['name' => 'create-team']);
+        $team[] = Permission::updateOrCreate(['id' => 6], ['name' => 'edit-team']);
+        $team[] = Permission::updateOrCreate(['id' => 7], ['name' => 'list-team']);
+        $team[] = Permission::updateOrCreate(['id' => 8], ['name' => 'list-teams']);
 
         $this->sync($technician, $team);
 
