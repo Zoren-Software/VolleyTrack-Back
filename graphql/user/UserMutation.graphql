@@ -5,7 +5,7 @@ extend type Mutation @guard {
         email: String! @rules(apply: ["email", "unique:users"])
         password: String! @rules(apply: ["min:6"])
     ): User
-    @field(resolver: "UserMutation@create") 
+    @field(resolver: "UserMutation@create")
     @validator
     @can(ability: "create")
 
@@ -15,7 +15,7 @@ extend type Mutation @guard {
         email: String!
         password: String! @rules(apply: ["min:6"])
     ): User
-    @field(resolver: "UserMutation@edit") 
+    @field(resolver: "UserMutation@edit")
     @validator
     @can(ability: "edit")
 }

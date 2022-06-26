@@ -23,6 +23,8 @@ class UserTest extends TestCase
      */
     public function test_users_list()
     {
+        $this->login = true;
+
         User::factory()->make()->save();
 
         $response = $this->graphQL(
@@ -93,6 +95,8 @@ class UserTest extends TestCase
      */
     public function test_user_info()
     {
+        $this->login = true;
+
         $user = User::factory()->make();
         $user->save();
 
