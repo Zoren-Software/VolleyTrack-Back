@@ -19,6 +19,11 @@ class SanctumTest extends TestCase
     protected $graphql = true;
 
     /**
+     * @var bool
+     */
+    protected $otherUser = true;
+
+    /**
      * Teste da rota de login.
      *
      * @return void
@@ -172,8 +177,6 @@ class SanctumTest extends TestCase
      */
     public function test_update_password()
     {
-        $user = User::whereId(2)->first();
-
         $this->login = true;
 
         $response = $this->graphQL(
