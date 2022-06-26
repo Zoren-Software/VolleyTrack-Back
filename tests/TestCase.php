@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
+use Spatie\Permission\Models\Role;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -22,13 +23,13 @@ abstract class TestCase extends BaseTestCase
 
     protected $login = false;
 
-    protected $permission = true;
-
     protected $email = null;
 
     protected $token = '';
 
     protected $user = null;
+
+    protected $otherUser = false;
 
     public $tenantUrl;
 
@@ -97,10 +98,12 @@ abstract class TestCase extends BaseTestCase
 
     public function loginGraphQL(): void
     {
-        if ($this->permission) {
-            $user = User::where('email', env('MAIL_FROM_TEST_TECHNICIAN'))->first();
+        if ($this->otherUser) {
+            $user = User::factory()->make();
+            $user->save();
+            $this->user = $user;
         } else {
-            $user = User::where('email', env('MAIL_FROM_NO_PERMISSION'))->first();
+            $user = User::where('email', env('MAIL_FROM_TEST_TECHNICIAN'))->first();
         }
 
         $this->email = $user->email;
@@ -222,5 +225,17 @@ abstract class TestCase extends BaseTestCase
             return $key . ': ' . '"' . $value . '" ';
         }
         return $value . ' ';
+    }
+
+    public function addPermissionToUser(String $permission, String $role): void
+    {
+        $role = Role::where('name', $role)->first();
+        $role->givePermissionTo($permission);
+    }
+
+    public function removePermissionToUser(String $permission, String $role): void
+    {
+        $role = Role::where('name', $role)->first();
+        $role->revokePermissionTo($permission);
     }
 }

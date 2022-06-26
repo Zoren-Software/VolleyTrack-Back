@@ -12,6 +12,8 @@ class UserTest extends TestCase
 
     protected $tenancy = true;
 
+    protected $otherUser = false;
+
     /**
      * Listagem de todos os usuários.
      *
@@ -128,18 +130,17 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function test_user_create($parameters, $type_message_error, $expected_message, $expected)
+    public function test_user_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->login = true;
-        
-        // alterar valor permission para true para testar o usuário com permissão
-        $this->permission = false;
-
-        dd($this->email);
-
-        // TODO - Pensar em outra maneira de fazer a verificação da permissão na rota
 
         $faker = Faker::create();
+
+        if ($permission) {
+            $this->addPermissionToUser('create-user', 'Técnico');
+        } else {
+            $this->removePermissionToUser('create-user', 'Técnico');
+        }
 
         $parameters['name'] = $faker->name;
 
@@ -158,9 +159,13 @@ class UserTest extends TestCase
             false,
             true
         );
-
+        
         if ($type_message_error) {
-            $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+            if(!$permission) {
+                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
+            } else {
+                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+            }
         }
 
         $response
@@ -178,6 +183,30 @@ class UserTest extends TestCase
         $emailExistent = $faker->email;
 
         return [
+            'create user without permission, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => '123456',
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'This action is unauthorized.',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+                'permission' => false,
+            ],
             'create user, success' => [
                 [
                     'name' => $faker->name,
@@ -198,6 +227,7 @@ class UserTest extends TestCase
                         ],
                     ],
                 ],
+                'permission' => true,
             ],
             'text password less than 6 characters, expected error' => [
                 [
@@ -221,6 +251,7 @@ class UserTest extends TestCase
                         'userCreate'
                     ]
                 ],
+                'permission' => true,
             ],
             'no text password, expected error' => [
                 [
@@ -243,6 +274,7 @@ class UserTest extends TestCase
                         'userCreate'
                     ]
                 ],
+                'permission' => true,
             ],
             'text password with 6 characters, success' => [
                 [
@@ -264,6 +296,7 @@ class UserTest extends TestCase
                         ],
                     ],
                 ],
+                'permission' => true,
             ],
             'email field is required, expected error' => [
                 [
@@ -287,6 +320,7 @@ class UserTest extends TestCase
                         'userCreate'
                     ]
                 ],
+                'permission' => true,
             ],
             'email field is not unique, expected error' => [
                 [
@@ -310,6 +344,7 @@ class UserTest extends TestCase
                         'userCreate'
                     ]
                 ],
+                'permission' => true,
             ],
             'email field is not email valid, expected error' => [
                 [
@@ -333,6 +368,7 @@ class UserTest extends TestCase
                         'userCreate'
                     ]
                 ],
+                'permission' => true,
             ],
         ];
     }
@@ -345,9 +381,15 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function test_user_edit($parameters, $type_message_error, $expected_message, $expected)
+    public function test_user_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->login = true;
+
+        if ($permission) {
+            $this->addPermissionToUser('edit-user', 'Técnico');
+        } else {
+            $this->removePermissionToUser('edit-user', 'Técnico');
+        }
 
         $userExist = User::factory()->make();
         $userExist->save();
@@ -377,11 +419,10 @@ class UserTest extends TestCase
         );
 
         if ($type_message_error) {
-            try {
-                //code...
+            if (!$permission) {
+                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
+            } else {
                 $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
-            } catch (\Throwable $th) {
-                dd($response->json());
             }
         }
 
@@ -399,6 +440,30 @@ class UserTest extends TestCase
         $faker = Faker::create();
 
         return [
+            'edit user without permission, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => '123456',
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'This action is unauthorized.',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userEdit'
+                    ]
+                ],
+                'permission' => false,
+            ],
             'edit user, success' => [
                 [
                     'name' => $faker->name,
@@ -419,6 +484,7 @@ class UserTest extends TestCase
                         ],
                     ],
                 ],
+                'permission' => true,
             ],
             'text password less than 6 characters, expected error' => [
                 [
@@ -442,6 +508,7 @@ class UserTest extends TestCase
                         'userEdit'
                     ]
                 ],
+                'permission' => true,
             ],
             'no text password, expected error' => [
                 [
@@ -465,6 +532,7 @@ class UserTest extends TestCase
                         'userEdit'
                     ]
                 ],
+                'permission' => true,
             ],
             'text password with 6 characters, success' => [
                 [
@@ -486,6 +554,7 @@ class UserTest extends TestCase
                         ],
                     ],
                 ],
+                'permission' => true,
             ],
             'email field is required, expected error' => [
                 [
@@ -509,6 +578,7 @@ class UserTest extends TestCase
                         'userEdit'
                     ]
                 ],
+                'permission' => true,
             ],
             'email field is not unique, expected error' => [
                 [
@@ -531,6 +601,7 @@ class UserTest extends TestCase
                         'userEdit'
                     ]
                 ],
+                'permission' => true,
             ],
             'email field is not email valid, expected error' => [
                 [
@@ -554,6 +625,7 @@ class UserTest extends TestCase
                         'userEdit'
                     ]
                 ],
+                'permission' => true,
             ],
         ];
     }
