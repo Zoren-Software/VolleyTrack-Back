@@ -255,7 +255,7 @@ abstract class TestCase extends BaseTestCase
         }
     }
 
-    public function assertMessageError($type_message_error, $response, bool $permission, $expected_message) 
+    public function assertMessageError($type_message_error, $response, bool $permission, $expected_message)
     {
         if ($type_message_error) {
             if (!$permission) {
