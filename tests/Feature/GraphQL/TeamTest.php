@@ -151,7 +151,7 @@ class TeamTest extends TestCase
         );
 
         if ($type_message_error) {
-            if(!$permission) {
+            if (!$permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
                 $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
@@ -330,7 +330,7 @@ class TeamTest extends TestCase
         );
 
         if ($type_message_error) {
-            if(!$permission) {
+            if (!$permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
                 $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
