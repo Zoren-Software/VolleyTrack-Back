@@ -10,11 +10,11 @@ class Role extends SpatieRole
 {
     use HasFactory;
 
-     /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
+    /**
+    * The "booted" method of the model.
+    *
+    * @return void
+    */
     protected static function booted()
     {
         static::addGlobalScope('permission', function (Builder $builder) {
