@@ -140,11 +140,7 @@ class UserTest extends TestCase
 
         $faker = Faker::create();
 
-        if ($permission) {
-            $this->addPermissionToUser('create-user', 'Técnico');
-        } else {
-            $this->removePermissionToUser('create-user', 'Técnico');
-        }
+        $this->checkPermission($permission, 'Técnico', 'create-user');
 
         $parameters['name'] = $faker->name;
 
@@ -389,11 +385,7 @@ class UserTest extends TestCase
     {
         $this->login = true;
 
-        if ($permission) {
-            $this->addPermissionToUser('edit-user', 'Técnico');
-        } else {
-            $this->removePermissionToUser('edit-user', 'Técnico');
-        }
+        $this->checkPermission($permission, 'Técnico', 'edit-user');
 
         $userExist = User::factory()->make();
         $userExist->save();

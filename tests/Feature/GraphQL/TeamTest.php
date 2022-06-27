@@ -133,11 +133,7 @@ class TeamTest extends TestCase
 
         $user = User::first();
 
-        if ($permission) {
-            $this->addPermissionToUser('create-team', 'Técnico');
-        } else {
-            $this->removePermissionToUser('create-team', 'Técnico');
-        }
+        $this->checkPermission($permission, 'Técnico', 'create-team');
 
         $response = $this->graphQL(
             'teamCreate',
@@ -305,11 +301,7 @@ class TeamTest extends TestCase
     {
         $this->login = true;
 
-        if ($permission) {
-            $this->addPermissionToUser('edit-team', 'Técnico');
-        } else {
-            $this->removePermissionToUser('edit-team', 'Técnico');
-        }
+        $this->checkPermission($permission, 'Técnico', 'edit-team');
 
         $teamExist = Team::factory()->make();
         $teamExist->save();

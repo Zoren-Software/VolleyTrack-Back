@@ -227,15 +227,31 @@ abstract class TestCase extends BaseTestCase
         return $value . ' ';
     }
 
-    public function addPermissionToUser(String $permission, String $role): void
+    private function addPermissionToUser(String $permission, String $role): void
     {
         $role = Role::where('name', $role)->first();
         $role->givePermissionTo($permission);
     }
 
-    public function removePermissionToUser(String $permission, String $role): void
+    private function removePermissionToUser(String $permission, String $role): void
     {
         $role = Role::where('name', $role)->first();
         $role->revokePermissionTo($permission);
+    }
+
+    /**
+     * @param bool $permission - true para adicionar, false para remover
+     * @param String $role - nome do role
+     * @param String $namePermission - nome do permission
+     * 
+     * @return void
+     */
+    public function checkPermission(bool $permission, String $role, String $namePermission): void
+    {
+        if ($permission) {
+            $this->addPermissionToUser($namePermission, $role);
+        } else {
+            $this->removePermissionToUser($namePermission, $role);
+        }
     }
 }
