@@ -1,4 +1,4 @@
-extend type Query {
+extend type Query @guard {
     "Find a single role by an identifying attribute."
     role (
       "Search by primary key."
