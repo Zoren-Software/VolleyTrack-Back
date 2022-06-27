@@ -254,4 +254,15 @@ abstract class TestCase extends BaseTestCase
             $this->removePermissionToUser($namePermission, $role);
         }
     }
+
+    public function assertMessageError($type_message_error, $response, bool $permission, $expected_message) 
+    {
+        if ($type_message_error) {
+            if (!$permission) {
+                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
+            } else {
+                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+            }
+        }
+    }
 }
