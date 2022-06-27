@@ -2,10 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Models\Role as SpatieRole;
 
 class Role extends SpatieRole
 {
     use HasFactory;
+
+     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope('permission', function (Builder $builder) {
+            $builder->when(!auth()->user()->hasRole('Administrador'), function (Builder $builder) {
+                return $builder->whereNot('id', 1);
+            });
+        });
+    }
 }
