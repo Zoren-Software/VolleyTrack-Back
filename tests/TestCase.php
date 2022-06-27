@@ -243,7 +243,7 @@ abstract class TestCase extends BaseTestCase
      * @param bool $permission - true para adicionar, false para remover
      * @param String $role - nome do role
      * @param String $namePermission - nome do permission
-     * 
+     *
      * @return void
      */
     public function checkPermission(bool $permission, String $role, String $namePermission): void
