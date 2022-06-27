@@ -17,6 +17,8 @@ class UserMutation
 
         $user = \App\Models\User::create($args);
 
+        // TODO - Adicionar permissão ao usuário criado
+
         return $user;
     }
 
