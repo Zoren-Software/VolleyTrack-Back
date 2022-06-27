@@ -1,0 +1,13 @@
+extend type Query {
+    "Find a single role by an identifying attribute."
+    role (
+      "Search by primary key."
+      id: ID @eq
+    ): Role @find(by: "id")
+
+    "List multiple users."
+    roles (
+      "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+      name: String @where(operator: "like")
+    ): [Role!]! @paginate(defaultCount: 10)
+}
