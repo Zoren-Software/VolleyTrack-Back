@@ -148,7 +148,7 @@ abstract class TestCase extends BaseTestCase
 
         foreach ($dadosEntrada as $key => $value) {
             if (is_array($value)) {
-                $query .= $this->converteDadosArrayEntrada($query, $key, $value, $input, $type);
+                $query .= $this->converteDadosArrayEntrada($key, $value, $input, $type);
             } elseif ($value) {
                 $query .= $this->converteDadosString($query, $key, $value, $input, $type, $parametrosEntrada);
             }
@@ -184,7 +184,7 @@ abstract class TestCase extends BaseTestCase
         return $query;
     }
 
-    private function converteDadosArrayEntrada(String $query, String $key, array $value, Bool $input): String
+    private function converteDadosArrayEntrada(String $key, array $value, Bool $input): String
     {
         $stringValue = '';
 
