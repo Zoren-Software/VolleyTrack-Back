@@ -160,6 +160,8 @@ class UserTest extends TestCase
             true
         );
 
+        dd($response->json());
+
         $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
 
         $response
@@ -177,10 +179,34 @@ class UserTest extends TestCase
         $emailExistent = $faker->email;
 
         return [
+            'create user, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $emailExistent,
+                    'roleId' => [ 2 ],
+                    'password' => '123456',
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => [
+                            'id',
+                            'name',
+                            'email',
+                            'emailVerifiedAt',
+                            'createdAt',
+                            'updatedAt'
+                        ],
+                    ],
+                ],
+                'permission' => true,
+            ],
             'create user without permission, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
+                    'roleId' => [ 2 ],
                     'password' => '123456',
                 ],
                 'type_message_error' => 'message',
@@ -201,32 +227,11 @@ class UserTest extends TestCase
                 ],
                 'permission' => false,
             ],
-            'create user, success' => [
-                [
-                    'name' => $faker->name,
-                    'email' => $emailExistent,
-                    'password' => '123456',
-                ],
-                'type_message_error' => false,
-                'expected_message' => false,
-                'expected' => [
-                    'data' => [
-                        'userCreate' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
-                    ],
-                ],
-                'permission' => true,
-            ],
             'text password less than 6 characters, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
+                    'roleId' => [ 2 ],
                     'password' => '12345',
                 ],
                 'type_message_error' => 'password',
@@ -251,6 +256,7 @@ class UserTest extends TestCase
                 [
                     'password' => ' ',
                     'email' => $faker->email,
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_required',
@@ -274,6 +280,7 @@ class UserTest extends TestCase
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
+                    'roleId' => [ 2 ],
                     'password' => '123456',
                 ],
                 'type_message_error' => false,
@@ -296,6 +303,7 @@ class UserTest extends TestCase
                 [
                     'name' => $faker->name,
                     'password' => '123456',
+                    'roleId' => [ 2 ],
                     'email' => ' ',
                 ],
                 'type_message_error' => 'email',
@@ -320,6 +328,7 @@ class UserTest extends TestCase
                 [
                     'name' => $faker->name,
                     'password' => '123456',
+                    'roleId' => [ 2 ],
                     'email' => $emailExistent,
                 ],
                 'type_message_error' => 'email',
@@ -344,6 +353,7 @@ class UserTest extends TestCase
                 [
                     'name' => $faker->name,
                     'password' => '123456',
+                    'roleId' => [ 2 ],
                     'email' => 'notemail.com',
                 ],
                 'type_message_error' => 'email',

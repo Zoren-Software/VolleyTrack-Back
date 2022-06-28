@@ -3,6 +3,7 @@
 namespace App\GraphQL\Validators\Mutation;
 
 use Nuwave\Lighthouse\Validation\Validator;
+use App\Rules\PermissionAssignment;
 
 class UserCreateValidator extends Validator
 {
@@ -22,6 +23,11 @@ class UserCreateValidator extends Validator
                 'required',
                 'email',
                 'unique:users,email',
+            ],
+            'roleId' => [
+                'required',
+                'exists:roles,id',
+                new PermissionAssignment(),
             ],
         ];
     }

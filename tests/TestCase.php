@@ -186,29 +186,29 @@ abstract class TestCase extends BaseTestCase
 
     private function converteDadosArrayEntrada(String $query, String $key, array $value, Bool $input): String
     {
+        $stringValue = '';
         if ($input) {
-            $query .= "    {$key}: [";
+            $stringValue .= " {$key}: [";
             $count = 0;
             $total = count($value);
             foreach ($value as $value2) {
                 $count++;
                 $virgula = $count < $total ? ', ' : '';
-                $query .= "{$value2}{$virgula}";
+                $stringValue .= "{$value2}{$virgula}";
             }
-            $query .= ']';
+            $stringValue .= ']';
         } else {
-            $query .= "    {$key}: [";
+            $stringValue .= " {$key}: [";
             $count = 0;
             $total = count($value);
             foreach ($value as $value2) {
                 $count++;
                 $virgula = $count < $total ? ', ' : '';
-                $query .= "{$value2}{$virgula}";
+                $stringValue .= "{$value2}{$virgula}";
             }
-            $query .= ']';
+            $stringValue .= '] ';
         }
-
-        return $query;
+        return $stringValue;
     }
 
     private function converteDadosString(String $query, $key, $value, Bool $input, String $type, Bool $receberComoParametro): String

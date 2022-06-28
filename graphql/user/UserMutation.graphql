@@ -3,6 +3,7 @@ extend type Mutation @guard {
     userCreate(
         name: String!
         email: String! @rules(apply: ["email", "unique:users"])
+        roleId: [Int!]! 
         password: String! @rules(apply: ["min:6"])
     ): User
     @field(resolver: "UserMutation@create")
