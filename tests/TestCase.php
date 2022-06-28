@@ -155,7 +155,7 @@ abstract class TestCase extends BaseTestCase
         }
 
         $closeOpen = $input ? '{' : '';
-        $closeExit = $input ? '}' : '}';
+        $closeExit = '}';
 
         $query .= "{$inputClose}{$closeOpen}";
 
