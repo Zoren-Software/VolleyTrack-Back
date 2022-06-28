@@ -56,6 +56,25 @@ class RoleTest extends TestCase
     {
         $this->login = true;
 
+        $paginatorInfo = [
+            'count',
+            'currentPage',
+            'firstItem',
+            'lastItem',
+            'lastPage',
+            'perPage',
+            'total',
+            'hasMorePages'
+        ];
+
+        $data = [
+            'id',
+            'name',
+            'createdAt',
+            'updatedAt',
+
+        ];
+
         $response = $this->graphQL(
             'roles',
             [
@@ -64,23 +83,8 @@ class RoleTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => [
-                    'count',
-                    'currentPage',
-                    'firstItem',
-                    'lastItem',
-                    'lastPage',
-                    'perPage',
-                    'total',
-                    'hasMorePages'
-                ],
-                'data' => [
-                    'id',
-                    'name',
-                    'createdAt',
-                    'updatedAt',
-
-                ],
+                'paginatorInfo' => $paginatorInfo,
+                'data' => $data,
             ],
             'query',
             false
@@ -89,23 +93,9 @@ class RoleTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 'roles' => [
-                    'paginatorInfo' => [
-                        'count',
-                        'currentPage',
-                        'firstItem',
-                        'lastItem',
-                        'lastPage',
-                        'perPage',
-                        'total',
-                        'hasMorePages',
-                    ],
+                    'paginatorInfo' => $paginatorInfo,
                     'data' => [
-                        '*' => [
-                            'id',
-                            'name',
-                            'createdAt',
-                            'updatedAt'
-                        ]
+                        '*' => $data
                     ]
                 ],
             ],
