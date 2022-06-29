@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
+use App\Rules\PermissionAssignment;
 use Nuwave\Lighthouse\Validation\Validator;
 
 final class UserEditValidator extends Validator
@@ -23,6 +24,11 @@ final class UserEditValidator extends Validator
                 'required',
                 'email',
             ],
+            'roleId' => [
+                'required',
+                'exists:roles,id',
+                new PermissionAssignment(),
+            ],
         ];
     }
 
@@ -35,6 +41,7 @@ final class UserEditValidator extends Validator
             'password.required' => trans('UserEdit.password_required'),
             'password.min' => trans('UserEdit.password_min_6'),
             'email.required' => trans('UserEdit.email_required'),
+            'roleId.required' => trans('UserEdit.role_id_required'),
             'email.email' => trans('UserEdit.email_is_valid'),
             'email.unique' => trans('UserEdit.email_unique'),
         ];
