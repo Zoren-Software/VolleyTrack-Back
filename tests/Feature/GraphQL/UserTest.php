@@ -176,12 +176,14 @@ class UserTest extends TestCase
         $faker = Faker::create();
         $emailExistent = $faker->email;
 
+        $password = '123456';
+
         return [
             'declare roleId is required, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'password' => '12345',
+                    'password' => $password,
                     'roleId' => [ ],
                 ],
                 'type_message_error' => 'roleId',
@@ -207,7 +209,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $emailExistent,
                     'roleId' => [ 2 ],
-                    'password' => '123456',
+                    'password' => $password,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -230,7 +232,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'roleId' => [ 1, 2 ],
-                    'password' => '123456',
+                    'password' => $password,
                 ],
                 'type_message_error' => 'roleId',
                 'expected_message' => 'PermissionAssignment.validation_message_error',
@@ -255,7 +257,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'roleId' => [ 2 ],
-                    'password' => '123456',
+                    'password' => $password,
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => 'This action is unauthorized.',
@@ -329,7 +331,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'roleId' => [ 2 ],
-                    'password' => '123456',
+                    'password' => $password,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -350,7 +352,7 @@ class UserTest extends TestCase
             'email field is required, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
                     'roleId' => [ 2 ],
                     'email' => ' ',
                 ],
@@ -375,7 +377,7 @@ class UserTest extends TestCase
             'email field is not unique, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
                     'roleId' => [ 2 ],
                     'email' => $emailExistent,
                 ],
@@ -400,7 +402,7 @@ class UserTest extends TestCase
             'email field is not email valid, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
                     'roleId' => [ 2 ],
                     'email' => 'notemail.com',
                 ],
