@@ -18,5 +18,5 @@ return [
     'email_unique' => 'Este e-mail já foi registrado.',
     'password_min_6' => 'A senha precisa ter no mínimo 6 caracteres.',
     'password_required' => 'O campo senha é obrigatório.',
-
+    'role_id_required' => 'O campo roleId é obrigatório.',
 ];

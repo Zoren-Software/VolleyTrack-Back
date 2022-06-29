@@ -177,6 +177,31 @@ class UserTest extends TestCase
         $emailExistent = $faker->email;
 
         return [
+            'declare roleId is required, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => '12345',
+                    'roleId' => [ ],
+                ],
+                'type_message_error' => 'roleId',
+                'expected_message' => 'UserCreate.role_id_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
+                ],
+                'permission' => true,
+            ],
             'create user, success' => [
                 [
                     'name' => $faker->name,
@@ -464,11 +489,57 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
-        // TODO - Criando casos de teste para o método de edição de um usuário.
-        // Adicionando a permissão ao end-point.
-        // Precisa também adicionar o caso de teste para verificar a role como obrigatório.
-
         return [
+            'declare roleId is required, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => '12345',
+                    'roleId' => [ ],
+                ],
+                'type_message_error' => 'roleId',
+                'expected_message' => 'UserEdit.role_id_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userEdit'
+                    ]
+                ],
+                'permission' => true,
+            ],
+            'edit user with permission that shouldnt have, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => '12345',
+                    'roleId' => [ 1, 2 ],
+                ],
+                'type_message_error' => 'password',
+                'expected_message' => 'UserEdit.password_min_6',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userEdit'
+                    ]
+                ],
+                'permission' => true,
+            ],
             'edit user without permission, expected error' => [
                 [
                     'name' => $faker->name,

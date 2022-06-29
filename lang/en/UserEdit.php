@@ -18,5 +18,5 @@ return [
     'email_unique' => 'This email has already been registered.',
     'password_min_6' => 'The password must be at least 6 characters long.',
     'password_required' => 'The password field is required.',
-
+    'role_id_required' => 'The roleId field is required.',
 ];
