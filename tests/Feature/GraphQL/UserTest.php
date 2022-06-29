@@ -160,8 +160,6 @@ class UserTest extends TestCase
             true
         );
 
-        dd($response->json());
-
         $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
 
         $response
@@ -199,6 +197,31 @@ class UserTest extends TestCase
                             'updatedAt'
                         ],
                     ],
+                ],
+                'permission' => true,
+            ],
+            'create user with permission that shouldnt have, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [ 1, 2 ],
+                    'password' => '123456',
+                ],
+                'type_message_error' => 'roleId',
+                'expected_message' => 'PermissionAssignment.validation_message_error',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'extensions',
+                            'path',
+                            'trace'
+                        ]
+                    ],
+                    'data' => [
+                        'userCreate'
+                    ]
                 ],
                 'permission' => true,
             ],
@@ -441,12 +464,17 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
+        // TODO - Criando casos de teste para o método de edição de um usuário.
+        // Adicionando a permissão ao end-point.
+        // Precisa também adicionar o caso de teste para verificar a role como obrigatório.
+
         return [
             'edit user without permission, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => '123456',
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => 'This action is unauthorized.',
@@ -471,6 +499,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => '123456',
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -493,6 +522,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => '12345',
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_min_6',
@@ -517,6 +547,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'password' => ' ',
                     'email' => $faker->email,
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_required',
@@ -541,6 +572,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => '123456',
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -563,6 +595,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'password' => '123456',
                     'email' => ' ',
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_required',
@@ -586,6 +619,7 @@ class UserTest extends TestCase
                 [
                     'name' => $faker->name,
                     'password' => '123456',
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_unique',
@@ -610,6 +644,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'password' => '123456',
                     'email' => 'notemail.com',
+                    'roleId' => [ 2 ],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_is_valid',

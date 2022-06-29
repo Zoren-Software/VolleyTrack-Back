@@ -17,8 +17,7 @@ class UserMutation
 
         $user = \App\Models\User::create($args);
 
-        // TODO - Adicionar permissão ao usuário criado
-        dd($args);
+        $user->roles()->attach($args['roleId']);
 
         return $user;
     }
@@ -33,6 +32,8 @@ class UserMutation
 
         $user = \App\Models\User::findOrFail($args['id']);
         $user->update($args);
+
+        $user->roles()->attach($args['roleId']);
 
         return $user;
     }

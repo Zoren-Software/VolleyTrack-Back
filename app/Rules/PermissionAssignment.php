@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\ImplicitRule;
+use App\Models\Role;
 
 class PermissionAssignment implements ImplicitRule
 {
@@ -23,12 +24,15 @@ class PermissionAssignment implements ImplicitRule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $values)
     {
-        // TODO - Verificar se o usuário tem acesso a role para atribuilá para outro usuário
-        // testando com sail artisan test --filter UserTest::test_user_create                                                                                     ─╯
-
-        dd($attribute, $value);
+        foreach($values as $value) {
+            if (!Role::find($value)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     /**
@@ -38,6 +42,6 @@ class PermissionAssignment implements ImplicitRule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return trans('PermissionAssignment.validation_message_error');
     }
 }
