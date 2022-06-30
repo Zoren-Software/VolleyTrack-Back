@@ -176,7 +176,7 @@ class UserTest extends TestCase
         $faker = Faker::create();
         $emailExistent = $faker->email;
 
-        $password = '123456';
+        $password = env('PASSWORD_TEST', '123456');
 
         return [
             'declare roleId is required, expected error' => [
@@ -491,7 +491,7 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
-        $password = '123456';
+        $password = env('PASSWORD_TEST', '123456');
 
         return [
             'declare roleId is required, expected error' => [
