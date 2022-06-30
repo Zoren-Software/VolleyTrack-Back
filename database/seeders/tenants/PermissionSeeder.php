@@ -45,6 +45,8 @@ class PermissionSeeder extends Seeder
         $team[] = Permission::updateOrCreate(['id' => 7], ['name' => 'list-team']);
         $team[] = Permission::updateOrCreate(['id' => 8], ['name' => 'list-teams']);
 
+        // TODO - Adicionar permissão para adicionar tais perfis, para deixar dinamico
+
         $this->sync($technician, $team);
 
         /*
