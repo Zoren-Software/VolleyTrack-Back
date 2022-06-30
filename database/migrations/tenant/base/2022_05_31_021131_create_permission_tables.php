@@ -18,12 +18,9 @@ class CreatePermissionTables extends Migration
         $columnNames = config('permission.column_names');
         $teams = config('permission.teams');
 
-        if (empty($tableNames)) {
-            throw new \Exception('Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.');
-        }
-        if ($teams && empty($columnNames['team_foreign_key'] ?? null)) {
-            throw new \Exception('Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.');
-        }
+        $this->configPermissionLoaded($tableNames);
+
+        $this->verifyColumnName($columnNames['team_foreign_key'], $teams);
 
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -124,6 +121,18 @@ class CreatePermissionTables extends Migration
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
+    }
+
+    private function configPermissionLoaded($tableNames) {
+        if (empty($tableNames)) {
+            throw new \Exception('Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.');
+        }
+    }
+
+    private function verifyColumnName($teamForeignKey, $teams) {
+        if ($teams && empty($teamForeignKey ?? null)) {
+            throw new \Exception('Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.');
+        }
     }
 
     /**
