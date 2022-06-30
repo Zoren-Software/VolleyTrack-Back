@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\ConfigPermissionLoaded;
+use App\Exceptions\VerifyColumnName;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -125,13 +127,13 @@ class CreatePermissionTables extends Migration
 
     private function configPermissionLoaded($tableNames) {
         if (empty($tableNames)) {
-            throw new \Exception('Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.');
+            throw new ConfigPermissionLoaded();
         }
     }
 
     private function verifyColumnName($teamForeignKey, $teams) {
         if ($teams && empty($teamForeignKey ?? null)) {
-            throw new \Exception('Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.');
+            throw new \VerifyColumnName();
         }
     }
 
