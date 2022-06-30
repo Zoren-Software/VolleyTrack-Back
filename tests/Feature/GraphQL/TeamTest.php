@@ -13,6 +13,8 @@ class TeamTest extends TestCase
 
     protected $tenancy = true;
 
+    protected $login = true;
+
     /**
      * Listagem de todos os times.
      *
@@ -22,7 +24,6 @@ class TeamTest extends TestCase
      */
     public function test_teams_list()
     {
-        $this->login = true;
 
         Team::factory()->make()->save();
 
@@ -90,7 +91,6 @@ class TeamTest extends TestCase
      */
     public function test_team_info()
     {
-        $this->login = true;
 
         $team = Team::factory()->make();
         $team->save();
@@ -129,7 +129,6 @@ class TeamTest extends TestCase
      */
     public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->login = true;
 
         $user = User::first();
 
@@ -294,7 +293,6 @@ class TeamTest extends TestCase
      */
     public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->login = true;
 
         $this->checkPermission($permission, 'Técnico', 'edit-team');
 
