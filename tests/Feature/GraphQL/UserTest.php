@@ -526,8 +526,8 @@ class UserTest extends TestCase
                     'password' => $password,
                     'roleId' => [ 1, 2 ],
                 ],
-                'type_message_error' => 'password',
-                'expected_message' => 'UserEdit.password_min_6',
+                'type_message_error' => 'roleId',
+                'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
                     'errors' => [
                         '*' => [
