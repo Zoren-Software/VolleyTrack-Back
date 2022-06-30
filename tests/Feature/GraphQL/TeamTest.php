@@ -165,7 +165,8 @@ class TeamTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . ' TEAM';
+        $teamText = ' TEAM';
+        $nameExistent = $faker->name . $teamText;
 
         return [
             'create team without permission, expected error' => [
@@ -338,11 +339,12 @@ class TeamTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 2;
+        $teamText = ' TEAM';
 
         return [
             'edit team without permission, expected error' => [
                 [
-                    'name' => $faker->name . ' TEAM',
+                    'name' => $faker->name . $teamText,
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
@@ -365,7 +367,7 @@ class TeamTest extends TestCase
             ],
             'edit team, success' => [
                 [
-                    'name' => $faker->name . ' TEAM',
+                    'name' => $faker->name . $teamText,
                     'userId' => $userId,
                 ],
                 'type_message_error' => false,
