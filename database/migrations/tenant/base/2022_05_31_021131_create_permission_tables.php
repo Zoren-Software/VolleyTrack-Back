@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\ConfigPermissionLoaded;
+use App\Exceptions\ConfigPermissionLoadedDrop;
 use App\Exceptions\VerifyColumnName;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -147,7 +148,7 @@ class CreatePermissionTables extends Migration
         $tableNames = config('permission.table_names');
 
         if (empty($tableNames)) {
-            throw new \Exception('Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.');
+            throw new \ConfigPermissionLoadedDrop();
         }
 
         Schema::drop($tableNames['role_has_permissions']);
