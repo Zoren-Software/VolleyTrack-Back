@@ -15,6 +15,8 @@ class TeamTest extends TestCase
 
     protected $login = true;
 
+    // TODO - Adicionar casos de teste para quando o usuário não tem permissão
+
     /**
      * Listagem de todos os times.
      *
