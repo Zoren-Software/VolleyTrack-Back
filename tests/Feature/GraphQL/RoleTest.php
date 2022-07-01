@@ -21,7 +21,7 @@ class RoleTest extends TestCase
     {
         $this->login = true;
 
-        $saida = [
+        $data = [
             'id',
             'name',
             'createdAt',
@@ -33,14 +33,14 @@ class RoleTest extends TestCase
             [
                 'id' => 2,
             ],
-            $saida,
+            $data,
             'query',
             false
         );
 
         $response->assertJsonStructure([
             'data' => [
-                'role' => $saida,
+                'role' => $data,
             ],
         ])->assertStatus(200);
     }
