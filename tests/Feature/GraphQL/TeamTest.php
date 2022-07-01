@@ -24,7 +24,6 @@ class TeamTest extends TestCase
      */
     public function test_teams_list()
     {
-
         Team::factory()->make()->save();
 
         $response = $this->graphQL(
@@ -91,7 +90,6 @@ class TeamTest extends TestCase
      */
     public function test_team_info()
     {
-
         $team = Team::factory()->make();
         $team->save();
 
@@ -129,7 +127,6 @@ class TeamTest extends TestCase
      */
     public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-
         $user = User::first();
 
         $this->checkPermission($permission, 'Técnico', 'create-team');
@@ -293,7 +290,6 @@ class TeamTest extends TestCase
      */
     public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-
         $this->checkPermission($permission, 'Técnico', 'edit-team');
 
         $teamExist = Team::factory()->make();

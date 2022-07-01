@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\ImplicitRule;
 use App\Models\Role;
+use Illuminate\Contracts\Validation\ImplicitRule;
 
 class PermissionAssignment implements ImplicitRule
 {
@@ -26,12 +26,12 @@ class PermissionAssignment implements ImplicitRule
      */
     public function passes($attribute, $values)
     {
-        foreach($values as $value) {
+        foreach ($values as $value) {
             if (!Role::find($value)) {
                 return false;
             }
         }
-        
+
         return true;
     }
 

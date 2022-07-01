@@ -1,8 +1,6 @@
 <?php
 
 use App\Exceptions\ConfigPermissionLoaded;
-use App\Exceptions\ConfigPermissionLoadedDrop;
-use App\Exceptions\VerifyColumnName;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -126,13 +124,15 @@ class CreatePermissionTables extends Migration
             ->forget(config('permission.cache.key'));
     }
 
-    private function configPermissionLoaded($tableNames) {
+    private function configPermissionLoaded($tableNames)
+    {
         if (empty($tableNames)) {
             throw new ConfigPermissionLoaded();
         }
     }
 
-    private function verifyColumnName($teamForeignKey, $teams) {
+    private function verifyColumnName($teamForeignKey, $teams)
+    {
         if ($teams && empty($teamForeignKey ?? null)) {
             throw new \VerifyColumnName();
         }
