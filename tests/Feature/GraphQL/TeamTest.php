@@ -15,8 +15,6 @@ class TeamTest extends TestCase
 
     protected $login = true;
 
-    // TODO - Adicionar casos de teste para quando o usuário não tem permissão
-
     /**
      * Listagem de todos os times.
      *
@@ -28,6 +26,24 @@ class TeamTest extends TestCase
     {
         Team::factory()->make()->save();
 
+        $paginatorInfo = [
+            'count',
+            'currentPage',
+            'firstItem',
+            'hasMorePages',
+            'lastItem',
+            'lastPage',
+            'perPage',
+            'total'
+        ];
+
+        $data = [
+            'id',
+            'name',
+            'createdAt',
+            'updatedAt',
+        ];
+
         $response = $this->graphQL(
             'teams',
             [
@@ -36,22 +52,8 @@ class TeamTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => [
-                    'count',
-                    'currentPage',
-                    'firstItem',
-                    'hasMorePages',
-                    'lastItem',
-                    'lastPage',
-                    'perPage',
-                    'total'
-                ],
-                'data' => [
-                    'id',
-                    'name',
-                    'createdAt',
-                    'updatedAt',
-                ],
+                'paginatorInfo' => $paginatorInfo,
+                'data' => $data,
             ],
             'query',
             false
@@ -60,23 +62,9 @@ class TeamTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 'teams' => [
-                    'paginatorInfo' => [
-                        'count',
-                        'currentPage',
-                        'firstItem',
-                        'hasMorePages',
-                        'lastItem',
-                        'lastPage',
-                        'perPage',
-                        'total',
-                    ],
+                    'paginatorInfo' => $paginatorInfo,
                     'data' => [
-                        '*' => [
-                            'id',
-                            'name',
-                            'createdAt',
-                            'updatedAt'
-                        ]
+                        '*' => $data
                     ]
                 ],
             ],
@@ -95,7 +83,7 @@ class TeamTest extends TestCase
         $team = Team::factory()->make();
         $team->save();
 
-        $saida = [
+        $data = [
             'id',
             'name',
             'createdAt',
@@ -107,14 +95,14 @@ class TeamTest extends TestCase
             [
                 'id' => $team->id,
             ],
-            $saida,
+            $data,
             'query',
             false
         );
 
         $response->assertJsonStructure([
             'data' => [
-                'team' => $saida,
+                'team' => $data,
             ],
         ])->assertStatus(200);
     }
