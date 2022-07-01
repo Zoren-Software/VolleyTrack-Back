@@ -6,7 +6,7 @@ use Exception;
 
 class ConfigPermissionLoaded extends Exception
 {
-        /**
+    /**
      * Report the exception.
      *
      * @return bool|null

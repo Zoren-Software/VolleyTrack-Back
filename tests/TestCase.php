@@ -199,7 +199,7 @@ abstract class TestCase extends BaseTestCase
         }
 
         $stringValue .= '] ';
-        
+
         return $stringValue;
     }
 

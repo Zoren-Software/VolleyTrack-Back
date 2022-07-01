@@ -6,7 +6,7 @@ use Exception;
 
 class ConfigPermissionLoadedForDrop extends Exception
 {
-            /**
+    /**
      * Report the exception.
      *
      * @return bool|null

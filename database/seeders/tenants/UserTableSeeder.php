@@ -54,7 +54,7 @@ class UserTableSeeder extends Seeder
             ];
         }
 
-        foreach($usersDefault as $user) {
+        foreach ($usersDefault as $user) {
             User::updateOrCreate(
                 ['id' => $user['id']],
                 [
