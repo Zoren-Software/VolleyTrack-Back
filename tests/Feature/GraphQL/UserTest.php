@@ -14,6 +14,8 @@ class UserTest extends TestCase
 
     protected $otherUser = false;
 
+    // TODO - Adicionar casos de teste para quando o usuário cadastrar duas roles no cadastro e na edição
+
     /**
      * Listagem de todos os usuários.
      *
