@@ -141,6 +141,8 @@ class UserTest extends TestCase
 
         $password = env('PASSWORD_TEST', '123456');
 
+        $data = ['userCreate'];
+
         return [
             'declare roleId is required, expected error' => [
                 [
@@ -152,18 +154,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'roleId',
                 'expected_message' => 'UserCreate.role_id_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -178,14 +170,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'userCreate' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -200,18 +185,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'roleId',
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -225,18 +200,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => false,
             ],
@@ -250,18 +215,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_min_6',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -274,18 +229,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -300,14 +245,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'userCreate' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -322,18 +260,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -347,18 +275,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_unique',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -372,18 +290,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_is_valid',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -448,6 +356,7 @@ class UserTest extends TestCase
         $faker = Faker::create();
 
         $password = env('PASSWORD_TEST', '123456');
+        $data = ['userEdit'];
 
         return [
             'declare roleId is required, expected error' => [
@@ -460,18 +369,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'roleId',
                 'expected_message' => 'UserEdit.role_id_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -485,18 +384,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'roleId',
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -510,18 +399,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => false,
             ],
@@ -536,14 +415,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'userEdit' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -558,18 +430,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_min_6',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -583,18 +445,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -609,14 +461,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'userEdit' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -631,18 +476,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -655,18 +490,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_unique',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -680,18 +505,8 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_is_valid',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
