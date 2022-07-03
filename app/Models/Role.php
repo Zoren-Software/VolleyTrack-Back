@@ -18,15 +18,30 @@ class Role extends SpatieRole
     protected static function booted()
     {
         static::addGlobalScope('permission', function (Builder $builder) {
-            $builder->when(auth()->user()->hasRole('Administrador'), function (Builder $builder) {
-                return $builder;
+            /*
+             * verify if auth()->user() has permission in role for list-role-administrador
+             * if not, remove role id 1 from query (Administrador)
+             */
+            $builder->when(!auth()->user()->hasPermissionsViaRoles('list-role-administrador'), function (Builder $builder) {
+                $builder->whereNot('id', 1);
             })
-            ->when(auth()->user()->hasRole('Técnico'), function (Builder $builder) {
-                return $builder->whereNot('id', 1);
+
+            /*
+             * verify if auth()->user() has permission in role for list-role-technician
+             * if not, remove role id 2 from query (Técnico)
+             */
+            ->when(!auth()->user()->hasPermissionsViaRoles('list-role-technician'), function (Builder $builder) {
+                $builder->whereNot('id', 2);
             })
-            ->when(auth()->user()->hasRole('Jogador'), function (Builder $builder) {
-                return $builder->whereNotIn('id', [1, 2]);
+            /*
+             * verify if auth()->user() has permission in role for list-role-player
+             * if not, remove role id 3 from query (Jogador)
+             */
+            ->when(!auth()->user()->hasPermissionsViaRoles('list-role-player'), function (Builder $builder) {
+                $builder->whereNot('id', 3);
             });
+
+            return $builder;
         });
     }
 }
