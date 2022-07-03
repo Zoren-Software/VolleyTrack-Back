@@ -15,6 +15,8 @@ class TeamTest extends TestCase
 
     protected $login = true;
 
+    private $teamText = ' TEAM';
+
     /**
      * Listagem de todos os times.
      *
@@ -140,8 +142,7 @@ class TeamTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 1;
-        $teamText = ' TEAM';
-        $nameExistent = $faker->name . $teamText;
+        $nameExistent = $faker->name . $this->teamText;
 
         return [
             'create team without permission, expected error' => [
@@ -312,12 +313,11 @@ class TeamTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 2;
-        $teamText = ' TEAM';
 
         return [
             'edit team without permission, expected error' => [
                 [
-                    'name' => $faker->name . $teamText,
+                    'name' => $faker->name . $this->teamText,
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
@@ -340,7 +340,7 @@ class TeamTest extends TestCase
             ],
             'edit team, success' => [
                 [
-                    'name' => $faker->name . $teamText,
+                    'name' => $faker->name . $this->teamText,
                     'userId' => $userId,
                 ],
                 'type_message_error' => false,
