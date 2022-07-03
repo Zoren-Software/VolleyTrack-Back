@@ -20,6 +20,7 @@ class TeamTest extends TestCase
     private $data = [
         'id',
         'name',
+        'userId',
         'createdAt',
         'updatedAt'
     ];
@@ -108,13 +109,7 @@ class TeamTest extends TestCase
         $response = $this->graphQL(
             'teamCreate',
             $parameters,
-            [
-                'id',
-                'name',
-                'userId',
-                'createdAt',
-                'updatedAt'
-            ],
+            $this->data,
             'mutation',
             false,
             true
@@ -279,13 +274,7 @@ class TeamTest extends TestCase
         $response = $this->graphQL(
             'teamEdit',
             $parameters,
-            [
-                'id',
-                'name',
-                'userId',
-                'createdAt',
-                'updatedAt'
-            ],
+            $this->data,
             'mutation',
             false,
             true
