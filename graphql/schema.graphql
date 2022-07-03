@@ -1,3 +1,4 @@
 #import user/*.graphql
 #import team/*.graphql
 #import sanctum/*.graphql
+#import role/*.graphql
