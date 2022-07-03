@@ -31,6 +31,17 @@ abstract class TestCase extends BaseTestCase
 
     protected $otherUser = false;
 
+    protected $paginatorInfo = [
+        'count',
+        'currentPage',
+        'firstItem',
+        'hasMorePages',
+        'lastItem',
+        'lastPage',
+        'perPage',
+        'total'
+    ];
+
     public $tenantUrl;
 
     public function setUp(): void

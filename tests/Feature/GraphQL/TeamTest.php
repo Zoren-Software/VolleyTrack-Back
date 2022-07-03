@@ -26,17 +26,6 @@ class TeamTest extends TestCase
     {
         Team::factory()->make()->save();
 
-        $paginatorInfo = [
-            'count',
-            'currentPage',
-            'firstItem',
-            'hasMorePages',
-            'lastItem',
-            'lastPage',
-            'perPage',
-            'total'
-        ];
-
         $data = [
             'id',
             'name',
@@ -52,7 +41,7 @@ class TeamTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $paginatorInfo,
+                'paginatorInfo' => $this->paginatorInfo,
                 'data' => $data,
             ],
             'query',
@@ -62,7 +51,7 @@ class TeamTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 'teams' => [
-                    'paginatorInfo' => $paginatorInfo,
+                    'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
                         '*' => $data
                     ]
