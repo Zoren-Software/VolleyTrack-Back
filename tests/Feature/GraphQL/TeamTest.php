@@ -131,6 +131,7 @@ class TeamTest extends TestCase
         $faker = Faker::create();
         $userId = 1;
         $nameExistent = $faker->name . $this->teamText;
+        $data = ['teamCreate'];
 
         return [
             'create team without permission, expected error' => [
@@ -141,18 +142,8 @@ class TeamTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'teamCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => false,
             ],
@@ -184,18 +175,8 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_unique',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'teamCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -207,18 +188,8 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'teamCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -230,18 +201,8 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_min',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'teamCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -295,6 +256,7 @@ class TeamTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 2;
+        $data = ['teamEdit'];
 
         return [
             'edit team without permission, expected error' => [
@@ -305,18 +267,8 @@ class TeamTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'teamEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => false,
             ],
@@ -329,13 +281,7 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamEdit' => [
-                            'id',
-                            'name',
-                            'userId',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'teamEdit' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -347,18 +293,8 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_unique',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'teamEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -370,18 +306,8 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'teamEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],
@@ -393,18 +319,8 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_min',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'teamEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $data
                 ],
                 'permission' => true,
             ],

@@ -42,6 +42,16 @@ abstract class TestCase extends BaseTestCase
         'total'
     ];
 
+    protected $errors = [
+        '*' => [
+            'message',
+            'locations',
+            'extensions',
+            'path',
+            'trace'
+        ]
+    ];
+
     public $tenantUrl;
 
     public function setUp(): void
