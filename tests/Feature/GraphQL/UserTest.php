@@ -37,16 +37,7 @@ class UserTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => [
-                    'count',
-                    'currentPage',
-                    'firstItem',
-                    'lastItem',
-                    'lastPage',
-                    'perPage',
-                    'total',
-                    'hasMorePages'
-                ],
+                'paginatorInfo' => $this->paginatorInfo,
                 'data' => [
 
                     'id',
@@ -64,16 +55,7 @@ class UserTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 'users' => [
-                    'paginatorInfo' => [
-                        'count',
-                        'currentPage',
-                        'firstItem',
-                        'lastItem',
-                        'lastPage',
-                        'perPage',
-                        'total',
-                        'hasMorePages',
-                    ],
+                    'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
                         '*' => [
                             'id',

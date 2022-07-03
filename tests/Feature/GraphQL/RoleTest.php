@@ -56,17 +56,6 @@ class RoleTest extends TestCase
     {
         $this->login = true;
 
-        $paginatorInfo = [
-            'count',
-            'currentPage',
-            'firstItem',
-            'lastItem',
-            'lastPage',
-            'perPage',
-            'total',
-            'hasMorePages'
-        ];
-
         $data = [
             'id',
             'name',
@@ -83,7 +72,7 @@ class RoleTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $paginatorInfo,
+                'paginatorInfo' => $this->paginatorInfo,
                 'data' => $data,
             ],
             'query',
@@ -93,7 +82,7 @@ class RoleTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 'roles' => [
-                    'paginatorInfo' => $paginatorInfo,
+                    'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
                         '*' => $data
                     ]
