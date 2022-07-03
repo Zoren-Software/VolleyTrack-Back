@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
+use Spatie\Permission\Models\Role;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -22,9 +23,34 @@ abstract class TestCase extends BaseTestCase
 
     protected $login = false;
 
+    protected $email = null;
+
     protected $token = '';
 
     protected $user = null;
+
+    protected $otherUser = false;
+
+    protected $paginatorInfo = [
+        'count',
+        'currentPage',
+        'firstItem',
+        'hasMorePages',
+        'lastItem',
+        'lastPage',
+        'perPage',
+        'total'
+    ];
+
+    protected $errors = [
+        '*' => [
+            'message',
+            'locations',
+            'extensions',
+            'path',
+            'trace'
+        ]
+    ];
 
     public $tenantUrl;
 
@@ -93,8 +119,15 @@ abstract class TestCase extends BaseTestCase
 
     public function loginGraphQL(): void
     {
-        $user = User::factory()->make();
-        $user->save();
+        if ($this->otherUser) {
+            $user = User::factory()->make();
+            $user->save();
+            $this->user = $user;
+        } else {
+            $user = User::where('email', env('MAIL_FROM_TEST_TECHNICIAN'))->first();
+        }
+
+        $this->email = $user->email;
 
         $response = $this->graphQL(
             'login',
@@ -136,14 +169,14 @@ abstract class TestCase extends BaseTestCase
 
         foreach ($dadosEntrada as $key => $value) {
             if (is_array($value)) {
-                $query .= $this->converteDadosArrayEntrada($query, $key, $value, $input, $type);
+                $query .= $this->converteDadosArrayEntrada($key, $value);
             } elseif ($value) {
                 $query .= $this->converteDadosString($query, $key, $value, $input, $type, $parametrosEntrada);
             }
         }
 
         $closeOpen = $input ? '{' : '';
-        $closeExit = $input ? '}' : '}';
+        $closeExit = '}';
 
         $query .= "{$inputClose}{$closeOpen}";
 
@@ -172,31 +205,23 @@ abstract class TestCase extends BaseTestCase
         return $query;
     }
 
-    private function converteDadosArrayEntrada(String $query, String $key, array $value, Bool $input): String
+    private function converteDadosArrayEntrada(String $key, array $value): String
     {
-        if ($input) {
-            $query .= "    {$key}: [";
-            $count = 0;
-            $total = count($value);
-            foreach ($value as $value2) {
-                $count++;
-                $virgula = $count < $total ? ', ' : '';
-                $query .= "{$value2}{$virgula}";
-            }
-            $query .= ']';
-        } else {
-            $query .= "    {$key}: [";
-            $count = 0;
-            $total = count($value);
-            foreach ($value as $value2) {
-                $count++;
-                $virgula = $count < $total ? ', ' : '';
-                $query .= "{$value2}{$virgula}";
-            }
-            $query .= ']';
+        $stringValue = '';
+
+        $stringValue .= " {$key}: [";
+        $count = 0;
+        $total = count($value);
+
+        foreach ($value as $value2) {
+            $count++;
+            $virgula = $count < $total ? ', ' : '';
+            $stringValue .= "{$value2}{$virgula}";
         }
 
-        return $query;
+        $stringValue .= '] ';
+
+        return $stringValue;
     }
 
     private function converteDadosString(String $query, $key, $value, Bool $input, String $type, Bool $receberComoParametro): String
@@ -213,5 +238,44 @@ abstract class TestCase extends BaseTestCase
             return $key . ': ' . '"' . $value . '" ';
         }
         return $value . ' ';
+    }
+
+    private function addPermissionToUser(String $permission, String $role): void
+    {
+        $role = Role::where('name', $role)->first();
+        $role->givePermissionTo($permission);
+    }
+
+    private function removePermissionToUser(String $permission, String $role): void
+    {
+        $role = Role::where('name', $role)->first();
+        $role->revokePermissionTo($permission);
+    }
+
+    /**
+     * @param bool $permission - true para adicionar, false para remover
+     * @param String $role - nome do role
+     * @param String $namePermission - nome do permission
+     *
+     * @return void
+     */
+    public function checkPermission(bool $permission, String $role, String $namePermission): void
+    {
+        if ($permission) {
+            $this->addPermissionToUser($namePermission, $role);
+        } else {
+            $this->removePermissionToUser($namePermission, $role);
+        }
+    }
+
+    public function assertMessageError($type_message_error, $response, bool $permission, $expected_message)
+    {
+        if ($type_message_error) {
+            if (!$permission) {
+                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
+            } else {
+                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+            }
+        }
     }
 }

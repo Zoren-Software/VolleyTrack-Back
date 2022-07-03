@@ -12,6 +12,17 @@ class UserTest extends TestCase
 
     protected $tenancy = true;
 
+    protected $otherUser = false;
+
+    private $data = [
+        'id',
+        'name',
+        'email',
+        'emailVerifiedAt',
+        'createdAt',
+        'updatedAt'
+    ];
+
     /**
      * Listagem de todos os usuários.
      *
@@ -21,6 +32,8 @@ class UserTest extends TestCase
      */
     public function test_users_list()
     {
+        $this->login = true;
+
         User::factory()->make()->save();
 
         $response = $this->graphQL(
@@ -31,25 +44,8 @@ class UserTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => [
-                    'count',
-                    'currentPage',
-                    'firstItem',
-                    'lastItem',
-                    'lastPage',
-                    'perPage',
-                    'total',
-                    'hasMorePages'
-                ],
-                'data' => [
-
-                    'id',
-                    'name',
-                    'email',
-                    'createdAt',
-                    'updatedAt',
-
-                ],
+                'paginatorInfo' => $this->paginatorInfo,
+                'data' => $this->data,
             ],
             'query',
             false
@@ -58,24 +54,9 @@ class UserTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 'users' => [
-                    'paginatorInfo' => [
-                        'count',
-                        'currentPage',
-                        'firstItem',
-                        'lastItem',
-                        'lastPage',
-                        'perPage',
-                        'total',
-                        'hasMorePages',
-                    ],
+                    'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => [
-                            'id',
-                            'name',
-                            'email',
-                            'createdAt',
-                            'updatedAt'
-                        ]
+                        '*' => $this->data
                     ]
                 ],
             ],
@@ -91,31 +72,24 @@ class UserTest extends TestCase
      */
     public function test_user_info()
     {
+        $this->login = true;
+
         $user = User::factory()->make();
         $user->save();
-
-        $saida = [
-            'id',
-            'name',
-            'email',
-            'emailVerifiedAt',
-            'createdAt',
-            'updatedAt'
-        ];
 
         $response = $this->graphQL(
             'user',
             [
                 'id' => $user->id,
             ],
-            $saida,
+            $this->data,
             'query',
             false
         );
 
         $response->assertJsonStructure([
             'data' => [
-                'user' => $saida,
+                'user' => $this->data,
             ],
         ])->assertStatus(200);
     }
@@ -128,31 +102,26 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function test_user_create($parameters, $type_message_error, $expected_message, $expected)
+    public function test_user_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
+        $this->login = true;
+
         $faker = Faker::create();
+
+        $this->checkPermission($permission, 'Técnico', 'create-user');
 
         $parameters['name'] = $faker->name;
 
         $response = $this->graphQL(
             'userCreate',
             $parameters,
-            [
-                'id',
-                'name',
-                'email',
-                'emailVerifiedAt',
-                'createdAt',
-                'updatedAt'
-            ],
+            $this->data,
             'mutation',
             false,
             true
         );
 
-        if ($type_message_error) {
-            $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
-        }
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
 
         $response
             ->assertJsonStructure($expected)
@@ -168,162 +137,177 @@ class UserTest extends TestCase
         $faker = Faker::create();
         $emailExistent = $faker->email;
 
+        $password = env('PASSWORD_TEST', '123456');
+
+        $userCreate = ['userCreate'];
+
         return [
+            'declare roleId is required, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [],
+                ],
+                'type_message_error' => 'roleId',
+                'expected_message' => 'UserCreate.role_id_required',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $userCreate
+                ],
+                'permission' => true,
+            ],
             'create user, success' => [
                 [
                     'name' => $faker->name,
                     'email' => $emailExistent,
-                    'password' => '123456',
+                    'roleId' => [2],
+                    'password' => $password,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'userCreate' => $this->data,
                     ],
                 ],
+                'permission' => true,
+            ],
+            'create user with 2 roles, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [2, 3],
+                    'password' => $password,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'create user with permission that shouldnt have, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [1, 2],
+                    'password' => $password,
+                ],
+                'type_message_error' => 'roleId',
+                'expected_message' => 'PermissionAssignment.validation_message_error',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $userCreate
+                ],
+                'permission' => true,
+            ],
+            'create user without permission, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [2],
+                    'password' => $password,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'This action is unauthorized.',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $userCreate
+                ],
+                'permission' => false,
             ],
             'text password less than 6 characters, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
+                    'roleId' => [2],
                     'password' => '12345',
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_min_6',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userCreate
                 ],
+                'permission' => true,
             ],
             'no text password, expected error' => [
                 [
                     'password' => ' ',
                     'email' => $faker->email,
+                    'roleId' => [2],
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userCreate
                 ],
+                'permission' => true,
             ],
             'text password with 6 characters, success' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'password' => '123456',
+                    'roleId' => [2],
+                    'password' => $password,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'userCreate' => $this->data,
                     ],
                 ],
+                'permission' => true,
             ],
             'email field is required, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
+                    'roleId' => [2],
                     'email' => ' ',
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userCreate
                 ],
+                'permission' => true,
             ],
             'email field is not unique, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
+                    'roleId' => [2],
                     'email' => $emailExistent,
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_unique',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userCreate
                 ],
+                'permission' => true,
             ],
             'email field is not email valid, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
+                    'roleId' => [2],
                     'email' => 'notemail.com',
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_is_valid',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userCreate'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userCreate
                 ],
+                'permission' => true,
             ],
         ];
     }
@@ -336,8 +320,12 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function test_user_edit($parameters, $type_message_error, $expected_message, $expected)
+    public function test_user_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
+        $this->login = true;
+
+        $this->checkPermission($permission, 'Técnico', 'edit-user');
+
         $userExist = User::factory()->make();
         $userExist->save();
         $user = User::factory()->make();
@@ -345,32 +333,26 @@ class UserTest extends TestCase
 
         $parameters['id'] = $user->id;
 
-        if($expected_message == 'UserEdit.email_unique') {
+        if ($expected_message == 'UserEdit.email_unique') {
             $parameters['email'] = $userExist->email;
         }
 
         $response = $this->graphQL(
             'userEdit',
             $parameters,
-            [
-                'id',
-                'name',
-                'email',
-                'emailVerifiedAt',
-                'createdAt',
-                'updatedAt'
-            ],
+            $this->data,
             'mutation',
             false,
             true
         );
 
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
         if ($type_message_error) {
-            try {
-                //code...
+            if (!$permission) {
+                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
+            } else {
                 $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
-            } catch (\Throwable $th) {
-                dd($response->json());
             }
         }
 
@@ -387,162 +369,176 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
+        $password = env('PASSWORD_TEST', '123456');
+        $userEdit = ['userEdit'];
+
         return [
+            'declare roleId is required, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [],
+                ],
+                'type_message_error' => 'roleId',
+                'expected_message' => 'UserEdit.role_id_required',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $userEdit
+                ],
+                'permission' => true,
+            ],
+            'edit user with permission that shouldnt have, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [1, 2],
+                ],
+                'type_message_error' => 'roleId',
+                'expected_message' => 'PermissionAssignment.validation_message_error',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $userEdit
+                ],
+                'permission' => true,
+            ],
+            'edit user without permission, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'This action is unauthorized.',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $userEdit
+                ],
+                'permission' => false,
+            ],
             'edit user, success' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'password' => '123456',
+                    'password' => $password,
+                    'roleId' => [2],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'userEdit' => $this->data,
                     ],
                 ],
+                'permission' => true,
+            ],
+            'edit user with 2 roles, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [2, 3],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
             'text password less than 6 characters, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => '12345',
+                    'roleId' => [2],
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_min_6',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userEdit
                 ],
+                'permission' => true,
             ],
             'no text password, expected error' => [
                 [
                     'name' => $faker->name,
                     'password' => ' ',
                     'email' => $faker->email,
+                    'roleId' => [2],
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userEdit
                 ],
+                'permission' => true,
             ],
             'text password with 6 characters, success' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'password' => '123456',
+                    'password' => $password,
+                    'roleId' => [2],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => [
-                            'id',
-                            'name',
-                            'email',
-                            'emailVerifiedAt',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'userEdit' => $this->data,
                     ],
                 ],
+                'permission' => true,
             ],
             'email field is required, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
                     'email' => ' ',
+                    'roleId' => [2],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_required',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userEdit
                 ],
+                'permission' => true,
             ],
             'email field is not unique, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
+                    'roleId' => [2],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_unique',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userEdit
                 ],
+                'permission' => true,
             ],
             'email field is not email valid, expected error' => [
                 [
                     'name' => $faker->name,
-                    'password' => '123456',
+                    'password' => $password,
                     'email' => 'notemail.com',
+                    'roleId' => [2],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_is_valid',
                 'expected' => [
-                    'errors' => [
-                        '*' => [
-                            'message',
-                            'locations',
-                            'extensions',
-                            'path',
-                            'trace'
-                        ]
-                    ],
-                    'data' => [
-                        'userEdit'
-                    ]
+                    'errors' => $this->errors,
+                    'data' => $userEdit
                 ],
+                'permission' => true,
             ],
         ];
     }
