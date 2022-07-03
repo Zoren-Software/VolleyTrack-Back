@@ -32,68 +32,55 @@ class FundamentalsSeeder extends Seeder
          * Criando fundamentos mais específicos do voleibol
          */
         $specificFundamentals = [
-            [
-                'id' => 1,
+            1 => [
                 'name' => 'Saque Viagem',
                 'fundamental_id' => [1],
             ],
-            [
-                'id' => 2,
+            2 => [
                 'name' => 'Saque por Baixo',
                 'fundamental_id' => [1],
             ],
-            [
-                'id' => 3,
+            3 => [
                 'name' => 'Saque por Cima',
                 'fundamental_id' => [1],
             ],
-            [
-                'id' => 4,
+            4 => [
                 'name' => 'Saque Flutuante',
                 'fundamental_id' => [1],
             ],
-            [
-                'id' => 5,
+            5 => [
                 'name' => 'Toque',
                 'fundamental_id' => [2, 3, 6],
             ],
-            [
-                'id' => 6,
+            6 => [
                 'name' => 'Manchete',
                 'fundamental_id' => [2, 3, 6],
             ],
-            [
-                'id' => 7,
+            7 => [
                 'name' => 'Ataque do Fundo',
                 'fundamental_id' => [4],
             ],
-            [
-                'id' => 8,
+            8 => [
                 'name' => 'Ataque da Frente',
                 'fundamental_id' => [4],
             ],
-            [
-                'id' => 9,
+            9 => [
                 'name' => 'Largada',
                 'fundamental_id' => [4],
             ],
-            [
-                'id' => 10,
+            10 => [
                 'name' => 'Deslizamento',
                 'fundamental_id' => [6],
             ],
-            [
-                'id' => 11,
+            11 => [
                 'name' => 'Defesa do Fundo - 1',
                 'fundamental_id' => [6],
             ],
-            [
-                'id' => 12,
+            12 => [
                 'name' => 'Defesa do Fundo - 5',
                 'fundamental_id' => [6],
             ],
-            [
-                'id' => 13,
+            13 => [
                 'name' => 'Defesa do Fundo - 6',
                 'fundamental_id' => [6],
             ]
@@ -108,9 +95,9 @@ class FundamentalsSeeder extends Seeder
             ]);
         }
 
-        foreach($specificFundamentals as $specificFundamental) {
+        foreach($specificFundamentals as $id => $specificFundamental) {
             $model = SpecificFundamentals::updateOrCreate([
-                'id' => $specificFundamental['id'],
+                'id' => $id,
             ], [
                 'name' => $specificFundamental['name'],
                 'user_id' => 1,
