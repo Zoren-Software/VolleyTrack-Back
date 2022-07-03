@@ -156,13 +156,7 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamCreate' => [
-                            'id',
-                            'name',
-                            'userId',
-                            'createdAt',
-                            'updatedAt'
-                        ],
+                        'teamCreate' => $this->data,
                     ],
                 ],
                 'permission' => true,
