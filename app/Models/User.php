@@ -50,4 +50,10 @@ class User extends Authenticatable implements HasApiTokensContract
     ];
 
     protected $guard_name = 'sanctum';
+
+    public function hasPermissionsViaRoles(String $permission): bool
+    {
+        $namePermissions = auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray();
+        return in_array($permission, $namePermissions);
+    }
 }

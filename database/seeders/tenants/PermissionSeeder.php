@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
@@ -35,7 +35,7 @@ class PermissionSeeder extends Seeder
         $user[] = Permission::updateOrCreate(['id' => 3], ['name' => 'list-user']);
         $user[] = Permission::updateOrCreate(['id' => 4], ['name' => 'list-users']);
 
-        $this->sync($technician, $user);
+        //$this->sync($technician, $user);
 
         /*
          * Permissões Time
@@ -47,7 +47,15 @@ class PermissionSeeder extends Seeder
 
         // TODO - Adicionar permissão para adicionar tais perfis, para deixar dinamico
 
+        /*
+         * Permissões de Configurações
+         */
+        Permission::updateOrCreate(['id' => 9], ['name' => 'list-role-administrador']);
+        $config[] = Permission::updateOrCreate(['id' => 10], ['name' => 'list-role-technician']);
+        $config[] = Permission::updateOrCreate(['id' => 11], ['name' => 'list-role-player']);
+
         $this->sync($technician, $team);
+        $this->sync($technician, $config);
 
         /*
          * Definir user como perfil de administrador
