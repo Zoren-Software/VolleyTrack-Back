@@ -14,8 +14,6 @@ class UserTest extends TestCase
 
     protected $otherUser = false;
 
-    // TODO - Adicionar casos de teste para quando o usuário cadastrar duas roles no cadastro e na edição
-
     private $data = [
         'id',
         'name',
@@ -164,6 +162,22 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $emailExistent,
                     'roleId' => [2],
+                    'password' => $password,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'create user with 2 roles, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [2, 3],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
@@ -410,6 +424,22 @@ class UserTest extends TestCase
                     'email' => $faker->email,
                     'password' => $password,
                     'roleId' => [2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'edit user with 2 roles, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [2, 3],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
