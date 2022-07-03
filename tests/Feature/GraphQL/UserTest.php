@@ -16,6 +16,15 @@ class UserTest extends TestCase
 
     // TODO - Adicionar casos de teste para quando o usuário cadastrar duas roles no cadastro e na edição
 
+    private $data = [
+        'id',
+        'name',
+        'email',
+        'emailVerifiedAt',
+        'createdAt',
+        'updatedAt'
+    ];
+
     /**
      * Listagem de todos os usuários.
      *
@@ -38,15 +47,7 @@ class UserTest extends TestCase
             ],
             [
                 'paginatorInfo' => $this->paginatorInfo,
-                'data' => [
-
-                    'id',
-                    'name',
-                    'email',
-                    'createdAt',
-                    'updatedAt',
-
-                ],
+                'data' => $this->data,
             ],
             'query',
             false
@@ -57,13 +58,7 @@ class UserTest extends TestCase
                 'users' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => [
-                            'id',
-                            'name',
-                            'email',
-                            'createdAt',
-                            'updatedAt'
-                        ]
+                        '*' => $this->data
                     ]
                 ],
             ],
@@ -84,28 +79,19 @@ class UserTest extends TestCase
         $user = User::factory()->make();
         $user->save();
 
-        $saida = [
-            'id',
-            'name',
-            'email',
-            'emailVerifiedAt',
-            'createdAt',
-            'updatedAt'
-        ];
-
         $response = $this->graphQL(
             'user',
             [
                 'id' => $user->id,
             ],
-            $saida,
+            $this->data,
             'query',
             false
         );
 
         $response->assertJsonStructure([
             'data' => [
-                'user' => $saida,
+                'user' => $this->data,
             ],
         ])->assertStatus(200);
     }
@@ -131,14 +117,7 @@ class UserTest extends TestCase
         $response = $this->graphQL(
             'userCreate',
             $parameters,
-            [
-                'id',
-                'name',
-                'email',
-                'emailVerifiedAt',
-                'createdAt',
-                'updatedAt'
-            ],
+            $this->data,
             'mutation',
             false,
             true
@@ -439,14 +418,7 @@ class UserTest extends TestCase
         $response = $this->graphQL(
             'userEdit',
             $parameters,
-            [
-                'id',
-                'name',
-                'email',
-                'emailVerifiedAt',
-                'createdAt',
-                'updatedAt'
-            ],
+            $this->data,
             'mutation',
             false,
             true

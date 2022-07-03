@@ -17,6 +17,13 @@ class TeamTest extends TestCase
 
     private $teamText = ' TEAM';
 
+    private $data = [
+        'id',
+        'name',
+        'createdAt',
+        'updatedAt'
+    ];
+
     /**
      * Listagem de todos os times.
      *
@@ -28,13 +35,6 @@ class TeamTest extends TestCase
     {
         Team::factory()->make()->save();
 
-        $data = [
-            'id',
-            'name',
-            'createdAt',
-            'updatedAt',
-        ];
-
         $response = $this->graphQL(
             'teams',
             [
@@ -44,7 +44,7 @@ class TeamTest extends TestCase
             ],
             [
                 'paginatorInfo' => $this->paginatorInfo,
-                'data' => $data,
+                'data' => $this->data,
             ],
             'query',
             false
@@ -55,7 +55,7 @@ class TeamTest extends TestCase
                 'teams' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => $data
+                        '*' => $this->data
                     ]
                 ],
             ],
@@ -74,26 +74,19 @@ class TeamTest extends TestCase
         $team = Team::factory()->make();
         $team->save();
 
-        $data = [
-            'id',
-            'name',
-            'createdAt',
-            'updatedAt'
-        ];
-
         $response = $this->graphQL(
             'team',
             [
                 'id' => $team->id,
             ],
-            $data,
+            $this->data,
             'query',
             false
         );
 
         $response->assertJsonStructure([
             'data' => [
-                'team' => $data,
+                'team' => $this->data,
             ],
         ])->assertStatus(200);
     }
