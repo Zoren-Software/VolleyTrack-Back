@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SpecificFundamentals extends Model
+class SpecificFundamental extends Model
 {
     use HasFactory;
 
@@ -26,6 +26,6 @@ class SpecificFundamentals extends Model
 
     public function fundamentals()
     {
-        return $this->belongsToMany(Fundamentals::class, 'fundamentals_specific_fundamentals', 'specific_fundamental_id', 'fundamental_id')->withTimestamps()->withPivot('created_at', 'updated_at');
+        return $this->belongsToMany(Fundamental::class)->withTimestamps()->withPivot('created_at', 'updated_at');
     }
 }

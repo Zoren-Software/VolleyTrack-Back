@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Fundamentals extends Model
+class Fundamental extends Model
 {
     use HasFactory;
 
@@ -26,6 +26,6 @@ class Fundamentals extends Model
 
     public function specificFundamentals()
     {
-        return $this->hasMany(SpecificFundamentals::class);
+        return $this->hasMany(SpecificFundamental::class);
     }
 }

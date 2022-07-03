@@ -12,7 +12,7 @@ return new class () extends Migration {
      */
     public function up()
     {
-        Schema::create('fundamentals_specific_fundamentals', function (Blueprint $table) {
+        Schema::create('fundamental_specific_fundamental', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fundamental_id');
             $table->unsignedBigInteger('specific_fundamental_id');
