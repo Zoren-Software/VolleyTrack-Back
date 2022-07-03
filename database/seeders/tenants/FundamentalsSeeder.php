@@ -20,30 +20,12 @@ class FundamentalsSeeder extends Seeder
          * Criando fundamentos do voleibol
          */
         $fundamentals = [
-            [
-                'id' => 1,
-                'name' => 'Saque',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Recepção',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Levantamento',
-            ],
-            [
-                'id' => 4,
-                'name' => 'Ataque',
-            ],
-            [
-                'id' => 5,
-                'name' => 'Bloqueio',
-            ],
-            [
-                'id' => 6,
-                'name' => 'Defesa',
-            ]
+            1 => 'Saque',
+            2 => 'Recepção',
+            3 => 'Levantamento',
+            4 => 'Ataque',
+            5 => 'Bloqueio',
+            6 => 'Defesa',
         ];
 
         /**
@@ -117,11 +99,11 @@ class FundamentalsSeeder extends Seeder
             ]
         ];
 
-        foreach($fundamentals as $fundamental) {
+        foreach($fundamentals as $id => $fundamental) {
             Fundamentals::updateOrCreate([
-                'id' => $fundamental['id'],
+                'id' => $id,
             ], [
-                'name' => $fundamental['name'],
+                'name' => $fundamental,
                 'user_id' => 1,
             ]);
         }
