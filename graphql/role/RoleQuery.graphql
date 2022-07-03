@@ -5,7 +5,7 @@ extend type Query @guard {
       id: ID @eq
     ): Role @find(by: "id")
 
-    "List multiple users."
+    "List multiple roles."
     roles (
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
       name: String @where(operator: "like")
