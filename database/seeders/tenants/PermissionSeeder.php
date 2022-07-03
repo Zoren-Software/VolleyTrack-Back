@@ -35,7 +35,7 @@ class PermissionSeeder extends Seeder
         $user[] = Permission::updateOrCreate(['id' => 3], ['name' => 'list-user']);
         $user[] = Permission::updateOrCreate(['id' => 4], ['name' => 'list-users']);
 
-        //$this->sync($technician, $user);
+        $this->sync($technician, $user);
 
         /*
          * Permissões Time
