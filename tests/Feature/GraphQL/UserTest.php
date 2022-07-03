@@ -141,7 +141,7 @@ class UserTest extends TestCase
 
         $password = env('PASSWORD_TEST', '123456');
 
-        $data = ['userCreate'];
+        $userCreate = ['userCreate'];
 
         return [
             'declare roleId is required, expected error' => [
@@ -155,7 +155,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.role_id_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userCreate
                 ],
                 'permission' => true,
             ],
@@ -186,7 +186,7 @@ class UserTest extends TestCase
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userCreate
                 ],
                 'permission' => true,
             ],
@@ -201,7 +201,7 @@ class UserTest extends TestCase
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userCreate
                 ],
                 'permission' => false,
             ],
@@ -216,7 +216,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.password_min_6',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userCreate
                 ],
                 'permission' => true,
             ],
@@ -230,7 +230,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.password_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userCreate
                 ],
                 'permission' => true,
             ],
@@ -261,7 +261,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.email_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userCreate
                 ],
                 'permission' => true,
             ],
@@ -276,7 +276,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.email_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userCreate
                 ],
                 'permission' => true,
             ],
@@ -291,7 +291,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.email_is_valid',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userCreate
                 ],
                 'permission' => true,
             ],
@@ -356,7 +356,7 @@ class UserTest extends TestCase
         $faker = Faker::create();
 
         $password = env('PASSWORD_TEST', '123456');
-        $data = ['userEdit'];
+        $userEdit = ['userEdit'];
 
         return [
             'declare roleId is required, expected error' => [
@@ -370,7 +370,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.role_id_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userEdit
                 ],
                 'permission' => true,
             ],
@@ -385,7 +385,7 @@ class UserTest extends TestCase
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userEdit
                 ],
                 'permission' => true,
             ],
@@ -400,7 +400,7 @@ class UserTest extends TestCase
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userEdit
                 ],
                 'permission' => false,
             ],
@@ -431,7 +431,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.password_min_6',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userEdit
                 ],
                 'permission' => true,
             ],
@@ -446,7 +446,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.password_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userEdit
                 ],
                 'permission' => true,
             ],
@@ -477,7 +477,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.email_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userEdit
                 ],
                 'permission' => true,
             ],
@@ -491,7 +491,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.email_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userEdit
                 ],
                 'permission' => true,
             ],
@@ -506,7 +506,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.email_is_valid',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $data
+                    'data' => $userEdit
                 ],
                 'permission' => true,
             ],
