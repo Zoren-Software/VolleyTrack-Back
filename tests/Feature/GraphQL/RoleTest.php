@@ -10,6 +10,13 @@ class RoleTest extends TestCase
 
     protected $tenancy = true;
 
+    private $data = [
+        'id',
+        'name',
+        'createdAt',
+        'updatedAt'
+    ];
+
     /**
      * Listagem de uma role
      *
@@ -21,26 +28,19 @@ class RoleTest extends TestCase
     {
         $this->login = true;
 
-        $data = [
-            'id',
-            'name',
-            'createdAt',
-            'updatedAt'
-        ];
-
         $response = $this->graphQL(
             'role',
             [
                 'id' => 2,
             ],
-            $data,
+            $this->data,
             'query',
             false
         );
 
         $response->assertJsonStructure([
             'data' => [
-                'role' => $data,
+                'role' => $this->data,
             ],
         ])->assertStatus(200);
     }
@@ -56,14 +56,6 @@ class RoleTest extends TestCase
     {
         $this->login = true;
 
-        $data = [
-            'id',
-            'name',
-            'createdAt',
-            'updatedAt',
-
-        ];
-
         $response = $this->graphQL(
             'roles',
             [
@@ -73,7 +65,7 @@ class RoleTest extends TestCase
             ],
             [
                 'paginatorInfo' => $this->paginatorInfo,
-                'data' => $data,
+                'data' => $this->data,
             ],
             'query',
             false
@@ -84,7 +76,7 @@ class RoleTest extends TestCase
                 'roles' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => $data
+                        '*' => $this->data
                     ]
                 ],
             ],
