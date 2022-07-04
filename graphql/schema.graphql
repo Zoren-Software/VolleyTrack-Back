@@ -2,3 +2,4 @@
 #import team/*.graphql
 #import sanctum/*.graphql
 #import role/*.graphql
+#import fundamental/*.graphql
