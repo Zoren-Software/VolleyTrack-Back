@@ -298,7 +298,7 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_required',
+                'expected_message' => 'TeamEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $teamEdit
