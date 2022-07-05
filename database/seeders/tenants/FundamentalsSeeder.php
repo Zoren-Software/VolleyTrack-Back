@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FundamentalsSeeder extends Seeder
@@ -86,7 +85,7 @@ class FundamentalsSeeder extends Seeder
             ]
         ];
 
-        foreach($fundamentals as $id => $fundamental) {
+        foreach ($fundamentals as $id => $fundamental) {
             Fundamental::updateOrCreate([
                 'id' => $id,
             ], [
@@ -95,7 +94,7 @@ class FundamentalsSeeder extends Seeder
             ]);
         }
 
-        foreach($specificFundamentals as $id => $specificFundamental) {
+        foreach ($specificFundamentals as $id => $specificFundamental) {
             $model = SpecificFundamental::updateOrCreate([
                 'id' => $id,
             ], [
@@ -103,7 +102,7 @@ class FundamentalsSeeder extends Seeder
                 'user_id' => 1,
             ]);
 
-            foreach($specificFundamental['fundamental_id'] as $fundamentalId) {
+            foreach ($specificFundamental['fundamental_id'] as $fundamentalId) {
                 $model->fundamentals()->syncWithoutDetaching($fundamentalId);
             }
         }
