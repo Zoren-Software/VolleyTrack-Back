@@ -18,6 +18,12 @@ final class SpecificFundamentalMutation
         $specificFundamental->user_id = $args['user_id'];
         $specificFundamental->save();
 
+        //TODO - Adicionar o relacionamento com o Fundamento
+        // Testar esse codigo feito pelo Copilot
+
+        $fundamental = Fundamental::find($args['fundamental_id']);
+        $fundamental->specificFundamentals()->save($specificFundamental);
+
         return $specificFundamental;
     }
 
