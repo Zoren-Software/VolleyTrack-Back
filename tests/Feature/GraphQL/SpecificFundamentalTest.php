@@ -100,8 +100,6 @@ class SpecificFundamentalTest extends TestCase
      */
     public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $user = User::first();
-
         $this->checkPermission($permission, 'Técnico', 'create-specific-fundamental');
 
         $response = $this->graphQL(
