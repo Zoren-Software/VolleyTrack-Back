@@ -100,8 +100,6 @@ class FundamentalTest extends TestCase
      */
     public function test_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $user = User::first();
-
         $this->checkPermission($permission, 'Técnico', 'create-fundamental');
 
         $response = $this->graphQL(
