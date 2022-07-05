@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\SpecificFundamental;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class SpecificFundamentalMutation
 {
@@ -20,7 +21,7 @@ final class SpecificFundamentalMutation
         return $specificFundamental;
     }
 
-        /**
+    /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */

@@ -25,7 +25,7 @@ final class SpecificFundamentalCreateValidator extends Validator
         ];
     }
 
-        /**
+    /**
      * @return array<string, string>
      */
     public function messages(): array

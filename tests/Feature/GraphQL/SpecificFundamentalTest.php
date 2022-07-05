@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\GraphQL;
 
-use App\Models\Fundamental;
+use App\Models\SpecificFundamental;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
-class FundamentalTest extends TestCase
+class SpecificFundamentalTest extends TestCase
 {
     protected $graphql = true;
 
@@ -24,18 +24,18 @@ class FundamentalTest extends TestCase
     ];
 
     /**
-     * Listagem de todos os fundamentos.
+     * Listagem de todos os fundamentos especificos.
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_fundamentals_list()
+    public function test_specific_fundamentals_list()
     {
-        Fundamental::factory()->make()->save();
+        SpecificFundamental::factory()->make()->save();
 
         $response = $this->graphQL(
-            'fundamentals',
+            'specificFundamentals',
             [
                 'name' => '%%',
                 'first' => 10,
@@ -51,7 +51,7 @@ class FundamentalTest extends TestCase
 
         $response->assertJsonStructure([
             'data' => [
-                'fundamentals' => [
+                'specificFundamentals' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
                         '*' => $this->data
@@ -62,21 +62,21 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     * Listagem de um fundamento
+     * Listagem de um fundamento especifico.
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_fundamental_info()
+    public function test_specific_fundamental_info()
     {
-        $fundamental = Fundamental::factory()->make();
-        $fundamental->save();
+        $specificFundamental = SpecificFundamental::factory()->make();
+        $specificFundamental->save();
 
         $response = $this->graphQL(
             'fundamental',
             [
-                'id' => $fundamental->id,
+                'id' => $specificFundamental->id,
             ],
             $this->data,
             'query',
@@ -91,21 +91,21 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     * Método de criação de um fundamento.
+     * Método de criação de um fundamento especifico.
      *
-     * @dataProvider fundamentalCreateProvider
+     * @dataProvider specificFundamentalCreateProvider
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $user = User::first();
 
-        $this->checkPermission($permission, 'Técnico', 'create-fundamental');
+        $this->checkPermission($permission, 'Técnico', 'create-specific-fundamental');
 
         $response = $this->graphQL(
-            'fundamentalCreate',
+            'specificFundamentalCreate',
             $parameters,
             $this->data,
             'mutation',
@@ -124,15 +124,15 @@ class FundamentalTest extends TestCase
      *
      * @return Array
      */
-    public function fundamentalCreateProvider()
+    public function specificFundamentalCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
         $nameExistent = $faker->name;
-        $fundamentalCreate = ['fundamentalCreate'];
+        $specificFundamentalCreate = ['specificFundamentalCreate'];
 
         return [
-            'create fundamental, success' => [
+            'create specific fundamental, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -141,12 +141,12 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'fundamentalCreate' => $this->data,
+                        'specificFundamentalCreate' => $this->data,
                     ],
                 ],
                 'permission' => true,
             ],
-            'create fundamental without permission, expected error' => [
+            'create specific fundamental without permission, expected error' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
@@ -155,7 +155,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalCreate
+                    'data' => $specificFundamentalCreate
                 ],
                 'permission' => false,
             ],
@@ -165,10 +165,10 @@ class FundamentalTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'FundamentalCreate.name_unique',
+                'expected_message' => 'SpecificFundamentalCreate.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalCreate
+                    'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
             ],
@@ -178,10 +178,10 @@ class FundamentalTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'FundamentalCreate.name_required',
+                'expected_message' => 'SpecificFundamentalCreate.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalCreate
+                    'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
             ],
@@ -191,10 +191,10 @@ class FundamentalTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'FundamentalCreate.name_min',
+                'expected_message' => 'SpecificFundamentalCreate.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalCreate
+                    'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
             ],
@@ -202,30 +202,30 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     * Método de edição de um fundamento.
+     * Método de edição de um fundamento especifico.
      *
-     * @dataProvider fundamentalEditProvider
+     * @dataProvider specificFundamentalEditProvider
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_specific_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-fundamental');
+        $this->checkPermission($permission, 'Técnico', 'edit-specific-fundamental');
 
-        $fundamentalExist = Fundamental::factory()->make();
-        $fundamentalExist->save();
-        $fundamental = Fundamental::factory()->make();
-        $fundamental->save();
+        $specificFundamentalExist = SpecificFundamental::factory()->make();
+        $specificFundamentalExist->save();
+        $specificFundamental = SpecificFundamental::factory()->make();
+        $specificFundamental->save();
 
-        $parameters['id'] = $fundamental->id;
+        $parameters['id'] = $specificFundamental->id;
 
-        if ($expected_message == 'FundamentalEdit.name_unique') {
-            $parameters['name'] = $fundamentalExist->name;
+        if ($expected_message == 'SpecificFundamentalEdit.name_unique') {
+            $parameters['name'] = $specificFundamentalExist->name;
         }
 
         $response = $this->graphQL(
-            'fundamentalEdit',
+            'specificFundamentalEdit',
             $parameters,
             $this->data,
             'mutation',
@@ -244,14 +244,14 @@ class FundamentalTest extends TestCase
      *
      * @return Array
      */
-    public function fundamentalEditProvider()
+    public function specificFundamentalEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
-        $fundamentalEdit = ['fundamentalEdit'];
+        $fundamentalEdit = ['specificFundamentalEdit'];
 
         return [
-            'edit fundamental without permission, expected error' => [
+            'edit specific fundamental without permission, expected error' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
@@ -264,7 +264,7 @@ class FundamentalTest extends TestCase
                 ],
                 'permission' => false,
             ],
-            'edit fundamental, success' => [
+            'edit specific fundamental, success' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
@@ -273,7 +273,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'fundamentalEdit' => $this->data,
+                        'specificFundamentalEdit' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -283,7 +283,7 @@ class FundamentalTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'FundamentalEdit.name_unique',
+                'expected_message' => 'SpecificFundamentalEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit
@@ -296,7 +296,7 @@ class FundamentalTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'FundamentalEdit.name_required',
+                'expected_message' => 'SpecificFundamentalEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit
@@ -309,7 +309,7 @@ class FundamentalTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'FundamentalEdit.name_min',
+                'expected_message' => 'SpecificFundamentalEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit
