@@ -4,7 +4,6 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
-use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 

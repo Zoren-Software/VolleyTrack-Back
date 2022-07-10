@@ -23,7 +23,7 @@ final class SpecificFundamentalMutation
         }
 
         $specificFundamental->fundamentals;
-        
+
         return $specificFundamental;
     }
 
