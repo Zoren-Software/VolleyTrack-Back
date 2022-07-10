@@ -26,6 +26,10 @@ class SpecificFundamental extends Model
 
     public function fundamentals()
     {
-        return $this->belongsToMany(Fundamental::class)->withTimestamps()->withPivot('created_at', 'updated_at');
+        return $this->belongsToMany(Fundamental::class)
+            ->using(FundamentalsSpecificFundamentals::class)
+            ->as('fundamentals')
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
     }
 }

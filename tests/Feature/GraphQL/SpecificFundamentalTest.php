@@ -21,7 +21,7 @@ class SpecificFundamentalTest extends TestCase
         'name',
         'userId',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
     ];
 
     /**
@@ -99,9 +99,16 @@ class SpecificFundamentalTest extends TestCase
      *
      * @return void
      */
-    public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
         $this->checkPermission($permission, 'Técnico', 'create-specific-fundamental');
+
+        $fundamental = Fundamental::factory()->make();
+        $fundamental->save();
+
+        if ($addRelationship) {
+            $parameters['fundamentalId'] = $fundamental->id;
+        }
 
         $response = $this->graphQL(
             'specificFundamentalCreate',
@@ -131,7 +138,22 @@ class SpecificFundamentalTest extends TestCase
         $specificFundamentalCreate = ['specificFundamentalCreate'];
 
         return [
-            'create specific fundamental, success' => [
+            'create specific fundamental, with relationship, success' => [
+                [
+                    'name' => $faker->name,
+                    'userId' => $userId,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'specificFundamentalCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+                'add_relationship' => true,
+            ],
+            'create specific fundamental, no relationship, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -144,6 +166,7 @@ class SpecificFundamentalTest extends TestCase
                     ],
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'create specific fundamental without permission, expected error' => [
                 [
@@ -157,6 +180,7 @@ class SpecificFundamentalTest extends TestCase
                     'data' => $specificFundamentalCreate
                 ],
                 'permission' => false,
+                'add_relationship' => false,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -170,6 +194,7 @@ class SpecificFundamentalTest extends TestCase
                     'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'name field is required, expected error' => [
                 [
@@ -183,6 +208,7 @@ class SpecificFundamentalTest extends TestCase
                     'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -196,6 +222,7 @@ class SpecificFundamentalTest extends TestCase
                     'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
         ];
     }
@@ -208,7 +235,7 @@ class SpecificFundamentalTest extends TestCase
      *
      * @return void
      */
-    public function test_specific_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_specific_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
         $this->checkPermission($permission, 'Técnico', 'edit-specific-fundamental');
 
@@ -221,6 +248,13 @@ class SpecificFundamentalTest extends TestCase
 
         if ($expected_message == 'SpecificFundamentalEdit.name_unique') {
             $parameters['name'] = $specificFundamentalExist->name;
+        }
+
+        $fundamental = Fundamental::factory()->make();
+        $fundamental->save();
+
+        if ($addRelationship) {
+            $parameters['fundamentalId'] = $fundamental->id;
         }
 
         $response = $this->graphQL(
@@ -262,8 +296,9 @@ class SpecificFundamentalTest extends TestCase
                     'data' => $fundamentalEdit
                 ],
                 'permission' => false,
+                'add_relationship' => false,
             ],
-            'edit specific fundamental, success' => [
+            'edit specific fundamental, no relationship, success' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
@@ -276,6 +311,22 @@ class SpecificFundamentalTest extends TestCase
                     ],
                 ],
                 'permission' => true,
+                'add_relationship' => false,
+            ],
+            'edit specific fundamental, with relationship, success' => [
+                [
+                    'name' => $faker->name,
+                    'userId' => $userId,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'specificFundamentalEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+                'add_relationship' => true,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -288,6 +339,7 @@ class SpecificFundamentalTest extends TestCase
                     'data' => $fundamentalEdit
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'name field is required, expected error' => [
                 [
@@ -301,6 +353,7 @@ class SpecificFundamentalTest extends TestCase
                     'data' => $fundamentalEdit
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -314,6 +367,7 @@ class SpecificFundamentalTest extends TestCase
                     'data' => $fundamentalEdit
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
         ];
     }
