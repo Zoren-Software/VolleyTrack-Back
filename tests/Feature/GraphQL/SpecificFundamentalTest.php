@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
 use App\Models\User;
 use Faker\Factory as Faker;
@@ -74,7 +75,7 @@ class SpecificFundamentalTest extends TestCase
         $specificFundamental->save();
 
         $response = $this->graphQL(
-            'fundamental',
+            'specificFundamental',
             [
                 'id' => $specificFundamental->id,
             ],
@@ -85,7 +86,7 @@ class SpecificFundamentalTest extends TestCase
 
         $response->assertJsonStructure([
             'data' => [
-                'fundamental' => $this->data,
+                'specificFundamental' => $this->data,
             ],
         ])->assertStatus(200);
     }
