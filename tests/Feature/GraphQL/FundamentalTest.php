@@ -2,19 +2,17 @@
 
 namespace Tests\Feature\GraphQL;
 
-use App\Models\Team;
+use App\Models\Fundamental;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
-class TeamTest extends TestCase
+class FundamentalTest extends TestCase
 {
     protected $graphql = true;
 
     protected $tenancy = true;
 
     protected $login = true;
-
-    private $teamText = ' TEAM';
 
     private $data = [
         'id',
@@ -25,18 +23,18 @@ class TeamTest extends TestCase
     ];
 
     /**
-     * Listagem de todos os times.
+     * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_teams_list()
+    public function test_fundamentals_list()
     {
-        Team::factory()->make()->save();
+        Fundamental::factory()->make()->save();
 
         $response = $this->graphQL(
-            'teams',
+            'fundamentals',
             [
                 'name' => '%%',
                 'first' => 10,
@@ -52,7 +50,7 @@ class TeamTest extends TestCase
 
         $response->assertJsonStructure([
             'data' => [
-                'teams' => [
+                'fundamentals' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
                         '*' => $this->data
@@ -63,21 +61,21 @@ class TeamTest extends TestCase
     }
 
     /**
-     * Listagem de um time
+     * Listagem de um fundamento
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_info()
+    public function test_fundamental_info()
     {
-        $team = Team::factory()->make();
-        $team->save();
+        $fundamental = Fundamental::factory()->make();
+        $fundamental->save();
 
         $response = $this->graphQL(
-            'team',
+            'fundamental',
             [
-                'id' => $team->id,
+                'id' => $fundamental->id,
             ],
             $this->data,
             'query',
@@ -86,25 +84,25 @@ class TeamTest extends TestCase
 
         $response->assertJsonStructure([
             'data' => [
-                'team' => $this->data,
+                'fundamental' => $this->data,
             ],
         ])->assertStatus(200);
     }
 
     /**
-     * Método de criação de um time.
+     * Método de criação de um fundamento.
      *
-     * @dataProvider teamCreateProvider
+     * @dataProvider fundamentalCreateProvider
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-team');
+        $this->checkPermission($permission, 'Técnico', 'create-fundamental');
 
         $response = $this->graphQL(
-            'teamCreate',
+            'fundamentalCreate',
             $parameters,
             $this->data,
             'mutation',
@@ -123,28 +121,15 @@ class TeamTest extends TestCase
      *
      * @return Array
      */
-    public function teamCreateProvider()
+    public function fundamentalCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->teamText;
-        $teamCreate = ['teamCreate'];
+        $nameExistent = $faker->name;
+        $fundamentalCreate = ['fundamentalCreate'];
 
         return [
-            'create team without permission, expected error' => [
-                [
-                    'name' => $nameExistent,
-                    'userId' => $userId,
-                ],
-                'type_message_error' => false,
-                'expected_message' => false,
-                'expected' => [
-                    'errors' => $this->errors,
-                    'data' => $teamCreate
-                ],
-                'permission' => false,
-            ],
-            'create team, success' => [
+            'create fundamental, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -153,10 +138,23 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamCreate' => $this->data,
+                        'fundamentalCreate' => $this->data,
                     ],
                 ],
                 'permission' => true,
+            ],
+            'create fundamental without permission, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'userId' => $userId,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $fundamentalCreate
+                ],
+                'permission' => false,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -164,10 +162,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_unique',
+                'expected_message' => 'FundamentalCreate.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $fundamentalCreate
                 ],
                 'permission' => true,
             ],
@@ -177,10 +175,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_required',
+                'expected_message' => 'FundamentalCreate.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $fundamentalCreate
                 ],
                 'permission' => true,
             ],
@@ -190,10 +188,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_min',
+                'expected_message' => 'FundamentalCreate.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $fundamentalCreate
                 ],
                 'permission' => true,
             ],
@@ -201,30 +199,30 @@ class TeamTest extends TestCase
     }
 
     /**
-     * Método de edição de um time.
+     * Método de edição de um fundamento.
      *
-     * @dataProvider teamEditProvider
+     * @dataProvider fundamentalEditProvider
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-team');
+        $this->checkPermission($permission, 'Técnico', 'edit-fundamental');
 
-        $teamExist = Team::factory()->make();
-        $teamExist->save();
-        $team = Team::factory()->make();
-        $team->save();
+        $fundamentalExist = Fundamental::factory()->make();
+        $fundamentalExist->save();
+        $fundamental = Fundamental::factory()->make();
+        $fundamental->save();
 
-        $parameters['id'] = $team->id;
+        $parameters['id'] = $fundamental->id;
 
-        if ($expected_message == 'TeamEdit.name_unique') {
-            $parameters['name'] = $teamExist->name;
+        if ($expected_message == 'FundamentalEdit.name_unique') {
+            $parameters['name'] = $fundamentalExist->name;
         }
 
         $response = $this->graphQL(
-            'teamEdit',
+            'fundamentalEdit',
             $parameters,
             $this->data,
             'mutation',
@@ -243,36 +241,36 @@ class TeamTest extends TestCase
      *
      * @return Array
      */
-    public function teamEditProvider()
+    public function fundamentalEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
-        $teamEdit = ['teamEdit'];
+        $fundamentalEdit = ['fundamentalEdit'];
 
         return [
-            'edit team without permission, expected error' => [
+            'edit fundamental without permission, expected error' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $fundamentalEdit
                 ],
                 'permission' => false,
             ],
-            'edit team, success' => [
+            'edit fundamental, success' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamEdit' => $this->data,
+                        'fundamentalEdit' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -282,10 +280,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_unique',
+                'expected_message' => 'FundamentalEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $fundamentalEdit
                 ],
                 'permission' => true,
             ],
@@ -295,10 +293,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_required',
+                'expected_message' => 'FundamentalEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $fundamentalEdit
                 ],
                 'permission' => true,
             ],
@@ -308,10 +306,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_min',
+                'expected_message' => 'FundamentalEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $fundamentalEdit
                 ],
                 'permission' => true,
             ],

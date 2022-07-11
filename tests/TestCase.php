@@ -60,7 +60,8 @@ abstract class TestCase extends BaseTestCase
 
         if ($this->tenancy) {
             $this->initializeTenancy();
-            $this->tenantUrl = 'http://' . env('TENANT_TEST', 'test') . '.' . env('APP_HOST');
+            $protocol = env('APP_ENV') === 'local' ? 'http' : 'https';
+            $this->tenantUrl = $protocol . '://' . env('TENANT_TEST', 'test') . '.' . env('APP_HOST');
         }
 
         if ($this->graphql) {
