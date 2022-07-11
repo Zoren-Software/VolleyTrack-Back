@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\GraphQL;
 
-use App\Models\Team;
+use App\Models\Fundamental;
+use App\Models\SpecificFundamental;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
-class TeamTest extends TestCase
+class SpecificFundamentalTest extends TestCase
 {
     protected $graphql = true;
 
@@ -14,29 +15,27 @@ class TeamTest extends TestCase
 
     protected $login = true;
 
-    private $teamText = ' TEAM';
-
     private $data = [
         'id',
         'name',
         'userId',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
     ];
 
     /**
-     * Listagem de todos os times.
+     * Listagem de todos os fundamentos especificos.
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_teams_list()
+    public function test_specific_fundamentals_list()
     {
-        Team::factory()->make()->save();
+        SpecificFundamental::factory()->make()->save();
 
         $response = $this->graphQL(
-            'teams',
+            'specificFundamentals',
             [
                 'name' => '%%',
                 'first' => 10,
@@ -52,7 +51,7 @@ class TeamTest extends TestCase
 
         $response->assertJsonStructure([
             'data' => [
-                'teams' => [
+                'specificFundamentals' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
                         '*' => $this->data
@@ -63,21 +62,21 @@ class TeamTest extends TestCase
     }
 
     /**
-     * Listagem de um time
+     * Listagem de um fundamento especifico.
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_info()
+    public function test_specific_fundamental_info()
     {
-        $team = Team::factory()->make();
-        $team->save();
+        $specificFundamental = SpecificFundamental::factory()->make();
+        $specificFundamental->save();
 
         $response = $this->graphQL(
-            'team',
+            'specificFundamental',
             [
-                'id' => $team->id,
+                'id' => $specificFundamental->id,
             ],
             $this->data,
             'query',
@@ -86,25 +85,32 @@ class TeamTest extends TestCase
 
         $response->assertJsonStructure([
             'data' => [
-                'team' => $this->data,
+                'specificFundamental' => $this->data,
             ],
         ])->assertStatus(200);
     }
 
     /**
-     * Método de criação de um time.
+     * Método de criação de um fundamento especifico.
      *
-     * @dataProvider teamCreateProvider
+     * @dataProvider specificFundamentalCreateProvider
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-team');
+        $this->checkPermission($permission, 'Técnico', 'create-specific-fundamental');
+
+        $fundamental = Fundamental::factory()->make();
+        $fundamental->save();
+
+        if ($addRelationship) {
+            $parameters['fundamentalId'] = $fundamental->id;
+        }
 
         $response = $this->graphQL(
-            'teamCreate',
+            'specificFundamentalCreate',
             $parameters,
             $this->data,
             'mutation',
@@ -123,28 +129,30 @@ class TeamTest extends TestCase
      *
      * @return Array
      */
-    public function teamCreateProvider()
+    public function specificFundamentalCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->teamText;
-        $teamCreate = ['teamCreate'];
+        $nameExistent = $faker->name;
+        $specificFundamentalCreate = ['specificFundamentalCreate'];
 
         return [
-            'create team without permission, expected error' => [
+            'create specific fundamental, with relationship, success' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => [
+                        'specificFundamentalCreate' => $this->data,
+                    ],
                 ],
-                'permission' => false,
+                'permission' => true,
+                'add_relationship' => true,
             ],
-            'create team, success' => [
+            'create specific fundamental, no relationship, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -153,10 +161,25 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamCreate' => $this->data,
+                        'specificFundamentalCreate' => $this->data,
                     ],
                 ],
                 'permission' => true,
+                'add_relationship' => false,
+            ],
+            'create specific fundamental without permission, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'userId' => $userId,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $specificFundamentalCreate
+                ],
+                'permission' => false,
+                'add_relationship' => false,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -164,12 +187,13 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_unique',
+                'expected_message' => 'SpecificFundamentalCreate.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'name field is required, expected error' => [
                 [
@@ -177,12 +201,13 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_required',
+                'expected_message' => 'SpecificFundamentalCreate.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -190,41 +215,49 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_min',
+                'expected_message' => 'SpecificFundamentalCreate.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $specificFundamentalCreate
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
         ];
     }
 
     /**
-     * Método de edição de um time.
+     * Método de edição de um fundamento especifico.
      *
-     * @dataProvider teamEditProvider
+     * @dataProvider specificFundamentalEditProvider
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_specific_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-team');
+        $this->checkPermission($permission, 'Técnico', 'edit-specific-fundamental');
 
-        $teamExist = Team::factory()->make();
-        $teamExist->save();
-        $team = Team::factory()->make();
-        $team->save();
+        $specificFundamentalExist = SpecificFundamental::factory()->make();
+        $specificFundamentalExist->save();
+        $specificFundamental = SpecificFundamental::factory()->make();
+        $specificFundamental->save();
 
-        $parameters['id'] = $team->id;
+        $parameters['id'] = $specificFundamental->id;
 
-        if ($expected_message == 'TeamEdit.name_unique') {
-            $parameters['name'] = $teamExist->name;
+        if ($expected_message == 'SpecificFundamentalEdit.name_unique') {
+            $parameters['name'] = $specificFundamentalExist->name;
+        }
+
+        $fundamental = Fundamental::factory()->make();
+        $fundamental->save();
+
+        if ($addRelationship) {
+            $parameters['fundamentalId'] = $fundamental->id;
         }
 
         $response = $this->graphQL(
-            'teamEdit',
+            'specificFundamentalEdit',
             $parameters,
             $this->data,
             'mutation',
@@ -243,51 +276,69 @@ class TeamTest extends TestCase
      *
      * @return Array
      */
-    public function teamEditProvider()
+    public function specificFundamentalEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
-        $teamEdit = ['teamEdit'];
+        $fundamentalEdit = ['specificFundamentalEdit'];
 
         return [
-            'edit team without permission, expected error' => [
+            'edit specific fundamental without permission, expected error' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $fundamentalEdit
                 ],
                 'permission' => false,
+                'add_relationship' => false,
             ],
-            'edit team, success' => [
+            'edit specific fundamental, no relationship, success' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamEdit' => $this->data,
+                        'specificFundamentalEdit' => $this->data,
                     ],
                 ],
                 'permission' => true,
+                'add_relationship' => false,
+            ],
+            'edit specific fundamental, with relationship, success' => [
+                [
+                    'name' => $faker->name,
+                    'userId' => $userId,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'specificFundamentalEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+                'add_relationship' => true,
             ],
             'name field is not unique, expected error' => [
                 [
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_unique',
+                'expected_message' => 'SpecificFundamentalEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $fundamentalEdit
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'name field is required, expected error' => [
                 [
@@ -295,12 +346,13 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_required',
+                'expected_message' => 'SpecificFundamentalEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $fundamentalEdit
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -308,12 +360,13 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_min',
+                'expected_message' => 'SpecificFundamentalEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $fundamentalEdit
                 ],
                 'permission' => true,
+                'add_relationship' => false,
             ],
         ];
     }
