@@ -15,8 +15,9 @@ class DatabaseTenantSeeder extends Seeder
     {
         $this->call([
             UserTableSeeder::class,
-            PermissionSeeder::class,
-            FundamentalsSeeder::class,
+            PermissionTableSeeder::class,
+            FundamentalTableSeeder::class,
+            PositionTableSeeder::class,
         ]);
     }
 }

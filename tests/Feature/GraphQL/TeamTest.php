@@ -35,7 +35,7 @@ class TeamTest extends TestCase
     {
         Team::factory()->make()->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'teams',
             [
                 'name' => '%%',
@@ -48,9 +48,7 @@ class TeamTest extends TestCase
             ],
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'teams' => [
                     'paginatorInfo' => $this->paginatorInfo,
@@ -74,7 +72,7 @@ class TeamTest extends TestCase
         $team = Team::factory()->make();
         $team->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'team',
             [
                 'id' => $team->id,
@@ -82,9 +80,7 @@ class TeamTest extends TestCase
             $this->data,
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'team' => $this->data,
             ],

@@ -1,4 +1,4 @@
-extend type Query @guard {
+extend type Query {
     
     "Find a single position by an identifying attribute"
     position(

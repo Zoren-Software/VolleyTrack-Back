@@ -9,6 +9,9 @@ type User {
     "Unique email address."
     email: String!
 
+    "Positions."
+    positions: [Position] @belongsToMany(relation: "positions")
+
     "When the email was verified."
     emailVerifiedAt: DateTime @rename(attribute: "email_verified_at")
 

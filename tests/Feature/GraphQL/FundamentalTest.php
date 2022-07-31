@@ -33,7 +33,7 @@ class FundamentalTest extends TestCase
     {
         Fundamental::factory()->make()->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'fundamentals',
             [
                 'name' => '%%',
@@ -46,9 +46,7 @@ class FundamentalTest extends TestCase
             ],
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'fundamentals' => [
                     'paginatorInfo' => $this->paginatorInfo,
@@ -80,9 +78,7 @@ class FundamentalTest extends TestCase
             $this->data,
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'fundamental' => $this->data,
             ],

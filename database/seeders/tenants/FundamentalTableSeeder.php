@@ -6,7 +6,7 @@ use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
 use Illuminate\Database\Seeder;
 
-class FundamentalsSeeder extends Seeder
+class FundamentalTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

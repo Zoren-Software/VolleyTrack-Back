@@ -36,9 +36,7 @@ class RoleTest extends TestCase
             $this->data,
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'role' => $this->data,
             ],
@@ -56,7 +54,7 @@ class RoleTest extends TestCase
     {
         $this->login = true;
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'roles',
             [
                 'name' => '%%',
@@ -69,9 +67,7 @@ class RoleTest extends TestCase
             ],
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'roles' => [
                     'paginatorInfo' => $this->paginatorInfo,

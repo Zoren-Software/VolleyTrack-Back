@@ -42,9 +42,7 @@ class SanctumTest extends TestCase
             ['token'],
             'mutation',
             true
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'login' => [
                     'token'
@@ -62,7 +60,7 @@ class SanctumTest extends TestCase
     {
         $this->login = true;
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'logout',
             [
                 'status',
@@ -71,9 +69,7 @@ class SanctumTest extends TestCase
             [],
             'mutation',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'logout' => [
                     'status',
@@ -92,7 +88,7 @@ class SanctumTest extends TestCase
     {
         $faker = Faker::create();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'register',
             [
                 'name' => $faker->name,
@@ -103,9 +99,7 @@ class SanctumTest extends TestCase
             ['token', 'status'],
             'mutation',
             true
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'register' => [
                     'token',
@@ -122,7 +116,7 @@ class SanctumTest extends TestCase
      */
     public function test_resend_email_verification()
     {
-        $response = $this->graphQL(
+        $this->graphQL(
             'resendEmailVerification',
             [
                 'email' => $this->user->email,
@@ -130,9 +124,7 @@ class SanctumTest extends TestCase
             ['status'],
             'mutation',
             true
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'resendEmailVerification' => [
                     'status'
@@ -150,7 +142,7 @@ class SanctumTest extends TestCase
     {
         $this->login = true;
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'forgotPassword',
             [
                 'email' => $this->user->email,
@@ -158,9 +150,7 @@ class SanctumTest extends TestCase
             ['status', 'message'],
             'mutation',
             true
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'forgotPassword' => [
                     'status',
@@ -179,7 +169,7 @@ class SanctumTest extends TestCase
     {
         $this->login = true;
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'updatePassword',
             [
                 'current_password' => 'password',
@@ -189,9 +179,7 @@ class SanctumTest extends TestCase
             ['status'],
             'mutation',
             true
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'updatePassword' => [
                     'status'

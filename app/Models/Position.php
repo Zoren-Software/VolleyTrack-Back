@@ -16,4 +16,12 @@ class Position extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'positions_users')
+        ->using(PositionsUsers::class)
+        ->withTimestamps()
+        ->withPivot('created_at', 'updated_at');
+    }
 }

@@ -12,6 +12,9 @@ type Position {
     "User editing the position."
     user: User @belongsTo
 
+    "Users who are in the position."
+    users: [User] @belongsToMany(relation: "users")
+
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     createdAt: DateTime! @rename(attribute: "created_at")
     

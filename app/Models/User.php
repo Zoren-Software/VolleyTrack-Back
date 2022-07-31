@@ -56,4 +56,12 @@ class User extends Authenticatable implements HasApiTokensContract
         $namePermissions = auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray();
         return in_array($permission, $namePermissions);
     }
+
+    public function positions()
+    {
+        return $this->belongsToMany(Position::class, 'positions_users')
+            ->using(PositionsUsers::class)
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
+    }
 }
