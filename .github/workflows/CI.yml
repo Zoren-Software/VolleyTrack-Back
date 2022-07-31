@@ -26,6 +26,9 @@ jobs:
           run: composer update --no-ansi --no-interaction
             --no-progress
           
+        - name: Alter xml PHPUnit
+          run: rm -rf phpunit.xml && cp phpunit.xml.sonar phpunit.xml
+          
         - name: Run tests with phpunit/phpunit
           run: vendor/bin/phpunit
             --coverage-clover=coverage.xml
