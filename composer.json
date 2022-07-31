@@ -32,7 +32,7 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Database\\Seeders\\Tenant\\": "database/seeders/tenant/"
+            "Database\\Seeders\\Tenants\\": "database/seeders/tenants/"
         },
         "classmap": [
             "app/Helpers"

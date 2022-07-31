@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Tenants;
 
 use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
