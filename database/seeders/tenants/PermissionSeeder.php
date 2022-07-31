@@ -68,9 +68,21 @@ class PermissionSeeder extends Seeder
         $fundamental[] = Permission::updateOrCreate(['id' => 18], ['name' => 'list-specific-fundamental']);
         $fundamental[] = Permission::updateOrCreate(['id' => 19], ['name' => 'list-specifics-fundamental']);
 
+        /**
+         * Permissões de Fundamentos Especificos
+         */
+        $position[] = Permission::updateOrCreate(['id' => 20], ['name' => 'create-position']);
+        $position[] = Permission::updateOrCreate(['id' => 21], ['name' => 'edit-position']);
+        $position[] = Permission::updateOrCreate(['id' => 22], ['name' => 'list-position']);
+        $position[] = Permission::updateOrCreate(['id' => 23], ['name' => 'list-positions']);
+
+        /**
+         * Relacionando Permissões
+         */
         $this->sync($technician, $team);
         $this->sync($technician, $config);
         $this->sync($technician, $fundamental);
+        $this->sync($technician, $position);
 
         /**
          * Definir user como perfil de administrador

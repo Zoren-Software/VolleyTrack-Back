@@ -1,15 +1,15 @@
-"Fundamentals"
-type SpecificFundamental {
+"Positions"
+type Position {
     "Unique primary key."
     id: ID!
 
     "Unique name."
     name: String!
 
-    "UserId editing the fundamental."
+    "UserId editing the position."
     userId: Int @rename(attribute: "user_id")
     
-    "User editing the fundamental."
+    "User editing the position."
     user: User @belongsTo
 
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."

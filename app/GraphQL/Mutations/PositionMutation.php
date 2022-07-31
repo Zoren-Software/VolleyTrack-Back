@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Models\SpecificFundamental;
+use App\Models\Position;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class PositionMutation
