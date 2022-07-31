@@ -33,7 +33,7 @@ class PositionTest extends TestCase
     {
         Position::factory()->make()->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'positions',
             [
                 'name' => '%%',
@@ -70,7 +70,7 @@ class PositionTest extends TestCase
         $position = Position::factory()->make();
         $position->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'position',
             [
                 'id' => $position->id,
