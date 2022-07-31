@@ -28,7 +28,7 @@ class RoleTest extends TestCase
     {
         $this->login = true;
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'role',
             [
                 'id' => 2,
