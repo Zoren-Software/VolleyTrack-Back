@@ -241,7 +241,7 @@ class PositionTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 2;
-        $fundamentalEdit = ['positionEdit'];
+        $positionEdit = ['positionEdit'];
 
         return [
             'edit position without permission, expected error' => [
@@ -253,7 +253,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $positionEdit
                 ],
                 'permission' => false,
             ],
@@ -279,7 +279,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $positionEdit
                 ],
                 'permission' => true,
             ],
@@ -292,7 +292,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $positionEdit
                 ],
                 'permission' => true,
             ],
@@ -305,7 +305,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $positionEdit
                 ],
                 'permission' => true,
             ],
