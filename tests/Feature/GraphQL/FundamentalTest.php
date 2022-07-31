@@ -70,7 +70,7 @@ class FundamentalTest extends TestCase
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'fundamental',
             [
                 'id' => $fundamental->id,

@@ -33,7 +33,7 @@ class SanctumTest extends TestCase
         $user = User::factory()->make();
         $user->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'login',
             [
                 'email' => $user->email,
