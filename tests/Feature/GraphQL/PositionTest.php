@@ -46,9 +46,7 @@ class PositionTest extends TestCase
             ],
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'positions' => [
                     'paginatorInfo' => $this->paginatorInfo,
@@ -80,9 +78,7 @@ class PositionTest extends TestCase
             $this->data,
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'position' => $this->data,
             ],
