@@ -2,17 +2,51 @@
 
 namespace Tests\Unit\GraphQL;
 
+use App\GraphQL\Mutations\PositionMutation;
+use App\Models\Position;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use PHPUnit\Framework\TestCase;
 
 class PositionTest extends TestCase
 {
     /**
      * A basic unit test example.
-     *
      * @return void
      */
-    public function test_example()
+    public function test_position_create()
     {
-        $this->assertTrue(true);
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $position = $this->createMock(Position::class);
+
+        $positionMutation = new PositionMutation($position);
+
+        $position->expects($this->once())
+            ->method('save');
+
+        $positionMutation->create(null, [
+            'name' => 'Teste',
+            'user_id' => 1,
+        ], $graphQLContext);
+    }
+
+    /**
+     * A basic unit test example.
+     * @return void
+     */
+    public function test_position_edit()
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $position = $this->createMock(Position::class);
+
+        $positionMutation = new PositionMutation($position);
+
+        $position->expects($this->once())
+            ->method('save');
+
+        $positionMutation->edit(null, [
+            'id' => 1,
+            'name' => 'Teste',
+            'user_id' => 1,
+        ], $graphQLContext);
     }
 }
