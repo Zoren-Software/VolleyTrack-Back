@@ -18,11 +18,10 @@ class PositionTest extends TestCase
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $position = $this->createMock(Position::class);
 
-        $positionMutation = new PositionMutation($position);
-
         $position->expects($this->once())
-            ->method('save');
+        ->method('save');
 
+        $positionMutation = new PositionMutation($position);
         $positionMutation->create(null, [
             'name' => 'Teste',
             'user_id' => 1,
@@ -38,11 +37,10 @@ class PositionTest extends TestCase
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $position = $this->createMock(Position::class);
 
-        $positionMutation = new PositionMutation($position);
-
         $position->expects($this->once())
-            ->method('save');
+        ->method('save');
 
+        $positionMutation = new PositionMutation($position);
         $positionMutation->edit(null, [
             'id' => 1,
             'name' => 'Teste',
