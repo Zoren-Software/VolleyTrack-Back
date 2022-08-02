@@ -2,9 +2,11 @@
 
 namespace Tests;
 
+use App\Models\Domain;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Artisan;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
@@ -65,7 +67,9 @@ abstract class TestCase extends BaseTestCase
         }
 
         if ($this->graphql) {
-            $this->bootRefreshesSchemaCache();
+            // FIXME: This is a workaround to avoid the error:
+            // touch(): Unable to create file /var/www/html/vendor/nuwave/lighthouse/src/Testing/schema-cache-refreshing because Permission denied
+            //$this->bootRefreshesSchemaCache();
             $this->loginGraphQL();
         }
     }
@@ -74,10 +78,19 @@ abstract class TestCase extends BaseTestCase
     {
         $domain = env('TENANT_TEST', 'test');
 
+        Artisan::call('migrate --seed');
+
         if (!Tenant::find($domain)) {
             $tenant = Tenant::create(['id' => env('TENANT_TEST', 'test')]);
             $tenant->domains()->create(['domain' => env('TENANT_TEST', 'test') . '.' . env('APP_HOST')]);
             $domain = $tenant;
+        }
+
+        if (!Domain::whereDomain(env('TENANT_TEST', 'test') . '.' . env('APP_HOST'))->first()) {
+            Domain::create(['domain' => env('TENANT_TEST', 'test') . '.' . env('APP_HOST'), 'tenant_id' => env('TENANT_TEST', 'test')]);
+
+            Artisan::call('tenants:migrate --tenants=' . env('TENANT_TEST', 'test') . ' --path database/migrations/tenant/base');
+            Artisan::call('tenants:seed --tenants=' . env('TENANT_TEST', 'test'));
         }
 
         tenancy()->initialize($domain);
