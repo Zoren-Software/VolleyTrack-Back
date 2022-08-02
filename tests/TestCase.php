@@ -66,9 +66,7 @@ abstract class TestCase extends BaseTestCase
         }
 
         if ($this->graphql) {
-            // FIXME: This is a workaround to avoid the error:
-            // touch(): Unable to create file /var/www/html/vendor/nuwave/lighthouse/src/Testing/schema-cache-refreshing because Permission denied
-            //$this->bootRefreshesSchemaCache();
+            $this->bootRefreshesSchemaCache();
             $this->loginGraphQL();
         }
     }
