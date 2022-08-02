@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use App\Models\Domain;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -81,16 +80,11 @@ abstract class TestCase extends BaseTestCase
         Artisan::call('migrate --seed');
 
         if (!Tenant::find($domain)) {
-            $tenant = Tenant::create(['id' => env('TENANT_TEST', 'test')]);
-            $tenant->domains()->create(['domain' => env('TENANT_TEST', 'test') . '.' . env('APP_HOST')]);
-            $domain = $tenant;
-        }
+            $tenant = Tenant::create(['id' => $domain]);
+            $tenant->domains()->create(['domain' => $domain . '.' . env('APP_HOST')]);
 
-        if (!Domain::whereDomain(env('TENANT_TEST', 'test') . '.' . env('APP_HOST'))->first()) {
-            Domain::create(['domain' => env('TENANT_TEST', 'test') . '.' . env('APP_HOST'), 'tenant_id' => env('TENANT_TEST', 'test')]);
-
-            Artisan::call('tenants:migrate --tenants=' . env('TENANT_TEST', 'test') . ' --path database/migrations/tenant/base');
-            Artisan::call('tenants:seed --tenants=' . env('TENANT_TEST', 'test'));
+            Artisan::call('tenants:migrate --tenants=' . $domain . ' --path database/migrations/tenant/base');
+            Artisan::call('tenants:seed --tenants=' . $domain);
         }
 
         tenancy()->initialize($domain);
