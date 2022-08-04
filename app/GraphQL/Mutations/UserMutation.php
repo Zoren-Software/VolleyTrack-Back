@@ -22,7 +22,7 @@ final class UserMutation
         $this->user->name = $args['name'];
         $this->user->email = $args['email'];
         $this->user->password = $this->makePassword($args['password']);
-        dd($this->user->password);
+        //dd($this->user->password);
         $this->user->save();
 
         //$this->user->roles()->attach($args['roleId']);
