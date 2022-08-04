@@ -7,18 +7,22 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class TeamMutation
 {
+    public function __construct(Team $team)
+    {
+        $this->team = $team;
+    }
+
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $team = new Team();
-        $team->name = $args['name'];
-        $team->user_id = $args['user_id'];
-        $team->save();
+        $this->team->name = $args['name'];
+        $this->team->user_id = $args['user_id'];
+        $this->team->save();
 
-        return $team;
+        return $this->team;
     }
 
     /**
@@ -27,11 +31,11 @@ final class TeamMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $team = Team::find($args['id']);
-        $team->name = $args['name'];
-        $team->user_id = $args['user_id'];
-        $team->save();
+        $this->team->find($args['id']);
+        $this->team->name = $args['name'];
+        $this->team->user_id = $args['user_id'];
+        $this->team->save();
 
-        return $team;
+        return $this->team;
     }
 }

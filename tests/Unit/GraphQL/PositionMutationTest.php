@@ -7,7 +7,7 @@ use App\Models\Position;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use PHPUnit\Framework\TestCase;
 
-class PositionTest extends TestCase
+class PositionMutationTest extends TestCase
 {
     /**
      * A basic unit test example.
