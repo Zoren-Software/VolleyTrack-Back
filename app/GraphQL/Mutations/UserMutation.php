@@ -23,7 +23,7 @@ final class UserMutation
         $this->user->makePassword($args['password']);
         $this->user->save();
 
-        $this->user->roles()->attach($args['roleId']);
+        $this->user->roles()->syncWithoutDetaching($args['roleId']);
 
         return $this->user;
     }
@@ -40,7 +40,7 @@ final class UserMutation
         $this->user->makePassword($args['password']);
         $this->user->save();
 
-        $this->user->roles()->attach($args['roleId']);
+        $this->user->roles()->syncWithoutDetaching($args['roleId']);
 
         return $this->user;
     }
