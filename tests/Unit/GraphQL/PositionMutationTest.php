@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class PositionMutationTest extends TestCase
 {
     /**
-     * A basic unit test example.
+     * A basic unit position create.
      * @return void
      */
     public function test_position_create()
@@ -29,7 +29,7 @@ class PositionMutationTest extends TestCase
     }
 
     /**
-     * A basic unit test example.
+     * A basic unit position edit.
      * @return void
      */
     public function test_position_edit()
