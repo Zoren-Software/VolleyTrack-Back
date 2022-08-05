@@ -38,7 +38,7 @@ class UserMutationTest extends TestCase
         );
     }
 
-    private function createUserProvider()
+    public function createUserProvider()
     {
         return [
             'using method save' => [
@@ -82,7 +82,7 @@ class UserMutationTest extends TestCase
         );
     }
 
-    private function editUserProvider()
+    public function editUserProvider()
     {
         return [
             'using method makePassword' => [
