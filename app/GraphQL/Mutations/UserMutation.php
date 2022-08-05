@@ -3,7 +3,6 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class UserMutation
@@ -21,11 +20,10 @@ final class UserMutation
     {
         $this->user->name = $args['name'];
         $this->user->email = $args['email'];
-        $this->user->password = $this->makePassword($args['password']);
-        //dd($this->user->password);
+        $this->user->makePassword($args['password']);
         $this->user->save();
 
-        //$this->user->roles()->attach($args['roleId']);
+        $this->user->roles()->attach($args['roleId']);
 
         return $this->user;
     }
@@ -36,18 +34,14 @@ final class UserMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $args['password'] = Hash::make($args['password']);
+        $this->user->findOrFail($args['id']);
+        $this->user->name = $args['name'];
+        $this->user->email = $args['email'];
+        $this->user->makePassword($args['password']);
+        $this->user->save();
 
-        $user = User::findOrFail($args['id']);
-        $user->update($args);
+        $this->user->roles()->attach($args['roleId']);
 
-        $user->roles()->attach($args['roleId']);
-
-        return $user;
-    }
-
-    private function makePassword($password)
-    {
-        return Hash::make($password);
+        return $this->user;
     }
 }
