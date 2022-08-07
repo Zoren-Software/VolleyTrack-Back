@@ -3,6 +3,7 @@
 namespace Tests\Unit\GraphQL;
 
 use App\GraphQL\Mutations\SpecificFundamentalMutation;
+use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use PHPUnit\Framework\TestCase;
@@ -15,10 +16,12 @@ class SpecificFundamentalMutationTest extends TestCase
      * @dataProvider createSpecificFundamentalProvider
      * @return void
      */
-    public function test_create_specific_fundamental(array $data)
+    public function test_create_specific_fundamental(array $data, $fundamental): void
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $specificFundamental = $this->createMock(SpecificFundamental::class);
+
+        $specificFundamental->method('fundamentals')->willReturn($fundamental);
 
         $specificFundamental->expects($this->once())
             ->method('save');
@@ -27,7 +30,7 @@ class SpecificFundamentalMutationTest extends TestCase
         $specificFundamentalMutation->create(null, $data, $graphQLContext);
     }
 
-    public function createSpecificFundamentalProvider()
+    public function createSpecificFundamentalProvider(): array
     {
         return [
             'create using fundamental_id' => [
@@ -36,12 +39,14 @@ class SpecificFundamentalMutationTest extends TestCase
                     'user_id' => 1,
                     'fundamental_id' => [1],
                 ],
+                'fundamental' => $this->createMock(Fundamental::class),
             ],
             'create not using fundamental_id' => [
                 'data' => [
                     'name' => 'Teste',
                     'user_id' => 1,
                 ],
+                'fundamental' => null,
             ]
         ];
     }
@@ -52,10 +57,12 @@ class SpecificFundamentalMutationTest extends TestCase
      * @dataProvider editSpecificFundamentalProvider
      * @return void
      */
-    public function test_edit_specific_fundamental(array $data)
+    public function test_edit_specific_fundamental(array $data, $fundamental): void
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $specificFundamental = $this->createMock(SpecificFundamental::class);
+
+        $specificFundamental->method('fundamentals')->willReturn($fundamental);
 
         $specificFundamental->expects($this->once())
             ->method('save');
@@ -64,7 +71,7 @@ class SpecificFundamentalMutationTest extends TestCase
         $specificFundamentalMutation->edit(null, $data, $graphQLContext);
     }
 
-    public function editSpecificFundamentalProvider()
+    public function editSpecificFundamentalProvider(): array
     {
         return [
             'edit using fundamental_id' => [
@@ -74,6 +81,7 @@ class SpecificFundamentalMutationTest extends TestCase
                     'user_id' => 1,
                     'fundamental_id' => [1],
                 ],
+                'fundamental' => $this->createMock(Fundamental::class),
             ],
             'edit not using fundamental_id' => [
                 'data' => [
@@ -81,6 +89,7 @@ class SpecificFundamentalMutationTest extends TestCase
                     'name' => 'Teste',
                     'user_id' => 1,
                 ],
+                'fundamental' => null,
             ]
         ];
     }
