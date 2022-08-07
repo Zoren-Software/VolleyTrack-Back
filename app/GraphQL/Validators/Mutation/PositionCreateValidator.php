@@ -4,7 +4,7 @@ namespace App\GraphQL\Validators\Mutation;
 
 use Nuwave\Lighthouse\Validation\Validator;
 
-final class PositionCreateValidator extends Validator
+class PositionCreateValidator extends Validator
 {
     /**
      * Return the validation rules.
