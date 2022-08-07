@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\GraphQL;
+namespace Tests\Unit\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\SpecificFundamentalMutation;
 use App\Models\Fundamental;
