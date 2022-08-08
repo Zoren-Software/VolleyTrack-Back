@@ -28,7 +28,6 @@ class PositionEditValidatorTest extends TestCase
      */
     public function test_rules()
     {
-        // create a validator with the rules method and assert that it is an array of rules and that it is not empty 
         $args = new ArgumentSet();
         $args->toArray('id');
 
