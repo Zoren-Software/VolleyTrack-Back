@@ -9,8 +9,6 @@ class PositionPolicy
 {
     use HandlesAuthorization;
 
-    private $user;
-
     /**
      * Create a new policy instance.
      *
