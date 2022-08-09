@@ -20,11 +20,11 @@ class PositionPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
+            ->with('create-position')
             ->willReturn($expected);
 
-        $positionPolicy = new PositionPolicy($user);
-
-        $this->assertEquals($expected, $positionPolicy->create());
+        $positionPolicy = new PositionPolicy();
+        $positionPolicy->create($user);
     }
 
     public function createProvider(): array
@@ -51,11 +51,11 @@ class PositionPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
+            ->with('edit-position')
             ->willReturn($expected);
 
-        $positionPolicy = new PositionPolicy($user);
-
-        $this->assertEquals($expected, $positionPolicy->edit());
+        $positionPolicy = new PositionPolicy();
+        $positionPolicy->edit($user);
     }
 
     public function editProvider(): array

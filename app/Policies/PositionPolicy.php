@@ -8,26 +8,21 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class PositionPolicy
 {
     use HandlesAuthorization;
-    
+
     private $user;
-    
+
     /**
      * Create a new policy instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function create(User $user): bool
     {
-        $this->user = $user;
+        return $user->hasPermissionTo('create-position');
     }
 
-    public function create(): bool
+    public function edit(User $user): bool
     {
-        return $this->user->hasPermissionTo('create-position');
-    }
-
-    public function edit(): bool
-    {
-        return $this->user->hasPermissionTo('edit-position');
+        return $user->hasPermissionTo('edit-position');
     }
 }
