@@ -3,7 +3,8 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\User;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -14,8 +15,9 @@ class UserTest extends TestCase
      */
     public function test_make_password()
     {
-        $user = $this->createMock(User::class);
-        $user->method('makePassword')->willReturn('$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
-        $this->assertEquals('$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', $user->makePassword('123456'));
+        $password = 'password';
+        $user = new User();
+        $user->makePassword($password);
+        $this->assertTrue(Hash::check($password, $user->password));
     }
 }
