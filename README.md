@@ -1,10 +1,16 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="https://github.com/Zoren-Software/VoleiClub/actions/workflows/CI.yml"><img src="https://img.shields.io/github/workflow/status/Zoren-Software/VoleiClub/CI" alt="Build Status"></a>
+<a href="https://github.com/Zoren-Software/VoleiClub"><img src="https://img.shields.io/github/downloads/Zoren-Software/VoleiClub/total" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/Zoren-Software/VoleiClub" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/github/license/Zoren-Software/VoleiClub" alt="License"></a>
+<a href="https://sonarcloud.io/project/overview?id=Zoren-Software_VoleiClub"><img src="https://sonarcloud.io/api/project_badges/measure?project=Zoren-Software_VoleiClub&metric=alert_status" alt="Quality Gate"></a>
+<a href="https://sonarcloud.io/project/overview?id=Zoren-Software_VoleiClub"><img src="https://sonarcloud.io/api/project_badges/measure?project=Zoren-Software_VoleiClub&metric=coverage" alt="Coverage"></a>
+<a href="https://sonarcloud.io/project/overview?id=Zoren-Software_VoleiClub"><img src="https://sonarcloud.io/api/project_badges/measure?project=Zoren-Software_VoleiClub&metric=bugs" alt="Bugs"></a>
+<a href="https://sonarcloud.io/project/overview?id=Zoren-Software_VoleiClub"><img src="https://sonarcloud.io/api/project_badges/measure?project=Zoren-Software_VoleiClub&metric=sqale_index" alt="Technical Debt"></a>
+<a href="https://sonarcloud.io/project/overview?id=Zoren-Software_VoleiClub"><img src="https://sonarcloud.io/api/project_badges/measure?project=Zoren-Software_VoleiClub&metric=vulnerabilities" alt="Vulnerabilities"></a>
+
 </p>
 
 ## Sobre o Projeto
