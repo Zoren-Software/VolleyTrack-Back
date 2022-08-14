@@ -1,0 +1,18 @@
+extend type Query @guard {
+    
+    "Find a single fundamental by an identifying attribute"
+    fundamental(
+        id: ID!
+        @eq
+    ): Fundamental @find
+
+    "List multiple fundamentals."
+    fundamentals(
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+        
+        "Filters by the fundamental's user_id."
+        user_id: Int @where(operator: "eq", field: "user_id")
+
+    ): [Fundamental!]! @paginate(defaultCount: 10, maxCount: 100)
+}

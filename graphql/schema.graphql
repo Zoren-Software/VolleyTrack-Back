@@ -1,0 +1,7 @@
+#import user/*.graphql
+#import team/*.graphql
+#import sanctum/*.graphql
+#import role/*.graphql
+#import fundamental/*.graphql
+#import specific-fundamental/*.graphql
+#import position/*.graphql

@@ -3,7 +3,7 @@ version: '3'
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.1
+            context: ./docker/8.1
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -58,17 +58,28 @@ services:
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: planneranimal.phpmyadmin
         links:
           - mariadb:mariadb
         ports:
           - 8100:80
         environment:
-          MYSQL_USERNAME: "${DB01_USERNAME}"
-          MYSQL_ROOT_PASSWORD: "${DB01_PASSWORD}"
+          MYSQL_USERNAME: "${DB_USERNAME}"
+          MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
           PMA_HOST: mariadb
         networks:
           - sail
+    
+    portainer:
+        image: portainer/portainer-ce:latest
+        restart: unless-stopped
+        security_opt:
+        - no-new-privileges:true
+        volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+        - ./portainer-data:/data
+        ports:
+        - 9000:9000
 networks:
     sail:
         driver: bridge

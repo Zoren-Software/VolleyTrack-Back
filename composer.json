@@ -1,19 +1,26 @@
 {
-    "name": "laravel/laravel",
+    "name": "zoren-software/volei-club",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "API for VoleiClub project",
+    "version": "0.5.0",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "daniel-de-wit/lighthouse-sanctum": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
-        "laravel/sanctum": "^2.14.1",
+        "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.7",
+        "mll-lab/graphql-php-scalars": "^5.4",
+        "mll-lab/laravel-graphql-playground": "^2.6",
+        "nuwave/lighthouse": "^5.44",
+        "spatie/laravel-permission": "^5.5",
         "stancl/tenancy": "^3.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "friendsofphp/php-cs-fixer": "^3.8",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
@@ -24,10 +31,10 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Database\\Seeders\\Tenants\\": "database/seeders/tenants/"
         },
         "classmap": [
-            "database/seeders/tenants",
             "app/Helpers"
         ],
         "files": [
@@ -40,6 +47,9 @@
         }
     },
     "scripts": {
+        "check-style-hook": "php-cs-fixer fix --config='.php-cs-fixer.php' --diff --verbose --dry-run --stop-on-violation app/ config/ database/ routes/ tests/",
+        "check-style": "php-cs-fixer fix --config='.php-cs-fixer.php' --diff --verbose --dry-run app/ config/ database/ routes/ tests/",
+        "fix-style": "php-cs-fixer fix --config='.php-cs-fixer.php' app/ config/ database/ routes/ tests/",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

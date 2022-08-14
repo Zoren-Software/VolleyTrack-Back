@@ -1,0 +1,26 @@
+extend type Mutation {
+    login(input: LoginInput @spread): AccessToken!
+        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\Login")
+
+    logout: LogoutResponse! @guard
+        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\Logout")
+
+    # NOTE - Registrar por esta implementação, por enquanto será mantido
+    register(input: RegisterInput @spread): RegisterResponse!
+        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\Register")
+
+    verifyEmail(input: VerifyEmailInput! @spread): EmailVerificationResponse!
+        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\VerifyEmail")
+
+    resendEmailVerification(input: ResendEmailVerificationInput! @spread): ResendEmailVerificationResponse!
+        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\ResendEmailVerification")
+
+    forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse!
+        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\ForgotPassword")
+
+    resetPassword(input: ResetPasswordInput! @spread): ResetPasswordResponse!
+        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\ResetPassword")
+
+    updatePassword(input: UpdatePasswordInput! @spread): UpdatePasswordResponse! @guard
+        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\UpdatePassword")
+}

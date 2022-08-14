@@ -1,0 +1,51 @@
+input LoginInput {
+    email: String! @rules(apply: ["email"])
+    password: String!
+}
+
+input VerifyEmailInput {
+    id: ID!
+    hash: String!
+    expires: Int
+    signature: String
+}
+
+input ResendEmailVerificationInput {
+    email: String! @rules(apply: ["email"])
+    verification_url: VerificationUrlInput
+}
+
+input RegisterInput {
+    name: String!
+    email: String! @rules(apply: ["bail", "email", "unique:users,email"])
+    password: String! @rules(apply: ["confirmed"])
+    password_confirmation: String!
+    verification_url: VerificationUrlInput
+}
+
+input VerificationUrlInput {
+    url: String! @rules(apply: ["url"])
+}
+
+
+input ForgotPasswordInput {
+    email: String! @rules(apply: ["email"])
+    reset_password_url: ResetPasswordUrlInput
+}
+
+input ResetPasswordUrlInput {
+    url: String! @rules(apply: ["url"])
+}
+
+input ResetPasswordInput {
+    email: String! @rules(apply: ["email"])
+    token: String!
+    password: String! @rules(apply: ["confirmed"])
+    password_confirmation: String!
+}
+
+input UpdatePasswordInput {
+    current_password: String!
+    password: String! @rules(apply: ["confirmed"])
+    password_confirmation: String!
+}

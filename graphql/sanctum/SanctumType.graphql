@@ -1,0 +1,35 @@
+
+type AccessToken {
+    token: String!
+}
+
+type LogoutResponse {
+    status: LogoutStatus!
+    message: String!
+}
+
+type RegisterResponse {
+    token: String
+    status: RegisterStatus!
+}
+type EmailVerificationResponse {
+    status: EmailVerificationStatus!
+}
+
+type ResendEmailVerificationResponse {
+    status: ResendEmailVerificationStatus!
+}
+
+type ForgotPasswordResponse {
+    status: ForgotPasswordStatus!
+    message: String
+}
+
+type ResetPasswordResponse {
+    status: ResetPasswordStatus!
+    message: String
+}
+
+type UpdatePasswordResponse {
+    status: UpdatePasswordStatus!
+}
