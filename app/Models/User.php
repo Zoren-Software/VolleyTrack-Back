@@ -69,4 +69,9 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         $this->password = Hash::make($password);
     }
+
+    public function hasPermissionRole(String $namePermission): bool
+    {
+        return $this->hasPermissionsViaRoles($namePermission, auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray());
+    }
 }

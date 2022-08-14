@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use Spatie\Permission\Models\Permission;
 
 class UserTest extends TestCase
 {
@@ -75,5 +76,27 @@ class UserTest extends TestCase
                 'expected' => false,
             ],
         ];
+    }
+
+    /**
+     * A basic unit test hasPermissionRole.
+     * 
+     * @return void
+     */
+    public function test_has_permission_role()
+    {
+        $userMock = $this->createMock(User::class);
+        $permissionMock = $this->createMock(Permission::class);
+
+        $userMock
+            ->expects($this->once())
+            ->method('getPermissionsViaRoles')
+            ->willReturn(collect([$permissionMock]));
+        
+        $this->be($userMock);
+
+        $user = new User();
+        $user->hasPermissionRole('list-role-administrador');
+
     }
 }
