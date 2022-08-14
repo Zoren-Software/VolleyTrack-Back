@@ -18,6 +18,12 @@ class TenancyServiceProvider extends ServiceProvider
     // By default, no namespace is used to support the callable array syntax.
     public static string $controllerNamespace = '';
 
+    /**
+     * Register any application services.
+     *
+     * @codeCoverageIgnore
+     * @return void
+     */
     public function events()
     {
         return [
