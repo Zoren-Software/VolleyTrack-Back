@@ -9,16 +9,6 @@ class SpecificFundamentalPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function create(User $user): bool
     {
         return $user->hasPermissionTo('create-specific-fundamental');
