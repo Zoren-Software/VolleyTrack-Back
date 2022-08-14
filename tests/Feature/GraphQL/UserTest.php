@@ -36,7 +36,7 @@ class UserTest extends TestCase
 
         User::factory()->make()->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'users',
             [
                 'name' => '%%',
@@ -49,9 +49,7 @@ class UserTest extends TestCase
             ],
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'users' => [
                     'paginatorInfo' => $this->paginatorInfo,
@@ -77,7 +75,7 @@ class UserTest extends TestCase
         $user = User::factory()->make();
         $user->save();
 
-        $response = $this->graphQL(
+        $this->graphQL(
             'user',
             [
                 'id' => $user->id,
@@ -85,9 +83,7 @@ class UserTest extends TestCase
             $this->data,
             'query',
             false
-        );
-
-        $response->assertJsonStructure([
+        )->assertJsonStructure([
             'data' => [
                 'user' => $this->data,
             ],

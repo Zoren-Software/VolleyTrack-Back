@@ -2,6 +2,7 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
+    "version": "0.3.0",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
@@ -30,11 +31,10 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Database\\Seeders\\Tenants\\": "database/seeders/tenants/"
         },
         "classmap": [
-            "database/seeders/",
-            "database/seeders/tenants/",
             "app/Helpers"
         ],
         "files": [

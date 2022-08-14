@@ -2,19 +2,17 @@
 
 namespace Tests\Feature\GraphQL;
 
-use App\Models\Team;
+use App\Models\Position;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
-class TeamTest extends TestCase
+class PositionTest extends TestCase
 {
     protected $graphql = true;
 
     protected $tenancy = true;
 
     protected $login = true;
-
-    private $teamText = ' TEAM';
 
     private $data = [
         'id',
@@ -25,18 +23,18 @@ class TeamTest extends TestCase
     ];
 
     /**
-     * Listagem de todos os times.
+     * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_teams_list()
+    public function test_positions_list()
     {
-        Team::factory()->make()->save();
+        Position::factory()->make()->save();
 
         $this->graphQL(
-            'teams',
+            'positions',
             [
                 'name' => '%%',
                 'first' => 10,
@@ -50,7 +48,7 @@ class TeamTest extends TestCase
             false
         )->assertJsonStructure([
             'data' => [
-                'teams' => [
+                'positions' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
                         '*' => $this->data
@@ -61,46 +59,46 @@ class TeamTest extends TestCase
     }
 
     /**
-     * Listagem de um time
+     * Listagem de um fundamento
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_info()
+    public function test_position_info()
     {
-        $team = Team::factory()->make();
-        $team->save();
+        $position = Position::factory()->make();
+        $position->save();
 
         $this->graphQL(
-            'team',
+            'position',
             [
-                'id' => $team->id,
+                'id' => $position->id,
             ],
             $this->data,
             'query',
             false
         )->assertJsonStructure([
             'data' => [
-                'team' => $this->data,
+                'position' => $this->data,
             ],
         ])->assertStatus(200);
     }
 
     /**
-     * Método de criação de um time.
+     * Método de criação de um fundamento.
      *
-     * @dataProvider teamCreateProvider
+     * @dataProvider positionCreateProvider
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_position_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-team');
+        $this->checkPermission($permission, 'Técnico', 'create-position');
 
         $response = $this->graphQL(
-            'teamCreate',
+            'positionCreate',
             $parameters,
             $this->data,
             'mutation',
@@ -119,28 +117,15 @@ class TeamTest extends TestCase
      *
      * @return Array
      */
-    public function teamCreateProvider()
+    public function positionCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->teamText;
-        $teamCreate = ['teamCreate'];
+        $nameExistent = $faker->name;
+        $positionCreate = ['positionCreate'];
 
         return [
-            'create team without permission, expected error' => [
-                [
-                    'name' => $nameExistent,
-                    'userId' => $userId,
-                ],
-                'type_message_error' => false,
-                'expected_message' => false,
-                'expected' => [
-                    'errors' => $this->errors,
-                    'data' => $teamCreate
-                ],
-                'permission' => false,
-            ],
-            'create team, success' => [
+            'create position, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -149,10 +134,23 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamCreate' => $this->data,
+                        'positionCreate' => $this->data,
                     ],
                 ],
                 'permission' => true,
+            ],
+            'create position without permission, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'userId' => $userId,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $positionCreate
+                ],
+                'permission' => false,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -160,10 +158,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_unique',
+                'expected_message' => 'PositionCreate.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $positionCreate
                 ],
                 'permission' => true,
             ],
@@ -173,10 +171,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_required',
+                'expected_message' => 'PositionCreate.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $positionCreate
                 ],
                 'permission' => true,
             ],
@@ -186,10 +184,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_min',
+                'expected_message' => 'PositionCreate.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $positionCreate
                 ],
                 'permission' => true,
             ],
@@ -197,30 +195,30 @@ class TeamTest extends TestCase
     }
 
     /**
-     * Método de edição de um time.
+     * Método de edição de um fundamento.
      *
-     * @dataProvider teamEditProvider
+     * @dataProvider positionEditProvider
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function test_position_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-team');
+        $this->checkPermission($permission, 'Técnico', 'edit-position');
 
-        $teamExist = Team::factory()->make();
-        $teamExist->save();
-        $team = Team::factory()->make();
-        $team->save();
+        $positionExist = Position::factory()->make();
+        $positionExist->save();
+        $position = Position::factory()->make();
+        $position->save();
 
-        $parameters['id'] = $team->id;
+        $parameters['id'] = $position->id;
 
-        if ($expected_message == 'TeamEdit.name_unique') {
-            $parameters['name'] = $teamExist->name;
+        if ($expected_message == 'PositionEdit.name_unique') {
+            $parameters['name'] = $positionExist->name;
         }
 
         $response = $this->graphQL(
-            'teamEdit',
+            'positionEdit',
             $parameters,
             $this->data,
             'mutation',
@@ -239,36 +237,36 @@ class TeamTest extends TestCase
      *
      * @return Array
      */
-    public function teamEditProvider()
+    public function positionEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
-        $teamEdit = ['teamEdit'];
+        $positionEdit = ['positionEdit'];
 
         return [
-            'edit team without permission, expected error' => [
+            'edit position without permission, expected error' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => 'This action is unauthorized.',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $positionEdit
                 ],
                 'permission' => false,
             ],
-            'edit team, success' => [
+            'edit position, success' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamEdit' => $this->data,
+                        'positionEdit' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -278,10 +276,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_unique',
+                'expected_message' => 'PositionEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $positionEdit
                 ],
                 'permission' => true,
             ],
@@ -291,10 +289,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_required',
+                'expected_message' => 'PositionEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $positionEdit
                 ],
                 'permission' => true,
             ],
@@ -304,10 +302,10 @@ class TeamTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_min',
+                'expected_message' => 'PositionEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $positionEdit
                 ],
                 'permission' => true,
             ],

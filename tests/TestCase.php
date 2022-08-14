@@ -5,6 +5,7 @@ namespace Tests;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Artisan;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
@@ -74,10 +75,14 @@ abstract class TestCase extends BaseTestCase
     {
         $domain = env('TENANT_TEST', 'test');
 
+        Artisan::call('migrate --seed');
+
         if (!Tenant::find($domain)) {
-            $tenant = Tenant::create(['id' => env('TENANT_TEST', 'test')]);
-            $tenant->domains()->create(['domain' => env('TENANT_TEST', 'test') . '.' . env('APP_HOST')]);
-            $domain = $tenant;
+            $tenant = Tenant::create(['id' => $domain]);
+            $tenant->domains()->create(['domain' => $domain . '.' . env('APP_HOST')]);
+
+            Artisan::call('tenants:migrate --tenants=' . $domain . ' --path database/migrations/tenant/base');
+            Artisan::call('tenants:seed --tenants=' . $domain);
         }
 
         tenancy()->initialize($domain);

@@ -2,24 +2,30 @@
 
 namespace App\GraphQL\Mutations;
 
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class UserMutation
+final class UserMutation
 {
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $args['password'] = Hash::make($args['password']);
+        $this->user->name = $args['name'];
+        $this->user->email = $args['email'];
+        $this->user->makePassword($args['password']);
+        $this->user->save();
 
-        $user = \App\Models\User::create($args);
+        $this->user->roles()->syncWithoutDetaching($args['roleId']);
 
-        $user->roles()->attach($args['roleId']);
-
-        return $user;
+        return $this->user;
     }
 
     /**
@@ -28,13 +34,14 @@ class UserMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $args['password'] = Hash::make($args['password']);
+        $this->user->findOrFail($args['id']);
+        $this->user->name = $args['name'];
+        $this->user->email = $args['email'];
+        $this->user->makePassword($args['password']);
+        $this->user->save();
 
-        $user = \App\Models\User::findOrFail($args['id']);
-        $user->update($args);
+        $this->user->roles()->syncWithoutDetaching($args['roleId']);
 
-        $user->roles()->attach($args['roleId']);
-
-        return $user;
+        return $this->user;
     }
 }

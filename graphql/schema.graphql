@@ -4,3 +4,4 @@
 #import role/*.graphql
 #import fundamental/*.graphql
 #import specific-fundamental/*.graphql
+#import position/*.graphql

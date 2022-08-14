@@ -58,7 +58,6 @@ services:
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: voleiclub.phpmyadmin
         links:
           - mariadb:mariadb
         ports:
@@ -69,6 +68,18 @@ services:
           PMA_HOST: mariadb
         networks:
           - sail
+    
+    portainer:
+        image: portainer/portainer-ce:latest
+        restart: unless-stopped
+        security_opt:
+        - no-new-privileges:true
+        volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+        - ./portainer-data:/data
+        ports:
+        - 9000:9000
 networks:
     sail:
         driver: bridge
