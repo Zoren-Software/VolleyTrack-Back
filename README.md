@@ -4,7 +4,7 @@
 <a href="https://github.com/Zoren-Software/VoleiClub/actions/workflows/CI.yml"><img src="https://img.shields.io/github/workflow/status/Zoren-Software/VoleiClub/CI" alt="Build Status"></a>
 <a href="https://github.com/Zoren-Software/VoleiClub"><img src="https://img.shields.io/github/downloads/Zoren-Software/VoleiClub/total" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/zoren-software/volei-club"><img src="https://img.shields.io/packagist/v/zoren-software/volei-club" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/zoren-software/volei-club"><img src="https://img.shields.io/github/license/Zoren-Software/VoleiClub" alt="License"></a>
+<a href="https://packagist.org/packages/zoren-software/volei-club"><img src="https://img.shields.io/packagist/l/Zoren-Software/Volei-Club" alt="License"></a>
 <a href="https://sonarcloud.io/project/overview?id=Zoren-Software_VoleiClub"><img src="https://sonarcloud.io/api/project_badges/measure?project=Zoren-Software_VoleiClub&metric=alert_status" alt="Quality Gate"></a>
 <a href="https://sonarcloud.io/project/overview?id=Zoren-Software_VoleiClub"><img src="https://sonarcloud.io/api/project_badges/measure?project=Zoren-Software_VoleiClub&metric=coverage" alt="Coverage"></a>
 <a href="https://sonarcloud.io/project/overview?id=Zoren-Software_VoleiClub"><img src="https://sonarcloud.io/api/project_badges/measure?project=Zoren-Software_VoleiClub&metric=bugs" alt="Bugs"></a>
