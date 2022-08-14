@@ -22,7 +22,7 @@ class Role extends SpatieRole
              * verify if auth()->user() has permission in role for list-role-administrador
              * if not, remove role id 1 from query (Administrador)
              */
-            $builder->when(!auth()->user()->hasPermissionRole('list-role-administrador'), function (Builder $builder) {
+            return $builder->when(!auth()->user()->hasPermissionRole('list-role-administrador'), function (Builder $builder) {
                 $builder->whereNot('id', 1);
             })
 
@@ -40,8 +40,6 @@ class Role extends SpatieRole
             ->when(!auth()->user()->hasPermissionRole('list-role-player'), function (Builder $builder) {
                 $builder->whereNot('id', 3);
             });
-
-            return $builder;
         });
     }
 }
