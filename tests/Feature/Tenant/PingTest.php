@@ -4,7 +4,7 @@ namespace Tests\Feature\Tenant;
 
 use Tests\TestCase;
 
-class TestExemple extends TestCase
+class PingTest extends TestCase
 {
     protected $tenancy = true;
 

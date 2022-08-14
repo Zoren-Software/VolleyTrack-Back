@@ -7,24 +7,28 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class SpecificFundamentalMutation
 {
+    public function __construct(SpecificFundamental $specificFundamental)
+    {
+        $this->specificFundamental = $specificFundamental;
+    }
+
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $specificFundamental = new SpecificFundamental();
-        $specificFundamental->name = $args['name'];
-        $specificFundamental->user_id = $args['user_id'];
-        $specificFundamental->save();
+        $this->specificFundamental->name = $args['name'];
+        $this->specificFundamental->user_id = $args['user_id'];
+        $this->specificFundamental->save();
 
-        if (isset($args['fundamental_id'])) {
-            $specificFundamental->fundamentals()->attach($args['fundamental_id']);
+        if (isset($args['fundamental_id']) && $this->specificFundamental->fundamentals()) {
+            $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
         }
 
-        $specificFundamental->fundamentals;
+        $this->specificFundamental->fundamentals;
 
-        return $specificFundamental;
+        return $this->specificFundamental;
     }
 
     /**
@@ -33,15 +37,15 @@ final class SpecificFundamentalMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $specificFundamental = SpecificFundamental::find($args['id']);
-        $specificFundamental->name = $args['name'];
-        $specificFundamental->user_id = $args['user_id'];
-        $specificFundamental->save();
+        $this->specificFundamental->find($args['id']);
+        $this->specificFundamental->name = $args['name'];
+        $this->specificFundamental->user_id = $args['user_id'];
+        $this->specificFundamental->save();
 
-        if (isset($args['fundamental_id'])) {
-            $specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
+        if (isset($args['fundamental_id']) && $this->specificFundamental->fundamentals()) {
+            $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
         }
 
-        return $specificFundamental;
+        return $this->specificFundamental;
     }
 }

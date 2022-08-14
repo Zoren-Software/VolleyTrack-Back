@@ -7,18 +7,22 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class FundamentalMutation
 {
+    public function __construct(Fundamental $fundamental)
+    {
+        $this->fundamental = $fundamental;
+    }
+
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $fundamental = new Fundamental();
-        $fundamental->name = $args['name'];
-        $fundamental->user_id = $args['user_id'];
-        $fundamental->save();
+        $this->fundamental->name = $args['name'];
+        $this->fundamental->user_id = $args['user_id'];
+        $this->fundamental->save();
 
-        return $fundamental;
+        return $this->fundamental;
     }
 
     /**
@@ -27,11 +31,11 @@ final class FundamentalMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $fundamental = Fundamental::find($args['id']);
-        $fundamental->name = $args['name'];
-        $fundamental->user_id = $args['user_id'];
-        $fundamental->save();
+        $this->fundamental->findOrFail($args['id']);
+        $this->fundamental->name = $args['name'];
+        $this->fundamental->user_id = $args['user_id'];
+        $this->fundamental->save();
 
-        return $fundamental;
+        return $this->fundamental;
     }
 }

@@ -1,19 +1,19 @@
-"Account of a person who utilizes this application."
-type User {
+"Positions"
+type Position {
     "Unique primary key."
     id: ID!
 
-    "Non-unique name."
+    "Unique name."
     name: String!
 
-    "Unique email address."
-    email: String!
+    "UserId editing the position."
+    userId: Int @rename(attribute: "user_id")
+    
+    "User editing the position."
+    user: User @belongsTo
 
-    "Positions."
-    positions: [Position] @belongsToMany(relation: "positions")
-
-    "When the email was verified."
-    emailVerifiedAt: DateTime @rename(attribute: "email_verified_at")
+    "Users who are in the position."
+    users: [User] @belongsToMany(relation: "users")
 
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     createdAt: DateTime! @rename(attribute: "created_at")

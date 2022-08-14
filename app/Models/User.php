@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -51,9 +52,26 @@ class User extends Authenticatable implements HasApiTokensContract
 
     protected $guard_name = 'sanctum';
 
-    public function hasPermissionsViaRoles(String $permission): bool
+    public function hasPermissionsViaRoles(String $NamePermission, array $permissions): bool
     {
-        $namePermissions = auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray();
-        return in_array($permission, $namePermissions);
+        return in_array($NamePermission, $permissions);
+    }
+
+    public function positions()
+    {
+        return $this->belongsToMany(Position::class, 'positions_users')
+            ->using(PositionsUsers::class)
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
+    }
+
+    public function makePassword($password)
+    {
+        $this->password = Hash::make($password);
+    }
+
+    public function hasPermissionRole(String $namePermission): bool
+    {
+        return $this->hasPermissionsViaRoles($namePermission, auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray());
     }
 }

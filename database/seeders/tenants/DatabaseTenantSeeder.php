@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Tenants;
 
 use Illuminate\Database\Seeder;
 
@@ -15,8 +15,9 @@ class DatabaseTenantSeeder extends Seeder
     {
         $this->call([
             UserTableSeeder::class,
-            PermissionSeeder::class,
-            FundamentalsSeeder::class,
+            PermissionTableSeeder::class,
+            FundamentalTableSeeder::class,
+            PositionTableSeeder::class,
         ]);
     }
 }
