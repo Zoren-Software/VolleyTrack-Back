@@ -1,6 +1,6 @@
 Close/Resolve/Fix #2323
 
-> - [ ] Lembrete: Em hotfix'es ajustar o package.json com a versão
+> - [ ] Lembrete: Ajustar o composer.json com a versão
 
 ### O que?
 Explique as mudanças que você fez.
