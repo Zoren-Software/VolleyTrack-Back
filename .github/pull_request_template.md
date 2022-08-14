@@ -1,7 +1,3 @@
-Close/Resolve/Fix #2323
-
-> - [ ] Lembrete: Em hotfix'es ajustar o package.json com a versão
-
 ### O que?
 Explique as mudanças que você fez.
 Não precisa ser sofisticado e você não precisa chegar ao nível técnico ainda.
@@ -26,6 +22,5 @@ Mudanças de layout requerem uma "visualização" com uma ou mais capturas de te
 se necessário, use "anotações" nas imagens para indicar as mudanças.
 
 ### Verificações
-- [ ] HOTFIX Verificar versão no PACKAGE.JSON
+- [ ] Lembrete: Ajustar o `composer.json` com a versão.
 
-> Caso o item de verificação não fizer sentido apague-o.
