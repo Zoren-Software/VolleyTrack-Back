@@ -118,6 +118,10 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return void
+     */
     protected function mapRoutes()
     {
         if (file_exists(base_path('routes/tenant.php'))) {
