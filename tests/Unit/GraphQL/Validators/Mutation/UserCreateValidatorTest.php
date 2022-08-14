@@ -6,7 +6,6 @@ use App\GraphQL\Validators\Mutation\UserCreateValidator;
 use Nuwave\Lighthouse\Execution\Arguments\ArgumentSet;
 use Tests\TestCase;
 
-
 class UserCreateValidatorTest extends TestCase
 {
     /**
@@ -21,7 +20,6 @@ class UserCreateValidatorTest extends TestCase
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
     }
-
 
     /**
      * A basic unit test rules.
