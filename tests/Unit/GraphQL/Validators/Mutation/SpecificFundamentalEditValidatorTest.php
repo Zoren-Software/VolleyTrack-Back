@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\GraphQL\Validators\Mutation;
 
-use App\GraphQL\Validators\Mutation\PositionEditValidator;
+use App\GraphQL\Validators\Mutation\SpecificFundamentalEditValidator;
 use Nuwave\Lighthouse\Execution\Arguments\ArgumentSet;
 use Tests\TestCase;
 
-class PositionEditValidatorTest extends TestCase
+class SpecificFundamentalEditValidatorTest extends TestCase
 {
     /**
      * A basic unit test messages.
@@ -15,7 +15,7 @@ class PositionEditValidatorTest extends TestCase
      */
     public function test_messages()
     {
-        $validator = new PositionEditValidator();
+        $validator = new SpecificFundamentalEditValidator();
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
@@ -31,7 +31,7 @@ class PositionEditValidatorTest extends TestCase
         $args = new ArgumentSet();
         $args->toArray('id');
 
-        $validator = new PositionEditValidator();
+        $validator = new SpecificFundamentalEditValidator();
         $validator->setArgs($args);
 
         $this->assertIsArray($validator->rules());

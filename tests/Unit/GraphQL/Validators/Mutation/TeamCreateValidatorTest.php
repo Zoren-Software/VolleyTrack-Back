@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\GraphQL\Validators\Mutation;
 
-use App\GraphQL\Validators\Mutation\PositionCreateValidator;
+use App\GraphQL\Validators\Mutation\TeamCreateValidator;
 use Tests\TestCase;
 
-class PositionCreateValidatorTest extends TestCase
+class TeamCreateValidatorTest extends TestCase
 {
     /**
      * A basic unit test messages.
@@ -14,7 +14,7 @@ class PositionCreateValidatorTest extends TestCase
      */
     public function test_messages()
     {
-        $validator = new PositionCreateValidator();
+        $validator = new TeamCreateValidator();
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());

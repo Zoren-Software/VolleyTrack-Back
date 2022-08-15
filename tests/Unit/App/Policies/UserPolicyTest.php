@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\App\Policies;
 
-use App\Models\User;
-use App\Policies\PositionPolicy;
 use Tests\TestCase;
+use App\Policies\UserPolicy;
+use App\Models\User;
 
-class PositionPolicyTest extends TestCase
+class UserPolicyTest extends TestCase
 {
     /**
      * A basic unit test create.
@@ -20,11 +20,11 @@ class PositionPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('create-position')
+            ->with('create-user')
             ->willReturn($expected);
 
-        $positionPolicy = new PositionPolicy();
-        $positionPolicy->create($user);
+        $userPolicy = new UserPolicy();
+        $userPolicy->create($user);
     }
 
     public function createProvider(): array
@@ -51,11 +51,11 @@ class PositionPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('edit-position')
+            ->with('edit-user')
             ->willReturn($expected);
 
-        $positionPolicy = new PositionPolicy();
-        $positionPolicy->edit($user);
+        $userPolicy = new UserPolicy();
+        $userPolicy->edit($user);
     }
 
     public function editProvider(): array

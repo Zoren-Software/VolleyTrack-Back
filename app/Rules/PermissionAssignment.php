@@ -20,6 +20,7 @@ class PermissionAssignment implements ImplicitRule
     /**
      * Determine if the validation rule passes.
      *
+     * @codeCoverageIgnore
      * @param  string  $attribute
      * @param  mixed  $value
      * @return bool
