@@ -24,8 +24,8 @@ class Fundamental extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function specificFundamentals()
+    public function specificFundamental()
     {
-        return $this->hasMany(SpecificFundamental::class)->withTimestamps()->withPivot('created_at', 'updated_at');
+        return $this->hasMany(SpecificFundamental::class);
     }
 }
