@@ -12,7 +12,7 @@ class Role extends SpatieRole
 
     /**
     * The "booted" method of the model.
-    *
+    * @codeCoverageIgnore
     * @return void
     */
     protected static function booted()

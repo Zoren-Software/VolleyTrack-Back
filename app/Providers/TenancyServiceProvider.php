@@ -18,6 +18,12 @@ class TenancyServiceProvider extends ServiceProvider
     // By default, no namespace is used to support the callable array syntax.
     public static string $controllerNamespace = '';
 
+    /**
+     * Register any application services.
+     *
+     * @codeCoverageIgnore
+     * @return void
+     */
     public function events()
     {
         return [
@@ -118,6 +124,10 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return void
+     */
     protected function mapRoutes()
     {
         if (file_exists(base_path('routes/tenant.php'))) {
