@@ -44,4 +44,14 @@ final class UserMutation
 
         return $this->user;
     }
+
+    /**
+     * @param  null  $_
+     * @param  array<string, mixed>  $args
+     */
+    public function delete($rootValue, array $args, GraphQLContext $context)
+    {
+        $this->user->findOrFail($args['id']);
+        $this->user->delete();
+    }
 }
