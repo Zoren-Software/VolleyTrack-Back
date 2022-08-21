@@ -96,4 +96,27 @@ class UserMutationTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * A basic unit test in delete user.
+     *
+     * @return void
+     */
+    public function test_user_delete()
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $user = $this->createMock(User::class);
+
+        $user->expects($this->once())
+            ->method('delete');
+
+        $userMutation = new UserMutation($user);
+        $userMutation->delete(
+            null,
+            [
+                'id' => 1,
+            ],
+            $graphQLContext
+        );
+    }
 }
