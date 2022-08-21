@@ -51,7 +51,9 @@ final class UserMutation
      */
     public function delete($rootValue, array $args, GraphQLContext $context)
     {
-        $this->user->findOrFail($args['id']);
-        $this->user->delete();
+        foreach ($args['id'] as $id) {
+            $this->user->findOrFail($id);
+            $this->user->delete();
+        }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\App\Policies;
 
-use Tests\TestCase;
-use App\Policies\TeamPolicy;
 use App\Models\User;
+use App\Policies\TeamPolicy;
+use Tests\TestCase;
 
 class TeamPolicyTest extends TestCase
 {

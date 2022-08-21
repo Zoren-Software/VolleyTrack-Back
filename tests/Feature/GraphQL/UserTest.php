@@ -538,4 +538,100 @@ class UserTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * Método de deletar um usuário.
+     *
+     * @dataProvider userDeleteProvider
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function testDeleteUser($data, $type_message_error, $expected_message, $expected, $permission)
+    {
+        $this->login = true;
+
+        $this->checkPermission($permission, 'Técnico', 'delete-user');
+
+        $user = User::factory()->make();
+        $user->save();
+
+        $parameters['id'] = $user->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
+        $response = $this->graphQL(
+            'userDelete',
+            $parameters,
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
+        if ($type_message_error) {
+            if (!$permission) {
+                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
+            } else {
+                if (isset($response->json()['errors'][0]['extensions']['validation'])) {
+                    $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+                } else {
+                    $this->assertSame($response->json()['errors'][0]['extensions']['category'], trans($expected_message));
+                }
+            }
+        }
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     *
+     * @return Array
+     */
+    public function userDeleteProvider()
+    {
+        $faker = Faker::create();
+
+        $userDelete = ['userDelete'];
+
+        return [
+            'delete a user, success' => [
+                ['error' => null],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => $userDelete
+                ],
+                'permission' => true,
+            ],
+            'delete user without permission, expected error' => [
+                ['error' => null],
+                'type_message_error' => 'message',
+                'expected_message' => 'This action is unauthorized.',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $userDelete
+                ],
+                'permission' => false,
+            ],
+            'delete user that does not exist, expected error' => [
+                [
+                    'error' => 9999
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $userDelete
+                ],
+                'permission' => true,
+            ],
+        ];
+    }
 }

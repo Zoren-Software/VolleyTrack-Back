@@ -280,7 +280,11 @@ abstract class TestCase extends BaseTestCase
             if (!$permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
-                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+                if (isset($response->json()['errors'][0]['extensions']['validation'])) {
+                    $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+                } else {
+                    $this->assertSame($response->json()['errors'][0]['extensions']['category'], trans($expected_message));
+                }
             }
         }
     }

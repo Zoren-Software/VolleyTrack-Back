@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\App\Rules;
 
-use Tests\TestCase;
 use App\Rules\PermissionAssignment;
+use Tests\TestCase;
 
 class PermissionAssignmentTest extends TestCase
 {
@@ -15,6 +15,6 @@ class PermissionAssignmentTest extends TestCase
     public function test_message()
     {
         $permissionAssignment = new PermissionAssignment();
-        $this->assertIsString( $permissionAssignment->message());
+        $this->assertIsString($permissionAssignment->message());
     }
 }
