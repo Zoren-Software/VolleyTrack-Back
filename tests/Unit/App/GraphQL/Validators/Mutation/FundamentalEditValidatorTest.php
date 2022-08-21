@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\GraphQL\Validators\Mutation;
+namespace Tests\Unit\App\GraphQL\Validators\Mutation;
 
-use App\GraphQL\Validators\Mutation\TeamEditValidator;
+use App\GraphQL\Validators\Mutation\FundamentalEditValidator;
 use Nuwave\Lighthouse\Execution\Arguments\ArgumentSet;
 use Tests\TestCase;
 
-class TeamEditValidatorTest extends TestCase
+class FundamentalEditValidatorTest extends TestCase
 {
     /**
      * A basic unit test messages.
@@ -15,7 +15,7 @@ class TeamEditValidatorTest extends TestCase
      */
     public function test_messages()
     {
-        $validator = new TeamEditValidator();
+        $validator = new FundamentalEditValidator();
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
@@ -31,7 +31,7 @@ class TeamEditValidatorTest extends TestCase
         $args = new ArgumentSet();
         $args->toArray('id');
 
-        $validator = new TeamEditValidator();
+        $validator = new FundamentalEditValidator();
         $validator->setArgs($args);
 
         $this->assertIsArray($validator->rules());

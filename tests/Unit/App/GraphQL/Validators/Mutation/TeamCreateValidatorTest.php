@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\GraphQL\Validators\Mutation;
+namespace Tests\Unit\App\GraphQL\Validators\Mutation;
 
 use App\GraphQL\Validators\Mutation\TeamCreateValidator;
 use Tests\TestCase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\GraphQL\Mutations;
+namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\TeamMutation;
 use App\Models\Team;
