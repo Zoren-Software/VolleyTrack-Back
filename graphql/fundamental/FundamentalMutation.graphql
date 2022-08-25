@@ -4,16 +4,20 @@ extend type Mutation @guard {
         name: String!
         userId: Int! @rename(attribute: "user_id") 
     ): Fundamental
-    @field(resolver: "FundamentalMutation@create") 
-    @validator
-    @can(ability: "create")
+        @field(resolver: "FundamentalMutation@create") 
+        @validator
+        @can(ability: "create")
 
     fundamentalEdit(
         id: Int!
         name: String!
         userId: Int! @rename(attribute: "user_id") 
     ): Fundamental
-    @field(resolver: "FundamentalMutation@edit") 
-    @validator
-    @can(ability: "edit")
+        @field(resolver: "FundamentalMutation@edit") 
+        @validator
+        @can(ability: "edit")
+
+    fundamentalDelete(id: [ID!]!): Fundamental
+        @field(resolver: "FundamentalMutation@delete")
+        @can(ability: "delete")
 }

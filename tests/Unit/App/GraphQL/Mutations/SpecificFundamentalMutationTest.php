@@ -93,4 +93,49 @@ class SpecificFundamentalMutationTest extends TestCase
             ]
         ];
     }
+
+    /**
+     * A basic unit test in delete specificFundamental.
+     * @dataProvider specificFundamentalDeleteProvider
+     *
+     * @return void
+     */
+    public function test_specific_fundamental_delete($data, $number, $expected)
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $specificFundamental = $this->createMock(SpecificFundamental::class);
+
+        $specificFundamental->expects($this->exactly($number))
+            ->method('delete');
+
+        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
+        $specificFundamentalMutation->delete(
+            null,
+            [
+                'id' => $data,
+            ],
+            $graphQLContext
+        );
+    }
+
+    public function specificFundamentalDeleteProvider()
+    {
+        return [
+            'send array, success' => [
+                [1],
+                1,
+                ''
+            ],
+            'send multiple itens in array, success' => [
+                [1, 2, 3],
+                3,
+                ''
+            ],
+            'send empty array, success' => [
+                [],
+                0,
+                ''
+            ]
+        ];
+    }
 }

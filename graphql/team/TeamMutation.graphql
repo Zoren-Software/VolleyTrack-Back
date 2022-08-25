@@ -4,16 +4,20 @@ extend type Mutation @guard {
         name: String!
         userId: Int! @rename(attribute: "user_id") 
     ): Team
-    @field(resolver: "TeamMutation@create") 
-    @validator
-    @can(ability: "create")
+        @field(resolver: "TeamMutation@create") 
+        @validator
+        @can(ability: "create") 
 
     teamEdit(
         id: Int!
         name: String!
         userId: Int! @rename(attribute: "user_id") 
     ): Team
-    @field(resolver: "TeamMutation@edit") 
-    @validator
-    @can(ability: "edit")
+        @field(resolver: "TeamMutation@edit") 
+        @validator
+        @can(ability: "edit")
+
+    teamDelete(id: [ID!]!): Team
+        @field(resolver: "TeamMutation@delete")
+        @can(ability: "delete")
 }

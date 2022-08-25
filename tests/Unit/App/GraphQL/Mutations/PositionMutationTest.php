@@ -47,4 +47,49 @@ class PositionMutationTest extends TestCase
             'user_id' => 1,
         ], $graphQLContext);
     }
+
+    /**
+     * A basic unit test in delete position.
+     * @dataProvider positionDeleteProvider
+     *
+     * @return void
+     */
+    public function test_position_delete($data, $number, $expected)
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $position = $this->createMock(Position::class);
+
+        $position->expects($this->exactly($number))
+            ->method('delete');
+
+        $positionMutation = new PositionMutation($position);
+        $positionMutation->delete(
+            null,
+            [
+                'id' => $data,
+            ],
+            $graphQLContext
+        );
+    }
+
+    public function positionDeleteProvider()
+    {
+        return [
+            'send array, success' => [
+                [1],
+                1,
+                ''
+            ],
+            'send multiple itens in array, success' => [
+                [1, 2, 3],
+                3,
+                ''
+            ],
+            'send empty array, success' => [
+                [],
+                0,
+                ''
+            ]
+        ];
+    }
 }
