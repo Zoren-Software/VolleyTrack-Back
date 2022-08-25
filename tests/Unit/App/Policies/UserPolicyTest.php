@@ -69,4 +69,35 @@ class UserPolicyTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * A basic unit test delete.
+     *
+     * @dataProvider deleteProvider
+     *
+     * @return void
+     */
+    public function test_delete(bool $expected): void
+    {
+        $user = $this->createMock(User::class);
+        $user->expects($this->once())
+            ->method('hasPermissionTo')
+            ->with('delete-user')
+            ->willReturn($expected);
+
+        $userPolicy = new UserPolicy();
+        $userPolicy->delete($user);
+    }
+
+    public function deleteProvider(): array
+    {
+        return [
+            'when permission allows' => [
+                true,
+            ],
+            'when permission does not allow' => [
+                false
+            ],
+        ];
+    }
 }
