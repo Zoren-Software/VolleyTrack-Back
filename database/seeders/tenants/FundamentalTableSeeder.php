@@ -82,7 +82,7 @@ class FundamentalTableSeeder extends Seeder
             13 => [
                 'name' => 'Defesa do Fundo - 6',
                 'fundamental_id' => [6],
-            ]
+            ],
         ];
 
         foreach ($fundamentals as $id => $fundamental) {

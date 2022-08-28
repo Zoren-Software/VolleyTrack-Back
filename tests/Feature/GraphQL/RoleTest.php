@@ -14,7 +14,7 @@ class RoleTest extends TestCase
         'id',
         'name',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
     ];
 
     /**
@@ -72,8 +72,8 @@ class RoleTest extends TestCase
                 'roles' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => $this->data
-                    ]
+                        '*' => $this->data,
+                    ],
                 ],
             ],
         ])->assertStatus(200);

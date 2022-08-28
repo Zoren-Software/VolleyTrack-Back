@@ -13,9 +13,7 @@ use Spatie\Permission\Models\Role;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-
     use MakesGraphQLRequests;
-
     use RefreshesSchemaCache;
 
     protected $tenancy = false;
@@ -40,7 +38,7 @@ abstract class TestCase extends BaseTestCase
         'lastItem',
         'lastPage',
         'perPage',
-        'total'
+        'total',
     ];
 
     protected $errors = [
@@ -49,8 +47,8 @@ abstract class TestCase extends BaseTestCase
             'locations',
             'extensions',
             'path',
-            'trace'
-        ]
+            'trace',
+        ],
     ];
 
     protected $unauthorized = 'This action is unauthorized.';
@@ -79,7 +77,7 @@ abstract class TestCase extends BaseTestCase
 
         Artisan::call('migrate --seed');
 
-        if (!Tenant::find($domain)) {
+        if (! Tenant::find($domain)) {
             $tenant = Tenant::create(['id' => $domain]);
             $tenant->domains()->create(['domain' => $domain . '.' . env('APP_HOST')]);
 
@@ -90,19 +88,19 @@ abstract class TestCase extends BaseTestCase
         tenancy()->initialize($domain);
     }
 
-    public function graphQL(String $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, String $type = 'query', Bool $input, Bool $parametrosEntrada = false): object
+    public function graphQL(string $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, string $type, bool $input, bool $parametrosEntrada = false): object
     {
         $objectString = $this->converteDadosEmStringGraphQL($nomeQueryGraphQL, $dadosEntrada, $dadosSaida, $input, $type, $parametrosEntrada);
 
         switch ($type) {
             case 'mutation':
                 $post = [
-                    'query' => "mutation { $objectString }"
+                    'query' => "mutation { $objectString }",
                 ];
                 break;
             case 'query':
                 $post = [
-                    'query' => " { $objectString }"
+                    'query' => " { $objectString }",
 
                 ];
                 break;
@@ -153,7 +151,7 @@ abstract class TestCase extends BaseTestCase
         $this->token = $response->json()['data']['login']['token'];
     }
 
-    private function converteDadosEmStringGraphQL(String $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, $input, $type, Bool $parametrosEntrada): String
+    private function converteDadosEmStringGraphQL(string $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, $input, $type, bool $parametrosEntrada): string
     {
         if ($input) {
             $inputOpen = '( input: {';
@@ -213,7 +211,7 @@ abstract class TestCase extends BaseTestCase
         return $query;
     }
 
-    private function converteDadosArrayEntrada(String $key, array $value): String
+    private function converteDadosArrayEntrada(string $key, array $value): string
     {
         $stringValue = '';
 
@@ -232,42 +230,44 @@ abstract class TestCase extends BaseTestCase
         return $stringValue;
     }
 
-    private function converteDadosString(String $query, $key, $value, Bool $input, String $type, Bool $receberComoParametro): String
+    private function converteDadosString(string $query, $key, $value, bool $input, string $type, bool $receberComoParametro): string
     {
         if ($input || $type == 'query') {
             if (is_int($value)) {
                 return $key . ': ' . $value . ' ';
             }
+
             return $key . ': ' . '"' . $value . '" ';
         } elseif ($receberComoParametro) {
             if (is_int($value)) {
                 return $key . ': ' . $value . ' ';
             }
+
             return $key . ': ' . '"' . $value . '" ';
         }
+
         return $value . ' ';
     }
 
-    private function addPermissionToUser(String $permission, String $role): void
+    private function addPermissionToUser(string $permission, string $role): void
     {
         $role = Role::where('name', $role)->first();
         $role->givePermissionTo($permission);
     }
 
-    private function removePermissionToUser(String $permission, String $role): void
+    private function removePermissionToUser(string $permission, string $role): void
     {
         $role = Role::where('name', $role)->first();
         $role->revokePermissionTo($permission);
     }
 
     /**
-     * @param bool $permission - true para adicionar, false para remover
-     * @param String $role - nome do role
-     * @param String $namePermission - nome do permission
-     *
+     * @param  bool  $permission - true para adicionar, false para remover
+     * @param  string  $role - nome do role
+     * @param  string  $namePermission - nome do permission
      * @return void
      */
-    public function checkPermission(bool $permission, String $role, String $namePermission): void
+    public function checkPermission(bool $permission, string $role, string $namePermission): void
     {
         if ($permission) {
             $this->addPermissionToUser($namePermission, $role);
@@ -279,7 +279,7 @@ abstract class TestCase extends BaseTestCase
     public function assertMessageError($type_message_error, $response, bool $permission, $expected_message)
     {
         if ($type_message_error) {
-            if (!$permission) {
+            if (! $permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
                 if (isset($response->json()['errors'][0]['extensions'])) {
@@ -302,7 +302,7 @@ abstract class TestCase extends BaseTestCase
                 true,
             ],
             'when permission does not allow' => [
-                false
+                false,
             ],
         ];
     }

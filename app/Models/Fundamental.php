@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Fundamental extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
 
     protected $fillable = [
@@ -31,6 +30,7 @@ class Fundamental extends Model
 
     /**
      * @codeCoverageIgnore
+     *
      * @return Fundamental
      */
     public function deleteFundamental(int $id): Fundamental

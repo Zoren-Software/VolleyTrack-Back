@@ -14,13 +14,9 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements HasApiTokensContract
 {
     use HasApiTokens;
-
     use HasFactory;
-
     use Notifiable;
-
     use HasRoles;
-
     use SoftDeletes;
 
     /**
@@ -55,7 +51,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     protected $guard_name = 'sanctum';
 
-    public function hasPermissionsViaRoles(String $NamePermission, array $permissions): bool
+    public function hasPermissionsViaRoles(string $NamePermission, array $permissions): bool
     {
         return in_array($NamePermission, $permissions);
     }
@@ -73,13 +69,14 @@ class User extends Authenticatable implements HasApiTokensContract
         $this->password = Hash::make($password);
     }
 
-    public function hasPermissionRole(String $namePermission): bool
+    public function hasPermissionRole(string $namePermission): bool
     {
         return $this->hasPermissionsViaRoles($namePermission, auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray());
     }
 
     /**
      * @codeCoverageIgnore
+     *
      * @return User
      */
     public function deleteUser(int $id): User

@@ -21,7 +21,7 @@ class TeamTest extends TestCase
         'name',
         'userId',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
     ];
 
     /**
@@ -53,8 +53,8 @@ class TeamTest extends TestCase
                 'teams' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => $this->data
-                    ]
+                        '*' => $this->data,
+                    ],
                 ],
             ],
         ])->assertStatus(200);
@@ -91,6 +91,7 @@ class TeamTest extends TestCase
      * Método de criação de um time.
      *
      * @dataProvider teamCreateProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -116,8 +117,7 @@ class TeamTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function teamCreateProvider()
     {
@@ -136,7 +136,7 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $teamCreate,
                 ],
                 'permission' => false,
             ],
@@ -163,7 +163,7 @@ class TeamTest extends TestCase
                 'expected_message' => 'TeamCreate.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $teamCreate,
                 ],
                 'permission' => true,
             ],
@@ -176,7 +176,7 @@ class TeamTest extends TestCase
                 'expected_message' => 'TeamCreate.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $teamCreate,
                 ],
                 'permission' => true,
             ],
@@ -189,7 +189,7 @@ class TeamTest extends TestCase
                 'expected_message' => 'TeamCreate.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate
+                    'data' => $teamCreate,
                 ],
                 'permission' => true,
             ],
@@ -200,6 +200,7 @@ class TeamTest extends TestCase
      * Método de edição de um time.
      *
      * @dataProvider teamEditProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -236,8 +237,7 @@ class TeamTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function teamEditProvider()
     {
@@ -255,7 +255,7 @@ class TeamTest extends TestCase
                 'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $teamEdit,
                 ],
                 'permission' => false,
             ],
@@ -281,7 +281,7 @@ class TeamTest extends TestCase
                 'expected_message' => 'TeamEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $teamEdit,
                 ],
                 'permission' => true,
             ],
@@ -294,7 +294,7 @@ class TeamTest extends TestCase
                 'expected_message' => 'TeamEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $teamEdit,
                 ],
                 'permission' => true,
             ],
@@ -307,7 +307,7 @@ class TeamTest extends TestCase
                 'expected_message' => 'TeamEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamEdit
+                    'data' => $teamEdit,
                 ],
                 'permission' => true,
             ],

@@ -19,7 +19,7 @@ class PositionTest extends TestCase
         'name',
         'userId',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
     ];
 
     /**
@@ -51,8 +51,8 @@ class PositionTest extends TestCase
                 'positions' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => $this->data
-                    ]
+                        '*' => $this->data,
+                    ],
                 ],
             ],
         ])->assertStatus(200);
@@ -89,6 +89,7 @@ class PositionTest extends TestCase
      * Método de criação de um fundamento.
      *
      * @dataProvider positionCreateProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -114,8 +115,7 @@ class PositionTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function positionCreateProvider()
     {
@@ -148,7 +148,7 @@ class PositionTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $positionCreate
+                    'data' => $positionCreate,
                 ],
                 'permission' => false,
             ],
@@ -161,7 +161,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionCreate.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $positionCreate
+                    'data' => $positionCreate,
                 ],
                 'permission' => true,
             ],
@@ -174,7 +174,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionCreate.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $positionCreate
+                    'data' => $positionCreate,
                 ],
                 'permission' => true,
             ],
@@ -187,7 +187,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionCreate.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $positionCreate
+                    'data' => $positionCreate,
                 ],
                 'permission' => true,
             ],
@@ -198,6 +198,7 @@ class PositionTest extends TestCase
      * Método de edição de um fundamento.
      *
      * @dataProvider positionEditProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -234,8 +235,7 @@ class PositionTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function positionEditProvider()
     {
@@ -253,7 +253,7 @@ class PositionTest extends TestCase
                 'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $positionEdit
+                    'data' => $positionEdit,
                 ],
                 'permission' => false,
             ],
@@ -279,7 +279,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $positionEdit
+                    'data' => $positionEdit,
                 ],
                 'permission' => true,
             ],
@@ -292,7 +292,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $positionEdit
+                    'data' => $positionEdit,
                 ],
                 'permission' => true,
             ],
@@ -305,7 +305,7 @@ class PositionTest extends TestCase
                 'expected_message' => 'PositionEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $positionEdit
+                    'data' => $positionEdit,
                 ],
                 'permission' => true,
             ],

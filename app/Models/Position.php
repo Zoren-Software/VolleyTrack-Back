@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Position extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
 
     public function user()
@@ -27,6 +26,7 @@ class Position extends Model
 
     /**
      * @codeCoverageIgnore
+     *
      * @return Position
      */
     public function deletePosition(int $id): Position
