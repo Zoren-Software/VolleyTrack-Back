@@ -54,13 +54,14 @@ class PositionMutationTest extends TestCase
      *
      * @return void
      */
-    public function test_position_delete($data, $number, $expected)
+    public function test_position_delete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $position = $this->createMock(Position::class);
 
         $position->expects($this->exactly($number))
-            ->method('delete');
+            ->method('deletePosition')
+            ->willReturn($position);
 
         $positionMutation = new PositionMutation($position);
         $positionMutation->delete(
@@ -78,17 +79,14 @@ class PositionMutationTest extends TestCase
             'send array, success' => [
                 [1],
                 1,
-                ''
             ],
             'send multiple itens in array, success' => [
                 [1, 2, 3],
                 3,
-                ''
             ],
             'send empty array, success' => [
                 [],
                 0,
-                ''
             ]
         ];
     }

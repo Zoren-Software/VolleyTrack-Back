@@ -47,9 +47,12 @@ final class PositionMutation
      */
     public function delete($rootValue, array $args, GraphQLContext $context)
     {
+        $positions = [];
         foreach ($args['id'] as $id) {
-            $this->position->find($id);
-            $this->position->delete();
+            $this->position = $this->position->deletePosition($id);
+            $positions[] = $this->position;
         }
+
+        return $positions;
     }
 }

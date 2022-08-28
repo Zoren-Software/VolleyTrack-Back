@@ -56,13 +56,15 @@ class TeamMutationTest extends TestCase
      *
      * @return void
      */
-    public function test_team_delete($data, $number, $expected)
+    public function test_team_delete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $team = $this->createMock(Team::class);
 
-        $team->expects($this->exactly($number))
-            ->method('delete');
+        $team
+            ->expects($this->exactly($number))
+            ->method('deleteTeam')
+            ->willReturn($team);
 
         $teamMutation = new TeamMutation($team);
         $teamMutation->delete(
@@ -80,17 +82,14 @@ class TeamMutationTest extends TestCase
             'send array, success' => [
                 [1],
                 1,
-                ''
             ],
             'send multiple itens in array, success' => [
                 [1, 2, 3],
                 3,
-                ''
             ],
             'send empty array, success' => [
                 [],
                 0,
-                ''
             ]
         ];
     }

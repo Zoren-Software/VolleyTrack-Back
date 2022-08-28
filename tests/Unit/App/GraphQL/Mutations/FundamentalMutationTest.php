@@ -56,13 +56,14 @@ class FundamentalMutationTest extends TestCase
      *
      * @return void
      */
-    public function test_fundamental_delete($data, $number, $expected)
+    public function test_fundamental_delete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $fundamental = $this->createMock(Fundamental::class);
 
         $fundamental->expects($this->exactly($number))
-            ->method('delete');
+            ->method('deleteFundamental')
+            ->willReturn($fundamental);
 
         $fundamentalMutation = new FundamentalMutation($fundamental);
         $fundamentalMutation->delete(
@@ -80,17 +81,14 @@ class FundamentalMutationTest extends TestCase
             'send array, success' => [
                 [1],
                 1,
-                ''
             ],
             'send multiple itens in array, success' => [
                 [1, 2, 3],
                 3,
-                ''
             ],
             'send empty array, success' => [
                 [],
                 0,
-                ''
             ]
         ];
     }

@@ -103,7 +103,7 @@ class UserMutationTest extends TestCase
      *
      * @return void
      */
-    public function test_user_delete($data, $number, $expected)
+    public function test_user_delete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $user = $this->createMock(User::class);
@@ -129,17 +129,14 @@ class UserMutationTest extends TestCase
             'send array, success' => [
                 [1],
                 1,
-                ''
             ],
             'send multiple itens in array, success' => [
                 [1, 2, 3],
                 3,
-                ''
             ],
             'send empty array, success' => [
                 [],
                 0,
-                ''
             ]
         ];
     }
