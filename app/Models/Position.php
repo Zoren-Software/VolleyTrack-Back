@@ -24,4 +24,16 @@ class Position extends Model
         ->withTimestamps()
         ->withPivot('created_at', 'updated_at');
     }
+
+    /**
+     * @codeCoverageIgnore
+     * @return Position
+     */
+    public function deletePosition(int $id): Position
+    {
+        $position = $this->findOrFail($id);
+        $position->delete();
+
+        return $position;
+    }
 }

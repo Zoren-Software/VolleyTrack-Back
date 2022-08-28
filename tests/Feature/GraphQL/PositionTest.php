@@ -250,7 +250,7 @@ class PositionTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => 'This action is unauthorized.',
+                'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $positionEdit

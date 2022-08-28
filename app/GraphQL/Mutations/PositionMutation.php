@@ -40,4 +40,19 @@ final class PositionMutation
 
         return $this->position;
     }
+
+    /**
+     * @param  null  $_
+     * @param  array<string, mixed>  $args
+     */
+    public function delete($rootValue, array $args, GraphQLContext $context)
+    {
+        $positions = [];
+        foreach ($args['id'] as $id) {
+            $this->position = $this->position->deletePosition($id);
+            $positions[] = $this->position;
+        }
+
+        return $positions;
+    }
 }

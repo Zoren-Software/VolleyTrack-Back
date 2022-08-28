@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\GraphQL\Mutations;
+namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\PositionMutation;
 use App\Models\Position;
@@ -46,5 +46,48 @@ class PositionMutationTest extends TestCase
             'name' => 'Teste',
             'user_id' => 1,
         ], $graphQLContext);
+    }
+
+    /**
+     * A basic unit test in delete position.
+     * @dataProvider positionDeleteProvider
+     *
+     * @return void
+     */
+    public function test_position_delete($data, $number)
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $position = $this->createMock(Position::class);
+
+        $position->expects($this->exactly($number))
+            ->method('deletePosition')
+            ->willReturn($position);
+
+        $positionMutation = new PositionMutation($position);
+        $positionMutation->delete(
+            null,
+            [
+                'id' => $data,
+            ],
+            $graphQLContext
+        );
+    }
+
+    public function positionDeleteProvider()
+    {
+        return [
+            'send array, success' => [
+                [1],
+                1,
+            ],
+            'send multiple itens in array, success' => [
+                [1, 2, 3],
+                3,
+            ],
+            'send empty array, success' => [
+                [],
+                0,
+            ]
+        ];
     }
 }

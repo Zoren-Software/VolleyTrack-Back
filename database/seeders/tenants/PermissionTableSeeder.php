@@ -34,31 +34,27 @@ class PermissionTableSeeder extends Seeder
         $user[] = Permission::updateOrCreate(['id' => 2], ['name' => 'edit-user']);
         $user[] = Permission::updateOrCreate(['id' => 3], ['name' => 'list-user']);
         $user[] = Permission::updateOrCreate(['id' => 4], ['name' => 'list-users']);
+        $user[] = Permission::updateOrCreate(['id' => 5], ['name' => 'delete-user']);
 
         $this->sync($technician, $user);
 
         /**
          * Permissões Time
          */
-        $team[] = Permission::updateOrCreate(['id' => 5], ['name' => 'create-team']);
-        $team[] = Permission::updateOrCreate(['id' => 6], ['name' => 'edit-team']);
-        $team[] = Permission::updateOrCreate(['id' => 7], ['name' => 'list-team']);
-        $team[] = Permission::updateOrCreate(['id' => 8], ['name' => 'list-teams']);
-
-        /**
-         * Permissões de Configurações
-         */
-        Permission::updateOrCreate(['id' => 9], ['name' => 'list-role-administrador']);
-        $config[] = Permission::updateOrCreate(['id' => 10], ['name' => 'list-role-technician']);
-        $config[] = Permission::updateOrCreate(['id' => 11], ['name' => 'list-role-player']);
+        $team[] = Permission::updateOrCreate(['id' => 6], ['name' => 'create-team']);
+        $team[] = Permission::updateOrCreate(['id' => 7], ['name' => 'edit-team']);
+        $team[] = Permission::updateOrCreate(['id' => 8], ['name' => 'list-team']);
+        $team[] = Permission::updateOrCreate(['id' => 9], ['name' => 'list-teams']);
+        $team[] = Permission::updateOrCreate(['id' => 10], ['name' => 'delete-team']);
 
         /**
          * Permissões de Fundamentos
          */
-        $fundamental[] = Permission::updateOrCreate(['id' => 12], ['name' => 'create-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 13], ['name' => 'edit-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 14], ['name' => 'list-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 15], ['name' => 'list-fundamentals']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 11], ['name' => 'create-fundamental']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 12], ['name' => 'edit-fundamental']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 13], ['name' => 'list-fundamental']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 14], ['name' => 'list-fundamentals']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 15], ['name' => 'delete-fundamental']);
 
         /**
          * Permissões de Fundamentos Especificos
@@ -67,14 +63,23 @@ class PermissionTableSeeder extends Seeder
         $fundamental[] = Permission::updateOrCreate(['id' => 17], ['name' => 'edit-specific-fundamental']);
         $fundamental[] = Permission::updateOrCreate(['id' => 18], ['name' => 'list-specific-fundamental']);
         $fundamental[] = Permission::updateOrCreate(['id' => 19], ['name' => 'list-specifics-fundamental']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 20], ['name' => 'delete-specific-fundamental']);
 
         /**
          * Permissões de Fundamentos Especificos
          */
-        $position[] = Permission::updateOrCreate(['id' => 20], ['name' => 'create-position']);
-        $position[] = Permission::updateOrCreate(['id' => 21], ['name' => 'edit-position']);
-        $position[] = Permission::updateOrCreate(['id' => 22], ['name' => 'list-position']);
-        $position[] = Permission::updateOrCreate(['id' => 23], ['name' => 'list-positions']);
+        $position[] = Permission::updateOrCreate(['id' => 21], ['name' => 'create-position']);
+        $position[] = Permission::updateOrCreate(['id' => 22], ['name' => 'edit-position']);
+        $position[] = Permission::updateOrCreate(['id' => 23], ['name' => 'list-position']);
+        $position[] = Permission::updateOrCreate(['id' => 24], ['name' => 'list-positions']);
+        $position[] = Permission::updateOrCreate(['id' => 25], ['name' => 'delete-position']);
+
+        /**
+         * Permissões de Configurações
+         */
+        Permission::updateOrCreate(['id' => 26], ['name' => 'list-role-administrador']);
+        $config[] = Permission::updateOrCreate(['id' => 27], ['name' => 'list-role-technician']);
+        $config[] = Permission::updateOrCreate(['id' => 28], ['name' => 'list-role-player']);
 
         /**
          * Relacionando Permissões

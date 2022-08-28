@@ -18,4 +18,9 @@ class TeamPolicy
     {
         return $user->hasPermissionTo('edit-team');
     }
+
+    public function delete(User $user): bool
+    {
+        return $user->hasPermissionTo('delete-team');
+    }
 }

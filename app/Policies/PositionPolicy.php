@@ -23,4 +23,9 @@ class PositionPolicy
     {
         return $user->hasPermissionTo('edit-position');
     }
+
+    public function delete(User $user): bool
+    {
+        return $user->hasPermissionTo('delete-position');
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\App\Models;
 
-use Tests\TestCase;
+use App\Models\Fundamental;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Fundamental;
+use Tests\TestCase;
 
 class FundamentalTest extends TestCase
 {

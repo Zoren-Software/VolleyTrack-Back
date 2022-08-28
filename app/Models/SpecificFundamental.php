@@ -32,4 +32,16 @@ class SpecificFundamental extends Model
             ->withTimestamps()
             ->withPivot('created_at', 'updated_at');
     }
+
+    /**
+     * @codeCoverageIgnore
+     * @return SpecificFundamental
+     */
+    public function deleteSpecificFundamental(int $id): SpecificFundamental
+    {
+        $specificFundamental = $this->findOrFail($id);
+        $specificFundamental->delete();
+
+        return $specificFundamental;
+    }
 }

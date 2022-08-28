@@ -28,4 +28,16 @@ class Fundamental extends Model
     {
         return $this->hasMany(SpecificFundamental::class);
     }
+
+    /**
+     * @codeCoverageIgnore
+     * @return Fundamental
+     */
+    public function deleteFundamental(int $id): Fundamental
+    {
+        $fundamental = $this->findOrFail($id);
+        $fundamental->delete();
+
+        return $fundamental;
+    }
 }

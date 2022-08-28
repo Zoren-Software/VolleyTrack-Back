@@ -11,7 +11,7 @@ class PositionPolicyTest extends TestCase
     /**
      * A basic unit test create.
      *
-     * @dataProvider createProvider
+     * @dataProvider permissionProvider
      *
      * @return void
      */
@@ -27,22 +27,10 @@ class PositionPolicyTest extends TestCase
         $positionPolicy->create($user);
     }
 
-    public function createProvider(): array
-    {
-        return [
-            'when permission allows' => [
-                true,
-            ],
-            'when permission does not allow' => [
-                false
-            ],
-        ];
-    }
-
     /**
      * A basic unit test edit.
      *
-     * @dataProvider editProvider
+     * @dataProvider permissionProvider
      *
      * @return void
      */
@@ -58,15 +46,22 @@ class PositionPolicyTest extends TestCase
         $positionPolicy->edit($user);
     }
 
-    public function editProvider(): array
+    /**
+     * A basic unit test delete.
+     *
+     * @dataProvider permissionProvider
+     *
+     * @return void
+     */
+    public function test_delete(bool $expected): void
     {
-        return [
-            'when permission allows' => [
-                true,
-            ],
-            'when permission does not allow' => [
-                false
-            ],
-        ];
+        $user = $this->createMock(User::class);
+        $user->expects($this->once())
+            ->method('hasPermissionTo')
+            ->with('delete-position')
+            ->willReturn($expected);
+
+        $positionPolicy = new PositionPolicy();
+        $positionPolicy->delete($user);
     }
 }

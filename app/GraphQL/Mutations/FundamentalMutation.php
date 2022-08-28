@@ -38,4 +38,19 @@ final class FundamentalMutation
 
         return $this->fundamental;
     }
+
+    /**
+     * @param  null  $_
+     * @param  array<string, mixed>  $args
+     */
+    public function delete($rootValue, array $args, GraphQLContext $context)
+    {
+        $fundamental = [];
+        foreach ($args['id'] as $id) {
+            $this->fundamental = $this->fundamental->deleteFundamental($id);
+            $fundamental[] = $this->fundamental;
+        }
+
+        return $fundamental;
+    }
 }

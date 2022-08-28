@@ -44,4 +44,19 @@ final class UserMutation
 
         return $this->user;
     }
+
+    /**
+     * @param  null  $_
+     * @param  array<string, mixed>  $args
+     */
+    public function delete($rootValue, array $args, GraphQLContext $context)
+    {
+        $users = [];
+        foreach ($args['id'] as $id) {
+            $this->user = $this->user->deleteUser($id);
+            $users[] = $this->user;
+        }
+
+        return $users;
+    }
 }
