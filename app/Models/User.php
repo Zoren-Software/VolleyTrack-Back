@@ -77,4 +77,16 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         return $this->hasPermissionsViaRoles($namePermission, auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray());
     }
+
+    /**
+     * @codeCoverageIgnore
+     * @return User
+     */
+    public function deleteUser(int $id): User
+    {
+        $user = $this->findOrFail($id);
+        $user->delete();
+
+        return $user;
+    }
 }

@@ -53,9 +53,8 @@ final class UserMutation
     {
         $users = [];
         foreach ($args['id'] as $id) {
-            $this->user = $this->user->findOrFail($id);
+            $this->user = $this->user->deleteUser($id);
             $users[] = $this->user;
-            $this->user->delete();
         }
 
         return $users;

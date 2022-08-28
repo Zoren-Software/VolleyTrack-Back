@@ -108,8 +108,10 @@ class UserMutationTest extends TestCase
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $user = $this->createMock(User::class);
 
-        $user->expects($this->exactly($number))
-            ->method('delete');
+        $user
+            ->expects($this->exactly($number))
+            ->method('deleteUser')
+            ->willReturn($user);
 
         $userMutation = new UserMutation($user);
         $userMutation->delete(

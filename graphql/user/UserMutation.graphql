@@ -25,5 +25,5 @@ extend type Mutation {
 
     userDelete(id: [ID!]!): [User]
         @field(resolver: "UserMutation@delete")
-        # @can(ability: "delete")
+        @can(ability: "delete")
 }
