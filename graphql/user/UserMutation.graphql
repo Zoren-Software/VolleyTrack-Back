@@ -22,7 +22,7 @@ extend type Mutation @guard {
         @field(resolver: "UserMutation@edit")
         @validator
         @can(ability: "edit")
-
+    
     userDelete(id: [ID!]!): [User]
         @field(resolver: "UserMutation@delete")
         @can(ability: "delete")
