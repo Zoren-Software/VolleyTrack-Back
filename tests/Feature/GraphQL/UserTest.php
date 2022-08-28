@@ -14,6 +14,8 @@ class UserTest extends TestCase
 
     protected $otherUser = false;
 
+    private $permission = 'Técnico';
+
     private $data = [
         'id',
         'name',
@@ -104,7 +106,7 @@ class UserTest extends TestCase
 
         $faker = Faker::create();
 
-        $this->checkPermission($permission, 'Técnico', 'create-user');
+        $this->checkPermission($permission, $this->permission, 'create-user');
 
         $parameters['name'] = $faker->name;
 
@@ -208,7 +210,7 @@ class UserTest extends TestCase
                     'password' => $password,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => 'This action is unauthorized.',
+                'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $userCreate
@@ -320,7 +322,7 @@ class UserTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, 'Técnico', 'edit-user');
+        $this->checkPermission($permission, $this->permission, 'edit-user');
 
         $userExist = User::factory()->make();
         $userExist->save();
@@ -407,7 +409,7 @@ class UserTest extends TestCase
                     'roleId' => [2],
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => 'This action is unauthorized.',
+                'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $userEdit
@@ -551,7 +553,7 @@ class UserTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, 'Técnico', 'delete-user');
+        $this->checkPermission($permission, $this->permission, 'delete-user');
 
         $user = User::factory()->make();
         $user->save();
@@ -596,8 +598,6 @@ class UserTest extends TestCase
      */
     public function userDeleteProvider()
     {
-        $faker = Faker::create();
-
         $userDelete = ['userDelete'];
 
         return [
@@ -613,7 +613,7 @@ class UserTest extends TestCase
             'delete user without permission, expected error' => [
                 ['error' => null],
                 'type_message_error' => 'message',
-                'expected_message' => 'This action is unauthorized.',
+                'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $userDelete

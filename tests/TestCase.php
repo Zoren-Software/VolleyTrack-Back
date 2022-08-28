@@ -53,6 +53,8 @@ abstract class TestCase extends BaseTestCase
         ]
     ];
 
+    protected $unauthorized = 'This action is unauthorized.';
+
     public $tenantUrl;
 
     public function setUp(): void
@@ -287,5 +289,17 @@ abstract class TestCase extends BaseTestCase
                 }
             }
         }
+    }
+
+    public function permissionProvider(): array
+    {
+        return [
+            'when permission allows' => [
+                true,
+            ],
+            'when permission does not allow' => [
+                false
+            ],
+        ];
     }
 }

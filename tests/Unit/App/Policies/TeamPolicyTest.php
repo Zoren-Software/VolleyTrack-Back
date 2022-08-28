@@ -11,7 +11,7 @@ class TeamPolicyTest extends TestCase
     /**
      * A basic unit test create.
      *
-     * @dataProvider createProvider
+     * @dataProvider permissionProvider
      *
      * @return void
      */
@@ -27,22 +27,10 @@ class TeamPolicyTest extends TestCase
         $teamPolicy->create($user);
     }
 
-    public function createProvider(): array
-    {
-        return [
-            'when permission allows' => [
-                true,
-            ],
-            'when permission does not allow' => [
-                false
-            ],
-        ];
-    }
-
     /**
      * A basic unit test edit.
      *
-     * @dataProvider editProvider
+     * @dataProvider permissionProvider
      *
      * @return void
      */
@@ -58,22 +46,10 @@ class TeamPolicyTest extends TestCase
         $teamPolicy->edit($user);
     }
 
-    public function editProvider(): array
-    {
-        return [
-            'when permission allows' => [
-                true,
-            ],
-            'when permission does not allow' => [
-                false
-            ],
-        ];
-    }
-
     /**
      * A basic unit test delete.
      *
-     * @dataProvider deleteProvider
+     * @dataProvider permissionProvider
      *
      * @return void
      */
@@ -87,17 +63,5 @@ class TeamPolicyTest extends TestCase
 
         $teamPolicy = new TeamPolicy();
         $teamPolicy->delete($user);
-    }
-
-    public function deleteProvider(): array
-    {
-        return [
-            'when permission allows' => [
-                true,
-            ],
-            'when permission does not allow' => [
-                false
-            ],
-        ];
     }
 }
