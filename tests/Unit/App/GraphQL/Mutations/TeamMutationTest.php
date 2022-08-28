@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\GraphQL\Mutations;
+namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\TeamMutation;
 use App\Models\Team;
@@ -48,5 +48,49 @@ class TeamMutationTest extends TestCase
             'name' => 'Teste',
             'user_id' => 1,
         ], $graphQLContext);
+    }
+
+    /**
+     * A basic unit test in delete team.
+     * @dataProvider teamDeleteProvider
+     *
+     * @return void
+     */
+    public function test_team_delete($data, $number)
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $team = $this->createMock(Team::class);
+
+        $team
+            ->expects($this->exactly($number))
+            ->method('deleteTeam')
+            ->willReturn($team);
+
+        $teamMutation = new TeamMutation($team);
+        $teamMutation->delete(
+            null,
+            [
+                'id' => $data,
+            ],
+            $graphQLContext
+        );
+    }
+
+    public function teamDeleteProvider()
+    {
+        return [
+            'send array, success' => [
+                [1],
+                1,
+            ],
+            'send multiple itens in array, success' => [
+                [1, 2, 3],
+                3,
+            ],
+            'send empty array, success' => [
+                [],
+                0,
+            ]
+        ];
     }
 }

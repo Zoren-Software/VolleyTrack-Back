@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\GraphQL\Mutations;
+namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\SpecificFundamentalMutation;
 use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class SpecificFundamentalMutationTest extends TestCase
 {
@@ -90,6 +90,49 @@ class SpecificFundamentalMutationTest extends TestCase
                     'user_id' => 1,
                 ],
                 'fundamental' => null,
+            ]
+        ];
+    }
+
+    /**
+     * A basic unit test in delete specificFundamental.
+     * @dataProvider specificFundamentalDeleteProvider
+     *
+     * @return void
+     */
+    public function test_specific_fundamental_delete($data, $number)
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $specificFundamental = $this->createMock(SpecificFundamental::class);
+
+        $specificFundamental->expects($this->exactly($number))
+            ->method('deleteSpecificFundamental')
+            ->willReturn($specificFundamental);
+
+        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
+        $specificFundamentalMutation->delete(
+            null,
+            [
+                'id' => $data,
+            ],
+            $graphQLContext
+        );
+    }
+
+    public function specificFundamentalDeleteProvider()
+    {
+        return [
+            'send array, success' => [
+                [1],
+                1,
+            ],
+            'send multiple itens in array, success' => [
+                [1, 2, 3],
+                3,
+            ],
+            'send empty array, success' => [
+                [],
+                0,
             ]
         ];
     }

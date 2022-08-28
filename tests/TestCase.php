@@ -53,6 +53,8 @@ abstract class TestCase extends BaseTestCase
         ]
     ];
 
+    protected $unauthorized = 'This action is unauthorized.';
+
     public $tenantUrl;
 
     public function setUp(): void
@@ -280,8 +282,28 @@ abstract class TestCase extends BaseTestCase
             if (!$permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
-                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
+                if (isset($response->json()['errors'][0]['extensions'])) {
+                    $response = $response->json()['errors'][0]['extensions'];
+                }
+
+                if (isset($response['validation'])) {
+                    $this->assertSame($response['validation'][$type_message_error][0], trans($expected_message));
+                } else {
+                    $this->assertSame($response['category'], trans($expected_message));
+                }
             }
         }
+    }
+
+    public function permissionProvider(): array
+    {
+        return [
+            'when permission allows' => [
+                true,
+            ],
+            'when permission does not allow' => [
+                false
+            ],
+        ];
     }
 }

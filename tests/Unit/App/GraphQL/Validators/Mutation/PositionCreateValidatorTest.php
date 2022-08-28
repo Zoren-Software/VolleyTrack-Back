@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\GraphQL\Validators\Mutation;
+namespace Tests\Unit\App\GraphQL\Validators\Mutation;
 
-use App\GraphQL\Validators\Mutation\SpecificFundamentalCreateValidator;
+use App\GraphQL\Validators\Mutation\PositionCreateValidator;
 use Tests\TestCase;
 
-class SpecificFundamentalCreateValidatorTest extends TestCase
+class PositionCreateValidatorTest extends TestCase
 {
     /**
      * A basic unit test messages.
@@ -14,7 +14,7 @@ class SpecificFundamentalCreateValidatorTest extends TestCase
      */
     public function test_messages()
     {
-        $validator = new SpecificFundamentalCreateValidator();
+        $validator = new PositionCreateValidator();
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());

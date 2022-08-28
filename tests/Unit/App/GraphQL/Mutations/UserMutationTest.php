@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\GraphQL\Mutations;
+namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\UserMutation;
 use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class UserMutationTest extends TestCase
 {
@@ -94,6 +94,50 @@ class UserMutationTest extends TestCase
             'using method roles' => [
                 'method' => 'roles',
             ],
+        ];
+    }
+
+    /**
+     * A basic unit test in delete user.
+     * @dataProvider userDeleteProvider
+     *
+     * @return void
+     */
+    public function test_user_delete($data, $number)
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $user = $this->createMock(User::class);
+
+        $user
+            ->expects($this->exactly($number))
+            ->method('deleteUser')
+            ->willReturn($user);
+
+        $userMutation = new UserMutation($user);
+        $userMutation->delete(
+            null,
+            [
+                'id' => $data,
+            ],
+            $graphQLContext
+        );
+    }
+
+    public function userDeleteProvider()
+    {
+        return [
+            'send array, success' => [
+                [1],
+                1,
+            ],
+            'send multiple itens in array, success' => [
+                [1, 2, 3],
+                3,
+            ],
+            'send empty array, success' => [
+                [],
+                0,
+            ]
         ];
     }
 }

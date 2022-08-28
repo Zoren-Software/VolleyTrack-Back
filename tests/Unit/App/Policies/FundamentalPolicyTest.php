@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\App\Policies;
 
-use Tests\TestCase;
-use App\Policies\FundamentalPolicy;
 use App\Models\User;
+use App\Policies\FundamentalPolicy;
+use Tests\TestCase;
 
 class FundamentalPolicyTest extends TestCase
 {
     /**
      * A basic unit test create.
      *
-     * @dataProvider createProvider
+     * @dataProvider permissionProvider
      *
      * @return void
      */
@@ -27,22 +27,10 @@ class FundamentalPolicyTest extends TestCase
         $fundamentalPolicy->create($user);
     }
 
-    public function createProvider(): array
-    {
-        return [
-            'when permission allows' => [
-                true,
-            ],
-            'when permission does not allow' => [
-                false
-            ],
-        ];
-    }
-
     /**
      * A basic unit test edit.
      *
-     * @dataProvider editProvider
+     * @dataProvider permissionProvider
      *
      * @return void
      */
@@ -58,15 +46,22 @@ class FundamentalPolicyTest extends TestCase
         $fundamentalPolicy->edit($user);
     }
 
-    public function editProvider(): array
+    /**
+     * A basic unit test delete.
+     *
+     * @dataProvider permissionProvider
+     *
+     * @return void
+     */
+    public function test_delete(bool $expected): void
     {
-        return [
-            'when permission allows' => [
-                true,
-            ],
-            'when permission does not allow' => [
-                false
-            ],
-        ];
+        $user = $this->createMock(User::class);
+        $user->expects($this->once())
+            ->method('hasPermissionTo')
+            ->with('delete-fundamental')
+            ->willReturn($expected);
+
+        $fundamentalPolicy = new FundamentalPolicy();
+        $fundamentalPolicy->delete($user);
     }
 }

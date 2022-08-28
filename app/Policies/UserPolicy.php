@@ -9,16 +9,6 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function create(User $user): bool
     {
         return $user->hasPermissionTo('create-user');
@@ -27,5 +17,10 @@ class UserPolicy
     public function edit(User $user): bool
     {
         return $user->hasPermissionTo('edit-user');
+    }
+
+    public function delete(User $user): bool
+    {
+        return $user->hasPermissionTo('delete-user');
     }
 }

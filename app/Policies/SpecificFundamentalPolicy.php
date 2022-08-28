@@ -18,4 +18,9 @@ class SpecificFundamentalPolicy
     {
         return $user->hasPermissionTo('edit-specific-fundamental');
     }
+
+    public function delete(User $user): bool
+    {
+        return $user->hasPermissionTo('delete-specific-fundamental');
+    }
 }

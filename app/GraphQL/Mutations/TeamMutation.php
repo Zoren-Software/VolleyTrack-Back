@@ -38,4 +38,19 @@ final class TeamMutation
 
         return $this->team;
     }
+
+    /**
+     * @param  null  $_
+     * @param  array<string, mixed>  $args
+     */
+    public function delete($rootValue, array $args, GraphQLContext $context)
+    {
+        $teams = [];
+        foreach ($args['id'] as $id) {
+            $this->team = $this->team->deleteTeam($id);
+            $teams[] = $this->team;
+        }
+
+        return $teams;
+    }
 }
