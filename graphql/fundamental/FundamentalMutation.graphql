@@ -17,7 +17,7 @@ extend type Mutation @guard {
         @validator
         @can(ability: "edit")
 
-    fundamentalDelete(id: [ID!]!): Fundamental
+    fundamentalDelete(id: [ID!]!): [Fundamental]
         @field(resolver: "FundamentalMutation@delete")
         @can(ability: "delete")
 }

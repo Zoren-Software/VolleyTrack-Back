@@ -1,5 +1,5 @@
 
-extend type Mutation @guard{
+extend type Mutation @guard {
     specificFundamentalCreate(
         name: String!
         userId: Int! @rename(attribute: "user_id")
@@ -19,7 +19,7 @@ extend type Mutation @guard{
         @validator
         @can(ability: "edit")
 
-    specificFundamentalDelete(id: [ID!]!): SpecificFundamental
+    specificFundamentalDelete(id: [ID!]!): [SpecificFundamental]
         @field(resolver: "SpecificFundamentalMutation@delete")
         @can(ability: "delete")
 }
