@@ -11,6 +11,7 @@ class PositionMutationTest extends TestCase
 {
     /**
      * A basic unit position create.
+     *
      * @return void
      */
     public function test_position_create()
@@ -30,6 +31,7 @@ class PositionMutationTest extends TestCase
 
     /**
      * A basic unit position edit.
+     *
      * @return void
      */
     public function test_position_edit()
@@ -50,6 +52,7 @@ class PositionMutationTest extends TestCase
 
     /**
      * A basic unit test in delete position.
+     *
      * @dataProvider positionDeleteProvider
      *
      * @return void
@@ -87,7 +90,7 @@ class PositionMutationTest extends TestCase
             'send empty array, success' => [
                 [],
                 0,
-            ]
+            ],
         ];
     }
 }

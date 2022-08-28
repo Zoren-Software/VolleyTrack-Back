@@ -1,0 +1,18 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "concat_space" : {
+            "spacing" : "one"
+        }
+    },
+    "exclude": [
+        "portainer-data",
+        "vendor",
+        "storage",
+        "resources",
+        "reports",
+        "public",
+        "graphql",
+        "docker"
+    ]
+}

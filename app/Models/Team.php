@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Team extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
 
     protected $fillable = [
@@ -24,6 +23,7 @@ class Team extends Model
 
     /**
      * @codeCoverageIgnore
+     *
      * @return Team
      */
     public function deleteTeam(int $id): Team

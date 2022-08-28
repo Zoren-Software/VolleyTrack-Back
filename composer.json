@@ -21,6 +21,7 @@
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.8",
+        "laravel/pint": "^1.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
@@ -48,8 +49,8 @@
     },
     "scripts": {
         "check-style-hook": "php-cs-fixer fix --config='.php-cs-fixer.php' --diff --verbose --dry-run --stop-on-violation app/ config/ database/ routes/ tests/",
-        "check-style": "php-cs-fixer fix --config='.php-cs-fixer.php' --diff --verbose --dry-run app/ config/ database/ routes/ tests/",
-        "fix-style": "php-cs-fixer fix --config='.php-cs-fixer.php' app/ config/ database/ routes/ tests/",
+        "check-style": "./vendor/bin/pint --test",
+        "fix-style": "./vendor/bin/pint -v",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

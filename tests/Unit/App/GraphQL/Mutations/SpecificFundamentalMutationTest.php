@@ -14,6 +14,7 @@ class SpecificFundamentalMutationTest extends TestCase
      * A basic unit test create specific fundamental.
      *
      * @dataProvider createSpecificFundamentalProvider
+     *
      * @return void
      */
     public function test_create_specific_fundamental(array $data, $fundamental): void
@@ -47,7 +48,7 @@ class SpecificFundamentalMutationTest extends TestCase
                     'user_id' => 1,
                 ],
                 'fundamental' => null,
-            ]
+            ],
         ];
     }
 
@@ -55,6 +56,7 @@ class SpecificFundamentalMutationTest extends TestCase
      * A basic unit test edit specific fundamental.
      *
      * @dataProvider editSpecificFundamentalProvider
+     *
      * @return void
      */
     public function test_edit_specific_fundamental(array $data, $fundamental): void
@@ -90,12 +92,13 @@ class SpecificFundamentalMutationTest extends TestCase
                     'user_id' => 1,
                 ],
                 'fundamental' => null,
-            ]
+            ],
         ];
     }
 
     /**
      * A basic unit test in delete specificFundamental.
+     *
      * @dataProvider specificFundamentalDeleteProvider
      *
      * @return void
@@ -133,7 +136,7 @@ class SpecificFundamentalMutationTest extends TestCase
             'send empty array, success' => [
                 [],
                 0,
-            ]
+            ],
         ];
     }
 }

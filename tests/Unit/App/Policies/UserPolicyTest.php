@@ -34,7 +34,7 @@ class UserPolicyTest extends TestCase
                 true,
             ],
             'when permission does not allow' => [
-                false
+                false,
             ],
         ];
     }

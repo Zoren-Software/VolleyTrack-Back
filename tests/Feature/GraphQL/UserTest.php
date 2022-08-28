@@ -22,7 +22,7 @@ class UserTest extends TestCase
         'email',
         'emailVerifiedAt',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
     ];
 
     /**
@@ -56,8 +56,8 @@ class UserTest extends TestCase
                 'users' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => $this->data
-                    ]
+                        '*' => $this->data,
+                    ],
                 ],
             ],
         ])->assertStatus(200);
@@ -96,6 +96,7 @@ class UserTest extends TestCase
      * Método de criação de um usuário.
      *
      * @dataProvider userCreateProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -127,8 +128,7 @@ class UserTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function userCreateProvider()
     {
@@ -151,7 +151,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.role_id_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userCreate
+                    'data' => $userCreate,
                 ],
                 'permission' => true,
             ],
@@ -198,7 +198,7 @@ class UserTest extends TestCase
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userCreate
+                    'data' => $userCreate,
                 ],
                 'permission' => true,
             ],
@@ -213,7 +213,7 @@ class UserTest extends TestCase
                 'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userCreate
+                    'data' => $userCreate,
                 ],
                 'permission' => false,
             ],
@@ -228,7 +228,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.password_min_6',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userCreate
+                    'data' => $userCreate,
                 ],
                 'permission' => true,
             ],
@@ -242,7 +242,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.password_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userCreate
+                    'data' => $userCreate,
                 ],
                 'permission' => true,
             ],
@@ -273,7 +273,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.email_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userCreate
+                    'data' => $userCreate,
                 ],
                 'permission' => true,
             ],
@@ -288,7 +288,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.email_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userCreate
+                    'data' => $userCreate,
                 ],
                 'permission' => true,
             ],
@@ -303,7 +303,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserCreate.email_is_valid',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userCreate
+                    'data' => $userCreate,
                 ],
                 'permission' => true,
             ],
@@ -314,6 +314,7 @@ class UserTest extends TestCase
      * Método de edição de um usuário.
      *
      * @dataProvider userEditProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -347,7 +348,7 @@ class UserTest extends TestCase
         $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
 
         if ($type_message_error) {
-            if (!$permission) {
+            if (! $permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
                 $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
@@ -360,8 +361,7 @@ class UserTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function userEditProvider()
     {
@@ -382,7 +382,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.role_id_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userEdit
+                    'data' => $userEdit,
                 ],
                 'permission' => true,
             ],
@@ -397,7 +397,7 @@ class UserTest extends TestCase
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userEdit
+                    'data' => $userEdit,
                 ],
                 'permission' => true,
             ],
@@ -412,7 +412,7 @@ class UserTest extends TestCase
                 'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userEdit
+                    'data' => $userEdit,
                 ],
                 'permission' => false,
             ],
@@ -459,7 +459,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.password_min_6',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userEdit
+                    'data' => $userEdit,
                 ],
                 'permission' => true,
             ],
@@ -474,7 +474,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.password_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userEdit
+                    'data' => $userEdit,
                 ],
                 'permission' => true,
             ],
@@ -505,7 +505,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.email_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userEdit
+                    'data' => $userEdit,
                 ],
                 'permission' => true,
             ],
@@ -519,7 +519,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.email_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userEdit
+                    'data' => $userEdit,
                 ],
                 'permission' => true,
             ],
@@ -534,7 +534,7 @@ class UserTest extends TestCase
                 'expected_message' => 'UserEdit.email_is_valid',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userEdit
+                    'data' => $userEdit,
                 ],
                 'permission' => true,
             ],
@@ -545,6 +545,7 @@ class UserTest extends TestCase
      * Método de deletar um usuário.
      *
      * @dataProvider userDeleteProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -576,7 +577,7 @@ class UserTest extends TestCase
         $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
 
         if ($type_message_error) {
-            if (!$permission) {
+            if (! $permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
                 if (isset($response->json()['errors'][0]['extensions']['validation'])) {
@@ -593,8 +594,7 @@ class UserTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function userDeleteProvider()
     {
@@ -606,7 +606,7 @@ class UserTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'data' => $userDelete
+                    'data' => $userDelete,
                 ],
                 'permission' => true,
             ],
@@ -616,19 +616,19 @@ class UserTest extends TestCase
                 'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userDelete
+                    'data' => $userDelete,
                 ],
                 'permission' => false,
             ],
             'delete user that does not exist, expected error' => [
                 [
-                    'error' => 9999
+                    'error' => 9999,
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => 'internal',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $userDelete
+                    'data' => $userDelete,
                 ],
                 'permission' => true,
             ],

@@ -19,7 +19,7 @@ class FundamentalTest extends TestCase
         'name',
         'userId',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
     ];
 
     /**
@@ -51,8 +51,8 @@ class FundamentalTest extends TestCase
                 'fundamentals' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => $this->data
-                    ]
+                        '*' => $this->data,
+                    ],
                 ],
             ],
         ])->assertStatus(200);
@@ -89,6 +89,7 @@ class FundamentalTest extends TestCase
      * Método de criação de um fundamento.
      *
      * @dataProvider fundamentalCreateProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -114,8 +115,7 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function fundamentalCreateProvider()
     {
@@ -148,7 +148,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalCreate
+                    'data' => $fundamentalCreate,
                 ],
                 'permission' => false,
             ],
@@ -161,7 +161,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => 'FundamentalCreate.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalCreate
+                    'data' => $fundamentalCreate,
                 ],
                 'permission' => true,
             ],
@@ -174,7 +174,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => 'FundamentalCreate.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalCreate
+                    'data' => $fundamentalCreate,
                 ],
                 'permission' => true,
             ],
@@ -187,7 +187,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => 'FundamentalCreate.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalCreate
+                    'data' => $fundamentalCreate,
                 ],
                 'permission' => true,
             ],
@@ -198,6 +198,7 @@ class FundamentalTest extends TestCase
      * Método de edição de um fundamento.
      *
      * @dataProvider fundamentalEditProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -234,8 +235,7 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function fundamentalEditProvider()
     {
@@ -253,7 +253,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $fundamentalEdit,
                 ],
                 'permission' => false,
             ],
@@ -279,7 +279,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => 'FundamentalEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $fundamentalEdit,
                 ],
                 'permission' => true,
             ],
@@ -292,7 +292,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => 'FundamentalEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $fundamentalEdit,
                 ],
                 'permission' => true,
             ],
@@ -305,7 +305,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => 'FundamentalEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $fundamentalEdit,
                 ],
                 'permission' => true,
             ],

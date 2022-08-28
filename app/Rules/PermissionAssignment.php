@@ -21,6 +21,7 @@ class PermissionAssignment implements ImplicitRule
      * Determine if the validation rule passes.
      *
      * @codeCoverageIgnore
+     *
      * @param  string  $attribute
      * @param  mixed  $value
      * @return bool
@@ -28,7 +29,7 @@ class PermissionAssignment implements ImplicitRule
     public function passes($attribute, $values)
     {
         foreach ($values as $value) {
-            if (!Role::find($value)) {
+            if (! Role::find($value)) {
                 return false;
             }
         }
