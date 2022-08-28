@@ -70,7 +70,7 @@ class TeamPolicyTest extends TestCase
         ];
     }
 
-        /**
+    /**
      * A basic unit test delete.
      *
      * @dataProvider deleteProvider

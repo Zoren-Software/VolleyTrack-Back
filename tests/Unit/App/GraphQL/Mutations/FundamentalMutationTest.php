@@ -50,7 +50,7 @@ class FundamentalMutationTest extends TestCase
         ], $graphQLContext);
     }
 
-        /**
+    /**
      * A basic unit test in delete position.
      * @dataProvider positionDeleteProvider
      *
