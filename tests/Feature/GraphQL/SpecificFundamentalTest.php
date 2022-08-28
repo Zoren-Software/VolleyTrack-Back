@@ -52,8 +52,8 @@ class SpecificFundamentalTest extends TestCase
                 'specificFundamentals' => [
                     'paginatorInfo' => $this->paginatorInfo,
                     'data' => [
-                        '*' => $this->data
-                    ]
+                        '*' => $this->data,
+                    ],
                 ],
             ],
         ])->assertStatus(200);
@@ -90,6 +90,7 @@ class SpecificFundamentalTest extends TestCase
      * Método de criação de um fundamento especifico.
      *
      * @dataProvider specificFundamentalCreateProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -122,8 +123,7 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function specificFundamentalCreateProvider()
     {
@@ -172,7 +172,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $specificFundamentalCreate
+                    'data' => $specificFundamentalCreate,
                 ],
                 'permission' => false,
                 'add_relationship' => false,
@@ -186,7 +186,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected_message' => 'SpecificFundamentalCreate.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $specificFundamentalCreate
+                    'data' => $specificFundamentalCreate,
                 ],
                 'permission' => true,
                 'add_relationship' => false,
@@ -200,7 +200,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected_message' => 'SpecificFundamentalCreate.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $specificFundamentalCreate
+                    'data' => $specificFundamentalCreate,
                 ],
                 'permission' => true,
                 'add_relationship' => false,
@@ -214,7 +214,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected_message' => 'SpecificFundamentalCreate.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $specificFundamentalCreate
+                    'data' => $specificFundamentalCreate,
                 ],
                 'permission' => true,
                 'add_relationship' => false,
@@ -226,6 +226,7 @@ class SpecificFundamentalTest extends TestCase
      * Método de edição de um fundamento especifico.
      *
      * @dataProvider specificFundamentalEditProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -269,8 +270,7 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     *
-     * @return Array
+     * @return array
      */
     public function specificFundamentalEditProvider()
     {
@@ -288,7 +288,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $fundamentalEdit,
                 ],
                 'permission' => false,
                 'add_relationship' => false,
@@ -331,7 +331,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected_message' => 'SpecificFundamentalEdit.name_unique',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $fundamentalEdit,
                 ],
                 'permission' => true,
                 'add_relationship' => false,
@@ -345,7 +345,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected_message' => 'SpecificFundamentalEdit.name_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $fundamentalEdit,
                 ],
                 'permission' => true,
                 'add_relationship' => false,
@@ -359,7 +359,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected_message' => 'SpecificFundamentalEdit.name_min',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalEdit
+                    'data' => $fundamentalEdit,
                 ],
                 'permission' => true,
                 'add_relationship' => false,

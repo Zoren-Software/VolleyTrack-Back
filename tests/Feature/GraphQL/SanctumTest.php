@@ -45,7 +45,7 @@ class SanctumTest extends TestCase
         )->assertJsonStructure([
             'data' => [
                 'login' => [
-                    'token'
+                    'token',
                 ],
             ],
         ])->assertStatus(200);
@@ -64,7 +64,7 @@ class SanctumTest extends TestCase
             'logout',
             [
                 'status',
-                'message'
+                'message',
             ],
             [],
             'mutation',
@@ -73,7 +73,7 @@ class SanctumTest extends TestCase
             'data' => [
                 'logout' => [
                     'status',
-                    'message'
+                    'message',
                 ],
             ],
         ])->assertStatus(200);
@@ -103,7 +103,7 @@ class SanctumTest extends TestCase
             'data' => [
                 'register' => [
                     'token',
-                    'status'
+                    'status',
                 ],
             ],
         ])->assertStatus(200);
@@ -127,7 +127,7 @@ class SanctumTest extends TestCase
         )->assertJsonStructure([
             'data' => [
                 'resendEmailVerification' => [
-                    'status'
+                    'status',
                 ],
             ],
         ])->assertStatus(200);
@@ -154,7 +154,7 @@ class SanctumTest extends TestCase
             'data' => [
                 'forgotPassword' => [
                     'status',
-                    'message'
+                    'message',
                 ],
             ],
         ])->assertStatus(200);
@@ -182,7 +182,7 @@ class SanctumTest extends TestCase
         )->assertJsonStructure([
             'data' => [
                 'updatePassword' => [
-                    'status'
+                    'status',
                 ],
             ],
         ])->assertStatus(200);

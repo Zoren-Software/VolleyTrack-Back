@@ -57,6 +57,7 @@ class UserMutationTest extends TestCase
      * A basic unit test in edit user.
      *
      * @dataProvider editUserProvider
+     *
      * @return void
      */
     public function test_user_edit($method)
@@ -99,6 +100,7 @@ class UserMutationTest extends TestCase
 
     /**
      * A basic unit test in delete user.
+     *
      * @dataProvider userDeleteProvider
      *
      * @return void
@@ -137,7 +139,7 @@ class UserMutationTest extends TestCase
             'send empty array, success' => [
                 [],
                 0,
-            ]
+            ],
         ];
     }
 }

@@ -22,6 +22,7 @@ class TenancyServiceProvider extends ServiceProvider
      * Register any application services.
      *
      * @codeCoverageIgnore
+     *
      * @return void
      */
     public function events()
@@ -126,6 +127,7 @@ class TenancyServiceProvider extends ServiceProvider
 
     /**
      * @codeCoverageIgnore
+     *
      * @return void
      */
     protected function mapRoutes()

@@ -52,6 +52,7 @@ class TeamMutationTest extends TestCase
 
     /**
      * A basic unit test in delete team.
+     *
      * @dataProvider teamDeleteProvider
      *
      * @return void
@@ -90,7 +91,7 @@ class TeamMutationTest extends TestCase
             'send empty array, success' => [
                 [],
                 0,
-            ]
+            ],
         ];
     }
 }

@@ -52,6 +52,7 @@ class FundamentalMutationTest extends TestCase
 
     /**
      * A basic unit test in delete position.
+     *
      * @dataProvider positionDeleteProvider
      *
      * @return void
@@ -89,7 +90,7 @@ class FundamentalMutationTest extends TestCase
             'send empty array, success' => [
                 [],
                 0,
-            ]
+            ],
         ];
     }
 }
