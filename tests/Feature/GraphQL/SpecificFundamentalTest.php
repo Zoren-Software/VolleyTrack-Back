@@ -15,6 +15,8 @@ class SpecificFundamentalTest extends TestCase
 
     protected $login = true;
 
+    private $permission = 'Técnico';
+
     private $data = [
         'id',
         'name',
@@ -97,7 +99,7 @@ class SpecificFundamentalTest extends TestCase
      */
     public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'create-specific-fundamental');
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
@@ -233,7 +235,7 @@ class SpecificFundamentalTest extends TestCase
      */
     public function test_specific_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
 
         $specificFundamentalExist = SpecificFundamental::factory()->make();
         $specificFundamentalExist->save();
@@ -363,6 +365,96 @@ class SpecificFundamentalTest extends TestCase
                 ],
                 'permission' => true,
                 'add_relationship' => false,
+            ],
+        ];
+    }
+
+    /**
+     * Método de exclusão de um time.
+     *
+     * @author Maicon Cerutti
+     *
+     * @dataProvider specificFundamentalDeleteProvider
+     *
+     * @return void
+     */
+    public function test_specific_fundamental_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    {
+        $this->login = true;
+
+        $this->checkPermission($permission, $this->permission, 'delete-specific-fundamental');
+
+        $specificFundamental = SpecificFundamental::factory()->make();
+        $specificFundamental->save();
+
+        $parameters['id'] = $specificFundamental->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
+        $response = $this->graphQL(
+            'specificFundamentalDelete',
+            $parameters,
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function specificFundamentalDeleteProvider()
+    {
+        $specificFundamentalDelete = ['specificFundamentalDelete'];
+
+        return [
+            'delete specific fundamental, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'specificFundamentalDelete' => [$this->data],
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'delete specific fundamental without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $specificFundamentalDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete specific fundamental that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $specificFundamentalDelete,
+                ],
+                'permission' => true,
             ],
         ];
     }
