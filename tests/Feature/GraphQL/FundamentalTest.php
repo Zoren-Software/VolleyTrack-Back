@@ -14,6 +14,8 @@ class FundamentalTest extends TestCase
 
     protected $login = true;
 
+    private $permission = 'Técnico';
+
     private $data = [
         'id',
         'name',
@@ -96,7 +98,7 @@ class FundamentalTest extends TestCase
      */
     public function test_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-fundamental');
+        $this->checkPermission($permission, $this->permission, 'create-fundamental');
 
         $response = $this->graphQL(
             'fundamentalCreate',
@@ -205,7 +207,7 @@ class FundamentalTest extends TestCase
      */
     public function test_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-fundamental');
+        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
 
         $fundamentalExist = Fundamental::factory()->make();
         $fundamentalExist->save();
@@ -306,6 +308,96 @@ class FundamentalTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
+                ],
+                'permission' => true,
+            ],
+        ];
+    }
+
+    /**
+     * Método de exclusão de um fundamento.
+     *
+     * @author Maicon Cerutti
+     *
+     * @dataProvider fundamentalDeleteProvider
+     *
+     * @return void
+     */
+    public function test_fundamental_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    {
+        $this->login = true;
+
+        $this->checkPermission($permission, $this->permission, 'delete-fundamental');
+
+        $fundamental = Fundamental::factory()->make();
+        $fundamental->save();
+
+        $parameters['id'] = $fundamental->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
+        $response = $this->graphQL(
+            'fundamentalDelete',
+            $parameters,
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function fundamentalDeleteProvider()
+    {
+        $fundamentalDelete = ['fundamentalDelete'];
+
+        return [
+            'delete fundamental, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'fundamentalDelete' => [$this->data],
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'delete fundamental without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $fundamentalDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete fundamental that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $fundamentalDelete,
                 ],
                 'permission' => true,
             ],

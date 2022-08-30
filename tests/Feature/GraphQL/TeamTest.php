@@ -16,6 +16,8 @@ class TeamTest extends TestCase
 
     private $teamText = ' TEAM';
 
+    private $permission = 'Técnico';
+
     private $data = [
         'id',
         'name',
@@ -98,7 +100,7 @@ class TeamTest extends TestCase
      */
     public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-team');
+        $this->checkPermission($permission, $this->permission, 'create-team');
 
         $response = $this->graphQL(
             'teamCreate',
@@ -207,7 +209,7 @@ class TeamTest extends TestCase
      */
     public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-team');
+        $this->checkPermission($permission, $this->permission, 'edit-team');
 
         $teamExist = Team::factory()->make();
         $teamExist->save();
@@ -308,6 +310,96 @@ class TeamTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $teamEdit,
+                ],
+                'permission' => true,
+            ],
+        ];
+    }
+
+    /**
+     * Método de exclusão de um time.
+     *
+     * @author Maicon Cerutti
+     *
+     * @dataProvider teamDeleteProvider
+     *
+     * @return void
+     */
+    public function test_team_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    {
+        $this->login = true;
+
+        $this->checkPermission($permission, $this->permission, 'delete-team');
+
+        $team = Team::factory()->make();
+        $team->save();
+
+        $parameters['id'] = $team->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
+        $response = $this->graphQL(
+            'teamDelete',
+            $parameters,
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function teamDeleteProvider()
+    {
+        $teamDelete = ['teamDelete'];
+
+        return [
+            'delete team, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'teamDelete' => [$this->data],
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'delete team without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $teamDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete team that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $teamDelete,
                 ],
                 'permission' => true,
             ],

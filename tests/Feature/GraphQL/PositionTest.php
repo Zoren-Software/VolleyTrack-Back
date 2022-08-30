@@ -14,6 +14,8 @@ class PositionTest extends TestCase
 
     protected $login = true;
 
+    private $permission = 'Técnico';
+
     private $data = [
         'id',
         'name',
@@ -96,7 +98,7 @@ class PositionTest extends TestCase
      */
     public function test_position_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-position');
+        $this->checkPermission($permission, $this->permission, 'create-position');
 
         $response = $this->graphQL(
             'positionCreate',
@@ -205,7 +207,7 @@ class PositionTest extends TestCase
      */
     public function test_position_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-position');
+        $this->checkPermission($permission, $this->permission, 'edit-position');
 
         $positionExist = Position::factory()->make();
         $positionExist->save();
@@ -306,6 +308,96 @@ class PositionTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $positionEdit,
+                ],
+                'permission' => true,
+            ],
+        ];
+    }
+
+    /**
+     * Método de exclusão de uma posição.
+     *
+     * @author Maicon Cerutti
+     *
+     * @dataProvider positionDeleteProvider
+     *
+     * @return void
+     */
+    public function test_position_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    {
+        $this->login = true;
+
+        $this->checkPermission($permission, $this->permission, 'delete-position');
+
+        $position = Position::factory()->make();
+        $position->save();
+
+        $parameters['id'] = $position->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
+        $response = $this->graphQL(
+            'positionDelete',
+            $parameters,
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function positionDeleteProvider()
+    {
+        $positionDelete = ['positionDelete'];
+
+        return [
+            'delete position, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'positionDelete' => [$this->data],
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'delete position without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $positionDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete position that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $positionDelete,
                 ],
                 'permission' => true,
             ],
