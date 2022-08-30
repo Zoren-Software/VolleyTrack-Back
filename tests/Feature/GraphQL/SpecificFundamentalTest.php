@@ -368,36 +368,92 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * Método de exclusão de um fundamento específico.
+     * Método de exclusão de um time.
      *
      * @author Maicon Cerutti
      *
+     * @dataProvider specificFundamentalDeleteProvider
+     *
      * @return void
      */
-    public function test_specific_fundamental_delete()
+    public function test_specific_fundamental_delete($data, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission(true, 'Técnico', 'delete-specific-fundamental');
+        $this->login = true;
+
+        $this->checkPermission($permission, 'Técnico', 'delete-specific-fundamental');
 
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
 
+        $parameters['id'] = $specificFundamental->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
         $response = $this->graphQL(
             'specificFundamentalDelete',
-            [
-                'id' => $specificFundamental->id,
-            ],
+            $parameters,
             $this->data,
             'mutation',
             false,
             true
         );
 
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
         $response
-            ->assertJsonStructure([
-                'data' => [
-                    'specificFundamentalDelete' => [$this->data],
-                ],
-            ])
+            ->assertJsonStructure($expected)
             ->assertStatus(200);
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function specificFundamentalDeleteProvider()
+    {
+        $specificFundamentalDelete = ['specificFundamentalDelete'];
+
+        return [
+            'delete specific fundamental, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'specificFundamentalDelete' => [$this->data],
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'delete specific fundamental without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $specificFundamentalDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete specific fundamental that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $specificFundamentalDelete,
+                ],
+                'permission' => true,
+            ],
+        ];
     }
 }

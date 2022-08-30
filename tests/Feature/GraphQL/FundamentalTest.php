@@ -317,32 +317,88 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @dataProvider fundamentalDeleteProvider
+     *
      * @return void
      */
-    public function test_fundamental_delete()
+    public function test_fundamental_delete($data, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission(true, 'Técnico', 'delete-fundamental');
+        $this->login = true;
+
+        $this->checkPermission($permission, 'Técnico', 'delete-fundamental');
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
 
+        $parameters['id'] = $fundamental->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
         $response = $this->graphQL(
             'fundamentalDelete',
-            [
-                'id' => [$fundamental->id],
-            ],
+            $parameters,
             $this->data,
             'mutation',
             false,
             true
         );
 
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
         $response
-            ->assertJsonStructure([
-                'data' => [
-                    'fundamentalDelete' => [$this->data],
-                ],
-            ])
+            ->assertJsonStructure($expected)
             ->assertStatus(200);
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function fundamentalDeleteProvider()
+    {
+        $fundamentalDelete = ['fundamentalDelete'];
+
+        return [
+            'delete fundamental, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'fundamentalDelete' => [$this->data],
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'delete fundamental without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $fundamentalDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete fundamental that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $fundamentalDelete,
+                ],
+                'permission' => true,
+            ],
+        ];
     }
 }

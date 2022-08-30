@@ -576,18 +576,6 @@ class UserTest extends TestCase
 
         $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
 
-        if ($type_message_error) {
-            if (! $permission) {
-                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
-            } else {
-                if (isset($response->json()['errors'][0]['extensions']['validation'])) {
-                    $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
-                } else {
-                    $this->assertSame($response->json()['errors'][0]['extensions']['category'], trans($expected_message));
-                }
-            }
-        }
-
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
@@ -602,7 +590,9 @@ class UserTest extends TestCase
 
         return [
             'delete a user, success' => [
-                ['error' => null],
+                [
+                    'error' => null,
+                ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
@@ -611,7 +601,9 @@ class UserTest extends TestCase
                 'permission' => true,
             ],
             'delete user without permission, expected error' => [
-                ['error' => null],
+                [
+                    'error' => null,
+                ],
                 'type_message_error' => 'message',
                 'expected_message' => $this->unauthorized,
                 'expected' => [

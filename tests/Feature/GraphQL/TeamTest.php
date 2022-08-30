@@ -319,32 +319,88 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @dataProvider teamDeleteProvider
+     *
      * @return void
      */
-    public function test_team_delete()
+    public function test_team_delete($data, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission(true, 'Técnico', 'delete-team');
+        $this->login = true;
+
+        $this->checkPermission($permission, 'Técnico', 'delete-team');
 
         $team = Team::factory()->make();
         $team->save();
 
+        $parameters['id'] = $team->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
         $response = $this->graphQL(
             'teamDelete',
-            [
-                'id' => $team->id,
-            ],
+            $parameters,
             $this->data,
             'mutation',
             false,
             true
         );
 
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
         $response
-            ->assertJsonStructure([
-                'data' => [
-                    'teamDelete' => [$this->data],
-                ],
-            ])
+            ->assertJsonStructure($expected)
             ->assertStatus(200);
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function teamDeleteProvider()
+    {
+        $teamDelete = ['teamDelete'];
+
+        return [
+            'delete team, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'teamDelete' => [$this->data],
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'delete team without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $teamDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete team that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $teamDelete,
+                ],
+                'permission' => true,
+            ],
+        ];
     }
 }
