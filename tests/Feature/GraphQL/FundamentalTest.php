@@ -14,6 +14,8 @@ class FundamentalTest extends TestCase
 
     protected $login = true;
 
+    private $permission = 'Técnico';
+
     private $data = [
         'id',
         'name',
@@ -96,7 +98,7 @@ class FundamentalTest extends TestCase
      */
     public function test_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-fundamental');
+        $this->checkPermission($permission, $this->permission, 'create-fundamental');
 
         $response = $this->graphQL(
             'fundamentalCreate',
@@ -205,7 +207,7 @@ class FundamentalTest extends TestCase
      */
     public function test_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-fundamental');
+        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
 
         $fundamentalExist = Fundamental::factory()->make();
         $fundamentalExist->save();
@@ -325,7 +327,7 @@ class FundamentalTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, 'Técnico', 'delete-fundamental');
+        $this->checkPermission($permission, $this->permission, 'delete-fundamental');
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();

@@ -15,6 +15,8 @@ class SpecificFundamentalTest extends TestCase
 
     protected $login = true;
 
+    private $permission = 'Técnico';
+
     private $data = [
         'id',
         'name',
@@ -97,7 +99,7 @@ class SpecificFundamentalTest extends TestCase
      */
     public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
-        $this->checkPermission($permission, 'Técnico', 'create-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'create-specific-fundamental');
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
@@ -233,7 +235,7 @@ class SpecificFundamentalTest extends TestCase
      */
     public function test_specific_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
-        $this->checkPermission($permission, 'Técnico', 'edit-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
 
         $specificFundamentalExist = SpecificFundamental::factory()->make();
         $specificFundamentalExist->save();
@@ -380,7 +382,7 @@ class SpecificFundamentalTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, 'Técnico', 'delete-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'delete-specific-fundamental');
 
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
