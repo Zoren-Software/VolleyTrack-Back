@@ -311,4 +311,38 @@ class FundamentalTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * Método de exclusão de um fundamento.
+     *
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function test_fundamental_delete()
+    {
+        $this->checkPermission(true, 'Técnico', 'delete-fundamental');
+
+        $fundamental = Fundamental::factory()->make();
+        $fundamental->save();
+
+        $response = $this->graphQL(
+            'fundamentalDelete',
+            [
+                'id' => [$fundamental->id],
+            ],
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $response
+            ->assertJsonStructure([
+                'data' => [
+                    'fundamentalDelete' => [$this->data],
+                ],
+            ])
+            ->assertStatus(200);
+    }
 }

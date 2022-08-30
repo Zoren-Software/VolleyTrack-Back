@@ -311,4 +311,38 @@ class PositionTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * Método de exclusão de uma posição.
+     *
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function test_position_delete()
+    {
+        $this->checkPermission(true, 'Técnico', 'delete-position');
+
+        $position = Position::factory()->make();
+        $position->save();
+
+        $response = $this->graphQL(
+            'positionDelete',
+            [
+                'id' => $position->id,
+            ],
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $response
+            ->assertJsonStructure([
+                'data' => [
+                    'positionDelete' => [$this->data],
+                ],
+            ])
+            ->assertStatus(200);
+    }
 }

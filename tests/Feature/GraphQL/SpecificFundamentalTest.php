@@ -366,4 +366,38 @@ class SpecificFundamentalTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * Método de exclusão de um fundamento específico.
+     *
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function test_specific_fundamental_delete()
+    {
+        $this->checkPermission(true, 'Técnico', 'delete-specific-fundamental');
+
+        $specificFundamental = SpecificFundamental::factory()->make();
+        $specificFundamental->save();
+
+        $response = $this->graphQL(
+            'specificFundamentalDelete',
+            [
+                'id' => $specificFundamental->id,
+            ],
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $response
+            ->assertJsonStructure([
+                'data' => [
+                    'specificFundamentalDelete' => [$this->data],
+                ],
+            ])
+            ->assertStatus(200);
+    }
 }

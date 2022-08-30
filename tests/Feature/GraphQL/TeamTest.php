@@ -313,4 +313,38 @@ class TeamTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * Método de exclusão de um time.
+     *
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function test_team_delete()
+    {
+        $this->checkPermission(true, 'Técnico', 'delete-team');
+
+        $team = Team::factory()->make();
+        $team->save();
+
+        $response = $this->graphQL(
+            'teamDelete',
+            [
+                'id' => $team->id,
+            ],
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $response
+            ->assertJsonStructure([
+                'data' => [
+                    'teamDelete' => [$this->data],
+                ],
+            ])
+            ->assertStatus(200);
+    }
 }
