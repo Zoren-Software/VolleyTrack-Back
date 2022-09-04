@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": "^1.0",
         "daniel-de-wit/lighthouse-sanctum": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
