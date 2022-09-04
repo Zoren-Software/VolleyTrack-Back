@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d76b876929958fb4f958d6caba483cb6",
+    "content-hash": "86f7704490607e4fb839484af1c840f1",
     "packages": [
         {
             "name": "brick/math",
@@ -64,16 +64,16 @@
         },
         {
             "name": "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel",
-            "version": "dev-main",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel.git",
-                "reference": "12bb0cecf9c7c1430a9039e4382e5acf52ee56b5"
+                "reference": "2cabc3fe687ccffedb3b691b70ed46db61271f06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/zipball/12bb0cecf9c7c1430a9039e4382e5acf52ee56b5",
-                "reference": "12bb0cecf9c7c1430a9039e4382e5acf52ee56b5",
+                "url": "https://api.github.com/repos/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/zipball/2cabc3fe687ccffedb3b691b70ed46db61271f06",
+                "reference": "2cabc3fe687ccffedb3b691b70ed46db61271f06",
                 "shasum": ""
             },
             "require": {
@@ -89,7 +89,6 @@
                 "orchestra/testbench": "^6.23 || ^7.0",
                 "pestphp/pest": "^1.20"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -150,7 +149,7 @@
                 "user"
             ],
             "support": {
-                "source": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/tree/v1.0.0"
+                "source": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/tree/1.0.1"
             },
             "funding": [
                 {
@@ -162,7 +161,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-04T23:12:27+00:00"
+            "time": "2022-09-04T23:46:41+00:00"
         },
         {
             "name": "daniel-de-wit/lighthouse-sanctum",
@@ -9419,9 +9418,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
