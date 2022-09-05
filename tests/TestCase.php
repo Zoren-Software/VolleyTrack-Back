@@ -85,6 +85,7 @@ abstract class TestCase extends BaseTestCase
 
             try {
                 Artisan::call("multi_tenants:migrate --tenants {$tenantId} --path base");
+                Artisan::call("multi_tenants:migrate --tenants {$tenantId}");
                 Artisan::call("multi_tenants_logs:migrate --tenants {$tenantIdLogs}");
                 Artisan::call("multi_tenants:seed --tenants {$tenantId}");
             } catch (\Exception $e) {
