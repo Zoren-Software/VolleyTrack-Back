@@ -22,7 +22,7 @@ return new class () extends Migration {
         tenancy()->initialize($tenantMain);
 
         $tables = DB::select('SHOW TABLES');
-        
+
         // NOTE - Return $tables in array
         $tables = array_map(function ($table) {
             return array_values((array) $table)[0];
@@ -30,6 +30,8 @@ return new class () extends Migration {
 
         // NOTE - The migrations table must not contain logs as it follows Laravel standards
         $tables = array_diff($tables, ['migrations']);
+
+        $tables[] = 'default';
 
         tenancy()->initialize($tenantLog);
 

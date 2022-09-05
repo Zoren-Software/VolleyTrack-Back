@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable implements HasApiTokensContract
 {
@@ -18,6 +20,7 @@ class User extends Authenticatable implements HasApiTokensContract
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -85,5 +88,15 @@ class User extends Authenticatable implements HasApiTokensContract
         $user->delete();
 
         return $user;
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName($this->table)
+            ->logOnly(['*'])
+            ->logOnlyDirty()
+            ->dontLogIfAttributesChangedOnly(['password', 'remember_token', 'token', 'token_sessao', 'updated_at', 'created_at', 'deleted_at'])
+            ->dontSubmitEmptyLogs();
     }
 }
