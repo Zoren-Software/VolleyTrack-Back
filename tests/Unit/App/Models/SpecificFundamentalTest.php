@@ -6,6 +6,7 @@ use App\Models\SpecificFundamental;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Tests\TestCase;
+use Spatie\Activitylog\LogOptions;
 
 class SpecificFundamentalTest extends TestCase
 {
@@ -29,5 +30,16 @@ class SpecificFundamentalTest extends TestCase
     {
         $specificFundamental = new SpecificFundamental();
         $this->assertInstanceOf(BelongsToMany::class, $specificFundamental->fundamentals());
+    }
+
+    /**
+     * A basic unit test relation getActivitylogOptions.
+     *
+     * @return void
+     */
+    public function test_get_activitylog_options()
+    {
+        $user = new SpecificFundamental();
+        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
     }
 }
