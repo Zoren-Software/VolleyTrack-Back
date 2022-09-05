@@ -73,19 +73,26 @@ abstract class TestCase extends BaseTestCase
 
     public function initializeTenancy(): void
     {
-        $domain = env('TENANT_TEST', 'test');
+        $tenantId = env('TENANT_TEST', 'test');
+        $tenantIdLogs = $tenantId . '_logs';
 
         Artisan::call('migrate --seed');
 
-        if (! Tenant::find($domain)) {
-            $tenant = Tenant::create(['id' => $domain]);
-            $tenant->domains()->create(['domain' => $domain . '.' . env('APP_HOST')]);
+        if (! Tenant::find($tenantId)) {
+            $tenant = Tenant::create(['id' => $tenantId]);
+            Tenant::create(['id' => $tenantIdLogs]);
+            $tenant->domains()->create(['domain' => $tenantId . '.' . env('APP_HOST')]);
 
-            Artisan::call('tenants:migrate --tenants=' . $domain . ' --path database/migrations/tenant/base');
-            Artisan::call('tenants:seed --tenants=' . $domain);
+            try {
+                Artisan::call("multi_tenants:migrate --tenants {$tenantId} --path base");
+                Artisan::call("multi_tenants_logs:migrate --tenants {$tenantIdLogs}");
+                Artisan::call("multi_tenants:seed --tenants {$tenantId}");
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
         }
 
-        tenancy()->initialize($domain);
+        tenancy()->initialize($tenantId);
     }
 
     public function graphQL(string $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, string $type, bool $input, bool $parametrosEntrada = false): object
