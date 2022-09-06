@@ -6,6 +6,7 @@ use App\Models\Fundamental;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Tests\TestCase;
+use Spatie\Activitylog\LogOptions;
 
 class FundamentalTest extends TestCase
 {
@@ -29,5 +30,16 @@ class FundamentalTest extends TestCase
     {
         $fundamental = new Fundamental();
         $this->assertInstanceOf(BelongsTo::class, $fundamental->user());
+    }
+
+    /**
+     * A basic unit test relation getActivitylogOptions.
+     *
+     * @return void
+     */
+    public function test_get_activitylog_options()
+    {
+        $user = new Fundamental();
+        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
     }
 }

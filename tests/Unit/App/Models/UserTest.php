@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
+use Spatie\Activitylog\LogOptions;
 
 class UserTest extends TestCase
 {
@@ -97,5 +98,16 @@ class UserTest extends TestCase
 
         $user = new User();
         $user->hasPermissionRole('list-role-administrador');
+    }
+
+    /**
+     * A basic unit test relation getActivitylogOptions.
+     *
+     * @return void
+     */
+    public function test_get_activitylog_options()
+    {
+        $user = new User();
+        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
     }
 }
