@@ -2,11 +2,12 @@
     "name": "zoren-software/volei-club",
     "type": "project",
     "description": "API for VoleiClub project",
-    "version": "0.5.0",
+    "version": "0.2.0",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": "^1.0",
         "daniel-de-wit/lighthouse-sanctum": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
