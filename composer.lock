@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86f7704490607e4fb839484af1c840f1",
+    "content-hash": "3ff027c5ebed63cbe280d19422af951a",
     "packages": [
         {
             "name": "brick/math",
@@ -64,16 +64,16 @@
         },
         {
             "name": "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel.git",
-                "reference": "dafd901e9770be56297a0ef6d1bcbd1631d0dc7e"
+                "reference": "4c2edc0a0b84a7366d2036f4a3e76810af23047d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/zipball/dafd901e9770be56297a0ef6d1bcbd1631d0dc7e",
-                "reference": "dafd901e9770be56297a0ef6d1bcbd1631d0dc7e",
+                "url": "https://api.github.com/repos/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/zipball/4c2edc0a0b84a7366d2036f4a3e76810af23047d",
+                "reference": "4c2edc0a0b84a7366d2036f4a3e76810af23047d",
                 "shasum": ""
             },
             "require": {
@@ -149,7 +149,7 @@
                 "user"
             ],
             "support": {
-                "source": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/tree/1.1.1"
+                "source": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/tree/1.2.0"
             },
             "funding": [
                 {
@@ -161,7 +161,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-05T23:51:09+00:00"
+            "time": "2022-09-06T14:13:06+00:00"
         },
         {
             "name": "daniel-de-wit/lighthouse-sanctum",
