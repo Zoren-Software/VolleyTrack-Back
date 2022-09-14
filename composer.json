@@ -16,6 +16,7 @@
         "mll-lab/graphql-php-scalars": "^5.4",
         "mll-lab/laravel-graphql-playground": "^2.6",
         "nuwave/lighthouse": "^5.44",
+        "opcodesio/log-viewer": "^1.4",
         "spatie/laravel-permission": "^5.5",
         "stancl/tenancy": "^3.5"
     },
