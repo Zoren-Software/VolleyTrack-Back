@@ -4,6 +4,7 @@ namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\UserMutation;
 use App\Models\User;
+use App\Models\Position;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 
@@ -24,6 +25,10 @@ class UserMutationTest extends TestCase
         $user->expects($this->once())
             ->method($method);
 
+        $position = $this->createMock(Position::class);
+
+        $user->method('positions')->willReturn($position);
+
         $userMutation = new UserMutation($user);
 
         $userMutation->create(
@@ -33,6 +38,7 @@ class UserMutationTest extends TestCase
                 'email' => 'teste@gmail.com',
                 'password' => '123456',
                 'roleId' => 1,
+                'positionId' => [1]
             ],
             $graphQLContext
         );
@@ -68,6 +74,10 @@ class UserMutationTest extends TestCase
         $user->expects($this->once())
             ->method($method);
 
+        $position = $this->createMock(Position::class);
+
+        $user->method('positions')->willReturn($position);
+
         $userMutation = new UserMutation($user);
 
         $userMutation->edit(
@@ -78,6 +88,7 @@ class UserMutationTest extends TestCase
                 'email' => 'teste@gmail.com',
                 'password' => '123456',
                 'roleId' => 1,
+                'positionId' => [1]
             ],
             $graphQLContext
         );

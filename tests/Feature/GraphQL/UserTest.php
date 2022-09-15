@@ -3,6 +3,7 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\User;
+use App\Models\Position;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -36,7 +37,9 @@ class UserTest extends TestCase
     {
         $this->login = true;
 
-        User::factory()->make()->save();
+        User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
 
         $this->graphQL(
             'users',
@@ -74,7 +77,9 @@ class UserTest extends TestCase
     {
         $this->login = true;
 
-        $user = User::factory()->make();
+        $user = User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
         $user->save();
 
         $this->graphQL(
@@ -140,12 +145,30 @@ class UserTest extends TestCase
         $userCreate = ['userCreate'];
 
         return [
+            'create user with position, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $emailExistent,
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'password' => $password,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
             'declare roleId is required, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => $password,
                     'roleId' => [],
+                    'positionId' => [],
                 ],
                 'type_message_error' => 'roleId',
                 'expected_message' => 'UserCreate.role_id_required',
@@ -158,8 +181,9 @@ class UserTest extends TestCase
             'create user, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $emailExistent,
+                    'email' => $faker->email,
                     'roleId' => [2],
+                    'positionId' => [],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
@@ -207,6 +231,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'roleId' => [2],
+                    'positionId' => [],
                     'password' => $password,
                 ],
                 'type_message_error' => 'message',
@@ -222,6 +247,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'roleId' => [2],
+                    'positionId' => [],
                     'password' => '12345',
                 ],
                 'type_message_error' => 'password',
@@ -237,6 +263,7 @@ class UserTest extends TestCase
                     'password' => ' ',
                     'email' => $faker->email,
                     'roleId' => [2],
+                    'positionId' => [],
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_required',
@@ -251,6 +278,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'roleId' => [2],
+                    'positionId' => [],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
@@ -267,6 +295,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'password' => $password,
                     'roleId' => [2],
+                    'positionId' => [],
                     'email' => ' ',
                 ],
                 'type_message_error' => 'email',
@@ -282,6 +311,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'password' => $password,
                     'roleId' => [2],
+                    'positionId' => [],
                     'email' => $emailExistent,
                 ],
                 'type_message_error' => 'email',
@@ -297,6 +327,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'password' => $password,
                     'roleId' => [2],
+                    'positionId' => [],
                     'email' => 'notemail.com',
                 ],
                 'type_message_error' => 'email',
@@ -325,10 +356,13 @@ class UserTest extends TestCase
 
         $this->checkPermission($permission, $this->permission, 'edit-user');
 
-        $userExist = User::factory()->make();
-        $userExist->save();
-        $user = User::factory()->make();
-        $user->save();
+        $userExist = User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
+
+        $user = User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
 
         $parameters['id'] = $user->id;
 
@@ -415,6 +449,23 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'permission' => false,
+            ],
+            'edit user with position, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [2],
+                    'positionId' => [2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
             'edit user, success' => [
                 [
@@ -556,8 +607,9 @@ class UserTest extends TestCase
 
         $this->checkPermission($permission, $this->permission, 'delete-user');
 
-        $user = User::factory()->make();
-        $user->save();
+        $user = User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
 
         $parameters['id'] = $user->id;
 
