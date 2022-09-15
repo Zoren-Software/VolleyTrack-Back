@@ -25,6 +25,12 @@ final class UserMutation
 
         $this->user->roles()->syncWithoutDetaching($args['roleId']);
 
+        if (isset($args['positionId']) && $this->user->positions()) {
+            $this->user->positions()->syncWithoutDetaching($args['positionId']);
+        }
+
+        $this->user->positions;
+
         return $this->user;
     }
 
@@ -41,6 +47,10 @@ final class UserMutation
         $this->user->save();
 
         $this->user->roles()->syncWithoutDetaching($args['roleId']);
+
+        if (isset($args['positionId']) && $this->user->positions()) {
+            $this->user->positions()->syncWithoutDetaching($args['positionId']);
+        }
 
         return $this->user;
     }
