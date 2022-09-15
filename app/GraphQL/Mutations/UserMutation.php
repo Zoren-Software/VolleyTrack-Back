@@ -29,6 +29,8 @@ final class UserMutation
             $this->user->positions()->syncWithoutDetaching($args['positionId']);
         }
 
+        $this->user->positions;
+
         return $this->user;
     }
 
