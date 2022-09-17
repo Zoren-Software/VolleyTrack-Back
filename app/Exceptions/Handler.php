@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use App\Services\DiscordService;
 
 class Handler extends ExceptionHandler
 {
@@ -29,13 +29,15 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     *
+     * @codeCoverageIgnore
      * @return void
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->reportable(function (\Throwable $e) {
+            // Reportar erro para o Discord
+            $discord = new DiscordService();
+            $discord->sendError($e, 'Laravel Handler');
         });
     }
 }
