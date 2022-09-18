@@ -36,9 +36,11 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (\Throwable $e) {
-            $clientDiscord = new GuzzleClient();
-            $discord = new DiscordService($clientDiscord);
-            $discord->sendError($e, 'Laravel Handler');
+            if ($this->shouldReport($e)) {
+                $clientDiscord = new GuzzleClient();
+                $discord = new DiscordService($clientDiscord);
+                $discord->sendError($e, 'Laravel Handler');
+            }
         });
     }
 }
