@@ -39,8 +39,6 @@ final class DiscordService extends Model
     public function sendError(\Throwable $error, String $author): void
     {
         try {
-            $client = new GuzzleClient();
-
             $data = [
                 "content" => null,
                 "embeds" => [
@@ -87,7 +85,7 @@ final class DiscordService extends Model
                 ];
             }
 
-            $client->post(
+            $this->client->post(
                 $this->webhookErrors,
                 [
                     'json' => $data
