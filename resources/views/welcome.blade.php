@@ -74,7 +74,7 @@
 
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700">
                             <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <svg class="w-8 h-8 text-gray-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                                 <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://github.com/Zoren-Software/VoleiClub" class="underline text-gray-900 dark:text-white">GitHub Projeto</a></div>
                             </div>
 
@@ -88,10 +88,6 @@
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
                             <div class="flex items-center">
                                 <svg class="w-8 h-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
-                                @php
-                                
-                                    
-                                @endphp
                                 <div class="ml-4 text-lg leading-7 font-semibold"><a href="/log-viewer" class="underline text-gray-900 dark:text-white">Logs Viewer</a></div>
                             </div>
 
@@ -101,26 +97,45 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center">
+                                <svg class="w-8 h-8 text-gray-500" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg>
+                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://sonarcloud.io/summary/new_code?id=Zoren-Software_VoleiClub" class="underline text-gray-900 dark:text-white">SonarQube</a></div>
+                            </div>
+
+                            <div class="ml-12">
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    SonarQube é uma plataforma de código aberto desenvolvida pela SonarSource para inspeção contínua da qualidade do código para realizar revisões automáticas com análise estática de código para detectar bugs, code smells em 29 linguagens de programação.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
+                            <div class="flex items-center">
+                                <svg class="w-8 h-8 text-gray-500" stroke="currentColor" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.172 28.828">
+                                    <path d="M 13.585938 0 L 12.878906 0.70703125 L 0.5859375 13 C -0.18646011 13.772631 -0.18646011 15.055494 0.5859375 15.828125 L 13.585938 28.828125 L 14.292969 28.121094 L 26.585938 15.828125 C 27.358335 15.055494 27.358335 13.772631 26.585938 13 L 13.585938 0 z M 13.638672 2.8808594 L 25.171875 14.414062 L 16.326172 23.259766 C 16.302757 22.660747 16.201061 22.095371 16.035156 21.597656 C 15.739458 20.710561 15.298665 19.984718 14.933594 19.480469 L 20 14.414062 L 14.292969 8.7070312 C 14.292969 8.7070312 13.450829 7.844674 13.035156 6.5976562 C 12.680798 5.534581 12.572787 4.311202 13.638672 2.8808594 z M 10.845703 5.5683594 C 10.869118 6.1673784 10.970814 6.7327539 11.136719 7.2304688 C 11.432417 8.1175643 11.87321 8.8434066 12.238281 9.3476562 L 7.171875 14.414062 L 7.8789062 15.121094 L 12.878906 20.121094 C 12.878906 20.121094 13.721046 20.983451 14.136719 22.230469 C 14.491077 23.293544 14.599088 24.516923 13.533203 25.947266 L 2 14.414062 L 10.845703 5.5683594 z M 13.585938 10.828125 L 17.171875 14.414062 L 13.585938 18 L 10 14.414062 L 13.585938 10.828125 z"></path>
+                                </svg>
+                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://voleiclub.atlassian.net/jira/software/c/projects/VLC/boards/2" class="underline text-gray-900 dark:text-white">Jira</a></div>
+                            </div>
+
+                            <div class="ml-12">
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    Ferramenta que permite o monitoramento de tarefas e acompanhamento de projetos garantindo o gerenciamento de todas as suas atividades em único lugar.
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                     <div class="text-center text-sm text-gray-500 sm:text-left">
                         <div class="flex items-center">
-                            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="-mt-px w-5 h-5 text-gray-400">
-                                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            <svg class="w-5 h-8 text-gray-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" class="ml-4 -mt-px w-5 h-5 text-gray-400">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                             </svg>
 
-                            <a href="https://laravel.bigcartel.com" class="ml-1 underline">
-                                Shop
-                            </a>
-
-                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="ml-4 -mt-px w-5 h-5 text-gray-400">
-                                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-
-                            <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline">
-                                Sponsor
+                            <a href="https://github.com/Zoren-Software" class="ml-1 underline">
+                                Zoren Software
                             </a>
                         </div>
                     </div>
