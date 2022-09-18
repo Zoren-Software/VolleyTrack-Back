@@ -73,7 +73,6 @@ final class DiscordService extends Model
                         ],
                         "author" => [
                             "name" => 'ERROR ' . $author,
-                            "url" => "http://test.voleiclub.local/url-tenant",
                             "icon_url" => "https://cdn.icon-icons.com/icons2/1808/PNG/64/bug_115148.png"
                         ],
                         "timestamp" => date('Y-m-d H:i:s')
