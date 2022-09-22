@@ -99,4 +99,13 @@ class User extends Authenticatable implements HasApiTokensContract
             ->dontLogIfAttributesChangedOnly(['password', 'remember_token', 'token', 'token_sessao', 'updated_at', 'created_at', 'deleted_at'])
             ->dontSubmitEmptyLogs();
     }
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class)
+            ->using(TeamsUsers::class)
+            ->as('teams')
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
+    }
 }

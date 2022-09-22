@@ -3,6 +3,7 @@ extend type Mutation @guard {
     teamCreate(
         name: String!
         userId: Int! @rename(attribute: "user_id") 
+        playerId: [Int] @rename(attribute: "player_id")
     ): Team
         @field(resolver: "TeamMutation@create") 
         @validator
@@ -11,7 +12,8 @@ extend type Mutation @guard {
     teamEdit(
         id: Int!
         name: String!
-        userId: Int! @rename(attribute: "user_id") 
+        userId: Int! @rename(attribute: "user_id")
+        playerId: [Int] @rename(attribute: "player_id")
     ): Team
         @field(resolver: "TeamMutation@edit") 
         @validator

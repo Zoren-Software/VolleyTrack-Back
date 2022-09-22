@@ -22,6 +22,10 @@ final class TeamMutation
         $this->team->user_id = $args['user_id'];
         $this->team->save();
 
+        if (isset($args['player_id']) && $this->team->players()) {
+            $this->team->players()->syncWithoutDetaching($args['player_id']);
+        }
+
         return $this->team;
     }
 
@@ -35,6 +39,10 @@ final class TeamMutation
         $this->team->name = $args['name'];
         $this->team->user_id = $args['user_id'];
         $this->team->save();
+
+        if (isset($args['player_id']) && $this->team->players()) {
+            $this->team->players()->syncWithoutDetaching($args['player_id']);
+        }
 
         return $this->team;
     }
