@@ -31,10 +31,8 @@ final class FundamentalMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $this->fundamental =  $this->fundamental->findOrFail($args['id']);
-        $this->fundamental->name = $args['name'];
-        $this->fundamental->user_id = $args['user_id'];
-        $this->fundamental->save();
+        $this->fundamental = $this->fundamental->find($args['id']);
+        $this->fundamental->update($args);
 
         return $this->fundamental;
     }

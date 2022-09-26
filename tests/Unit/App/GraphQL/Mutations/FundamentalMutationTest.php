@@ -28,28 +28,6 @@ class FundamentalMutationTest extends TestCase
             'user_id' => 1,
         ], $graphQLContext);
     }
-
-    /**
-     * A basic unit test create fundamental.
-     *
-     * @return void
-     */
-    public function test_fundamental_edit()
-    {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $fundamental = $this->createMock(Fundamental::class);
-
-        $fundamental->expects($this->once())
-        ->method('save');
-
-        $fundamentalMutation = new FundamentalMutation($fundamental);
-        $fundamentalMutation->edit(null, [
-            'id' => 1,
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
-    }
-
     /**
      * A basic unit test in delete position.
      *
