@@ -18,9 +18,7 @@ final class SpecificFundamentalMutation
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $this->specificFundamental->name = $args['name'];
-        $this->specificFundamental->user_id = $args['user_id'];
-        $this->specificFundamental->save();
+        $this->specificFundamental = $this->specificFundamental->create($args);
 
         if (isset($args['fundamental_id']) && $this->specificFundamental->fundamentals()) {
             $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
@@ -38,9 +36,7 @@ final class SpecificFundamentalMutation
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
         $this->specificFundamental = $this->specificFundamental->find($args['id']);
-        $this->specificFundamental->name = $args['name'];
-        $this->specificFundamental->user_id = $args['user_id'];
-        $this->specificFundamental->save();
+        $this->specificFundamental->update($args);
 
         if (isset($args['fundamental_id']) && $this->specificFundamental->fundamentals()) {
             $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);

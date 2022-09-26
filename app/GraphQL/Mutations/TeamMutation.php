@@ -18,9 +18,7 @@ final class TeamMutation
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $this->team->name = $args['name'];
-        $this->team->user_id = $args['user_id'];
-        $this->team->save();
+        $this->team = $this->team->create($args);
 
         if (isset($args['player_id']) && $this->team->players()) {
             $this->team->players()->syncWithoutDetaching($args['player_id']);
@@ -36,9 +34,7 @@ final class TeamMutation
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
         $this->team = $this->team->find($args['id']);
-        $this->team->name = $args['name'];
-        $this->team->user_id = $args['user_id'];
-        $this->team->save();
+        $this->team->update($args);
 
         if (isset($args['player_id']) && $this->team->players()) {
             $this->team->players()->syncWithoutDetaching($args['player_id']);

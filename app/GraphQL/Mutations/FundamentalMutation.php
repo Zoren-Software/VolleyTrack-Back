@@ -18,11 +18,7 @@ final class FundamentalMutation
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $this->fundamental->name = $args['name'];
-        $this->fundamental->user_id = $args['user_id'];
-        $this->fundamental->save();
-
-        return $this->fundamental;
+        return $this->fundamental->create($args);
     }
 
     /**
@@ -43,12 +39,12 @@ final class FundamentalMutation
      */
     public function delete($rootValue, array $args, GraphQLContext $context)
     {
-        $fundamental = [];
+        $fundamentals = [];
         foreach ($args['id'] as $id) {
             $this->fundamental = $this->fundamental->deleteFundamental($id);
-            $fundamental[] = $this->fundamental;
+            $fundamentals[] = $this->fundamental;
         }
 
-        return $fundamental;
+        return $fundamentals;
     }
 }

@@ -20,11 +20,7 @@ final class PositionMutation
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $this->position->name = $args['name'];
-        $this->position->user_id = $args['user_id'];
-        $this->position->save();
-
-        return $this->position;
+        return $this->position->create($args);
     }
 
     /**
