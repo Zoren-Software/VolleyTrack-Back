@@ -37,7 +37,7 @@ final class SpecificFundamentalMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $this->specificFundamental->find($args['id']);
+        $this->specificFundamental = $this->specificFundamental->find($args['id']);
         $this->specificFundamental->name = $args['name'];
         $this->specificFundamental->user_id = $args['user_id'];
         $this->specificFundamental->save();

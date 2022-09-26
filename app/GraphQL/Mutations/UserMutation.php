@@ -40,7 +40,7 @@ final class UserMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $this->user->findOrFail($args['id']);
+        $this->user = $this->user->findOrFail($args['id']);
         $this->user->name = $args['name'];
         $this->user->email = $args['email'];
         $this->user->makePassword($args['password']);

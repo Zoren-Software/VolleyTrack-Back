@@ -35,7 +35,7 @@ final class TeamMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $this->team->find($args['id']);
+        $this->team = $this->team->find($args['id']);
         $this->team->name = $args['name'];
         $this->team->user_id = $args['user_id'];
         $this->team->save();
