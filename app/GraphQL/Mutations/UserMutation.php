@@ -16,21 +16,7 @@ final class UserMutation
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function create($rootValue, array $args, GraphQLContext $context)
-    {
-        return $this->makeUser($args);
-    }
-
-    /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
-     */
-    public function edit($rootValue, array $args, GraphQLContext $context)
-    {
-        return $this->makeUser($args);
-    }
-
-    private function makeUser($args)
+    public function make($rootValue, array $args, GraphQLContext $context)
     {
         if (isset($args['id'])) {
             $this->user = $this->user->findOrFail($args['id']);

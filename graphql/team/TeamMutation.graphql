@@ -5,7 +5,7 @@ extend type Mutation @guard {
         userId: Int! @rename(attribute: "user_id") 
         playerId: [Int] @rename(attribute: "player_id")
     ): Team
-        @field(resolver: "TeamMutation@create") 
+        @field(resolver: "TeamMutation@make") 
         @validator
         @can(ability: "create") 
 
@@ -15,7 +15,7 @@ extend type Mutation @guard {
         userId: Int! @rename(attribute: "user_id")
         playerId: [Int] @rename(attribute: "player_id")
     ): Team
-        @field(resolver: "TeamMutation@edit") 
+        @field(resolver: "TeamMutation@make") 
         @validator
         @can(ability: "edit")
 

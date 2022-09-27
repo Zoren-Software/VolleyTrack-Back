@@ -18,19 +18,14 @@ final class PositionMutation
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function create($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context)
     {
-        return $this->position->create($args);
-    }
-
-    /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
-     */
-    public function edit($rootValue, array $args, GraphQLContext $context)
-    {
-        $this->position = $this->position->find($args['id']);
-        $this->position->update($args);
+        if (isset($args['id'])) {
+            $this->position = $this->position->find($args['id']);
+            $this->position->update($args);
+        } else {
+            $this->position = $this->position->create($args);
+        }
 
         return $this->position;
     }

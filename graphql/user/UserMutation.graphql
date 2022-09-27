@@ -7,7 +7,7 @@ extend type Mutation @guard {
         positionId: [Int]
         password: String! @rules(apply: ["min:6"])
     ): User
-        @field(resolver: "UserMutation@create")
+        @field(resolver: "UserMutation@make")
         @validator
         @can(ability: "create")
 
@@ -19,7 +19,7 @@ extend type Mutation @guard {
         positionId: [Int]
         password: String! @rules(apply: ["min:6"])
     ): User
-        @field(resolver: "UserMutation@edit")
+        @field(resolver: "UserMutation@make")
         @validator
         @can(ability: "edit")
     

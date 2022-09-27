@@ -16,27 +16,14 @@ final class SpecificFundamentalMutation
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function create($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context)
     {
-        $this->specificFundamental = $this->specificFundamental->create($args);
-
-        if (isset($args['fundamental_id']) && $this->specificFundamental->fundamentals()) {
-            $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
+        if (isset($args['id'])) {
+            $this->specificFundamental = $this->specificFundamental->find($args['id']);
+            $this->specificFundamental->update($args);
+        } else {
+            $this->specificFundamental = $this->specificFundamental->create($args);
         }
-
-        $this->specificFundamental->fundamentals;
-
-        return $this->specificFundamental;
-    }
-
-    /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
-     */
-    public function edit($rootValue, array $args, GraphQLContext $context)
-    {
-        $this->specificFundamental = $this->specificFundamental->find($args['id']);
-        $this->specificFundamental->update($args);
 
         if (isset($args['fundamental_id']) && $this->specificFundamental->fundamentals()) {
             $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);

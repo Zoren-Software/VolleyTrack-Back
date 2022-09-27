@@ -16,19 +16,14 @@ final class FundamentalMutation
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function create($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context)
     {
-        return $this->fundamental->create($args);
-    }
-
-    /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
-     */
-    public function edit($rootValue, array $args, GraphQLContext $context)
-    {
-        $this->fundamental = $this->fundamental->find($args['id']);
-        $this->fundamental->update($args);
+        if (isset($args['id'])) {
+            $this->fundamental = $this->fundamental->find($args['id']);
+            $this->fundamental->update($args);
+        } else {
+            $this->fundamental = $this->fundamental->create($args);
+        }
 
         return $this->fundamental;
     }
