@@ -102,7 +102,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class)
+        return $this->belongsToMany(Team::class, 'teams_users')
             ->using(TeamsUsers::class)
             ->as('teams')
             ->withTimestamps()

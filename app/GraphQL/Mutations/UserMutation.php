@@ -37,8 +37,8 @@ final class UserMutation
             $this->user->positions()->syncWithoutDetaching($args['positionId']);
         }
 
-        if (isset($args['team_id']) && $this->user->teams()) {
-            $this->user->teams()->syncWithoutDetaching($args['team_id']);
+        if (isset($args['teamId']) && $this->user->teams()) {
+            $this->user->teams()->syncWithoutDetaching($args['teamId']);
         }
 
         $this->user->positions;
