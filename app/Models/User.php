@@ -108,4 +108,31 @@ class User extends Authenticatable implements HasApiTokensContract
             ->withTimestamps()
             ->withPivot('created_at', 'updated_at');
     }
+
+    public function createUser($args)
+    {
+        $user = $this;
+        if ($args['id']) {
+            $user = $this->findOrFail($args['id']);
+        }
+
+        $user->name = $args['name'];
+        $user->email = $args['email'];
+        $user->makePassword($args['password']);
+        $user->save();
+
+        $user->roles()->syncWithoutDetaching($args['roleId']);
+
+        if (isset($args['positionId']) && $user->positions()) {
+            $user->positions()->syncWithoutDetaching($args['positionId']);
+        }
+
+        if (isset($args['team_id']) && $user->teams()) {
+            $user->teams()->syncWithoutDetaching($args['team_id']);
+        }
+
+        $user->positions;
+
+        return $user;
+    }
 }

@@ -18,20 +18,7 @@ final class UserMutation
      */
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $this->user->name = $args['name'];
-        $this->user->email = $args['email'];
-        $this->user->makePassword($args['password']);
-        $this->user->save();
-
-        $this->user->roles()->syncWithoutDetaching($args['roleId']);
-
-        if (isset($args['positionId']) && $this->user->positions()) {
-            $this->user->positions()->syncWithoutDetaching($args['positionId']);
-        }
-
-        $this->user->positions;
-
-        return $this->user;
+        return $this->makeUser($args);
     }
 
     /**
@@ -40,10 +27,22 @@ final class UserMutation
      */
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
-        $this->user = $this->user->findOrFail($args['id']);
+        return $this->makeUser($args);
+    }
+
+    private function makeUser($args)
+    {
+        if (isset($args['id'])) {
+            $this->user = $this->user->findOrFail($args['id']);
+        }
+
         $this->user->name = $args['name'];
         $this->user->email = $args['email'];
-        $this->user->makePassword($args['password']);
+
+        if (isset($args['password'])) {
+            $this->user->makePassword($args['password']);
+        }
+
         $this->user->save();
 
         $this->user->roles()->syncWithoutDetaching($args['roleId']);
@@ -51,6 +50,12 @@ final class UserMutation
         if (isset($args['positionId']) && $this->user->positions()) {
             $this->user->positions()->syncWithoutDetaching($args['positionId']);
         }
+
+        if (isset($args['team_id']) && $this->user->teams()) {
+            $this->user->teams()->syncWithoutDetaching($args['team_id']);
+        }
+
+        $this->user->positions;
 
         return $this->user;
     }

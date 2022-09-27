@@ -181,7 +181,7 @@ class UserTest extends TestCase
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'roleId' => [2],
+                    'roleId' => [3],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
@@ -371,14 +371,6 @@ class UserTest extends TestCase
         );
 
         $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
-
-        if ($type_message_error) {
-            if (! $permission) {
-                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
-            } else {
-                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
-            }
-        }
 
         $response
             ->assertJsonStructure($expected)

@@ -30,9 +30,7 @@ final class PositionMutation
     public function edit($rootValue, array $args, GraphQLContext $context)
     {
         $this->position = $this->position->find($args['id']);
-        $this->position->name = $args['name'];
-        $this->position->user_id = $args['user_id'];
-        $this->position->save();
+        $this->position->update($args);
 
         return $this->position;
     }
