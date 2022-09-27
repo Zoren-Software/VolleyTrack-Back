@@ -54,9 +54,9 @@ class User extends Authenticatable implements HasApiTokensContract
 
     protected $guard_name = 'sanctum';
 
-    public function hasPermissionsViaRoles(string $NamePermission, array $permissions): bool
+    public function hasPermissionsViaRoles(string $namePermission, array $permissions): bool
     {
-        return in_array($NamePermission, $permissions);
+        return in_array($namePermission, $permissions);
     }
 
     public function positions()
