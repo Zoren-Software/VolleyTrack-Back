@@ -74,7 +74,10 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function hasPermissionRole(string $namePermission): bool
     {
-        return $this->hasPermissionsViaRoles($namePermission, auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray());
+        return $this->hasPermissionsViaRoles(
+            $namePermission,
+            auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray()
+        );
     }
 
     /**
@@ -96,7 +99,17 @@ class User extends Authenticatable implements HasApiTokensContract
             ->useLogName($this->table)
             ->logOnly(['*'])
             ->logOnlyDirty()
-            ->dontLogIfAttributesChangedOnly(['password', 'remember_token', 'token', 'token_sessao', 'updated_at', 'created_at', 'deleted_at'])
+            ->dontLogIfAttributesChangedOnly(
+                [
+                    'password',
+                    'remember_token',
+                    'token',
+                    'token_sessao',
+                    'updated_at',
+                    'created_at',
+                    'deleted_at'
+                ]
+            )
             ->dontSubmitEmptyLogs();
     }
 
