@@ -25,7 +25,7 @@ final class TeamMutation
             $this->team = $this->team->create($args);
         }
 
-        if (isset($args['player_id']) && $this->team->players()) {
+        if (isset($args['player_id'])) {
             $this->team->players()->syncWithoutDetaching($args['player_id']);
         }
 

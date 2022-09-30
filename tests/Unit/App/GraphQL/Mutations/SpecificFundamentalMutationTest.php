@@ -11,87 +11,61 @@ use Tests\TestCase;
 class SpecificFundamentalMutationTest extends TestCase
 {
     /**
-     * A basic unit test create specific fundamental.
+     * A basic unit test create and edit fundamental.
      *
-     * @dataProvider createSpecificFundamentalProvider
-     *
-     * @return void
-     */
-    public function test_create_specific_fundamental(array $data, $fundamental): void
-    {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamental = $this->createMock(SpecificFundamental::class);
-
-        $specificFundamental->method('fundamentals')->willReturn($fundamental);
-
-        $specificFundamental->expects($this->once())
-            ->method('save');
-
-        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
-        $specificFundamentalMutation->create(null, $data, $graphQLContext);
-    }
-
-    public function createSpecificFundamentalProvider(): array
-    {
-        return [
-            'create using fundamental_id' => [
-                'data' => [
-                    'name' => 'Teste',
-                    'user_id' => 1,
-                    'fundamental_id' => [1],
-                ],
-                'fundamental' => $this->createMock(Fundamental::class),
-            ],
-            'create not using fundamental_id' => [
-                'data' => [
-                    'name' => 'Teste',
-                    'user_id' => 1,
-                ],
-                'fundamental' => null,
-            ],
-        ];
-    }
-
-    /**
-     * A basic unit test edit specific fundamental.
-     *
-     * @dataProvider editSpecificFundamentalProvider
+     * @dataProvider specificFundamentalProvider
      *
      * @return void
      */
-    public function test_edit_specific_fundamental(array $data, $fundamental): void
+    public function test_specific_fundamental_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamental = $this->createMock(SpecificFundamental::class);
 
-        $specificFundamental->method('fundamentals')->willReturn($fundamental);
+        $fundamental = $this->createMock(Fundamental::class);
+        $specificFundamentalMock = $this->createMock(SpecificFundamental::class);
+        $specificFundamental = $this->getMockBuilder(SpecificFundamental::class)
+            ->addMethods([$method, 'syncWithoutDetaching'])
+            ->onlyMethods(['fundamentals'])
+            ->getMock();
 
-        $specificFundamental->expects($this->once())
-            ->method('save');
+        $specificFundamental
+            ->expects($this->any())
+            ->method($method)
+            ->willReturn($specificFundamentalMock);
+
+        $specificFundamental->method('fundamentals')->willReturn([$fundamental]);
+
 
         $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
-        $specificFundamentalMutation->edit(null, $data, $graphQLContext);
+        $specificFundamentalMockReturn = $specificFundamentalMutation->make(
+            null,
+            $data,
+            $graphQLContext
+        );
+
+        $this->assertEquals($specificFundamentalMock, $specificFundamentalMockReturn);
     }
 
-    public function editSpecificFundamentalProvider(): array
+
+    public function specificFundamentalProvider()
     {
         return [
-            'edit using fundamental_id' => [
+            'send data create, success' => [
                 'data' => [
-                    'id' => 1,
                     'name' => 'Teste',
+                    'fundamental_id' => 1,
                     'user_id' => 1,
-                    'fundamental_id' => [1],
                 ],
-                'fundamental' => $this->createMock(Fundamental::class),
+                'method' => 'create',
             ],
-            'edit not using fundamental_id' => [
+            'send data edit, success' => [
                 'data' => [
                     'id' => 1,
                     'name' => 'Teste',
+                    'fundamental_id' => 1,
                     'user_id' => 1,
                 ],
-                'fundamental' => null,
+                'method' => 'find',
             ],
         ];
     }

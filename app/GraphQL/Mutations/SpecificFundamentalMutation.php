@@ -25,7 +25,7 @@ final class SpecificFundamentalMutation
             $this->specificFundamental = $this->specificFundamental->create($args);
         }
 
-        if (isset($args['fundamental_id']) && $this->specificFundamental->fundamentals()) {
+        if (isset($args['fundamental_id'])) {
             $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
         }
 
