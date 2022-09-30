@@ -52,21 +52,22 @@ class SpecificFundamentalMutationTest extends TestCase
         return [
             'send data create, success' => [
                 'data' => [
+                    'id' => null,
                     'name' => 'Teste',
                     'fundamental_id' => 1,
                     'user_id' => 1,
                 ],
-                'method' => 'create',
+                'method' => 'updateOrCreate',
             ],
-            'send data edit, success' => [
-                'data' => [
-                    'id' => 1,
-                    'name' => 'Teste',
-                    'fundamental_id' => 1,
-                    'user_id' => 1,
-                ],
-                'method' => 'find',
-            ],
+            // 'send data edit, success' => [
+            //     'data' => [
+            //         'id' => 1,
+            //         'name' => 'Teste',
+            //         'fundamental_id' => 1,
+            //         'user_id' => 1,
+            //     ],
+            //     'method' => 'find',
+            // ],
         ];
     }
 
