@@ -57,9 +57,4 @@ class SpecificFundamental extends Model
             ->dontLogIfAttributesChangedOnly(['updated_at', 'created_at', 'deleted_at'])
             ->dontSubmitEmptyLogs();
     }
-
-    public function create($args)
-    {
-        return $this->create($args);
-    }
 }

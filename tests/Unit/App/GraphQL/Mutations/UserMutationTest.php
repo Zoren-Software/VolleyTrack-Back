@@ -3,108 +3,111 @@
 namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\UserMutation;
-use App\Models\User;
 use App\Models\Position;
+use App\Models\Team;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 
 class UserMutationTest extends TestCase
 {
     /**
-     * A basic unit test in create user.
+     * A basic unit test create and edit user.
      *
-     * @dataProvider createUserProvider
-     *
-     * @return void
-     */
-    public function test_user_create($method)
-    {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $user = $this->createMock(User::class);
-
-        $user->expects($this->once())
-            ->method($method);
-
-        $position = $this->createMock(Position::class);
-
-        $user->method('positions')->willReturn($position);
-
-        $userMutation = new UserMutation($user);
-
-        $userMutation->create(
-            null,
-            [
-                'name' => 'Teste',
-                'email' => 'teste@gmail.com',
-                'password' => '123456',
-                'roleId' => 1,
-                'positionId' => [1]
-            ],
-            $graphQLContext
-        );
-    }
-
-    public function createUserProvider()
-    {
-        return [
-            'using method save' => [
-                'method' => 'save',
-            ],
-            'using method makePassword' => [
-                'method' => 'makePassword',
-            ],
-            'using method roles' => [
-                'method' => 'roles',
-            ],
-        ];
-    }
-
-    /**
-     * A basic unit test in edit user.
-     *
-     * @dataProvider editUserProvider
+     * @dataProvider userProvider
      *
      * @return void
      */
-    public function test_user_edit($method)
+    public function test_user_make($data)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $user = $this->createMock(User::class);
+        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
+            $role = $this->createMock(BelongsToMany::class);
+            $position = $this->createMock(Position::class);
+            $team = $this->createMock(Team::class);
 
-        $user->expects($this->once())
-            ->method($method);
+            if (isset($data['id'])) {
+                $mock->shouldReceive('findOrFail')
+                    ->once()
+                    ->with($data['id'])
+                    ->andReturn($mock);
+            }
 
-        $position = $this->createMock(Position::class);
+            $mock->shouldReceive('setAttribute')
+                ->with('name', $data['name'])
+                ->once()
+                ->andReturn($mock);
 
-        $user->method('positions')->willReturn($position);
+            $mock->shouldReceive('setAttribute')
+                ->with('email', $data['email'])
+                ->once()
+                ->andReturn($mock);
 
-        $userMutation = new UserMutation($user);
+            $mock->shouldReceive('makePassword')
+                ->with($data['password'])
+                ->once()
+                ->andReturn($mock);
 
-        $userMutation->edit(
+            $mock->shouldReceive('save')
+                ->once()
+                ->andReturn($mock);
+
+            $mock->shouldReceive('roles')
+                ->once()
+                ->andReturn($role);
+            $mock->shouldReceive('syncWithoutDetaching')
+                ->with([$role]);
+
+            $mock->shouldReceive('positions')
+                ->once()
+                ->andReturn($position);
+            $mock->shouldReceive('syncWithoutDetaching')
+                ->with([$position]);
+
+            $mock->shouldReceive('teams')
+                ->once()
+                ->andReturn($team);
+
+            $mock->shouldReceive('syncWithoutDetaching')
+                ->with([$team]);
+        });
+
+        $specificFundamentalMutation = new UserMutation($userMock);
+        $userReturn = $specificFundamentalMutation->make(
             null,
-            [
-                'id' => 1,
-                'name' => 'Teste',
-                'email' => 'teste@gmail.com',
-                'password' => '123456',
-                'roleId' => 1,
-                'positionId' => [1]
-            ],
+            $data,
             $graphQLContext
         );
+
+        $this->assertEquals($userMock, $userReturn);
     }
 
-    public function editUserProvider()
+    public function userProvider()
     {
         return [
-            'using method makePassword' => [
-                'method' => 'makePassword',
+            'send data create with all options, success' => [
+                'data' => [
+                    'id' => null,
+                    'name' => 'Teste',
+                    'email' => 'test@example.com',
+                    'password' => '123456',
+                    'roleId' => [1],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                ],
             ],
-            'using method save' => [
-                'method' => 'save',
-            ],
-            'using method roles' => [
-                'method' => 'roles',
+            'send data edit with all options, success' => [
+                'data' => [
+                    'id' => 1,
+                    'name' => 'Teste',
+                    'email' => 'test@example.com',
+                    'password' => '123456',
+                    'roleId' => [1],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                ],
             ],
         ];
     }

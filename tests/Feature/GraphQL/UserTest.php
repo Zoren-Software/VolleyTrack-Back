@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\GraphQL;
 
-use App\Models\User;
 use App\Models\Position;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 

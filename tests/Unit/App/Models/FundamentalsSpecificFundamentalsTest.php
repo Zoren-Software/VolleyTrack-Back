@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\App\Models;
 
-use Tests\TestCase;
 use App\Models\FundamentalsSpecificFundamentals;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class FundamentalsSpecificFundamentalsTest extends TestCase
 {

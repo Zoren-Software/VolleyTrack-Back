@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Tests\TestCase;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class TeamTest extends TestCase
 {

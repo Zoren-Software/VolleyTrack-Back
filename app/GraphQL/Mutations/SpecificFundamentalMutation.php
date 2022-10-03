@@ -5,7 +5,7 @@ namespace App\GraphQL\Mutations;
 use App\Models\SpecificFundamental;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-final class SpecificFundamentalMutation
+class SpecificFundamentalMutation
 {
     public function __construct(SpecificFundamental $specificFundamental)
     {
@@ -18,21 +18,18 @@ final class SpecificFundamentalMutation
      */
     public function make($rootValue, array $args, GraphQLContext $context)
     {
-        // dump($this->specificFundamental->fundamentals());
-        // if (isset($args['id'])) {
-        //     $this->specificFundamental = $this->specificFundamental->find($args['id']);
-        //     $this->specificFundamental->update($args);
-        // } else {
-        //     $this->specificFundamental->create($args);
-
-        // TODO - Tentar continuar testes com essa função
-        $this->specificFundamental->updateOrCreate(
-            ['id' => $args['id']],
-            $args
-        );
-        //dd($args['id']);
-
-        dd($this->specificFundamental->fundamentals());
+        if (isset($args['id'])) {
+            $this->specificFundamental = $this->specificFundamental->find(
+                $args['id']
+            );
+            $this->specificFundamental->update(
+                $args
+            );
+        } else {
+            $this->specificFundamental = $this->specificFundamental->create(
+                $args
+            );
+        }
 
         if (isset($args['fundamental_id'])) {
             $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);

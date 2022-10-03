@@ -5,9 +5,9 @@ namespace Tests\Unit\App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
-use Spatie\Activitylog\LogOptions;
 
 class UserTest extends TestCase
 {

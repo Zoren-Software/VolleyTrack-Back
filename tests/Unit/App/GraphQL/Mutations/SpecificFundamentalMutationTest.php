@@ -3,8 +3,9 @@
 namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\SpecificFundamentalMutation;
-use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 
@@ -20,23 +21,22 @@ class SpecificFundamentalMutationTest extends TestCase
     public function test_specific_fundamental_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
+        $specificFundamentalMock = $this->mock(SpecificFundamental::class, function (MockInterface $mock) use ($data, $method) {
+            $fundamental = $this->createMock(BelongsToMany::class);
 
-        $fundamental = $this->createMock(Fundamental::class);
-        $specificFundamentalMock = $this->createMock(SpecificFundamental::class);
-        $specificFundamental = $this->getMockBuilder(SpecificFundamental::class)
-            ->addMethods([$method, 'syncWithoutDetaching'])
-            ->onlyMethods(['fundamentals'])
-            ->getMock();
+            if ($data['id']) {
+                $mock->shouldReceive('find')
+                    ->once()
+                    ->with($data['id'])
+                    ->andReturn($mock);
+            }
 
-        $specificFundamental
-            ->expects($this->any())
-            ->method($method)
-            ->willReturn($specificFundamentalMock);
+            $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
+            $mock->shouldReceive('fundamentals')->once()->andReturn($fundamental);
+            $mock->shouldReceive('syncWithoutDetaching')->with([$fundamental]);
+        });
 
-        $specificFundamental->method('fundamentals')->willReturn([$fundamental]);
-
-
-        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
+        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamentalMock);
         $specificFundamentalMockReturn = $specificFundamentalMutation->make(
             null,
             $data,
@@ -46,7 +46,6 @@ class SpecificFundamentalMutationTest extends TestCase
         $this->assertEquals($specificFundamentalMock, $specificFundamentalMockReturn);
     }
 
-
     public function specificFundamentalProvider()
     {
         return [
@@ -54,20 +53,20 @@ class SpecificFundamentalMutationTest extends TestCase
                 'data' => [
                     'id' => null,
                     'name' => 'Teste',
-                    'fundamental_id' => 1,
+                    'fundamental_id' => [1],
                     'user_id' => 1,
                 ],
-                'method' => 'updateOrCreate',
+                'method' => 'create',
             ],
-            // 'send data edit, success' => [
-            //     'data' => [
-            //         'id' => 1,
-            //         'name' => 'Teste',
-            //         'fundamental_id' => 1,
-            //         'user_id' => 1,
-            //     ],
-            //     'method' => 'find',
-            // ],
+            'send data edit, success' => [
+                'data' => [
+                    'id' => 1,
+                    'name' => 'Teste',
+                    'fundamental_id' => [1],
+                    'user_id' => 1,
+                ],
+                'method' => 'update',
+            ],
         ];
     }
 

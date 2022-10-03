@@ -9,9 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasApiTokensContract
 {
@@ -107,7 +107,7 @@ class User extends Authenticatable implements HasApiTokensContract
                     'token_sessao',
                     'updated_at',
                     'created_at',
-                    'deleted_at'
+                    'deleted_at',
                 ]
             )
             ->dontSubmitEmptyLogs();

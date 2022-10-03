@@ -5,8 +5,8 @@ namespace Tests\Unit\App\Models;
 use App\Models\SpecificFundamental;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Tests\TestCase;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class SpecificFundamentalTest extends TestCase
 {

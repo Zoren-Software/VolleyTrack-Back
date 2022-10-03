@@ -41,8 +41,6 @@ final class UserMutation
             $this->user->teams()->syncWithoutDetaching($args['teamId']);
         }
 
-        $this->user->positions;
-
         return $this->user;
     }
 

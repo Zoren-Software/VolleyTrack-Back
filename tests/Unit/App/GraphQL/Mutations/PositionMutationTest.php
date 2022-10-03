@@ -4,50 +4,63 @@ namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\PositionMutation;
 use App\Models\Position;
+use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class PositionMutationTest extends TestCase
 {
     /**
-     * A basic unit position create.
+     * A basic unit test create and edit position.
+     *
+     * @dataProvider positionProvider
      *
      * @return void
      */
-    public function test_position_create()
+    public function test_position_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $position = $this->createMock(Position::class);
+        $positionMock = $this->mock(Position::class, function (MockInterface $mock) use ($data, $method) {
+            if ($data['id']) {
+                $mock->shouldReceive('find')
+                    ->once()
+                    ->with($data['id'])
+                    ->andReturn($mock);
+            }
 
-        $position->expects($this->once())
-        ->method('save');
+            $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
+        });
 
-        $positionMutation = new PositionMutation($position);
-        $positionMutation->create(null, [
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
+        $specificFundamentalMutation = new PositionMutation($positionMock);
+        $positionMockReturn = $specificFundamentalMutation->make(
+            null,
+            $data,
+            $graphQLContext
+        );
+
+        $this->assertEquals($positionMock, $positionMockReturn);
     }
 
-    /**
-     * A basic unit position edit.
-     *
-     * @return void
-     */
-    public function test_position_edit()
+    public function positionProvider()
     {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $position = $this->createMock(Position::class);
-
-        $position->expects($this->once())
-        ->method('save');
-
-        $positionMutation = new PositionMutation($position);
-        $positionMutation->edit(null, [
-            'id' => 1,
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
+        return [
+            'send data create, success' => [
+                'data' => [
+                    'id' => null,
+                    'name' => 'Teste',
+                    'user_id' => 1,
+                ],
+                'method' => 'create',
+            ],
+            'send data edit, success' => [
+                'data' => [
+                    'id' => 1,
+                    'name' => 'Teste',
+                    'user_id' => 1,
+                ],
+                'method' => 'update',
+            ],
+        ];
     }
 
     /**
