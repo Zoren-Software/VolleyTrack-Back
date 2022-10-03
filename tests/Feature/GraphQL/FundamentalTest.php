@@ -377,30 +377,30 @@ class FundamentalTest extends TestCase
                 ],
                 'permission' => true,
             ],
-            // 'delete fundamental without permission, expected error' => [
-            //     [
-            //         'error' => null,
-            //     ],
-            //     'type_message_error' => 'message',
-            //     'expected_message' => $this->unauthorized,
-            //     'expected' => [
-            //         'errors' => $this->errors,
-            //         'data' => $fundamentalDelete,
-            //     ],
-            //     'permission' => false,
-            // ],
-            // 'delete fundamental that does not exist, expected error' => [
-            //     [
-            //         'error' => 9999,
-            //     ],
-            //     'type_message_error' => 'message',
-            //     'expected_message' => 'internal',
-            //     'expected' => [
-            //         'errors' => $this->errors,
-            //         'data' => $fundamentalDelete,
-            //     ],
-            //     'permission' => true,
-            // ],
+            'delete fundamental without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $fundamentalDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete fundamental that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $fundamentalDelete,
+                ],
+                'permission' => true,
+            ],
         ];
     }
 }
