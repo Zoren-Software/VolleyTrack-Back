@@ -22,13 +22,13 @@ class UserTableSeeder extends Seeder
         $usersDefault = [
             [
                 'id' => 1,
-                'name' => 'Suporte',
-                'email' => env('MAIL_FROM_ADDRESS'),
+                'name' => 'Administrador',
+                'email' => env('MAIL_FROM_ADMIN'),
             ],
             [
                 'id' => 2,
-                'name' => 'Administrador',
-                'email' => env('MAIL_FROM_ADMIN'),
+                'name' => 'Suporte',
+                'email' => env('MAIL_FROM_ADDRESS'),
             ],
         ];
 

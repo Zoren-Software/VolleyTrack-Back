@@ -46,4 +46,13 @@ class Team extends Model
             ->dontLogIfAttributesChangedOnly(['updated_at', 'created_at', 'deleted_at'])
             ->dontSubmitEmptyLogs();
     }
+
+    public function players()
+    {
+        return $this->belongsToMany(User::class, 'teams_users')
+            ->using(TeamsUsers::class)
+            ->as('players')
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
+    }
 }

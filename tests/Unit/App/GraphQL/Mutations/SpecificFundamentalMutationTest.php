@@ -3,95 +3,72 @@
 namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\SpecificFundamentalMutation;
-use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 
 class SpecificFundamentalMutationTest extends TestCase
 {
     /**
-     * A basic unit test create specific fundamental.
+     * A basic unit test create and edit fundamental.
      *
-     * @dataProvider createSpecificFundamentalProvider
-     *
-     * @return void
-     */
-    public function test_create_specific_fundamental(array $data, $fundamental): void
-    {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamental = $this->createMock(SpecificFundamental::class);
-
-        $specificFundamental->method('fundamentals')->willReturn($fundamental);
-
-        $specificFundamental->expects($this->once())
-            ->method('save');
-
-        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
-        $specificFundamentalMutation->create(null, $data, $graphQLContext);
-    }
-
-    public function createSpecificFundamentalProvider(): array
-    {
-        return [
-            'create using fundamental_id' => [
-                'data' => [
-                    'name' => 'Teste',
-                    'user_id' => 1,
-                    'fundamental_id' => [1],
-                ],
-                'fundamental' => $this->createMock(Fundamental::class),
-            ],
-            'create not using fundamental_id' => [
-                'data' => [
-                    'name' => 'Teste',
-                    'user_id' => 1,
-                ],
-                'fundamental' => null,
-            ],
-        ];
-    }
-
-    /**
-     * A basic unit test edit specific fundamental.
-     *
-     * @dataProvider editSpecificFundamentalProvider
+     * @dataProvider specificFundamentalProvider
      *
      * @return void
      */
-    public function test_edit_specific_fundamental(array $data, $fundamental): void
+    public function test_specific_fundamental_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamental = $this->createMock(SpecificFundamental::class);
+        $specificFundamentalMock = $this->mock(
+            SpecificFundamental::class,
+            function (MockInterface $mock) use ($data, $method) {
+                $fundamental = $this->createMock(BelongsToMany::class);
 
-        $specificFundamental->method('fundamentals')->willReturn($fundamental);
+                if ($data['id']) {
+                    $mock->shouldReceive('find')
+                        ->once()
+                        ->with($data['id'])
+                        ->andReturn($mock);
+                }
 
-        $specificFundamental->expects($this->once())
-            ->method('save');
+                $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
+                $mock->shouldReceive('fundamentals')->once()->andReturn($fundamental);
+                $mock->shouldReceive('syncWithoutDetaching')->with([$fundamental]);
+            }
+        );
 
-        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
-        $specificFundamentalMutation->edit(null, $data, $graphQLContext);
+        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamentalMock);
+        $specificFundamentalMockReturn = $specificFundamentalMutation->make(
+            null,
+            $data,
+            $graphQLContext
+        );
+
+        $this->assertEquals($specificFundamentalMock, $specificFundamentalMockReturn);
     }
 
-    public function editSpecificFundamentalProvider(): array
+    public function specificFundamentalProvider()
     {
         return [
-            'edit using fundamental_id' => [
+            'send data create, success' => [
                 'data' => [
-                    'id' => 1,
+                    'id' => null,
                     'name' => 'Teste',
-                    'user_id' => 1,
                     'fundamental_id' => [1],
+                    'user_id' => 1,
                 ],
-                'fundamental' => $this->createMock(Fundamental::class),
+                'method' => 'create',
             ],
-            'edit not using fundamental_id' => [
+            'send data edit, success' => [
                 'data' => [
                     'id' => 1,
                     'name' => 'Teste',
+                    'fundamental_id' => [1],
                     'user_id' => 1,
                 ],
-                'fundamental' => null,
+                'method' => 'update',
             ],
         ];
     }

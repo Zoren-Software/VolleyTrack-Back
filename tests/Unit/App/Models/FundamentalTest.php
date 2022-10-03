@@ -5,8 +5,8 @@ namespace Tests\Unit\App\Models;
 use App\Models\Fundamental;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Tests\TestCase;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class FundamentalTest extends TestCase
 {

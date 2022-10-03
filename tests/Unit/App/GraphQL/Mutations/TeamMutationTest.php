@@ -4,50 +4,70 @@ namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\TeamMutation;
 use App\Models\Team;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class TeamMutationTest extends TestCase
 {
     /**
-     * A basic unit test in method create.
+     * A basic unit test create and edit team.
+     *
+     * @dataProvider teamProvider
      *
      * @return void
      */
-    public function test_team_create()
+    public function test_team_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $team = $this->createMock(Team::class);
+        $teamMock = $this->mock(Team::class, function (MockInterface $mock) use ($data, $method) {
+            $player = $this->createMock(BelongsToMany::class);
 
-        $team->expects($this->once())
-            ->method('save');
+            if ($data['id']) {
+                $mock->shouldReceive('find')
+                    ->once()
+                    ->with($data['id'])
+                    ->andReturn($mock);
+            }
 
-        $teamMutation = new TeamMutation($team);
-        $teamMutation->create(null, [
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
+            $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
+            $mock->shouldReceive('players')->once()->andReturn($player);
+            $mock->shouldReceive('syncWithoutDetaching')->with([$player]);
+        });
+
+        $specificFundamentalMutation = new TeamMutation($teamMock);
+        $teamMockReturn = $specificFundamentalMutation->make(
+            null,
+            $data,
+            $graphQLContext
+        );
+
+        $this->assertEquals($teamMock, $teamMockReturn);
     }
 
-    /**
-     * A basic unit test in method edit.
-     *
-     * @return void
-     */
-    public function test_team_edit()
+    public function teamProvider()
     {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $team = $this->createMock(Team::class);
-
-        $team->expects($this->once())
-            ->method('save');
-
-        $teamMutation = new TeamMutation($team);
-        $teamMutation->edit(null, [
-            'id' => 1,
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
+        return [
+            'send data create, success' => [
+                'data' => [
+                    'id' => null,
+                    'name' => 'Teste',
+                    'player_id' => [1],
+                    'user_id' => 1,
+                ],
+                'method' => 'create',
+            ],
+            'send data edit, success' => [
+                'data' => [
+                    'id' => 1,
+                    'name' => 'Teste',
+                    'player_id' => [1],
+                    'user_id' => 1,
+                ],
+                'method' => 'update',
+            ],
+        ];
     }
 
     /**

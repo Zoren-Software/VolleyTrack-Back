@@ -9,9 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasApiTokensContract
 {
@@ -54,9 +54,9 @@ class User extends Authenticatable implements HasApiTokensContract
 
     protected $guard_name = 'sanctum';
 
-    public function hasPermissionsViaRoles(string $NamePermission, array $permissions): bool
+    public function hasPermissionsViaRoles(string $namePermission, array $permissions): bool
     {
-        return in_array($NamePermission, $permissions);
+        return in_array($namePermission, $permissions);
     }
 
     public function positions()
@@ -74,7 +74,10 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function hasPermissionRole(string $namePermission): bool
     {
-        return $this->hasPermissionsViaRoles($namePermission, auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray());
+        return $this->hasPermissionsViaRoles(
+            $namePermission,
+            auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray()
+        );
     }
 
     /**
@@ -96,7 +99,26 @@ class User extends Authenticatable implements HasApiTokensContract
             ->useLogName($this->table)
             ->logOnly(['*'])
             ->logOnlyDirty()
-            ->dontLogIfAttributesChangedOnly(['password', 'remember_token', 'token', 'token_sessao', 'updated_at', 'created_at', 'deleted_at'])
+            ->dontLogIfAttributesChangedOnly(
+                [
+                    'password',
+                    'remember_token',
+                    'token',
+                    'token_sessao',
+                    'updated_at',
+                    'created_at',
+                    'deleted_at',
+                ]
+            )
             ->dontSubmitEmptyLogs();
+    }
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'teams_users')
+            ->using(TeamsUsers::class)
+            ->as('teams')
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
     }
 }

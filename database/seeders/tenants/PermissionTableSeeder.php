@@ -22,10 +22,9 @@ class PermissionTableSeeder extends Seeder
         /**
          *Já estará como perfil de super administrador, e não precisará relacionar permissões neste perfil
          */
-        Role::updateOrCreate(['id' => 1], ['name' => 'Administrador', 'guard_name' => 'sanctum']);
-
+        $admin = Role::updateOrCreate(['id' => 1], ['name' => 'Administrador', 'guard_name' => 'sanctum']);
         $technician = Role::updateOrCreate(['id' => 2], ['name' => 'Técnico', 'guard_name' => 'sanctum']);
-        Role::updateOrCreate(['id' => 3], ['name' => 'Jogador', 'guard_name' => 'sanctum']);
+        $player = Role::updateOrCreate(['id' => 3], ['name' => 'Jogador', 'guard_name' => 'sanctum']);
 
         /**
          * Permissões Usuário
@@ -35,8 +34,6 @@ class PermissionTableSeeder extends Seeder
         $user[] = Permission::updateOrCreate(['id' => 3], ['name' => 'list-user']);
         $user[] = Permission::updateOrCreate(['id' => 4], ['name' => 'list-users']);
         $user[] = Permission::updateOrCreate(['id' => 5], ['name' => 'delete-user']);
-
-        $this->sync($technician, $user);
 
         /**
          * Permissões Time
@@ -84,10 +81,23 @@ class PermissionTableSeeder extends Seeder
         /**
          * Relacionando Permissões
          */
+        $this->sync($technician, $user);
         $this->sync($technician, $team);
         $this->sync($technician, $config);
         $this->sync($technician, $fundamental);
         $this->sync($technician, $position);
+
+        $this->sync($admin, $user);
+        $this->sync($admin, $team);
+        $this->sync($admin, $config);
+        $this->sync($admin, $fundamental);
+        $this->sync($admin, $position);
+
+        $this->sync($player, $user);
+        $this->sync($player, $team);
+        $this->sync($player, $config);
+        $this->sync($player, $fundamental);
+        $this->sync($player, $position);
 
         /**
          * Definir user como perfil de administrador

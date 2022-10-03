@@ -5,9 +5,10 @@ extend type Mutation @guard {
         email: String! @rules(apply: ["email", "unique:users"])
         roleId: [Int!]!
         positionId: [Int]
+        teamId: [Int]
         password: String! @rules(apply: ["min:6"])
     ): User
-        @field(resolver: "UserMutation@create")
+        @field(resolver: "UserMutation@make")
         @validator
         @can(ability: "create")
 
@@ -17,9 +18,10 @@ extend type Mutation @guard {
         email: String!
         roleId: [Int!]!
         positionId: [Int]
+        teamId: [Int]
         password: String! @rules(apply: ["min:6"])
     ): User
-        @field(resolver: "UserMutation@edit")
+        @field(resolver: "UserMutation@make")
         @validator
         @can(ability: "edit")
     

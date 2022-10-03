@@ -16,25 +16,14 @@ final class FundamentalMutation
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function create($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context)
     {
-        $this->fundamental->name = $args['name'];
-        $this->fundamental->user_id = $args['user_id'];
-        $this->fundamental->save();
-
-        return $this->fundamental;
-    }
-
-    /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
-     */
-    public function edit($rootValue, array $args, GraphQLContext $context)
-    {
-        $this->fundamental->findOrFail($args['id']);
-        $this->fundamental->name = $args['name'];
-        $this->fundamental->user_id = $args['user_id'];
-        $this->fundamental->save();
+        if (isset($args['id'])) {
+            $this->fundamental = $this->fundamental->find($args['id']);
+            $this->fundamental->update($args);
+        } else {
+            $this->fundamental = $this->fundamental->create($args);
+        }
 
         return $this->fundamental;
     }
@@ -45,12 +34,12 @@ final class FundamentalMutation
      */
     public function delete($rootValue, array $args, GraphQLContext $context)
     {
-        $fundamental = [];
+        $fundamentals = [];
         foreach ($args['id'] as $id) {
             $this->fundamental = $this->fundamental->deleteFundamental($id);
-            $fundamental[] = $this->fundamental;
+            $fundamentals[] = $this->fundamental;
         }
 
-        return $fundamental;
+        return $fundamentals;
     }
 }
