@@ -5,7 +5,7 @@ namespace App\GraphQL\Mutations;
 use App\Models\SpecificFundamental;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class SpecificFundamentalMutation
+final class SpecificFundamentalMutation
 {
     public function __construct(SpecificFundamental $specificFundamental)
     {
