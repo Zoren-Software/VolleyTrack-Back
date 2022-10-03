@@ -133,6 +133,7 @@ class TeamTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -146,6 +147,22 @@ class TeamTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
+                    'playerId' => [],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'teamCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'create team and relating a players, success' => [
+                [
+                    'name' => $faker->name,
+                    'userId' => $userId,
+                    'playerId' => [1, 2, 3],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -160,6 +177,7 @@ class TeamTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_unique',
@@ -173,6 +191,7 @@ class TeamTest extends TestCase
                 [
                     'name' => ' ',
                     'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_required',
@@ -186,6 +205,7 @@ class TeamTest extends TestCase
                 [
                     'name' => 'AB',
                     'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_min',
@@ -265,6 +285,21 @@ class TeamTest extends TestCase
                 [
                     'name' => $faker->name . $this->teamText,
                     'userId' => $userId,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'teamEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'edit team and relating a players, success' => [
+                [
+                    'name' => $faker->name . $this->teamText,
+                    'userId' => $userId,
+                    'playerId' => [1, 2, 3],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,

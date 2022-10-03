@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\App\Models;
 
-use App\Models\FundamentalsSpecificFundamentals;
+use App\Models\TeamsUsers;
 use Spatie\Activitylog\LogOptions;
 use Tests\TestCase;
 
-class FundamentalsSpecificFundamentalsTest extends TestCase
+class TeamsUsersTest extends TestCase
 {
     /**
      * A basic unit test relation getActivitylogOptions.
@@ -15,7 +15,7 @@ class FundamentalsSpecificFundamentalsTest extends TestCase
      */
     public function test_get_activitylog_options()
     {
-        $user = new FundamentalsSpecificFundamentals();
+        $user = new TeamsUsers();
         $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
     }
 }

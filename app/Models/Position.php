@@ -14,6 +14,11 @@ class Position extends Model
     use SoftDeletes;
     use LogsActivity;
 
+    protected $fillable = [
+        'name',
+        'user_id',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -22,9 +27,9 @@ class Position extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'positions_users')
-        ->using(PositionsUsers::class)
-        ->withTimestamps()
-        ->withPivot('created_at', 'updated_at');
+            ->using(PositionsUsers::class)
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
     }
 
     /**

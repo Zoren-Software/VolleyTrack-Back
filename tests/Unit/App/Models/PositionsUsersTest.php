@@ -3,8 +3,8 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\PositionsUsers;
-use Tests\TestCase;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class PositionsUsersTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\GraphQL;
 
-use App\Models\User;
 use App\Models\Position;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -145,6 +145,24 @@ class UserTest extends TestCase
         $userCreate = ['userCreate'];
 
         return [
+            'create user with teams, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'teamId' => [1, 2],
+                    'password' => $password,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
             'create user with position, success' => [
                 [
                     'name' => $faker->name,
@@ -181,7 +199,7 @@ class UserTest extends TestCase
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'roleId' => [2],
+                    'roleId' => [3],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
@@ -372,14 +390,6 @@ class UserTest extends TestCase
 
         $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
 
-        if ($type_message_error) {
-            if (! $permission) {
-                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
-            } else {
-                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
-            }
-        }
-
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
@@ -440,6 +450,24 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'permission' => false,
+            ],
+            'edit user with team, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [2],
+                    'positionId' => [2],
+                    'teamId' => [1, 2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
             'edit user with position, success' => [
                 [

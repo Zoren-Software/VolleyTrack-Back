@@ -1,17 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     public function up()
     {
         $tenantLog = tenant('id');
 
         // NOTE - Verify if the tenant name has logs in the name
-        if (!(strpos($tenantLog, '_logs') !== false)) {
+        if (! (strpos($tenantLog, '_logs') !== false)) {
             // NOTE - This script should not be run for non-log tenants
             throw new \Exception("Tenant Log could not be identified with for logs tenant_id: $tenantLog");
         }
@@ -36,7 +37,7 @@ return new class () extends Migration {
         tenancy()->initialize($tenantLog);
 
         foreach ($tables as $key => $table) {
-            if (!Schema::hasTable($table)) {
+            if (! Schema::hasTable($table)) {
                 Schema::create($table, function (Blueprint $table) {
                     $table->bigIncrements('id');
                     $table->string('log_name')->nullable();

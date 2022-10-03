@@ -5,49 +5,60 @@ namespace Tests\Unit\App\GraphQL\Mutations;
 use App\GraphQL\Mutations\FundamentalMutation;
 use App\Models\Fundamental;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class FundamentalMutationTest extends TestCase
 {
     /**
-     * A basic unit test create fundamental.
+     * A basic unit test create and edit fundamental.
+     *
+     * @dataProvider fundamentalProvider
      *
      * @return void
      */
-    public function test_fundamental_create()
+    public function test_fundamental_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $fundamental = $this->createMock(Fundamental::class);
 
-        $fundamental->expects($this->once())
-        ->method('save');
+        $fundamentalMock = $this->createMock(Fundamental::class);
+        $fundamental = $this->getMockBuilder(Fundamental::class)
+            ->addMethods([$method])
+            ->getMock();
+
+        $fundamental
+            ->expects($this->any())
+            ->method($method)
+            ->willReturn($fundamentalMock);
 
         $fundamentalMutation = new FundamentalMutation($fundamental);
-        $fundamentalMutation->create(null, [
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
+        $fundamentalMockReturn = $fundamentalMutation->make(
+            null,
+            $data,
+            $graphQLContext
+        );
+
+        $this->assertEquals($fundamentalMock, $fundamentalMockReturn);
     }
 
-    /**
-     * A basic unit test create fundamental.
-     *
-     * @return void
-     */
-    public function test_fundamental_edit()
+    public function fundamentalProvider()
     {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $fundamental = $this->createMock(Fundamental::class);
-
-        $fundamental->expects($this->once())
-        ->method('save');
-
-        $fundamentalMutation = new FundamentalMutation($fundamental);
-        $fundamentalMutation->edit(null, [
-            'id' => 1,
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
+        return [
+            'send data create, success' => [
+                'data' => [
+                    'name' => 'Teste',
+                    'user_id' => 1,
+                ],
+                'method' => 'create',
+            ],
+            'send data edit, success' => [
+                'data' => [
+                    'id' => 1,
+                    'name' => 'Teste',
+                    'user_id' => 1,
+                ],
+                'method' => 'find',
+            ],
+        ];
     }
 
     /**

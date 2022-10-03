@@ -12,6 +12,9 @@ type User {
     "Positions."
     positions: [Position] @belongsToMany(relation: "positions")
 
+    "Teams."
+    teams: [Team] @belongsToMany(relation: "teams")
+
     "When the email was verified."
     emailVerifiedAt: DateTime @rename(attribute: "email_verified_at")
 

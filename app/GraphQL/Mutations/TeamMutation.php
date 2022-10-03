@@ -16,25 +16,18 @@ final class TeamMutation
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function create($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context)
     {
-        $this->team->name = $args['name'];
-        $this->team->user_id = $args['user_id'];
-        $this->team->save();
+        if (isset($args['id'])) {
+            $this->team = $this->team->find($args['id']);
+            $this->team->update($args);
+        } else {
+            $this->team = $this->team->create($args);
+        }
 
-        return $this->team;
-    }
-
-    /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
-     */
-    public function edit($rootValue, array $args, GraphQLContext $context)
-    {
-        $this->team->find($args['id']);
-        $this->team->name = $args['name'];
-        $this->team->user_id = $args['user_id'];
-        $this->team->save();
+        if (isset($args['player_id'])) {
+            $this->team->players()->syncWithoutDetaching($args['player_id']);
+        }
 
         return $this->team;
     }
