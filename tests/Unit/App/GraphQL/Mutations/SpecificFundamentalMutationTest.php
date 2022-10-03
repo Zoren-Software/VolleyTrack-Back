@@ -21,20 +21,23 @@ class SpecificFundamentalMutationTest extends TestCase
     public function test_specific_fundamental_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamentalMock = $this->mock(SpecificFundamental::class, function (MockInterface $mock) use ($data, $method) {
-            $fundamental = $this->createMock(BelongsToMany::class);
+        $specificFundamentalMock = $this->mock(
+            SpecificFundamental::class,
+            function (MockInterface $mock) use ($data, $method) {
+                $fundamental = $this->createMock(BelongsToMany::class);
 
-            if ($data['id']) {
-                $mock->shouldReceive('find')
-                    ->once()
-                    ->with($data['id'])
-                    ->andReturn($mock);
+                if ($data['id']) {
+                    $mock->shouldReceive('find')
+                        ->once()
+                        ->with($data['id'])
+                        ->andReturn($mock);
+                }
+
+                $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
+                $mock->shouldReceive('fundamentals')->once()->andReturn($fundamental);
+                $mock->shouldReceive('syncWithoutDetaching')->with([$fundamental]);
             }
-
-            $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
-            $mock->shouldReceive('fundamentals')->once()->andReturn($fundamental);
-            $mock->shouldReceive('syncWithoutDetaching')->with([$fundamental]);
-        });
+        );
 
         $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamentalMock);
         $specificFundamentalMockReturn = $specificFundamentalMutation->make(
