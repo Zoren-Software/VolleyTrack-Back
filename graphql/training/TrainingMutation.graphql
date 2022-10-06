@@ -1,0 +1,25 @@
+
+extend type Mutation @guard {
+    trainingCreate(
+        name: String!
+        userId: Int! @rename(attribute: "user_id") 
+        playerId: [Int] @rename(attribute: "player_id")
+    ): Training
+        @field(resolver: "TrainingMutation@make") 
+        @validator
+        @can(ability: "create") 
+
+    trainingEdit(
+        id: Int!
+        name: String!
+        userId: Int! @rename(attribute: "user_id")
+        playerId: [Int] @rename(attribute: "player_id")
+    ): Training
+        @field(resolver: "TrainingMutation@make") 
+        @validator
+        @can(ability: "edit")
+
+    trainingDelete(id: [ID!]!): [Training]
+        @field(resolver: "TrainingMutation@delete")
+        @can(ability: "delete")
+}
