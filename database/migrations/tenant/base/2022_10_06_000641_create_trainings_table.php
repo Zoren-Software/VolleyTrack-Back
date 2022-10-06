@@ -20,6 +20,7 @@ return new class () extends Migration {
             $table->text('description');
             $table->dateTimeTz('date');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
