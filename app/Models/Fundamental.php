@@ -50,7 +50,13 @@ class Fundamental extends Model
             ->useLogName($this->table)
             ->logOnly(['*'])
             ->logOnlyDirty()
-            ->dontLogIfAttributesChangedOnly(['updated_at', 'created_at', 'deleted_at'])
+            ->dontLogIfAttributesChangedOnly(
+                [
+                    'updated_at',
+                    'created_at',
+                    'deleted_at'
+                ]
+            )
             ->dontSubmitEmptyLogs();
     }
 }
