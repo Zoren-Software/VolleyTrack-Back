@@ -6,13 +6,16 @@ extend type Query @guard {
         @eq
     ): Training @find
 
-    "List multiple teams."
+    "List multiple trainings."
     trainings(
         "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
         name: String @where(operator: "like")
         
-        "Filters by the team's user_id."
+        "Filters by the training's user_id."
         user_id: Int @where(operator: "eq", field: "user_id")
+
+        "Filters by the training's team_id."
+        team_id: Int @where(operator: "eq", field: "team_id")
 
     ): [Training!]! @paginate(defaultCount: 10, maxCount: 100)
 }

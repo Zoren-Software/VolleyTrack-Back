@@ -6,11 +6,14 @@ type Training {
     "Unique name."
     name: String!
 
-    "UserId editing the team."
+    "UserId editing the training."
     userId: Int @rename(attribute: "user_id")
     
-    "User editing the team."
+    "User editing the training."
     user: User @belongsTo
+
+    "TeamId editing the training."
+    teamId: Int @rename(attribute: "team_id")
 
     "Team relation."
     team: Team @belongsTo
