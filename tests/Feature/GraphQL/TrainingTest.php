@@ -100,9 +100,18 @@ class TrainingTest extends TestCase
      *
      * @return void
      */
-    public function test_training_create($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
-        $this->checkPermission($permission, $this->permission, 'create-training');
+    public function test_training_create(
+        $parameters,
+        $type_message_error,
+        $expected_message,
+        $expected,
+        $permission
+    ) {
+        $this->checkPermission(
+            $permission,
+            $this->permission,
+            'create-training'
+        );
 
         $team = Team::factory()->make();
         $team->save();
@@ -117,7 +126,12 @@ class TrainingTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError(
+            $type_message_error,
+            $response,
+            $permission,
+            $expected_message
+        );
 
         $response
             ->assertJsonStructure($expected)
