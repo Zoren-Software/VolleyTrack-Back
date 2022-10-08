@@ -19,7 +19,8 @@ class Training extends Model
         'user_id',
         'name',
         'description',
-        'date',
+        'date_start',
+        'date_end',
     ];
 
     public function user()

@@ -18,7 +18,7 @@ extend type Query @guard {
         name: String @where(operator: "like")
 
         "Filters by the training's date."
-        date: String @where(operator: "eq", field: "date")
+        dateStart: String @where(operator: "eq", field: "date_start")
 
     ): [Training!]! @paginate(defaultCount: 10, maxCount: 100)
 }

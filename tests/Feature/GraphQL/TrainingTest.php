@@ -24,6 +24,9 @@ class TrainingTest extends TestCase
         'name',
         'userId',
         'teamId',
+        'dateStart',
+        'dateEnd',
+        'description',
         'createdAt',
         'updatedAt',
     ];
@@ -148,14 +151,21 @@ class TrainingTest extends TestCase
         $nameExistent = $faker->name . $this->trainingText;
         $trainingCreate = ['trainingCreate'];
 
-        $date = $faker->dateTimeBetween('now', '+2 days')->format('Y-m-d');
+        $dateStart = $faker
+            ->dateTimeBetween('now', '+2 days')
+            ->format('Y-m-d H:i:s');
+
+        $dateEnd = $faker
+            ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
+            ->format('Y-m-d H:i:s');
 
         return [
             'create training without permission, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -169,7 +179,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -185,7 +196,8 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'userId' => $userId,
                     'description' => $faker->text,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -200,7 +212,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => ' ',
                     'userId' => $userId,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_required',
@@ -214,7 +227,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => 'AB',
                     'userId' => $userId,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_min',
@@ -288,14 +302,21 @@ class TrainingTest extends TestCase
         $nameExistent = $faker->name . $this->trainingText;
         $trainingEdit = ['trainingEdit'];
 
-        $date = $faker->dateTimeBetween('now', '+2 days')->format('Y-m-d');
+        $dateStart = $faker
+            ->dateTimeBetween('now', '+2 days')
+            ->format('Y-m-d H:i:s');
+
+        $dateEnd = $faker
+            ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
+            ->format('Y-m-d H:i:s');
 
         return [
             'create training without permission, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -309,7 +330,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -325,7 +347,8 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'userId' => $userId,
                     'description' => $faker->text,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -340,7 +363,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => ' ',
                     'userId' => $userId,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_required',
@@ -354,7 +378,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => 'AB',
                     'userId' => $userId,
-                    'date' => $date,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_min',

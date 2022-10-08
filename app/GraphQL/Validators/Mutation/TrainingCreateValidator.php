@@ -24,7 +24,11 @@ final class TrainingCreateValidator extends Validator
             'teamId' => [
                 'required',
             ],
-            'date' => [
+            'dateStart' => [
+                'required',
+                'date',
+            ],
+            'dateEnd' => [
                 'required',
                 'date',
             ],

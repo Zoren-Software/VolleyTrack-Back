@@ -21,6 +21,17 @@ final class TrainingEditValidator extends Validator
             'userId' => [
                 'required',
             ],
+            'teamId' => [
+                'required',
+            ],
+            'dateStart' => [
+                'required',
+                'date',
+            ],
+            'dateEnd' => [
+                'required',
+                'date',
+            ],
         ];
     }
 
@@ -32,6 +43,7 @@ final class TrainingEditValidator extends Validator
         return [
             'name.required' => trans('TrainingEdit.name_required'),
             'name.min' => trans('TrainingEdit.name_min'),
+            'team_id.required' => trans('TrainingEdit.team_id_required'),
             'user_id.required' => trans('TrainingEdit.user_id_required'),
         ];
     }
