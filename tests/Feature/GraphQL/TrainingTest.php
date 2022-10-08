@@ -139,7 +139,7 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * TODO - Fazendo testes funcionais para criação de treinos.
+     * Método de criação de um treino.
      *
      * @return array
      */
