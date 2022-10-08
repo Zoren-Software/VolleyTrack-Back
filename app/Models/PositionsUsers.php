@@ -29,7 +29,7 @@ class PositionsUsers extends Pivot
                 [
                     'updated_at',
                     'created_at',
-                    'deleted_at'
+                    'deleted_at',
                 ]
             )
             ->dontSubmitEmptyLogs();

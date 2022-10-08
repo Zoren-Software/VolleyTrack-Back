@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\GraphQL;
 
-use App\Models\Training;
 use App\Models\Team;
+use App\Models\Training;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -138,9 +138,9 @@ class TrainingTest extends TestCase
             ->assertStatus(200);
     }
 
-
     /**
      * TODO - Fazendo testes funcionais para criação de treinos.
+     *
      * @return array
      */
     public function trainingCreateProvider()

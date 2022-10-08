@@ -55,7 +55,7 @@ class Position extends Model
                 [
                     'updated_at',
                     'created_at',
-                    'deleted_at'
+                    'deleted_at',
                 ]
             )
             ->dontSubmitEmptyLogs();
