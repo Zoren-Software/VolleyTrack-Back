@@ -18,6 +18,9 @@ return new class () extends Migration {
             $table->unsignedBigInteger('user_id')->constrained();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

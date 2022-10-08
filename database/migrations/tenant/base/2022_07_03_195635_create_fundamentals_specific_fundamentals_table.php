@@ -18,6 +18,9 @@ return new class () extends Migration {
             $table->unsignedBigInteger('specific_fundamental_id')->constrained();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('fundamental_id')->references('id')->on('fundamentals');
+            $table->foreign('specific_fundamental_id')->references('id')->on('specific_fundamentals');
         });
     }
 
