@@ -139,8 +139,6 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * Método de criação de um treino.
-     *
      * @return array
      */
     public function trainingCreateProvider()
@@ -223,6 +221,146 @@ class TrainingTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
+                ],
+                'permission' => true,
+            ],
+        ];
+    }
+
+        /**
+     * Método de edição de um treino.
+     *
+     * @dataProvider trainingEditProvider
+     *
+     * @author Maicon Cerutti
+     *
+     * @return void
+     */
+    public function test_training_edit(
+        $parameters,
+        $type_message_error,
+        $expected_message,
+        $expected,
+        $permission
+    ) {
+        $this->checkPermission(
+            $permission,
+            $this->permission,
+            'edit-training'
+        );
+
+        $training = Training::factory()->make();
+        $training->save();
+        $parameters['id'] = $training->id;
+
+        $team = Team::factory()->make();
+        $team->save();
+        $parameters['teamId'] = $team->id;
+
+        $response = $this->graphQL(
+            'trainingEdit',
+            $parameters,
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError(
+            $type_message_error,
+            $response,
+            $permission,
+            $expected_message
+        );
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     * @return array
+     */
+    public function trainingEditProvider()
+    {
+        $faker = Faker::create();
+        $userId = 1;
+        $nameExistent = $faker->name . $this->trainingText;
+        $trainingEdit = ['trainingEdit'];
+
+        $date = $faker->dateTimeBetween('now', '+2 days')->format('Y-m-d');
+
+        return [
+            'create training without permission, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'date' => $date,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
+                ],
+                'permission' => false,
+            ],
+            'create training with minimal parameters, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'date' => $date,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'create training with full parameters, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'description' => $faker->text,
+                    'date' => $date,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'name field is required, expected error' => [
+                [
+                    'name' => ' ',
+                    'userId' => $userId,
+                    'date' => $date,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'TrainingCreate.name_required',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
+                ],
+                'permission' => true,
+            ],
+            'name field is min 3 characteres, expected error' => [
+                [
+                    'name' => 'AB',
+                    'userId' => $userId,
+                    'date' => $date,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'TrainingCreate.name_min',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
                 ],
                 'permission' => true,
             ],
