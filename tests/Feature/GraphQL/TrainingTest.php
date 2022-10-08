@@ -104,13 +104,9 @@ class TrainingTest extends TestCase
     {
         $this->checkPermission($permission, $this->permission, 'create-training');
 
-        // create factory team
-        //dd($parameters['teamId'] == null);
-        if (!isset($parameters['teamId'])) {
-            $team = Team::factory()->make();
-            $team->save();
-            $parameters['teamId'] = $team->id;
-        }
+        $team = Team::factory()->make();
+        $team->save();
+        $parameters['teamId'] = $team->id;
 
         $response = $this->graphQL(
             'trainingCreate',
@@ -157,7 +153,7 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => false,
             ],
-            'create training, success' => [
+            'create training with minimal parameters, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -172,22 +168,22 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
-            // 'create training and relating a players, success' => [
-            //     [
-            //         'name' => $faker->name,
-            //         'userId' => $userId,
-            //         'teamId' => [1, 2, 3],
-            //     ],
-            //     'type_message_error' => false,
-            //     'expected_message' => false,
-            //     'expected' => [
-            //         'data' => [
-            //             'teamCreate' => $this->data,
-            //         ],
-            //     ],
-            //     'permission' => true,
-            // ],
-
+            'create training with full parameters, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'description' => $faker->text,
+                    'date' => $date,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
@@ -210,21 +206,6 @@ class TrainingTest extends TestCase
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_min',
-                'expected' => [
-                    'errors' => $this->errors,
-                    'data' => $trainingCreate,
-                ],
-                'permission' => true,
-            ],
-            'teamId is required, expected error' => [
-                [
-                    'name' => 'AB',
-                    'userId' => $userId,
-                    'teamId' => null,
-                    'date' => $date,
-                ],
-                'type_message_error' => 'team',
-                'expected_message' => 'TrainingCreate.team_id_required',
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
