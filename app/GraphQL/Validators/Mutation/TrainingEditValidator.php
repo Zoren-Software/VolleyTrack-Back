@@ -15,7 +15,6 @@ final class TrainingEditValidator extends Validator
     {
         return [
             'name' => [
-                'unique:teams,name,' . $this->arg('id'),
                 'required',
                 'min:3',
             ],
@@ -31,7 +30,6 @@ final class TrainingEditValidator extends Validator
     public function messages(): array
     {
         return [
-            'name.unique' => trans('TrainingEdit.name_unique'),
             'name.required' => trans('TrainingEdit.name_required'),
             'name.min' => trans('TrainingEdit.name_min'),
             'user_id.required' => trans('TrainingEdit.user_id_required'),

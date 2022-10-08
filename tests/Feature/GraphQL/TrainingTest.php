@@ -3,6 +3,7 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Training;
+use App\Models\Team;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -103,6 +104,14 @@ class TrainingTest extends TestCase
     {
         $this->checkPermission($permission, $this->permission, 'create-training');
 
+        // create factory team
+        //dd($parameters['teamId'] == null);
+        if (!isset($parameters['teamId'])) {
+            $team = Team::factory()->make();
+            $team->save();
+            $parameters['teamId'] = $team->id;
+        }
+
         $response = $this->graphQL(
             'trainingCreate',
             $parameters,
@@ -128,21 +137,23 @@ class TrainingTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->teamText;
-        $teamCreate = ['trainingCreate'];
+        $nameExistent = $faker->name . $this->trainingText;
+        $trainingCreate = ['trainingCreate'];
+
+        $date = $faker->dateTimeBetween('now', '+2 days')->format('Y-m-d');
 
         return [
             'create training without permission, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'teamId' => [],
+                    'date' => $date,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $teamCreate,
+                    'data' => $trainingCreate,
                 ],
                 'permission' => false,
             ],
@@ -150,74 +161,76 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'teamId' => [],
+                    'date' => $date,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamCreate' => $this->data,
+                        'trainingCreate' => $this->data,
                     ],
                 ],
                 'permission' => true,
             ],
-            'create training and relating a players, success' => [
+            // 'create training and relating a players, success' => [
+            //     [
+            //         'name' => $faker->name,
+            //         'userId' => $userId,
+            //         'teamId' => [1, 2, 3],
+            //     ],
+            //     'type_message_error' => false,
+            //     'expected_message' => false,
+            //     'expected' => [
+            //         'data' => [
+            //             'teamCreate' => $this->data,
+            //         ],
+            //     ],
+            //     'permission' => true,
+            // ],
+
+            'name field is required, expected error' => [
                 [
-                    'name' => $faker->name,
+                    'name' => ' ',
                     'userId' => $userId,
-                    'teamId' => [1, 2, 3],
+                    'date' => $date,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'type_message_error' => 'name',
+                'expected_message' => 'TrainingCreate.name_required',
                 'expected' => [
-                    'data' => [
-                        'teamCreate' => $this->data,
-                    ],
+                    'errors' => $this->errors,
+                    'data' => $trainingCreate,
                 ],
                 'permission' => true,
             ],
-            // 'name field is not unique, expected error' => [
-            //     [
-            //         'name' => $nameExistent,
-            //         'userId' => $userId,
-            //         'playerId' => [],
-            //     ],
-            //     'type_message_error' => 'name',
-            //     'expected_message' => 'TeamCreate.name_unique',
-            //     'expected' => [
-            //         'errors' => $this->errors,
-            //         'data' => $teamCreate,
-            //     ],
-            //     'permission' => true,
-            // ],
-            // 'name field is required, expected error' => [
-            //     [
-            //         'name' => ' ',
-            //         'userId' => $userId,
-            //         'playerId' => [],
-            //     ],
-            //     'type_message_error' => 'name',
-            //     'expected_message' => 'TeamCreate.name_required',
-            //     'expected' => [
-            //         'errors' => $this->errors,
-            //         'data' => $teamCreate,
-            //     ],
-            //     'permission' => true,
-            // ],
-            // 'name field is min 3 characteres, expected error' => [
-            //     [
-            //         'name' => 'AB',
-            //         'userId' => $userId,
-            //         'playerId' => [],
-            //     ],
-            //     'type_message_error' => 'name',
-            //     'expected_message' => 'TeamCreate.name_min',
-            //     'expected' => [
-            //         'errors' => $this->errors,
-            //         'data' => $teamCreate,
-            //     ],
-            //     'permission' => true,
-            // ],
+            'name field is min 3 characteres, expected error' => [
+                [
+                    'name' => 'AB',
+                    'userId' => $userId,
+                    'date' => $date,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'TrainingCreate.name_min',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingCreate,
+                ],
+                'permission' => true,
+            ],
+            'teamId is required, expected error' => [
+                [
+                    'name' => 'AB',
+                    'userId' => $userId,
+                    'teamId' => null,
+                    'date' => $date,
+                ],
+                'type_message_error' => 'team',
+                'expected_message' => 'TrainingCreate.team_id_required',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingCreate,
+                ],
+                'permission' => true,
+            ],
         ];
     }
 }

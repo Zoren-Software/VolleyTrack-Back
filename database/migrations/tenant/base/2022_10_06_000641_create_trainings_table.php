@@ -17,7 +17,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger('team_id')->constrained();
             $table->unsignedBigInteger('user_id')->constrained();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->dateTimeTz('date');
 
             $table->softDeletes();

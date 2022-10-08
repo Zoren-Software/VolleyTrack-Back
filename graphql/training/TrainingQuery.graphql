@@ -7,15 +7,18 @@ extend type Query @guard {
     ): Training @find
 
     "List multiple trainings."
-    trainings(
-        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-        name: String @where(operator: "like")
-        
+    trainings(        
         "Filters by the training's user_id."
         user_id: Int @where(operator: "eq", field: "user_id")
 
         "Filters by the training's team_id."
         team_id: Int @where(operator: "eq", field: "team_id")
+
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+
+        "Filters by the training's date."
+        date: String @where(operator: "eq", field: "date")
 
     ): [Training!]! @paginate(defaultCount: 10, maxCount: 100)
 }

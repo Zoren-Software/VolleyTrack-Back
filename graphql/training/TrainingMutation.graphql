@@ -1,9 +1,11 @@
 
 extend type Mutation @guard {
     trainingCreate(
-        name: String!
         userId: Int! @rename(attribute: "user_id") 
-        playerId: [Int] @rename(attribute: "player_id")
+        teamId: Int! @rename(attribute: "team_id")
+        name: String!
+        description: String
+        date: String!
     ): Training
         @field(resolver: "TrainingMutation@make") 
         @validator
@@ -11,9 +13,11 @@ extend type Mutation @guard {
 
     trainingEdit(
         id: Int!
+        userId: Int! @rename(attribute: "user_id") 
+        teamId: Int! @rename(attribute: "team_id")
         name: String!
-        userId: Int! @rename(attribute: "user_id")
-        playerId: [Int] @rename(attribute: "player_id")
+        description: String
+        date: String!
     ): Training
         @field(resolver: "TrainingMutation@make") 
         @validator

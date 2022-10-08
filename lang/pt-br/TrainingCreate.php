@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'name_unique' => 'Este nome já foi registrado.',
     'name_required' => 'O campo nome é obrigatório.',
     'name_min' => 'O campo nome deve conter no mínimo 3 caracteres.',
+    'team_id_required' => 'O campo team_id é obrigatório.',
     'user_id_required' => 'O campo user_id é obrigatório.',
 ];

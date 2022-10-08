@@ -18,6 +18,9 @@ type Training {
     "Team relation."
     team: Team @belongsTo
 
+    "Training date."
+    date: String @rename(attribute: "date")
+
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     createdAt: DateTime! @rename(attribute: "created_at")
     
