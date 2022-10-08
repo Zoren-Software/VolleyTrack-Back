@@ -27,10 +27,14 @@ final class TrainingCreateValidator extends Validator
             'dateStart' => [
                 'required',
                 'date',
+                'date_format:Y-m-d H:i:s',
+                'before:dateEnd',
             ],
             'dateEnd' => [
                 'required',
                 'date',
+                'date_format:Y-m-d H:i:s',
+                'after:dateStart',
             ],
         ];
     }

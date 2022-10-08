@@ -3,25 +3,25 @@ type Training {
     "Unique primary key."
     id: ID!
 
-    "Unique name."
+    "Unique name. Is required."
     name: String!
 
-    "UserId editing the training."
+    "UserId editing the training. Is required."
     userId: Int @rename(attribute: "user_id")
     
     "User editing the training."
     user: User @belongsTo
 
-    "TeamId editing the training."
+    "TeamId editing the training. Is required."
     teamId: Int @rename(attribute: "team_id")
 
     "Team relation."
     team: Team @belongsTo
 
-    "Training dateStart."
+    "Training dateStart. Must contain a date greater than dateEnd. Is required. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     dateStart: String @rename(attribute: "date_start")
 
-    "Training dateEnd."
+    "Training dateEnd. Must contain a date less than dateStart. Is required. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     dateEnd: String @rename(attribute: "date_end")
 
     "Training description."
