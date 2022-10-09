@@ -209,6 +209,24 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
+            'create training with relationship fundamentals, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'description' => $faker->text,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'fundamentalId' => [1, 2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
@@ -411,6 +429,24 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'edit training with relationship fundamentals, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'description' => $faker->text,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'fundamentalId' => [1, 2, 3],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
