@@ -550,7 +550,6 @@ class TrainingTest extends TestCase
         ];
     }
 
-    // TODO - Funções de delete
     // TODO - Funções relacionar fundamentos
     // TODO - Funções relacionar fundamentos específicos
 
