@@ -26,6 +26,7 @@ class TrainingTest extends TestCase
         'teamId',
         'dateStart',
         'dateEnd',
+        'status',
         'description',
         'createdAt',
         'updatedAt',
@@ -347,6 +348,7 @@ class TrainingTest extends TestCase
             $expected_message
         );
 
+        // dd($response);
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
@@ -371,7 +373,7 @@ class TrainingTest extends TestCase
             ->format('Y-m-d H:i:s');
 
         return [
-            'create training without permission, expected error' => [
+            'edit training without permission, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -386,7 +388,7 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => false,
             ],
-            'create training with minimal parameters, success' => [
+            'edit training with minimal parameters, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -402,11 +404,47 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
-            'create training with full parameters, success' => [
+            'edit training with full parameters, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
                     'description' => $faker->text,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'edit training cancel, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'description' => $faker->text,
+                    'status' => false,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'edit training reactivate, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'description' => $faker->text,
+                    'status' => true,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],

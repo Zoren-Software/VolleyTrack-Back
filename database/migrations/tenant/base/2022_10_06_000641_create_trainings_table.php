@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger('user_id')->constrained();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->boolean('status')->default(true);
             $table->dateTimeTz('date_start');
             $table->dateTimeTz('date_end');
 

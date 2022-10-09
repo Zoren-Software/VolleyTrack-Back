@@ -20,6 +20,7 @@ extend type Mutation @guard {
         teamId: Int! @rename(attribute: "team_id")
         fundamentalId: [Int] @rename(attribute: "fundamental_id")
         specificFundamentalId: [Int] @rename(attribute: "fundamental_id")
+        status: Boolean
         name: String!
         description: String
         dateStart: String! @rename(attribute: "date_start")

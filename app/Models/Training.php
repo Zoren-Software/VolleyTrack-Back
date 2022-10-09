@@ -19,6 +19,7 @@ class Training extends Model
         'user_id',
         'name',
         'description',
+        'status',
         'date_start',
         'date_end',
     ];
