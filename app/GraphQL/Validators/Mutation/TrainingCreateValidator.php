@@ -47,8 +47,16 @@ final class TrainingCreateValidator extends Validator
         return [
             'name.required' => trans('TrainingCreate.name_required'),
             'name.min' => trans('TrainingCreate.name_min'),
-            'team_id.required' => trans('TrainingCreate.team_id_required'),
-            'user_id.required' => trans('TrainingCreate.user_id_required'),
+            'teamId.required' => trans('TrainingCreate.team_id_required'),
+            'userId.required' => trans('TrainingCreate.user_id_required'),
+            'dateStart.required' => trans('TrainingCreate.date_start_required'),
+            'dateStart.date' => trans('TrainingCreate.date_start_type_date'),
+            'dateStart.date_format' => trans('TrainingCreate.date_start_format_date'),
+            'dateStart.before' => trans('TrainingCreate.date_start_before'),
+            'dateEnd.required' => trans('TrainingCreate.date_end_required'),
+            'dateEnd.date' => trans('TrainingCreate.date_end_type_date'),
+            'dateEnd.date_format' => trans('TrainingCreate.date_end_format_date'),
+            'dateEnd.after' => trans('TrainingCreate.date_end_after'),
         ];
     }
 }

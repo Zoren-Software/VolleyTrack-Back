@@ -238,6 +238,36 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
+            'DateStart must be less than dateEnd, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '2022-10-23 13:50:00',
+                    'dateEnd' => '2022-10-22 13:45:00',
+                ],
+                'type_message_error' => 'dateStart',
+                'expected_message' => 'TrainingCreate.date_start_before',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingCreate,
+                ],
+                'permission' => true,
+            ],
+            'DateEnd must be greater than dateStart, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '2022-10-23 13:50:00',
+                    'dateEnd' => '2022-10-22 13:45:00',
+                ],
+                'type_message_error' => 'dateEnd',
+                'expected_message' => 'TrainingCreate.date_end_after',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingCreate,
+                ],
+                'permission' => true,
+            ],
         ];
     }
 
@@ -383,6 +413,36 @@ class TrainingTest extends TestCase
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_min',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
+                ],
+                'permission' => true,
+            ],
+            'DateStart must be less than dateEnd, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '2022-10-23 13:50:00',
+                    'dateEnd' => '2022-10-22 13:45:00',
+                ],
+                'type_message_error' => 'dateStart',
+                'expected_message' => 'TrainingEdit.date_start_before',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
+                ],
+                'permission' => true,
+            ],
+            'DateEnd must be greater than dateStart, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '2022-10-23 13:50:00',
+                    'dateEnd' => '2022-10-22 13:45:00',
+                ],
+                'type_message_error' => 'dateEnd',
+                'expected_message' => 'TrainingEdit.date_end_after',
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
