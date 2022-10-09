@@ -25,6 +25,10 @@ final class TrainingMutation
             $this->training = $this->training->create($args);
         }
 
+        if (isset($args['fundamental_id'])) {
+            $this->training->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
+        }
+
         return $this->training;
     }
 

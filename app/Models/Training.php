@@ -34,6 +34,15 @@ class Training extends Model
         return $this->belongsTo(Team::class);
     }
 
+    public function fundamentals()
+    {
+        return $this->belongsToMany(Fundamental::class, 'fundamentals_trainings')
+            ->using(FundamentalsTrainings::class)
+            ->as('fundamentals')
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
