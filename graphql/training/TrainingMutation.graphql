@@ -4,7 +4,7 @@ extend type Mutation @guard {
         userId: Int! @rename(attribute: "user_id") 
         teamId: Int! @rename(attribute: "team_id")
         fundamentalId: [Int] @rename(attribute: "fundamental_id")
-        specificFundamentalId: [Int] @rename(attribute: "fundamental_id")
+        specificFundamentalId: [Int] @rename(attribute: "specific_fundamental_id")
         name: String!
         description: String
         dateStart: String! @rename(attribute: "date_start")
@@ -19,7 +19,7 @@ extend type Mutation @guard {
         userId: Int! @rename(attribute: "user_id") 
         teamId: Int! @rename(attribute: "team_id")
         fundamentalId: [Int] @rename(attribute: "fundamental_id")
-        specificFundamentalId: [Int] @rename(attribute: "fundamental_id")
+        specificFundamentalId: [Int] @rename(attribute: "specific_fundamental_id")
         status: Boolean
         name: String!
         description: String

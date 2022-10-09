@@ -43,6 +43,15 @@ class Training extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
+    public function specificFundamentals()
+    {
+        return $this->belongsToMany(SpecificFundamental::class, 'specific_fundamentals_trainings')
+            ->using(SpecificFundamentalsTrainings::class)
+            ->as('specific_fundamentals')
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
