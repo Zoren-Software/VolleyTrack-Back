@@ -3,6 +3,7 @@
 namespace App\GraphQL\Validators\Mutation;
 
 use Nuwave\Lighthouse\Validation\Validator;
+use App\Rules\RelationshipSpecificFundamental;
 
 final class TrainingCreateValidator extends Validator
 {
@@ -23,6 +24,9 @@ final class TrainingCreateValidator extends Validator
             ],
             'teamId' => [
                 'required',
+            ],
+            'specificFundamentalId' => [
+                new RelationshipSpecificFundamental($this->args->toArray()['fundamentalId']),
             ],
             'dateStart' => [
                 'required',
