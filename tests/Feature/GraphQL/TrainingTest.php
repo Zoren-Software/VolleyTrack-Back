@@ -549,4 +549,98 @@ class TrainingTest extends TestCase
             ],
         ];
     }
+
+    // TODO - Funções de delete
+    // TODO - Funções relacionar fundamentos
+    // TODO - Funções relacionar fundamentos específicos
+
+        /**
+     * Método de exclusão de um treino.
+     *
+     * @author Maicon Cerutti
+     *
+     * @dataProvider trainingDeleteProvider
+     *
+     * @return void
+     */
+    public function test_training_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    {
+        $this->login = true;
+
+        $this->checkPermission($permission, $this->permission, 'delete-training');
+
+        $training = Training::factory()->make();
+        $training->save();
+
+        $parameters['id'] = $training->id;
+
+        if ($data['error'] != null) {
+            $parameters['id'] = $data['error'];
+        }
+
+        $response = $this->graphQL(
+            'trainingDelete',
+            $parameters,
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return array
+     */
+    public function trainingDeleteProvider()
+    {
+        $trainingDelete = ['trainingDelete'];
+
+        return [
+            'delete training, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingDelete' => [$this->data],
+                    ],
+                ],
+                'permission' => true,
+            ],
+            'delete training without permission, expected error' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingDelete,
+                ],
+                'permission' => false,
+            ],
+            'delete training that does not exist, expected error' => [
+                [
+                    'error' => 9999,
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'internal',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingDelete,
+                ],
+                'permission' => true,
+            ],
+        ];
+    }
 }

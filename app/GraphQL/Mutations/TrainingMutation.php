@@ -36,8 +36,9 @@ final class TrainingMutation
     {
         $trainings = [];
         foreach ($args['id'] as $id) {
-            $this->training = $this->training->deleteTeam($id);
+            $this->training = $this->training->findOrFail($id);
             $trainings[] = $this->training;
+            $this->training->delete();
         }
 
         return $trainings;
