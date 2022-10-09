@@ -51,11 +51,11 @@ final class TrainingEditValidator extends Validator
             'userId.required' => trans('TrainingEdit.user_id_required'),
             'dateStart.required' => trans('TrainingEdit.date_start_required'),
             'dateStart.date' => trans('TrainingEdit.date_start_type_date'),
-            'dateStart.date_format' => trans('TrainingEdit.date_start_format_date'),
+            'dateStart.date_format' => trans('TrainingEdit.date_start_date_format'),
             'dateStart.before' => trans('TrainingEdit.date_start_before'),
             'dateEnd.required' => trans('TrainingEdit.date_end_required'),
             'dateEnd.date' => trans('TrainingEdit.date_end_type_date'),
-            'dateEnd.date_format' => trans('TrainingEdit.date_end_format_date'),
+            'dateEnd.date_format' => trans('TrainingEdit.date_end_date_format'),
             'dateEnd.after' => trans('TrainingEdit.date_end_after'),
         ];
     }

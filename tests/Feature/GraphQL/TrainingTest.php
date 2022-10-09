@@ -268,6 +268,36 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
+            'DateEnd without correct formatting, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '2022-10-23 13:50:00',
+                    'dateEnd' => '08/10/2022 13:45:00',
+                ],
+                'type_message_error' => 'dateEnd',
+                'expected_message' => 'TrainingCreate.date_end_date_format',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingCreate,
+                ],
+                'permission' => true,
+            ],
+            'DateStart without correct formatting, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '08/10/2022 13:50:00',
+                    'dateEnd' => '2022-10-23 13:45:00',
+                ],
+                'type_message_error' => 'dateStart',
+                'expected_message' => 'TrainingCreate.date_start_date_format',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingCreate,
+                ],
+                'permission' => true,
+            ],
         ];
     }
 
@@ -443,6 +473,36 @@ class TrainingTest extends TestCase
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingEdit.date_end_after',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
+                ],
+                'permission' => true,
+            ],
+            'DateEnd without correct formatting, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '2022-10-23 13:50:00',
+                    'dateEnd' => '08/10/2022 13:45:00',
+                ],
+                'type_message_error' => 'dateEnd',
+                'expected_message' => 'TrainingEdit.date_end_date_format',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
+                ],
+                'permission' => true,
+            ],
+            'DateStart without correct formatting, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '08/10/2022 13:50:00',
+                    'dateEnd' => '2022-10-23 13:45:00',
+                ],
+                'type_message_error' => 'dateStart',
+                'expected_message' => 'TrainingEdit.date_start_date_format',
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
