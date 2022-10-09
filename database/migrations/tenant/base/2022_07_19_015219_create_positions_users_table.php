@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *
@@ -15,13 +14,11 @@ return new class() extends Migration
     {
         Schema::create('positions_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('position_id')->constrained();
-            $table->unsignedBigInteger('user_id')->constrained();
+            $table->foreignId('position_id')->constrained('positions');
+            $table->foreignId('user_id')->constrained('users');
+
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('position_id')->references('id')->on('positions');
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

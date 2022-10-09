@@ -14,8 +14,9 @@ return new class () extends Migration {
     {
         Schema::create('trainings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('team_id')->constrained();
-            $table->unsignedBigInteger('user_id')->constrained();
+            $table->foreignId('team_id')->constrained('teams');
+            $table->foreignId('user_id')->constrained('users');
+
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('status')->default(true);
@@ -24,9 +25,6 @@ return new class () extends Migration {
 
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('team_id')->references('id')->on('teams');
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
