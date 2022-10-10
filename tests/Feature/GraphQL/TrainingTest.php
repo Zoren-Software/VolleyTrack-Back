@@ -667,8 +667,13 @@ class TrainingTest extends TestCase
      *
      * @return void
      */
-    public function test_training_delete($data, $type_message_error, $expected_message, $expected, $permission)
-    {
+    public function test_training_delete(
+        $data,
+        $type_message_error,
+        $expected_message,
+        $expected,
+        $permission
+    ) {
         $this->login = true;
 
         $this->checkPermission($permission, $this->permission, 'delete-training');
