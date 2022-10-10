@@ -39,7 +39,7 @@ class PositionTest extends TestCase
      */
     public function test_get_activitylog_options()
     {
-        $user = new Position();
-        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+        $position = new Position();
+        $this->assertInstanceOf(LogOptions::class, $position->getActivitylogOptions());
     }
 }

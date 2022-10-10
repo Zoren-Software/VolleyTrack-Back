@@ -15,7 +15,7 @@ class FundamentalsSpecificFundamentalsTest extends TestCase
      */
     public function test_get_activitylog_options()
     {
-        $user = new FundamentalsSpecificFundamentals();
-        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+        $fundamentalSpecificFundamentals = new FundamentalsSpecificFundamentals();
+        $this->assertInstanceOf(LogOptions::class, $fundamentalSpecificFundamentals->getActivitylogOptions());
     }
 }

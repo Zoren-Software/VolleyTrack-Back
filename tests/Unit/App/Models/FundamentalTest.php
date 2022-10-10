@@ -40,8 +40,8 @@ class FundamentalTest extends TestCase
      */
     public function test_get_activitylog_options()
     {
-        $user = new Fundamental();
-        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+        $fundamental = new Fundamental();
+        $this->assertInstanceOf(LogOptions::class, $fundamental->getActivitylogOptions());
     }
 
     /**
