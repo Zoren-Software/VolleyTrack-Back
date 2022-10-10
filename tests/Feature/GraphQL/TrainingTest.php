@@ -658,10 +658,7 @@ class TrainingTest extends TestCase
         ];
     }
 
-    // TODO - Funções relacionar fundamentos
-    // TODO - Funções relacionar fundamentos específicos
-
-        /**
+    /**
      * Método de exclusão de um treino.
      *
      * @author Maicon Cerutti
