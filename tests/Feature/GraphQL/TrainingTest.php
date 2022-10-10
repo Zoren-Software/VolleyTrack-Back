@@ -336,6 +336,23 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
+            'specific fundamentals unrelated to fundamentals on record, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '08/10/2022 13:50:00',
+                    'dateEnd' => '2022-10-23 13:45:00',
+                    'fundamentalId' => [1],
+                    'specificFundamentalId' => [13],
+                ],
+                'type_message_error' => 'specificFundamentalId',
+                'expected_message' => 'TrainingCreate.specific_fundamentals_not_relationship',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingCreate,
+                ],
+                'permission' => true,
+            ],
         ];
     }
 
@@ -615,6 +632,23 @@ class TrainingTest extends TestCase
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingEdit.date_start_date_format',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
+                ],
+                'permission' => true,
+            ],
+            'specific fundamentals unrelated to fundamentals on record, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => '08/10/2022 13:50:00',
+                    'dateEnd' => '2022-10-23 13:45:00',
+                    'fundamentalId' => [1],
+                    'specificFundamentalId' => [13],
+                ],
+                'type_message_error' => 'specificFundamentalId',
+                'expected_message' => 'TrainingEdit.specific_fundamentals_not_relationship',
                 'expected' => [
                     'errors' => $this->errors,
                     'data' => $trainingEdit,

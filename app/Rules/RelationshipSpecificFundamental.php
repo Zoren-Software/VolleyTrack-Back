@@ -30,7 +30,7 @@ class RelationshipSpecificFundamental implements InvokableRule
             $fundamentalIds = $specificFundamental->fundamentals->pluck('id')->toArray();
 
             if (!array_intersect($fundamentalIds, $this->fundamentalIds)) {
-                $fail('Os fundamentos específicos selecionados não estão relacionados com os fundamentos selecionados.');
+                $fail('TrainingEdit.specific_fundamentals_not_relationship')->translate();
             }
         }
     }
