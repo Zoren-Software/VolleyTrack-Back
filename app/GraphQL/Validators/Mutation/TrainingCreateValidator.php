@@ -14,6 +14,7 @@ final class TrainingCreateValidator extends Validator
      */
     public function rules(): array
     {
+        $fundamentalIds = $this->args->toArray()['fundamentalId'] ?? [];
         return [
             'name' => [
                 'required',
@@ -26,7 +27,7 @@ final class TrainingCreateValidator extends Validator
                 'required',
             ],
             'specificFundamentalId' => [
-                new RelationshipSpecificFundamental($this->args->toArray()['fundamentalId']),
+                new RelationshipSpecificFundamental($fundamentalIds),
             ],
             'dateStart' => [
                 'required',
