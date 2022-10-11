@@ -5,7 +5,7 @@ namespace App\GraphQL\Validators\Mutation;
 use Nuwave\Lighthouse\Validation\Validator;
 use App\Rules\RelationshipSpecificFundamental;
 
-final class TrainingCreateValidator extends Validator
+class TrainingCreateValidator extends Validator
 {
     /**
      * Return the validation rules.
