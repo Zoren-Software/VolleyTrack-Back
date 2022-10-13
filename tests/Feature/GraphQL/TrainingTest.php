@@ -155,11 +155,11 @@ class TrainingTest extends TestCase
 
         $dateStart = $faker
             ->dateTimeBetween('now', '+2 days')
-            ->format('Y-m-d H:i:s');
+            ->format($this->formatDate);
 
         $dateEnd = $faker
             ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
-            ->format('Y-m-d H:i:s');
+            ->format($this->formatDate);
 
         return [
             'create training without permission, expected error' => [
@@ -261,11 +261,11 @@ class TrainingTest extends TestCase
 
         $dateStart = $faker
             ->dateTimeBetween('now', '+2 days')
-            ->format('Y-m-d H:i:s');
+            ->format($this->formatDate);
 
         $dateEnd = $faker
             ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
-            ->format('Y-m-d H:i:s');
+            ->format($this->formatDate);
 
         return [
             'name field is required, expected error' => [
@@ -443,11 +443,11 @@ class TrainingTest extends TestCase
 
         $dateStart = $faker
             ->dateTimeBetween('now', '+2 days')
-            ->format('Y-m-d H:i:s');
+            ->format($this->formatDate);
 
         $dateEnd = $faker
             ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
-            ->format('Y-m-d H:i:s');
+            ->format($this->formatDate);
 
         return [
             'edit training with minimal parameters, success' => [
@@ -571,11 +571,11 @@ class TrainingTest extends TestCase
 
         $dateStart = $faker
             ->dateTimeBetween('now', '+2 days')
-            ->format('Y-m-d H:i:s');
+            ->format($this->formatDate);
 
         $dateEnd = $faker
             ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
-            ->format('Y-m-d H:i:s');
+            ->format($this->formatDate);
 
         return [
             'edit training without permission, expected error' => [

@@ -51,6 +51,8 @@ abstract class TestCase extends BaseTestCase
         ],
     ];
 
+    protected $formatDate = 'Y-m-d H:i:s';
+
     protected $unauthorized = 'This action is unauthorized.';
 
     public $tenantUrl;
