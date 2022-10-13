@@ -13,6 +13,8 @@ class TrainingMutationTest extends TestCase
 {
     private $trainingName = 'Training 1';
 
+    private $descriptionText = ' description';
+
     /**
      * A basic unit test create and edit training.
      *
@@ -79,7 +81,7 @@ class TrainingMutationTest extends TestCase
                     'fundamental_id' => [1, 2],
                     'specific_fundamental_id' => [1, 2],
                     'name' => $this->trainingName,
-                    'description' => $this->trainingName . ' description',
+                    'description' => $this->trainingName . $this->descriptionText,
                     'date_start' => '2022-10-12 20:00:00',
                     'date_end' => '2022-10-12 22:00:00',
                 ],
@@ -91,7 +93,7 @@ class TrainingMutationTest extends TestCase
                     'team_id' => 1,
                     'user_id' => 1,
                     'name' => $this->trainingName,
-                    'description' => $this->trainingName . ' description',
+                    'description' => $this->trainingName . $this->descriptionText,
                     'date_start' => '2022-10-12 20:00:00',
                     'date_end' => '2022-10-12 22:00:00',
                 ],
@@ -105,7 +107,7 @@ class TrainingMutationTest extends TestCase
                     'fundamental_id' => [1, 2],
                     'specific_fundamental_id' => [1, 2],
                     'name' => $this->trainingName,
-                    'description' => $this->trainingName . ' description',
+                    'description' => $this->trainingName . $this->descriptionText,
                     'date_start' => '2022-10-12 20:00:00',
                     'date_end' => '2022-10-12 22:00:00',
                 ],
@@ -117,7 +119,7 @@ class TrainingMutationTest extends TestCase
                     'team_id' => 1,
                     'user_id' => 1,
                     'name' => $this->trainingName,
-                    'description' => $this->trainingName . ' description',
+                    'description' => $this->trainingName . $this->descriptionText,
                     'date_start' => '2022-10-12 20:00:00',
                     'date_end' => '2022-10-12 22:00:00',
                 ],
