@@ -31,6 +31,8 @@ class TrainingTest extends TestCase
 
     private $treeHours = ' +3 hours';
 
+    private $twoDays = '+2 days';
+
     private $data = [
         'id',
         'name',
@@ -166,7 +168,7 @@ class TrainingTest extends TestCase
         $trainingCreate = ['trainingCreate'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', '+2 days')
+            ->dateTimeBetween('now', $this->twoDays)
             ->format($this->formatDate);
 
         $dateEnd = $faker
@@ -272,7 +274,7 @@ class TrainingTest extends TestCase
         $trainingCreate = ['trainingCreate'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', '+2 days')
+            ->dateTimeBetween('now', $this->twoDays)
             ->format($this->formatDate);
 
         $dateEnd = $faker
@@ -452,7 +454,7 @@ class TrainingTest extends TestCase
         $nameExistent = $faker->name . $this->trainingText;
 
         $dateStart = $faker
-            ->dateTimeBetween('now', '+2 days')
+            ->dateTimeBetween('now', $this->twoDays)
             ->format($this->formatDate);
 
         $dateEnd = $faker
@@ -580,7 +582,7 @@ class TrainingTest extends TestCase
         $trainingEdit = ['trainingEdit'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', '+2 days')
+            ->dateTimeBetween('now', $this->twoDays)
             ->format($this->formatDate);
 
         $dateEnd = $faker
