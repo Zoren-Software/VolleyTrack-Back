@@ -142,7 +142,7 @@ class TrainingMutationTest extends TestCase
     public function test_training_delete($data)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $trainingMock = $this->mock(Training::class, function (MockInterface $mock) use ($data) {
+        $trainingMock = $this->mock(Training::class, function (MockInterface $mock) {
             $mock->shouldReceive('findOrFail')
                 ->once()
                 ->with(1)
