@@ -25,5 +25,6 @@ return [
     'date_end_type_date' => 'O campo data final deve ser uma data válida.',
     'date_end_date_format' => 'O campo data final deve estar no formato Y-m-d H:i:s.',
     'date_end_after' => 'O campo data final deve ser posterior a data inicial.',
-    'specific_fundamentals_not_relationship' => 'Os fundamentos específicos selecionados não estão relacionados com os fundamentos selecionados.',
+    'specific_fundamentals_not_relationship'
+        => 'Os fundamentos específicos selecionados não estão relacionados com os fundamentos selecionados.',
 ];
