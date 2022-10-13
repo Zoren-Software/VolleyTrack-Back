@@ -106,8 +106,8 @@ class TrainingTest extends TestCase
      */
     public function test_training_create(
         $parameters,
-        $type_message_error,
-        $expected_message,
+        $typeMessageError,
+        $expectedMessage,
         $expected,
         $permission
     ) {
@@ -131,10 +131,10 @@ class TrainingTest extends TestCase
         );
 
         $this->assertMessageError(
-            $type_message_error,
+            $typeMessageError,
             $response,
             $permission,
-            $expected_message
+            $expectedMessage
         );
 
         $response
@@ -367,8 +367,8 @@ class TrainingTest extends TestCase
      */
     public function test_training_edit(
         $parameters,
-        $type_message_error,
-        $expected_message,
+        $typeMessageError,
+        $expectedMessage,
         $expected,
         $permission
     ) {
@@ -396,10 +396,10 @@ class TrainingTest extends TestCase
         );
 
         $this->assertMessageError(
-            $type_message_error,
+            $typeMessageError,
             $response,
             $permission,
-            $expected_message
+            $expectedMessage
         );
 
         // dd($response);
@@ -669,8 +669,8 @@ class TrainingTest extends TestCase
      */
     public function test_training_delete(
         $data,
-        $type_message_error,
-        $expected_message,
+        $typeMessageError,
+        $expectedMessage,
         $expected,
         $permission
     ) {
@@ -696,7 +696,7 @@ class TrainingTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
