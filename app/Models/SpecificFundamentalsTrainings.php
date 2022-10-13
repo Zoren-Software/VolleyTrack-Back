@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class PositionsUsers extends Pivot
+class SpecificFundamentalsTrainings extends Pivot
 {
     use SoftDeletes;
     use LogsActivity;

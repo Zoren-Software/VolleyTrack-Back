@@ -31,6 +31,15 @@ class Fundamental extends Model
         return $this->hasMany(SpecificFundamental::class);
     }
 
+    public function trainings()
+    {
+        return $this->belongsToMany(Training::class, 'fundamentals_trainings')
+            ->using(FundamentalsTrainings::class)
+            ->as('trainings')
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
+    }
+
     /**
      * @codeCoverageIgnore
      *
@@ -50,7 +59,13 @@ class Fundamental extends Model
             ->useLogName($this->table)
             ->logOnly(['*'])
             ->logOnlyDirty()
-            ->dontLogIfAttributesChangedOnly(['updated_at', 'created_at', 'deleted_at'])
+            ->dontLogIfAttributesChangedOnly(
+                [
+                    'updated_at',
+                    'created_at',
+                    'deleted_at',
+                ]
+            )
             ->dontSubmitEmptyLogs();
     }
 }

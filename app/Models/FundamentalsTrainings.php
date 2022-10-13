@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class PositionsUsers extends Pivot
+class FundamentalsTrainings extends Pivot
 {
     use SoftDeletes;
     use LogsActivity;

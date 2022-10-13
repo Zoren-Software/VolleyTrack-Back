@@ -51,6 +51,8 @@ abstract class TestCase extends BaseTestCase
         ],
     ];
 
+    protected $formatDate = 'Y-m-d H:i:s';
+
     protected $unauthorized = 'This action is unauthorized.';
 
     public $tenantUrl;
@@ -241,13 +243,23 @@ abstract class TestCase extends BaseTestCase
     private function converteDadosString(string $query, $key, $value, bool $input, string $type, bool $receberComoParametro): string
     {
         if ($input || $type == 'query') {
-            if (is_int($value)) {
+            if (is_int($value) || is_bool($value)) {
+                if ($value === true) {
+                    $value = 'true';
+                } elseif ($value === false) {
+                    $value = 'false';
+                }
                 return $key . ': ' . $value . ' ';
             }
 
             return $key . ': ' . '"' . $value . '" ';
         } elseif ($receberComoParametro) {
-            if (is_int($value)) {
+            if (is_int($value) || is_bool($value)) {
+                if ($value === true) {
+                    $value = 'true';
+                } elseif ($value === false) {
+                    $value = 'false';
+                }
                 return $key . ': ' . $value . ' ';
             }
 
