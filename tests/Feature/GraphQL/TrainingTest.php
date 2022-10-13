@@ -195,6 +195,7 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
+                    'description' => null,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
