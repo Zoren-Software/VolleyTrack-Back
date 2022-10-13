@@ -437,7 +437,6 @@ class TrainingTest extends TestCase
             $expectedMessage
         );
 
-        // dd($response);
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
