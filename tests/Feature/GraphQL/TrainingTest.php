@@ -19,6 +19,10 @@ class TrainingTest extends TestCase
 
     private $permission = 'Técnico';
 
+    private $dateStart = '2022-10-23 13:50:00';
+
+    private $dateEnd   = '2022-10-22 13:45:00';
+
     private $data = [
         'id',
         'name',
@@ -302,8 +306,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '2022-10-23 13:50:00',
-                    'dateEnd' => '2022-10-22 13:45:00',
+                    'dateStart' => $this->dateStart,
+                    'dateEnd' => $this->dateEnd,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingCreate.date_start_before',
@@ -317,8 +321,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '2022-10-23 13:50:00',
-                    'dateEnd' => '2022-10-22 13:45:00',
+                    'dateStart' => $this->dateStart,
+                    'dateEnd' => $this->dateEnd,
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingCreate.date_end_after',
@@ -332,7 +336,7 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '2022-10-23 13:50:00',
+                    'dateStart' => $this->dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
                 ],
                 'type_message_error' => 'dateEnd',
@@ -627,8 +631,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '2022-10-23 13:50:00',
-                    'dateEnd' => '2022-10-22 13:45:00',
+                    'dateStart' => $this->dateStart,
+                    'dateEnd' => $this->dateEnd,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingEdit.date_start_before',
@@ -642,8 +646,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '2022-10-23 13:50:00',
-                    'dateEnd' => '2022-10-22 13:45:00',
+                    'dateStart' => $this->dateStart,
+                    'dateEnd' => $this->dateEnd,
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingEdit.date_end_after',
@@ -657,7 +661,7 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '2022-10-23 13:50:00',
+                    'dateStart' => $this->dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
                 ],
                 'type_message_error' => 'dateEnd',
