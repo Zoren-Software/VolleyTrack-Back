@@ -23,6 +23,14 @@ class TrainingTest extends TestCase
 
     private $dateEnd   = '2022-10-22 13:45:00';
 
+    private $dateStartError = '08/10/2022 13:50:00';
+
+    private $dateEndError = '08/10/2022 13:55:00';
+
+    private $twoHours = ' +2 hours';
+
+    private $treeHours = ' +3 hours';
+
     private $data = [
         'id',
         'name',
@@ -162,7 +170,7 @@ class TrainingTest extends TestCase
             ->format($this->formatDate);
 
         $dateEnd = $faker
-            ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
+            ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
             ->format($this->formatDate);
 
         return [
@@ -268,7 +276,7 @@ class TrainingTest extends TestCase
             ->format($this->formatDate);
 
         $dateEnd = $faker
-            ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
+            ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
             ->format($this->formatDate);
 
         return [
@@ -351,8 +359,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '08/10/2022 13:50:00',
-                    'dateEnd' => '2022-10-23 13:45:00',
+                    'dateStart' => $this->dateStartError,
+                    'dateEnd' => $this->dateEndError,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingCreate.date_start_date_format',
@@ -366,8 +374,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '08/10/2022 13:50:00',
-                    'dateEnd' => '2022-10-23 13:45:00',
+                    'dateStart' => $this->dateStartError,
+                    'dateEnd' => $this->dateEndError,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
@@ -450,7 +458,7 @@ class TrainingTest extends TestCase
             ->format($this->formatDate);
 
         $dateEnd = $faker
-            ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
+            ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
             ->format($this->formatDate);
 
         return [
@@ -578,7 +586,7 @@ class TrainingTest extends TestCase
             ->format($this->formatDate);
 
         $dateEnd = $faker
-            ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
+            ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
             ->format($this->formatDate);
 
         return [
@@ -676,8 +684,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '08/10/2022 13:50:00',
-                    'dateEnd' => '2022-10-23 13:45:00',
+                    'dateStart' => $this->dateStartError,
+                    'dateEnd' => $this->dateEndError,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingEdit.date_start_date_format',
@@ -691,8 +699,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => '08/10/2022 13:50:00',
-                    'dateEnd' => '2022-10-23 13:45:00',
+                    'dateStart' => $this->dateStartError,
+                    'dateEnd' => $this->dateEndError,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
