@@ -394,7 +394,7 @@ class TeamTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return void
+     * @return array
      */
     public function teamDeleteProvider()
     {

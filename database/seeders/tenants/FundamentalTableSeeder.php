@@ -83,6 +83,26 @@ class FundamentalTableSeeder extends Seeder
                 'name' => 'Defesa do Fundo - 6',
                 'fundamental_id' => [6],
             ],
+            14 => [
+                'name' => 'Bloqueio Simples',
+                'fundamental_id' => [5],
+            ],
+            15 => [
+                'name' => 'Bloqueio Duplo',
+                'fundamental_id' => [5],
+            ],
+            16 => [
+                'name' => 'Bloqueio Triplo',
+                'fundamental_id' => [5],
+            ],
+            17 => [
+                'name' => 'Bloqueio Corredor Aberto',
+                'fundamental_id' => [5],
+            ],
+            18 => [
+                'name' => 'Bloqueio Corredor Fechado',
+                'fundamental_id' => [5],
+            ],
         ];
 
         foreach ($fundamentals as $id => $fundamental) {

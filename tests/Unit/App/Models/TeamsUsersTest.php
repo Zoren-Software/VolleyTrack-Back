@@ -15,7 +15,7 @@ class TeamsUsersTest extends TestCase
      */
     public function test_get_activitylog_options()
     {
-        $user = new TeamsUsers();
-        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+        $teamsUsers = new TeamsUsers();
+        $this->assertInstanceOf(LogOptions::class, $teamsUsers->getActivitylogOptions());
     }
 }
