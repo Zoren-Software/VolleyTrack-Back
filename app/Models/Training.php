@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Rules\RelationshipSpecificFundamental;
 
 class Training extends Model
 {
@@ -66,5 +67,36 @@ class Training extends Model
                 ]
             )
             ->dontSubmitEmptyLogs();
+    }
+
+    public static function rules($fundamentalIds)
+    {
+        return [
+            'name' => [
+                'required',
+                'min:3',
+            ],
+            'userId' => [
+                'required',
+            ],
+            'teamId' => [
+                'required',
+            ],
+            'specificFundamentalId' => [
+                new RelationshipSpecificFundamental($fundamentalIds),
+            ],
+            'dateStart' => [
+                'required',
+                'date',
+                'date_format:Y-m-d H:i:s',
+                'before:dateEnd',
+            ],
+            'dateEnd' => [
+                'required',
+                'date',
+                'date_format:Y-m-d H:i:s',
+                'after:dateStart',
+            ],
+        ];
     }
 }
