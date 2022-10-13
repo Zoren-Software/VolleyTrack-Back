@@ -98,7 +98,8 @@ class TrainingTest extends TestCase
     /**
      * Método de criação de um treino.
      *
-     * @dataProvider trainingCreateProvider
+     * @dataProvider trainingCreateSuccessProvider
+     * @dataProvider trainingCreateErrorProvider
      *
      * @author Maicon Cerutti
      *
@@ -145,7 +146,7 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function trainingCreateProvider()
+    public function trainingCreateSuccessProvider()
     {
         $faker = Faker::create();
         $userId = 1;
@@ -246,6 +247,27 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
+        ];
+    }
+    /**
+     * @return array
+     */
+    public function trainingCreateErrorProvider()
+    {
+        $faker = Faker::create();
+        $userId = 1;
+        $nameExistent = $faker->name . $this->trainingText;
+        $trainingCreate = ['trainingCreate'];
+
+        $dateStart = $faker
+            ->dateTimeBetween('now', '+2 days')
+            ->format('Y-m-d H:i:s');
+
+        $dateEnd = $faker
+            ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
+            ->format('Y-m-d H:i:s');
+
+        return [
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
@@ -359,7 +381,8 @@ class TrainingTest extends TestCase
         /**
      * Método de edição de um treino.
      *
-     * @dataProvider trainingEditProvider
+     * @dataProvider trainingEditSuccessProvider
+     * @dataProvider trainingEditErrorProvider
      *
      * @author Maicon Cerutti
      *
@@ -411,7 +434,7 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function trainingEditProvider()
+    public function trainingEditSuccessProvider()
     {
         $faker = Faker::create();
         $userId = 1;
@@ -427,21 +450,6 @@ class TrainingTest extends TestCase
             ->format('Y-m-d H:i:s');
 
         return [
-            'edit training without permission, expected error' => [
-                [
-                    'name' => $nameExistent,
-                    'userId' => $userId,
-                    'dateStart' => $dateStart,
-                    'dateEnd' => $dateEnd,
-                ],
-                'type_message_error' => false,
-                'expected_message' => false,
-                'expected' => [
-                    'errors' => $this->errors,
-                    'data' => $trainingEdit,
-                ],
-                'permission' => false,
-            ],
             'edit training with minimal parameters, success' => [
                 [
                     'name' => $nameExistent,
@@ -547,6 +555,43 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'permission' => true,
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function trainingEditErrorProvider()
+    {
+        $faker = Faker::create();
+        $userId = 1;
+        $nameExistent = $faker->name . $this->trainingText;
+        $trainingEdit = ['trainingEdit'];
+
+        $dateStart = $faker
+            ->dateTimeBetween('now', '+2 days')
+            ->format('Y-m-d H:i:s');
+
+        $dateEnd = $faker
+            ->dateTimeBetween($dateStart . ' +2 hours', $dateStart . ' +3 hours')
+            ->format('Y-m-d H:i:s');
+
+        return [
+            'edit training without permission, expected error' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $trainingEdit,
+                ],
+                'permission' => false,
             ],
             'name field is required, expected error' => [
                 [
