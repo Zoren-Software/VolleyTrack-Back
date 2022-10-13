@@ -15,6 +15,10 @@ class TrainingMutationTest extends TestCase
 
     private $descriptionText = ' description';
 
+    private $dateStart = '2022-10-12 20:00:00';
+
+    private $dateEnd = '2022-10-12 22:00:00';
+
     /**
      * A basic unit test create and edit training.
      *
@@ -82,8 +86,8 @@ class TrainingMutationTest extends TestCase
                     'specific_fundamental_id' => [1, 2],
                     'name' => $this->trainingName,
                     'description' => $this->trainingName . $this->descriptionText,
-                    'date_start' => '2022-10-12 20:00:00',
-                    'date_end' => '2022-10-12 22:00:00',
+                    'date_start' => $this->dateStart,
+                    'date_end' => $this->dateEnd,
                 ],
                 'method' => 'create',
             ],
@@ -94,8 +98,8 @@ class TrainingMutationTest extends TestCase
                     'user_id' => 1,
                     'name' => $this->trainingName,
                     'description' => $this->trainingName . $this->descriptionText,
-                    'date_start' => '2022-10-12 20:00:00',
-                    'date_end' => '2022-10-12 22:00:00',
+                    'date_start' => $this->dateStart,
+                    'date_end' => $this->dateEnd,
                 ],
                 'method' => 'create',
             ],
@@ -108,8 +112,8 @@ class TrainingMutationTest extends TestCase
                     'specific_fundamental_id' => [1, 2],
                     'name' => $this->trainingName,
                     'description' => $this->trainingName . $this->descriptionText,
-                    'date_start' => '2022-10-12 20:00:00',
-                    'date_end' => '2022-10-12 22:00:00',
+                    'date_start' => $this->dateStart,
+                    'date_end' => $this->dateEnd,
                 ],
                 'method' => 'update',
             ],
@@ -120,8 +124,8 @@ class TrainingMutationTest extends TestCase
                     'user_id' => 1,
                     'name' => $this->trainingName,
                     'description' => $this->trainingName . $this->descriptionText,
-                    'date_start' => '2022-10-12 20:00:00',
-                    'date_end' => '2022-10-12 22:00:00',
+                    'date_start' => $this->dateStart,
+                    'date_end' => $this->dateEnd,
                 ],
                 'method' => 'update',
             ],
