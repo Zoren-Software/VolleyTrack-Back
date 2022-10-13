@@ -450,7 +450,6 @@ class TrainingTest extends TestCase
         $faker = Faker::create();
         $userId = 1;
         $nameExistent = $faker->name . $this->trainingText;
-        $trainingEdit = ['trainingEdit'];
 
         $dateStart = $faker
             ->dateTimeBetween('now', '+2 days')
