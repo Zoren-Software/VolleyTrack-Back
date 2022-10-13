@@ -17,6 +17,8 @@ class RelationshipSpecificFundamental implements InvokableRule
     /**
      * Run the validation rule.
      *
+     * @codeCoverageIgnore
+     *
      * @param  string  $attribute
      * @param  mixed  $value
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
