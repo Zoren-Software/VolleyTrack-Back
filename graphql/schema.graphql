@@ -1,3 +1,5 @@
+#import config/*.graphql
+#import language/*.graphql
 #import user/*.graphql
 #import team/*.graphql
 #import training/*.graphql

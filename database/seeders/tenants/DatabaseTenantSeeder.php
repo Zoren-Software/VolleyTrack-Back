@@ -14,10 +14,10 @@ class DatabaseTenantSeeder extends Seeder
     public function run()
     {
         $this->call([
+            UserTableSeeder::class,
             LanguageTableSeeder::class,
             ConfigTableSeeder::class,
             TrainingConfigTableSeeder::class,
-            UserTableSeeder::class,
             PermissionTableSeeder::class,
             FundamentalTableSeeder::class,
             PositionTableSeeder::class,
