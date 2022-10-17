@@ -3,6 +3,7 @@
 #import user/*.graphql
 #import team/*.graphql
 #import training/*.graphql
+#import training-config/*.graphql
 #import sanctum/*.graphql
 #import role/*.graphql
 #import fundamental/*.graphql

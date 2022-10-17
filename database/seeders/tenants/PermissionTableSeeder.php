@@ -54,7 +54,7 @@ class PermissionTableSeeder extends Seeder
         $fundamental[] = Permission::updateOrCreate(['id' => 15], ['name' => 'delete-fundamental']);
 
         /**
-         * Permissões de Fundamentos Especificos
+         * Permissões de Fundamentos Específicos
          */
         $fundamental[] = Permission::updateOrCreate(['id' => 16], ['name' => 'create-specific-fundamental']);
         $fundamental[] = Permission::updateOrCreate(['id' => 17], ['name' => 'edit-specific-fundamental']);
@@ -63,7 +63,7 @@ class PermissionTableSeeder extends Seeder
         $fundamental[] = Permission::updateOrCreate(['id' => 20], ['name' => 'delete-specific-fundamental']);
 
         /**
-         * Permissões de Fundamentos Especificos
+         * Permissões de Posições
          */
         $position[] = Permission::updateOrCreate(['id' => 21], ['name' => 'create-position']);
         $position[] = Permission::updateOrCreate(['id' => 22], ['name' => 'edit-position']);
@@ -72,11 +72,11 @@ class PermissionTableSeeder extends Seeder
         $position[] = Permission::updateOrCreate(['id' => 25], ['name' => 'delete-position']);
 
         /**
-         * Permissões de Configurações
+         * Permissões de Funções
          */
         Permission::updateOrCreate(['id' => 26], ['name' => 'list-role-administrador']);
-        $config[] = Permission::updateOrCreate(['id' => 27], ['name' => 'list-role-technician']);
-        $config[] = Permission::updateOrCreate(['id' => 28], ['name' => 'list-role-player']);
+        $role[] = Permission::updateOrCreate(['id' => 27], ['name' => 'list-role-technician']);
+        $role[] = Permission::updateOrCreate(['id' => 28], ['name' => 'list-role-player']);
 
         /**
          * Permissões de Treinos
@@ -88,28 +88,43 @@ class PermissionTableSeeder extends Seeder
         $training[] = Permission::updateOrCreate(['id' => 33], ['name' => 'delete-training']);
 
         /**
+         * Permissões de Configurações
+         */
+        $config[] = Permission::updateOrCreate(['id' => 34], ['name' => 'edit-config']);
+        $config[] = Permission::updateOrCreate(['id' => 35], ['name' => 'list-config']);
+
+        /**
+         * Permissões de Configurações de Treino
+         */
+        $trainingConfig[] = Permission::updateOrCreate(['id' => 34], ['name' => 'edit-training-config']);
+        $trainingConfig[] = Permission::updateOrCreate(['id' => 35], ['name' => 'list-training-config']);
+
+        /**
          * Relacionando Permissões
          */
         $this->sync($technician, $user);
         $this->sync($technician, $team);
-        $this->sync($technician, $config);
+        $this->sync($technician, $role);
         $this->sync($technician, $fundamental);
         $this->sync($technician, $position);
         $this->sync($technician, $training);
+        $this->sync($technician, $config);
 
         $this->sync($admin, $user);
         $this->sync($admin, $team);
-        $this->sync($admin, $config);
+        $this->sync($admin, $role);
         $this->sync($admin, $fundamental);
         $this->sync($admin, $position);
         $this->sync($admin, $training);
+        $this->sync($admin, $config);
 
         $this->sync($player, $user);
         $this->sync($player, $team);
-        $this->sync($player, $config);
+        $this->sync($player, $role);
         $this->sync($player, $fundamental);
         $this->sync($player, $position);
         $this->sync($player, $training);
+        $this->sync($player, $config);
 
         /**
          * Definir user como perfil de administrador
