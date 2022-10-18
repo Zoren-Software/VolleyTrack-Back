@@ -23,7 +23,7 @@ class TrainingConfigPolicyTest extends TestCase
             ->with('edit-training-config')
             ->willReturn($expected);
 
-        $fundamentalPolicy = new TrainingConfigPolicy();
-        $fundamentalPolicy->edit($user);
+        $trainingPolicy = new TrainingConfigPolicy();
+        $trainingPolicy->edit($user);
     }
 }
