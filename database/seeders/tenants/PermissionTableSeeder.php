@@ -96,8 +96,8 @@ class PermissionTableSeeder extends Seeder
         /**
          * Permissões de Configurações de Treino
          */
-        $trainingConfig[] = Permission::updateOrCreate(['id' => 34], ['name' => 'edit-training-config']);
-        $trainingConfig[] = Permission::updateOrCreate(['id' => 35], ['name' => 'list-training-config']);
+        $trainingConfig[] = Permission::updateOrCreate(['id' => 36], ['name' => 'edit-training-config']);
+        $trainingConfig[] = Permission::updateOrCreate(['id' => 37], ['name' => 'list-training-config']);
 
         /**
          * Relacionando Permissões

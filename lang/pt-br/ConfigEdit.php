@@ -14,4 +14,6 @@ return [
     */
 
     'user_id_required' => 'O campo user_id é obrigatório.',
+    'name_tenant_required' => 'O campo nome tenant é obrigatório.',
+    'name_tenant_min' => 'O campo nome tenant deve conter no mínimo 3 caracteres.',
 ];

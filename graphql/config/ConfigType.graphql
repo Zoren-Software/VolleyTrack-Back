@@ -1,6 +1,9 @@
 "Configs"
 type Config {
 
+    "Id editing the configs."
+    id: ID!
+
     "UserId editing the configs."
     userId: Int @rename(attribute: "user_id")
     

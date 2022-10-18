@@ -17,6 +17,10 @@ final class ConfigEditValidator extends Validator
             'userId' => [
                 'required',
             ],
+            'nameTenant' => [
+                'required',
+                'min:3',
+            ],
         ];
     }
 
@@ -27,6 +31,8 @@ final class ConfigEditValidator extends Validator
     {
         return [
             'user_id.required' => trans('ConfigEdit.user_id_required'),
+            'nameTenant.required' => trans('ConfigEdit.name_tenant_required'),
+            'nameTenant.min' => trans('ConfigEdit.name_tenant_min'),
         ];
     }
 }

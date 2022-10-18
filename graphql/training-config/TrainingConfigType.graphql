@@ -1,6 +1,9 @@
 "Training Configs"
 type TrainingConfig {
 
+    "The Id of the training config"
+    id: ID!
+
     "UserId editing the training configs."
     userId: Int @rename(attribute: "user_id")
     
