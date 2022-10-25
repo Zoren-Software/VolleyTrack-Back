@@ -25,6 +25,11 @@ class Training extends Model
         'date_end',
     ];
 
+    protected $dates = [
+        'date_start',
+        'date_end',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
