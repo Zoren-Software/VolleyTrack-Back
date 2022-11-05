@@ -38,7 +38,11 @@ class NotificationTrainingMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Notification Training Mail',
+            subject: env('APP_NAME') .
+            ' - ' . trans('TrainingNotification.title_mail') .
+            ' - ' . $this->training->date_start->format('d/m/Y H:m') .
+            ' ' . trans('TrainingNotification.title_mail') . ' ' .
+            $this->training->date_end->format('H:m')
         );
     }
 

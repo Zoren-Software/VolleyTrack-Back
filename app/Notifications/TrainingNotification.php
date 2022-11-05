@@ -2,23 +2,27 @@
 
 namespace App\Notifications;
 
+use App\Mail\NotificationTrainingMail;
 use Illuminate\Bus\Queueable;
+use App\Models\Training;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TrainingNotification extends Notification
+class TrainingNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $training;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Training $training)
     {
-        //
+        $this->training = $training;
+        $this->afterCommit();
     }
 
     /**
@@ -29,7 +33,7 @@ class TrainingNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -40,10 +44,8 @@ class TrainingNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+        return (new NotificationTrainingMail($this->training, $notifiable))
+            ->to($notifiable->email);
     }
 
     /**
