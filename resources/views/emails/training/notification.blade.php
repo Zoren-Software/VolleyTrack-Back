@@ -8,6 +8,10 @@
 
 {{ $training->description }}
 
+<br/>
+
+{{ trans('NotificationMail.message_default') }}
+
 <x-mail::button :url="''">
     {{ trans('NotificationMail.answer_call') }}
 </x-mail::button>

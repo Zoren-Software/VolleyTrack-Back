@@ -18,4 +18,5 @@ return [
     'title' => 'Notificação de Treino',
     'hello' => 'Olá',
     'good_training' => 'Bom treino',
+    'message_default' => 'Você está recebendo este e-mail porque você está inscrito no treino. Por favor confirme sua presença ou ausência.',
 ];

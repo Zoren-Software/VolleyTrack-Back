@@ -10,8 +10,20 @@ class TrainingObserver
 {
     public function created(Training $training)
     {
+        $this->notifyChange($training);
+    }
+
+    public function updated(Training $training)
+    {
+        $this->notifyChange($training);
+    }
+
+    public function notifyChange(Training $training)
+    {
         $training->team->players()->each(function ($player) use ($training) {
-            $player->notify(new TrainingNotification($training));
+            if ($training->date_start->isToday()) {
+                $player->notify(new TrainingNotification($training));
+            }
         });
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
+use App\Models\User;
 use App\Models\Training;
 use Faker\Factory as Faker;
 use Tests\TestCase;
@@ -31,7 +32,7 @@ class TrainingTest extends TestCase
 
     private $treeHours = ' +3 hours';
 
-    private $twoDays = '+2 days';
+    private $moreTwoDays = '+2 days';
 
     private $data = [
         'id',
@@ -132,8 +133,12 @@ class TrainingTest extends TestCase
             'create-training'
         );
 
-        $team = Team::factory()->make();
+        $team = Team::factory()
+        ->hasPlayers(User::factory()->count(10))
+        ->create();
+
         $team->save();
+
         $parameters['teamId'] = $team->id;
 
         $response = $this->graphQL(
@@ -168,7 +173,15 @@ class TrainingTest extends TestCase
         $trainingCreate = ['trainingCreate'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', $this->twoDays)
+            ->dateTimeBetween('now', $this->moreTwoDays)
+            ->format($this->formatDate);
+
+        $today = $faker
+            ->dateTimeBetween('now')
+            ->format($this->formatDate);
+
+        $todayPlusTwoHours = $faker
+            ->dateTimeBetween('now', "+2 hours")
             ->format($this->formatDate);
 
         $dateEnd = $faker
@@ -262,6 +275,25 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
+            'create training with notification if training date is current day, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'description' => $faker->text,
+                    'dateStart' => $today,
+                    'dateEnd' => $todayPlusTwoHours,
+                    'fundamentalId' => [1],
+                    'specificFundamentalId' => [1, 2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingCreate' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
         ];
     }
     /**
@@ -275,7 +307,7 @@ class TrainingTest extends TestCase
         $trainingCreate = ['trainingCreate'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', $this->twoDays)
+            ->dateTimeBetween('now', $this->moreTwoDays)
             ->format($this->formatDate);
 
         $dateEnd = $faker
@@ -420,7 +452,10 @@ class TrainingTest extends TestCase
         $training->save();
         $parameters['id'] = $training->id;
 
-        $team = Team::factory()->make();
+        $team = Team::factory()
+            ->hasPlayers(User::factory()->count(10))
+            ->create();
+
         $team->save();
         $parameters['teamId'] = $team->id;
 
@@ -455,11 +490,19 @@ class TrainingTest extends TestCase
         $nameExistent = $faker->name . $this->trainingText;
 
         $dateStart = $faker
-            ->dateTimeBetween('now', $this->twoDays)
+            ->dateTimeBetween('now', $this->moreTwoDays)
             ->format($this->formatDate);
 
         $dateEnd = $faker
             ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
+            ->format($this->formatDate);
+
+        $today = $faker
+            ->dateTimeBetween('now')
+            ->format($this->formatDate);
+
+        $todayPlusTwoHours = $faker
+            ->dateTimeBetween('now', "+2 hours")
             ->format($this->formatDate);
 
         return [
@@ -569,6 +612,24 @@ class TrainingTest extends TestCase
                 ],
                 'permission' => true,
             ],
+            'edit training with notification if training date is current day, success' => [
+                [
+                    'name' => $nameExistent,
+                    'userId' => $userId,
+                    'description' => $faker->text,
+                    'status' => true,
+                    'dateStart' => $today,
+                    'dateEnd' => $todayPlusTwoHours,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingEdit' => $this->data,
+                    ],
+                ],
+                'permission' => true,
+            ],
         ];
     }
 
@@ -583,7 +644,7 @@ class TrainingTest extends TestCase
         $trainingEdit = ['trainingEdit'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', $this->twoDays)
+            ->dateTimeBetween('now', $this->moreTwoDays)
             ->format($this->formatDate);
 
         $dateEnd = $faker
