@@ -29,17 +29,21 @@ class SendTrainingNotificationDailyCommand extends Command
      */
     public function handle()
     {
-        $tenants = $this->option('tenants') == [] ? Tenant::pluck('id') : $this->option('tenants');
+        $tenantsPluck = Tenant::where('id', 'NOT LIKE', '%_logs')->pluck('id');
+
+        $tenants = $this->option('tenants') == [] ? $tenantsPluck : $this->option('tenants');
 
         foreach ($tenants as $tenant) {
             tenancy()->initialize($tenant);
 
-            Training::whereDate('date_start', now()->format('Y-m-d'))
-                ->chunkById(500, function ($trainings) {
-                    foreach ($trainings as $training) {
-                        $training->sendNotificationPlayers();
-                    }
-                });
+            Training::whereBetween('date_start', [
+                now()->format('Y-m-d') . ' 00:00:00',
+                now()->format('Y-m-d') . ' 23:59:59'
+            ])->chunk(500, function ($trainings) {
+                foreach ($trainings as $training) {
+                    $training->sendNotificationPlayers();
+                }
+            });
         }
     }
 }
