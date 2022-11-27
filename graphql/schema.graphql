@@ -9,3 +9,4 @@
 #import fundamental/*.graphql
 #import specific-fundamental/*.graphql
 #import position/*.graphql
+#import notification/*.graphql
