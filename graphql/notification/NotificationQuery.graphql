@@ -1,0 +1,4 @@
+extend type Query @guard {
+    "List multiple notifications."
+    notifications: [Notification!]! @paginate(defaultCount: 10, maxCount: 100)
+}

@@ -1,10 +1,7 @@
-"Notification"
+"Notifications"
 type Notification {
     "Unique primary key."
     id: ID!
-
-    "Unique name. Is required."
-    name: String!
 
     "Notification template identification."
     type: String!
@@ -19,7 +16,7 @@ type Notification {
     data: String!
 
     "Notification read status."
-    readAt: DateTime! @rename(attribute: "read_at")
+    readAt: DateTime @rename(attribute: "read_at")
 
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     createdAt: DateTime! @rename(attribute: "created_at")

@@ -1,7 +1,0 @@
-
-extend type Mutation @guard {
-    notification(
-        id: ID!
-    ): Notification
-        @broadcast(subscription: "notification")
-}
