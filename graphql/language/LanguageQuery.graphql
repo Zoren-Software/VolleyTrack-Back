@@ -1,0 +1,12 @@
+extend type Query {
+
+    "List multiple languages."
+    languages (
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+
+        "Filters by slug. Accepts SQL LIKE wildcards `%` and `_`."
+        slug: String @where(operator: "like")
+
+    ): [Language!]! @paginate(defaultCount: 10, maxCount: 100)
+}

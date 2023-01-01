@@ -98,8 +98,14 @@ abstract class TestCase extends BaseTestCase
         tenancy()->initialize($tenantId);
     }
 
-    public function graphQL(string $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, string $type, bool $input, bool $parametrosEntrada = false): object
-    {
+    public function graphQL(
+        string $nomeQueryGraphQL,
+        array $dadosEntrada,
+        array $dadosSaida,
+        string $type,
+        bool $input,
+        bool $parametrosEntrada = false
+    ): object {
         $objectString = $this->converteDadosEmStringGraphQL($nomeQueryGraphQL, $dadosEntrada, $dadosSaida, $input, $type, $parametrosEntrada);
 
         switch ($type) {
@@ -161,8 +167,14 @@ abstract class TestCase extends BaseTestCase
         $this->token = $response->json()['data']['login']['token'];
     }
 
-    private function converteDadosEmStringGraphQL(string $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, $input, $type, bool $parametrosEntrada): string
-    {
+    private function converteDadosEmStringGraphQL(
+        string $nomeQueryGraphQL,
+        array $dadosEntrada,
+        array $dadosSaida,
+        $input,
+        $type,
+        bool $parametrosEntrada
+    ): string {
         if ($input) {
             $inputOpen = '( input: {';
             $inputClose = '} )';
@@ -240,8 +252,14 @@ abstract class TestCase extends BaseTestCase
         return $stringValue;
     }
 
-    private function converteDadosString(string $query, $key, $value, bool $input, string $type, bool $receberComoParametro): string
-    {
+    private function converteDadosString(
+        string $query,
+        $key,
+        $value,
+        bool $input,
+        string $type,
+        bool $receberComoParametro
+    ): string {
         if ($input || $type == 'query') {
             if (is_int($value) || is_bool($value)) {
                 if ($value === true) {

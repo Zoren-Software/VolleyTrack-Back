@@ -80,6 +80,25 @@ services:
         - ./portainer-data:/data
         ports:
         - 9000:9000
+
+    soketi:
+        image: 'quay.io/soketi/soketi:latest-16-alpine'
+        environment:
+            SOKETI_DEBUG: '1'
+            SOKETI_METRICS_SERVER_PORT: '9601'
+            SOKETI_METRICS_ENABLED: '1'
+        ports:
+            - '${SOKETI_PORT:-6001}:6001'
+            - '${SOKETI_METRICS_SERVER_PORT:-9601}:9601'
+        networks:
+            - sail
+    mailhog:
+        image: 'mailhog/mailhog:latest'
+        ports:
+            - ${MAILHOG_PORT_SMTP_SERVER:-1025}:1025 # smtp server
+            - ${MAILHOG_PORT_WEB_UI:-8025}:8025 # web ui
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge

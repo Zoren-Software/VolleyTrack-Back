@@ -1,0 +1,27 @@
+"Training Configs"
+type TrainingConfig {
+
+    "The Id of the training config"
+    id: ID!
+
+    "UserId editing the training configs."
+    userId: Int @rename(attribute: "user_id")
+    
+    "User editing the training configs."
+    user: User @belongsTo
+
+    "Days before training to send notifications, from the system and/or by email."
+    daysNotification: Int @rename(attribute: "days_notification")
+
+    "Send workout notifications via email."
+    notificationTeamByEmail: Boolean @rename(attribute: "notification_team_by_email")
+
+    "Send training notifications via the system to the technician."
+    notificationTechnicianByEmail: Boolean @rename(attribute: "notification_technician_by_email")
+
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
