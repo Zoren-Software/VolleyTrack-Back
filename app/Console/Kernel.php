@@ -15,7 +15,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        $output = storage_path('app/output.txt');
+
+        $schedule->command('cron:training-notification-daily')
+            ->onOneServer()
+            ->appendOutputTo($output)
+            ->dailyAt('03:00')
+            ->runInBackground();
     }
 
     /**

@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "beyondcode/laravel-websockets": "^1.13",
         "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": "^1.0",
         "daniel-de-wit/lighthouse-sanctum": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
@@ -17,6 +18,7 @@
         "mll-lab/laravel-graphql-playground": "^2.6",
         "nuwave/lighthouse": "^5.44",
         "opcodesio/log-viewer": "^1.4",
+        "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-permission": "^5.5",
         "stancl/tenancy": "^3.5"
     },

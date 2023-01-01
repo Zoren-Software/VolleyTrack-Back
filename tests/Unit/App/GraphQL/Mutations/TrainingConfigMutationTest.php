@@ -1,0 +1,45 @@
+<?php
+
+namespace Tests\Unit\App\GraphQL\Mutations;
+
+use Tests\TestCase;
+use App\Models\TrainingConfig;
+use App\GraphQL\Mutations\TrainingConfigMutation;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Mockery\MockInterface;
+
+class TrainingConfigMutationTest extends TestCase
+{
+    /**
+     * A basic unit test make.
+     *
+     * @return void
+     */
+    public function test_make()
+    {
+        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $configMock = $this->mock(TrainingConfig::class, function (MockInterface $mock) {
+            $mock->shouldReceive('find')
+                ->once()
+                ->andReturn($mock);
+
+            $mock->shouldReceive('update')->once()->andReturn($mock);
+        });
+
+        $data = [
+            'user_id' => 1,
+            'days_notification' => 1,
+            'notification_team_by_email' => true,
+            'notification_technician_by_email' => true,
+        ];
+
+        $configMutation = new TrainingConfigMutation($configMock);
+        $configMockReturn = $configMutation->make(
+            null,
+            $data,
+            $graphQLContext
+        );
+
+        $this->assertEquals($configMock, $configMockReturn);
+    }
+}

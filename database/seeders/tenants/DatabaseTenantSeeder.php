@@ -15,6 +15,9 @@ class DatabaseTenantSeeder extends Seeder
     {
         $this->call([
             UserTableSeeder::class,
+            LanguageTableSeeder::class,
+            ConfigTableSeeder::class,
+            TrainingConfigTableSeeder::class,
             PermissionTableSeeder::class,
             FundamentalTableSeeder::class,
             PositionTableSeeder::class,

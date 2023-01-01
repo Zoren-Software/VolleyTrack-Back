@@ -1,0 +1,7 @@
+extend type Query {
+    "Find attribute by ID=1, there will always be only one configuration record"
+    config(
+        id: ID!
+        @eq
+    ): Config @find
+}

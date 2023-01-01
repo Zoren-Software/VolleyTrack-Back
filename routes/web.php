@@ -24,3 +24,10 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 // Password reset routes...
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.request');
 Route::post('password/reset', 'Auth\ResetPasswordController@postReset')->name('password.reset');
+
+Route::get('/test-notification-training-mail', function () {
+    $training = App\Models\Training::find(1);
+    $user = App\Models\User::find(1);
+
+    return new App\Mail\NotificationTrainingMail($training, $user);
+});

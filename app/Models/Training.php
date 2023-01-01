@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use App\Rules\RelationshipSpecificFundamental;
+use App\Notifications\TrainingNotification;
 
 class Training extends Model
 {
@@ -21,6 +22,11 @@ class Training extends Model
         'name',
         'description',
         'status',
+        'date_start',
+        'date_end',
+    ];
+
+    protected $dates = [
         'date_start',
         'date_end',
     ];
@@ -98,5 +104,14 @@ class Training extends Model
                 'after:dateStart',
             ],
         ];
+    }
+
+    public function sendNotificationPlayers()
+    {
+        $this->team->players()->each(function ($player) {
+            if ($this->date_start->isToday()) {
+                $player->notify(new TrainingNotification($this));
+            }
+        });
     }
 }
