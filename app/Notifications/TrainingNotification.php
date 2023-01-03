@@ -57,7 +57,8 @@ class TrainingNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            //
+            'training' => $this->training,
+            'message' => trans('TrainingNotification.title_mail'),
         ];
     }
 }
