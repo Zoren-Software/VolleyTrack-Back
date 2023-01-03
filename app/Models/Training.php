@@ -9,6 +9,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use App\Rules\RelationshipSpecificFundamental;
 use App\Notifications\TrainingNotification;
+use App\Models\TrainingConfig;
 
 class Training extends Model
 {
@@ -109,9 +110,20 @@ class Training extends Model
     public function sendNotificationPlayers()
     {
         $this->team->players()->each(function ($player) {
-            if ($this->date_start->isToday()) {
+            if (
+                $this->rangeDateNotification(
+                    $this->date_start->format('d/m/Y'), 
+                    now()->format('d/m/Y'), 
+                    now()->addDays(TrainingConfig::first()->days_notification)->format('d/m/Y')
+                )
+            ) {
                 $player->notify(new TrainingNotification($this));
             }
         });
+    }
+
+    public function rangeDateNotification(String $startDate, String $dateToday, String $dateLimit)
+    {
+        return $startDate >= $dateToday && $startDate <= $dateLimit;
     }
 }
