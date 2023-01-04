@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\InvokableRule;
 use App\Models\SpecificFundamental;
+use Illuminate\Contracts\Validation\InvokableRule;
 
 class RelationshipSpecificFundamental implements InvokableRule
 {
@@ -31,7 +31,7 @@ class RelationshipSpecificFundamental implements InvokableRule
         foreach ($specificFundamentals as $specificFundamental) {
             $fundamentalIds = $specificFundamental->fundamentals->pluck('id')->toArray();
 
-            if (!array_intersect($fundamentalIds, $this->fundamentalIds)) {
+            if (! array_intersect($fundamentalIds, $this->fundamentalIds)) {
                 $fail('TrainingEdit.specific_fundamentals_not_relationship')->translate();
             }
         }

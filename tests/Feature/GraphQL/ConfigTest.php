@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\GraphQL;
 
-use Tests\TestCase;
 use Faker\Factory as Faker;
+use Tests\TestCase;
 
 class ConfigTest extends TestCase
 {

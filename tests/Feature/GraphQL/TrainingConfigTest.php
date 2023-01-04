@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\GraphQL;
 
-use Tests\TestCase;
 use Faker\Factory as Faker;
+use Tests\TestCase;
 
 class TrainingConfigTest extends TestCase
 {
@@ -16,13 +16,13 @@ class TrainingConfigTest extends TestCase
     private $permission = 'Técnico';
 
     private $data = [
-        "id",
-        "userId",
-        "daysNotification",
-        "notificationTeamByEmail",
-        "notificationTechnicianByEmail",
-        "createdAt",
-        "updatedAt",
+        'id',
+        'userId',
+        'daysNotification',
+        'notificationTeamByEmail',
+        'notificationTechnicianByEmail',
+        'createdAt',
+        'updatedAt',
     ];
 
     /**
@@ -49,7 +49,7 @@ class TrainingConfigTest extends TestCase
         ])->assertStatus(200);
     }
 
-        /**
+    /**
      * Método de edição de configurações.
      *
      * @dataProvider ConfigEditProvider

@@ -2,8 +2,8 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
-use Nuwave\Lighthouse\Validation\Validator;
 use App\Models\Training;
+use Nuwave\Lighthouse\Validation\Validator;
 
 final class TrainingEditValidator extends Validator
 {
