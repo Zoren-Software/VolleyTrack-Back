@@ -35,8 +35,8 @@ class TrainingNotification extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         if (
-            ($notifiable->hasRole('Técnico') && TrainingConfig::first()->notification_technician_by_email == true) ||
-            ($notifiable->hasRole('Jogador') && TrainingConfig::first()->notification_team_by_email == true)
+            ($notifiable->hasRole('Técnico') && TrainingConfig::first()->notification_technician_by_email) ||
+            ($notifiable->hasRole('Jogador') && TrainingConfig::first()->notification_team_by_email)
         ) {
             return ['database', 'mail'];
         }
