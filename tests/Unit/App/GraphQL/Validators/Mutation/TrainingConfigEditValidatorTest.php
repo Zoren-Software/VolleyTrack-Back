@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\App\GraphQL\Validators\Mutation;
 
-use Tests\TestCase;
 use App\GraphQL\Validators\Mutation\TrainingConfigEditValidator;
+use Tests\TestCase;
 
 class TrainingConfigEditValidatorTest extends TestCase
 {

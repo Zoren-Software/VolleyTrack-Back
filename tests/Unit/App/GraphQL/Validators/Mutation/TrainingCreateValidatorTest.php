@@ -3,8 +3,8 @@
 namespace Tests\Unit\App\GraphQL\Validators\Mutation;
 
 use App\GraphQL\Validators\Mutation\TrainingCreateValidator;
-use Nuwave\Lighthouse\Execution\Arguments\ArgumentSet;
 use Mockery\MockInterface;
+use Nuwave\Lighthouse\Execution\Arguments\ArgumentSet;
 use Tests\TestCase;
 
 class TrainingCreateValidatorTest extends TestCase

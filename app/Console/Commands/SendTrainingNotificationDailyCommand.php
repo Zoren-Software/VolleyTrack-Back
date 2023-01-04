@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Training;
 use App\Models\Tenant;
+use App\Models\Training;
+use Illuminate\Console\Command;
 
 class SendTrainingNotificationDailyCommand extends Command
 {
@@ -38,7 +38,7 @@ class SendTrainingNotificationDailyCommand extends Command
 
             Training::whereBetween('date_start', [
                 now()->format('Y-m-d') . ' 00:00:00',
-                now()->format('Y-m-d') . ' 23:59:59'
+                now()->format('Y-m-d') . ' 23:59:59',
             ])->chunk(500, function ($trainings) {
                 foreach ($trainings as $training) {
                     $training->sendNotificationPlayers();

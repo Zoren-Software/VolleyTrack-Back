@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\App\GraphQL\Mutations;
 
-use Tests\TestCase;
-use App\Models\Config;
 use App\GraphQL\Mutations\ConfigMutation;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Models\Config;
 use Mockery\MockInterface;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Tests\TestCase;
 
 class ConfigMutationTest extends TestCase
 {

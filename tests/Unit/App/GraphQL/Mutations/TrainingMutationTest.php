@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\App\GraphQL\Mutations;
 
-use App\Models\Training;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\GraphQL\Mutations\TrainingMutation;
+use App\Models\Training;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery\MockInterface;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 
 class TrainingMutationTest extends TestCase
