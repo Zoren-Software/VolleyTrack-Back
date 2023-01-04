@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
+use App\Notifications\TrainingNotification;
+use App\Rules\RelationshipSpecificFundamental;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use App\Rules\RelationshipSpecificFundamental;
-use App\Notifications\TrainingNotification;
-use App\Models\TrainingConfig;
 
 class Training extends Model
 {
@@ -110,11 +109,12 @@ class Training extends Model
     public function sendNotificationPlayers()
     {
         $this->team->players()->each(function ($player) {
+            $format = 'd/m/Y';
             if (
                 $this->rangeDateNotification(
-                    $this->date_start->format('d/m/Y'), 
-                    now()->format('d/m/Y'), 
-                    now()->addDays(TrainingConfig::first()->days_notification)->format('d/m/Y')
+                    $this->date_start->format($format),
+                    now()->format($format),
+                    now()->addDays(TrainingConfig::first()->days_notification)->format($format)
                 )
             ) {
                 $player->notify(new TrainingNotification($this));
@@ -122,7 +122,7 @@ class Training extends Model
         });
     }
 
-    public function rangeDateNotification(String $startDate, String $dateToday, String $dateLimit)
+    public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit)
     {
         return $startDate >= $dateToday && $startDate <= $dateLimit;
     }

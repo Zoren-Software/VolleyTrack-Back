@@ -21,7 +21,7 @@ class NotificationFactory extends Factory
             'type' => 'App\Notifications\TrainingNotification',
             'notifiable_type' => 'App\Models\User',
             'notifiable_id' => 1,
-            'data' => '[]'
+            'data' => '[]',
         ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\Tenants;
 
-use Illuminate\Database\Seeder;
 use App\Models\Language;
+use Illuminate\Database\Seeder;
 
 class LanguageTableSeeder extends Seeder
 {
@@ -237,8 +237,8 @@ class LanguageTableSeeder extends Seeder
         foreach ($languages as $id => $language) {
             Language::updateOrCreate(
                 [
-                'id' => $id,
-            ],
+                    'id' => $id,
+                ],
                 $language
             );
         }

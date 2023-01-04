@@ -3,8 +3,6 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Notification;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class NotificationTest extends TestCase
@@ -25,6 +23,7 @@ class NotificationTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
     /**
      * A basic feature test example.
      *

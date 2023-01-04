@@ -267,6 +267,7 @@ abstract class TestCase extends BaseTestCase
                 } elseif ($value === false) {
                     $value = 'false';
                 }
+
                 return $key . ': ' . $value . ' ';
             }
 
@@ -278,6 +279,7 @@ abstract class TestCase extends BaseTestCase
                 } elseif ($value === false) {
                     $value = 'false';
                 }
+
                 return $key . ': ' . $value . ' ';
             }
 

@@ -3,17 +3,18 @@
 namespace App\Notifications;
 
 use App\Mail\NotificationTrainingMail;
-use Illuminate\Bus\Queueable;
 use App\Models\Training;
+use App\Models\TrainingConfig;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use App\Models\TrainingConfig;
 
 class TrainingNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public $training;
+
     /**
      * Create a new notification instance.
      *

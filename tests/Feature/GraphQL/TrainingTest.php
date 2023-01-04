@@ -3,8 +3,8 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
-use App\Models\User;
 use App\Models\Training;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -22,7 +22,7 @@ class TrainingTest extends TestCase
 
     private $dateStart = '2022-10-23 13:50:00';
 
-    private $dateEnd   = '2022-10-22 13:45:00';
+    private $dateEnd = '2022-10-22 13:45:00';
 
     private $dateStartError = '08/10/2022 13:50:00';
 
@@ -181,7 +181,7 @@ class TrainingTest extends TestCase
             ->format($this->formatDate);
 
         $todayPlusTwoHours = $faker
-            ->dateTimeBetween('now', "+2 hours")
+            ->dateTimeBetween('now', '+2 hours')
             ->format($this->formatDate);
 
         $dateEnd = $faker
@@ -296,6 +296,7 @@ class TrainingTest extends TestCase
             ],
         ];
     }
+
     /**
      * @return array
      */
@@ -425,7 +426,7 @@ class TrainingTest extends TestCase
         ];
     }
 
-        /**
+    /**
      * Método de edição de um treino.
      *
      * @dataProvider trainingEditSuccessProvider
@@ -502,7 +503,7 @@ class TrainingTest extends TestCase
             ->format($this->formatDate);
 
         $todayPlusTwoHours = $faker
-            ->dateTimeBetween('now', "+2 hours")
+            ->dateTimeBetween('now', '+2 hours')
             ->format($this->formatDate);
 
         return [

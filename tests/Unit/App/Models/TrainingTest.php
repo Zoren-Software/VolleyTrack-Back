@@ -3,9 +3,9 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\Training;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Activitylog\LogOptions;
 use Tests\TestCase;
 
 class TrainingTest extends TestCase

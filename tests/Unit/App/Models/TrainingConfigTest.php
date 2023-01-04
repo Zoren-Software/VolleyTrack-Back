@@ -4,7 +4,6 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\TrainingConfig;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Tests\TestCase;
 
 class TrainingConfigTest extends TestCase

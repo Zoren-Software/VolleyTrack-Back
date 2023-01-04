@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\Tenants;
 
-use Illuminate\Database\Seeder;
 use App\Models\TrainingConfig;
+use Illuminate\Database\Seeder;
 
 class TrainingConfigTableSeeder extends Seeder
 {
@@ -27,8 +27,8 @@ class TrainingConfigTableSeeder extends Seeder
         foreach ($trainingConfigs as $id => $config) {
             TrainingConfig::updateOrCreate(
                 [
-                'id' => $id,
-            ],
+                    'id' => $id,
+                ],
                 $config
             );
         }
