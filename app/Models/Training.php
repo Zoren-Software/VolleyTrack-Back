@@ -120,6 +120,19 @@ class Training extends Model
                 $player->notify(new TrainingNotification($this));
             }
         });
+
+        $this->team->technicians()->each(function ($technician) {
+            $format = 'd/m/Y';
+            if (
+                $this->rangeDateNotification(
+                    $this->date_start->format($format),
+                    now()->format($format),
+                    now()->addDays(TrainingConfig::first()->days_notification)->format($format)
+                )
+            ) {
+                $technician->notify(new TrainingNotification($this));
+            }
+        });
     }
 
     public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit)
