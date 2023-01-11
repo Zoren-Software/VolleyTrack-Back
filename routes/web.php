@@ -31,3 +31,10 @@ Route::get('/test-notification-training-mail', function () {
 
     return new App\Mail\NotificationTrainingMail($training, $user);
 });
+
+Route::get('/test-confirmation-notification-training-mail', function () {
+    $training = App\Models\Training::find(1);
+    $user = App\Models\User::find(3);
+
+    return new App\Mail\ConfirmationNotificationTrainingMail($training, $user);
+});
