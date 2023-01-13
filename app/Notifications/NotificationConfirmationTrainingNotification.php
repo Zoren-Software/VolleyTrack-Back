@@ -66,6 +66,7 @@ class NotificationConfirmationTrainingNotification extends Notification implemen
      */
     public function toArray($notifiable)
     {
+        $this->training->team->players;
         return [
             'training' => $this->training,
             'message' => trans('TrainingNotification.title_mail_confirmation'),
