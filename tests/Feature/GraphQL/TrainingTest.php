@@ -3,6 +3,7 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
+use App\Models\TeamsUsers;
 use App\Models\Training;
 use App\Models\User;
 use Faker\Factory as Faker;
@@ -134,8 +135,14 @@ class TrainingTest extends TestCase
         );
 
         $team = Team::factory()
-        ->hasPlayers(User::factory()->count(10))
-        ->create();
+            ->hasPlayers(10)
+            ->create();
+
+        $user = $team->players->first();
+
+        $user->roles()->sync(2);
+
+        TeamsUsers::where('user_id', $user->id)->update(['role' => 'technician']);
 
         $team->save();
 
@@ -454,10 +461,17 @@ class TrainingTest extends TestCase
         $parameters['id'] = $training->id;
 
         $team = Team::factory()
-            ->hasPlayers(User::factory()->count(10))
+            ->hasPlayers(10)
             ->create();
 
+        $user = $team->players->first();
+
+        $user->roles()->sync(2);
+
+        TeamsUsers::where('user_id', $user->id)->update(['role' => 'technician']);
+
         $team->save();
+
         $parameters['teamId'] = $team->id;
 
         $response = $this->graphQL(

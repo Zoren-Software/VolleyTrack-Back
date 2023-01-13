@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Mail\NotificationTrainingMail;
+use App\Mail\ConfirmationNotificationTrainingMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Training;
@@ -50,11 +50,11 @@ class NotificationConfirmationTrainingNotification extends Notification implemen
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \App\Mail\NotificationTrainingMail
+     * @return \App\Mail\ConfirmationNotificationTrainingMail
      */
     public function toMail($notifiable)
     {
-        return (new NotificationTrainingMail($this->training, $notifiable))
+        return (new ConfirmationNotificationTrainingMail($this->training, $notifiable))
             ->to($notifiable->email);
     }
 

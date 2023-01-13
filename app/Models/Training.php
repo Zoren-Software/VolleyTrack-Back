@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\TrainingNotification;
+use App\Notifications\NotificationConfirmationTrainingNotification;
 use App\Rules\RelationshipSpecificFundamental;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -130,7 +131,7 @@ class Training extends Model
                     now()->addDays(TrainingConfig::first()->days_notification)->format($format)
                 )
             ) {
-                $technician->notify(new TrainingNotification($this));
+                $technician->notify(new NotificationConfirmationTrainingNotification($this));
             }
         });
     }

@@ -12,6 +12,8 @@ class TeamsUsers extends Pivot
     use SoftDeletes;
     use LogsActivity;
 
+    protected $table = 'teams_users';
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -33,5 +35,12 @@ class TeamsUsers extends Pivot
                 ]
             )
             ->dontSubmitEmptyLogs();
+    }
+
+    public function updateRoleInRelationship()
+    {
+        if (User::find($this->user_id)->hasRole('Técnico')) {
+            $this->role = 'technician';
+        }
     }
 }

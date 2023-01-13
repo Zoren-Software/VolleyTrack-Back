@@ -53,22 +53,22 @@ class Team extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function players()
-    {
-        return $this->belongsToMany(User::class, 'teams_users')
-            ->using(TeamsUsers::class)
-            ->as('players')
-            ->where('teams_users.role', 'player')
-            ->withTimestamps()
-            ->withPivot('created_at', 'updated_at');
-    }
-
     public function technicians()
     {
         return $this->belongsToMany(User::class, 'teams_users')
             ->using(TeamsUsers::class)
             ->as('technicians')
             ->where('teams_users.role', 'technician')
+            ->withTimestamps()
+            ->withPivot('created_at', 'updated_at');
+    }
+
+    public function players()
+    {
+        return $this->belongsToMany(User::class, 'teams_users')
+            ->using(TeamsUsers::class)
+            ->as('players')
+            ->where('teams_users.role', 'player')
             ->withTimestamps()
             ->withPivot('created_at', 'updated_at');
     }

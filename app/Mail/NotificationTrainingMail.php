@@ -41,7 +41,6 @@ class NotificationTrainingMail extends Mailable
             subject: env('APP_NAME') .
             ' - ' . trans('TrainingNotification.title_mail') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
-            ' ' . trans('TrainingNotification.title_mail') . ' ' .
             $this->training->date_end->format('H:m')
         );
     }
