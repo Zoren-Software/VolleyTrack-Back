@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\TeamsUsers;
+use App\Models\User;
 
 class TeamsUsersObserver
 {
