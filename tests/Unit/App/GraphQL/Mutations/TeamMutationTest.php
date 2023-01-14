@@ -132,13 +132,14 @@ class TeamMutationTest extends TestCase
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $team = $this->createMock(Team::class);
+        $user = $this->createMock(User::class);
 
         $team
             ->expects($this->exactly($number))
             ->method('deleteTeam')
             ->willReturn($team);
 
-        $teamMutation = new TeamMutation($team);
+        $teamMutation = new TeamMutation($team, $user);
         $teamMutation->delete(
             null,
             [
