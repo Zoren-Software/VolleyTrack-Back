@@ -12,6 +12,7 @@ final class NotificationQuery
      */
     public function list($_, array $args)
     {
-        return Notification::list($args);
+        $notification = new Notification();
+        return $notification->list($args);
     }
 }
