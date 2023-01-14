@@ -31,7 +31,7 @@ class TeamsUsersTest extends TestCase
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
             $mock->shouldReceive('find')
-                ->times(1)
+                ->once()
                 ->with(1)
                 ->andReturn($mock);
             $mock->shouldReceive('hasRole')
