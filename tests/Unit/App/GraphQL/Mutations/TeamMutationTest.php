@@ -4,6 +4,7 @@ namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\TeamMutation;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -32,11 +33,30 @@ class TeamMutationTest extends TestCase
             }
 
             $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
-            $mock->shouldReceive('players')->once()->andReturn($player);
-            $mock->shouldReceive('syncWithoutDetaching')->with([$player]);
+            $mock->shouldReceive('players')->times(2)->andReturn($player);
+            $mock->shouldReceive('syncWithPivotValues')->with($data['player_id'], ['role' => 'technician']);
         });
 
-        $specificFundamentalMutation = new TeamMutation($teamMock);
+        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data, $method) {
+            if ($data['id']) {
+                $mock->shouldReceive('find')
+                    ->once()
+                    ->with($data['id'])
+                    ->andReturn($mock);
+            }
+
+            $mock->shouldReceive('find')
+                ->times($data['number_return_find'])
+                ->with(1)
+                ->andReturn($mock);
+
+            $mock->shouldReceive('hasRole')
+                ->with('Jogador')
+                ->once()->andReturn($data['user_relation_team_technian']);
+        });
+
+
+        $specificFundamentalMutation = new TeamMutation($teamMock, $userMock);
         $teamMockReturn = $specificFundamentalMutation->make(
             null,
             $data,
@@ -49,24 +69,55 @@ class TeamMutationTest extends TestCase
     public function teamProvider()
     {
         return [
-            'send data create, success' => [
+            'send data create with user relation team, success' => [
                 'data' => [
                     'id' => null,
                     'name' => 'Teste',
                     'player_id' => [1],
                     'user_id' => 1,
+                    'user_relation_team_technian' => true,
+                    'number_return_find' => 1,
+                    'number_return_hasRole' => 0
                 ],
                 'method' => 'create',
             ],
-            'send data edit, success' => [
+            'send data create not with user relation team, success' => [
+                'data' => [
+                    'id' => null,
+                    'name' => 'Teste',
+                    'player_id' => [1],
+                    'user_id' => 1,
+                    'user_relation_team_technian' => false,
+                    'number_return_find' => 1,
+                    'number_return_hasRole' => 1
+                ],
+                'method' => 'create',
+            ],
+            'send data edit with user relation team, success' => [
                 'data' => [
                     'id' => 1,
                     'name' => 'Teste',
                     'player_id' => [1],
                     'user_id' => 1,
+                    'user_relation_team_technian' => true,
+                    'number_return_find' => 0,
+                    'number_return_hasRole' => 0
                 ],
                 'method' => 'update',
             ],
+            'send data edit not with user relation team, success' => [
+                'data' => [
+                    'id' => 1,
+                    'name' => 'Teste',
+                    'player_id' => [1],
+                    'user_id' => 1,
+                    'user_relation_team_technian' => false,
+                    'number_return_find' => 0,
+                    'number_return_hasRole' => 0
+                ],
+                'method' => 'update',
+            ],
+
         ];
     }
 
