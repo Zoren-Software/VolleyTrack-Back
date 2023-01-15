@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Training;
 
-use App\Mail\ConfirmationNotificationTrainingMail;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Mail\NotificationTrainingMail;
 use App\Models\Training;
 use App\Models\TrainingConfig;
-
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class NotificationConfirmationTrainingNotification extends Notification implements ShouldQueue
+class TrainingNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -50,11 +48,11 @@ class NotificationConfirmationTrainingNotification extends Notification implemen
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \App\Mail\ConfirmationNotificationTrainingMail
+     * @return \App\Mail\NotificationTrainingMail
      */
     public function toMail($notifiable)
     {
-        return (new ConfirmationNotificationTrainingMail($this->training, $notifiable))
+        return (new NotificationTrainingMail($this->training, $notifiable))
             ->to($notifiable->email);
     }
 
@@ -66,10 +64,9 @@ class NotificationConfirmationTrainingNotification extends Notification implemen
      */
     public function toArray($notifiable)
     {
-        $this->training->team->players;
         return [
             'training' => $this->training,
-            'message' => trans('TrainingNotification.title_mail_confirmation'),
+            'message' => trans('TrainingNotification.title_mail'),
         ];
     }
 }
