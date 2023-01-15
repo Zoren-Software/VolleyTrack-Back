@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Carbon\Carbon;
 
 class Training extends Model
 {
@@ -138,6 +139,10 @@ class Training extends Model
 
     public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit)
     {
+        $startDate = Carbon::createFromFormat('d/m/Y', $startDate);
+        $dateToday = Carbon::createFromFormat('d/m/Y', $dateToday);
+        $dateLimit = Carbon::createFromFormat('d/m/Y', $dateLimit);
+
         return $startDate >= $dateToday && $startDate <= $dateLimit;
     }
 }
