@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use App\Notifications\Training\TrainingNotification;
 use App\Notifications\Training\NotificationConfirmationTrainingNotification;
+use App\Notifications\Training\TrainingNotification;
 use App\Rules\RelationshipSpecificFundamental;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Carbon\Carbon;
 
 class Training extends Model
 {

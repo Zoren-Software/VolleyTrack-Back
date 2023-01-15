@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\App\Models;
 
-use Tests\TestCase;
 use App\Models\Notification;
-use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Mockery\MockInterface;
+use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
     /**
      * A basic unit test example.
+     *
      * @test
+     *
      * @return void
      */
     public function list()

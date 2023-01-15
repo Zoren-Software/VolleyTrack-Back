@@ -13,6 +13,7 @@ final class NotificationQuery
     public function list($_, array $args)
     {
         $notification = new Notification();
+
         return $notification->list($args);
     }
 }

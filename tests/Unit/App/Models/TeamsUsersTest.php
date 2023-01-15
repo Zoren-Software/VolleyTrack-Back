@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\TeamsUsers;
 use App\Models\User;
-use Spatie\Activitylog\LogOptions;
 use Mockery\MockInterface;
+use Spatie\Activitylog\LogOptions;
 use Tests\TestCase;
 
 class TeamsUsersTest extends TestCase
@@ -23,8 +23,11 @@ class TeamsUsersTest extends TestCase
 
     /**
      * A basic unit test update role in relationship.
+     *
      * @dataProvider updateRoleInRelationshipProvider
+     *
      * @test
+     *
      * @return void
      */
     public function update_role_in_relationship($data)
@@ -48,7 +51,6 @@ class TeamsUsersTest extends TestCase
         } else {
             $this->assertEquals(null, $teamsUsers->role);
         }
-        
     }
 
     public function updateRoleInRelationshipProvider()
@@ -56,14 +58,14 @@ class TeamsUsersTest extends TestCase
         return [
             'updating role in teams relationship with users having permission' => [
                 'data' => [
-                    'user_relation_team_technian' => true
+                    'user_relation_team_technian' => true,
                 ],
             ],
             'updating role in teams relationship with users not having permission' => [
                 'data' => [
-                    'user_relation_team_technian' => false
+                    'user_relation_team_technian' => false,
                 ],
-            ]
+            ],
         ];
     }
 }

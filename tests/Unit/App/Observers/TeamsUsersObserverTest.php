@@ -2,15 +2,17 @@
 
 namespace Tests\Unit\App\Observers;
 
-use Tests\TestCase;
-use App\Observers\TeamsUsersObserver;
 use App\Models\TeamsUsers;
+use App\Observers\TeamsUsersObserver;
+use Tests\TestCase;
 
 class TeamsUsersObserverTest extends TestCase
 {
     /**
      * Test created method
+     *
      * @test
+     *
      * @return void
      */
     public function created()
@@ -26,7 +28,9 @@ class TeamsUsersObserverTest extends TestCase
 
     /**
      * Test updated method
+     *
      * @test
+     *
      * @return void
      */
     public function updated()

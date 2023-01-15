@@ -3,47 +3,9 @@
 namespace App\Notifications\Training;
 
 use App\Mail\NotificationTrainingMail;
-use App\Models\Training;
-use App\Models\TrainingConfig;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
 
-class TrainingNotification extends Notification implements ShouldQueue
+class TrainingNotification extends Notification
 {
-    use Queueable;
-
-    public $training;
-
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct(Training $training)
-    {
-        $this->training = $training;
-        $this->afterCommit();
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        if (
-            ($notifiable->hasRole('Técnico') && TrainingConfig::first()->notification_technician_by_email) ||
-            ($notifiable->hasRole('Jogador') && TrainingConfig::first()->notification_team_by_email)
-        ) {
-            return ['database', 'mail'];
-        }
-
-        return ['database'];
-    }
-
     /**
      * Get the mail representation of the notification.
      *

@@ -9,6 +9,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 final class TeamMutation
 {
     private $team;
+
     private $user;
 
     public function __construct(Team $team, User $user)
@@ -35,9 +36,9 @@ final class TeamMutation
             $technicians = [];
 
             foreach ($args['player_id'] as $playerId) {
-                !$this->user->find($playerId)->hasRole('Jogador')
+                ! $this->user->find($playerId)->hasRole('Jogador')
                     ? $technicians[] = $playerId
-                    : $players[] = $playerId ;
+                    : $players[] = $playerId;
             }
             $this->team->players()->syncWithPivotValues($technicians, ['role' => 'technician']);
             $this->team->players()->syncWithPivotValues($players, ['role' => 'player']);

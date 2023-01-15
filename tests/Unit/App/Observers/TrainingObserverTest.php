@@ -2,15 +2,17 @@
 
 namespace Tests\Unit\App\Observers;
 
-use Tests\TestCase;
-use App\Observers\TrainingObserver;
 use App\Models\Training;
+use App\Observers\TrainingObserver;
+use Tests\TestCase;
 
 class TrainingObserverTest extends TestCase
 {
     /**
      * Test created method
+     *
      * @test
+     *
      * @return void
      */
     public function created()
@@ -27,7 +29,9 @@ class TrainingObserverTest extends TestCase
 
     /**
      * Test updated method
+     *
      * @test
+     *
      * @return void
      */
     public function updated()

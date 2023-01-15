@@ -37,7 +37,7 @@ class TeamMutationTest extends TestCase
             $mock->shouldReceive('syncWithPivotValues')->with($data['player_id'], ['role' => 'technician']);
         });
 
-        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data, $method) {
+        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
             if ($data['id']) {
                 $mock->shouldReceive('find')
                     ->once()
@@ -54,7 +54,6 @@ class TeamMutationTest extends TestCase
                 ->with('Jogador')
                 ->once()->andReturn($data['user_relation_team_technian']);
         });
-
 
         $specificFundamentalMutation = new TeamMutation($teamMock, $userMock);
         $teamMockReturn = $specificFundamentalMutation->make(
@@ -77,7 +76,7 @@ class TeamMutationTest extends TestCase
                     'user_id' => 1,
                     'user_relation_team_technian' => true,
                     'number_return_find' => 1,
-                    'number_return_hasRole' => 0
+                    'number_return_hasRole' => 0,
                 ],
                 'method' => 'create',
             ],
@@ -89,7 +88,7 @@ class TeamMutationTest extends TestCase
                     'user_id' => 1,
                     'user_relation_team_technian' => false,
                     'number_return_find' => 1,
-                    'number_return_hasRole' => 1
+                    'number_return_hasRole' => 1,
                 ],
                 'method' => 'create',
             ],
@@ -101,7 +100,7 @@ class TeamMutationTest extends TestCase
                     'user_id' => 1,
                     'user_relation_team_technian' => true,
                     'number_return_find' => 0,
-                    'number_return_hasRole' => 0
+                    'number_return_hasRole' => 0,
                 ],
                 'method' => 'update',
             ],
@@ -113,7 +112,7 @@ class TeamMutationTest extends TestCase
                     'user_id' => 1,
                     'user_relation_team_technian' => false,
                     'number_return_find' => 0,
-                    'number_return_hasRole' => 0
+                    'number_return_hasRole' => 0,
                 ],
                 'method' => 'update',
             ],
