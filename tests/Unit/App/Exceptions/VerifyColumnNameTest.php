@@ -8,13 +8,24 @@ use Tests\TestCase;
 class VerifyColumnNameTest extends TestCase
 {
     /**
-     * A basic unit test example.
-     *
+     * A basic test method render.
+     * @test
      * @return void
      */
-    public function test_example()
+    public function render()
     {
         $exception = new VerifyColumnName();
         $this->assertIsString($exception->render());
+    }
+
+    /**
+     * A basic test method report.
+     * @test
+     * @return void
+     */
+    public function report()
+    {
+        $exception = new VerifyColumnName();
+        $this->assertNull($exception->report());
     }
 }
