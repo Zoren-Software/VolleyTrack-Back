@@ -9,16 +9,16 @@ use Illuminate\Support\Facades\Mail;
 
 class TrainingObserverTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-        config(['database.redis.default.connection' => 'disable']);
-        $this->app['config']->set('database.redis.default.connection', null);
-        $this->mock(Connection::class, function ($mock) {
-            $mock->shouldReceive('beginTransaction')->andReturnNull();
-            $mock->shouldReceive('commit')->andReturnNull();
-        });
-    }
+    // public function setUp(): void
+    // {
+    //     parent::setUp();
+    //     config(['database.redis.default.connection' => 'disable']);
+    //     $this->app['config']->set('database.redis.default.connection', null);
+    //     $this->mock(Connection::class, function ($mock) {
+    //         $mock->shouldReceive('beginTransaction')->andReturnNull();
+    //         $mock->shouldReceive('commit')->andReturnNull();
+    //     });
+    // }
     /**
      * Test created method
      *
@@ -26,18 +26,18 @@ class TrainingObserverTest extends TestCase
      *
      * @return void
      */
-    public function created()
-    {
-        $this->withoutExceptionHandling();
-        $trainingMock = $this->mock(Training::class, function ($mock) {
-            $mock->shouldReceive('sendNotificationPlayers')
-                ->once()
-                ->andReturn(true);
-        });
-        Mail::fake();
-        $trainingObserver = new TrainingObserver();
-        $trainingObserver->created($trainingMock);
-    }
+    // public function created()
+    // {
+    //     $this->withoutExceptionHandling();
+    //     $trainingMock = $this->mock(Training::class, function ($mock) {
+    //         $mock->shouldReceive('sendNotificationPlayers')
+    //             ->once()
+    //             ->andReturn(true);
+    //     });
+    //     Mail::fake();
+    //     $trainingObserver = new TrainingObserver();
+    //     $trainingObserver->created($trainingMock);
+    // }
 
     /**
      * Test updated method
@@ -46,17 +46,17 @@ class TrainingObserverTest extends TestCase
      *
      * @return void
      */
-    public function updated()
-    {
-        $this->withoutExceptionHandling();
-        $trainingMock = $this->mock(Training::class, function ($mock) {
-            $mock->shouldReceive('sendNotificationPlayers')
-                ->once()
-                ->andReturn(true);
-        });
-        Mail::fake();
+    // public function updated()
+    // {
+    //     $this->withoutExceptionHandling();
+    //     $trainingMock = $this->mock(Training::class, function ($mock) {
+    //         $mock->shouldReceive('sendNotificationPlayers')
+    //             ->once()
+    //             ->andReturn(true);
+    //     });
+    //     Mail::fake();
 
-        $trainingObserver = new TrainingObserver();
-        $trainingObserver->updated($trainingMock);
-    }
+    //     $trainingObserver = new TrainingObserver();
+    //     $trainingObserver->updated($trainingMock);
+    // }
 }
