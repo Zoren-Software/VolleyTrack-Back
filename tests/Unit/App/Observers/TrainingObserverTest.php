@@ -5,6 +5,7 @@ namespace Tests\Unit\App\Observers;
 use App\Models\Training;
 use App\Observers\TrainingObserver;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Mail;
 
 class TrainingObserverTest extends TestCase
 {
@@ -27,7 +28,7 @@ class TrainingObserverTest extends TestCase
                 ->once()
                 ->andReturn(true);
         });
-
+        Mail::fake();
         $trainingObserver = new TrainingObserver();
         $trainingObserver->created($trainingMock);
     }
@@ -46,6 +47,7 @@ class TrainingObserverTest extends TestCase
                 ->once()
                 ->andReturn(true);
         });
+        Mail::fake();
 
         $trainingObserver = new TrainingObserver();
         $trainingObserver->updated($trainingMock);
