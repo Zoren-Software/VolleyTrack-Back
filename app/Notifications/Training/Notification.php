@@ -4,6 +4,7 @@ namespace App\Notifications\Training;
 
 use App\Models\Training;
 use App\Models\TrainingConfig;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification as IlluminateNotification;
@@ -31,11 +32,14 @@ class Notification extends IlluminateNotification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via(User $notifiable, $mock = 'notMock', $notificationTechnicianByEmail = false, $notificationTeamByEmail = false)
     {
+        $notificationTechnicianByEmail = $mock == 'notMock' ? TrainingConfig::first()->notification_technician_by_email : $notificationTechnicianByEmail;
+        $notificationTeamByEmail = $mock == 'notMock' ? TrainingConfig::first()->notification_team_by_email : $notificationTeamByEmail;
+
         if (
-            ($notifiable->hasRole('Técnico') && TrainingConfig::first()->notification_technician_by_email) ||
-            ($notifiable->hasRole('Jogador') && TrainingConfig::first()->notification_team_by_email)
+            ($notifiable->hasRoleTechnician() && $notificationTechnicianByEmail) ||
+            ($notifiable->hasRolePlayer() && $notificationTeamByEmail)
         ) {
             return ['database', 'mail'];
         }
