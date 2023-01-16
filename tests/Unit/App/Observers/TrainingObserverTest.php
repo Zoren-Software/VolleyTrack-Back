@@ -28,6 +28,7 @@ class TrainingObserverTest extends TestCase
      */
     public function created()
     {
+        $this->withoutExceptionHandling();
         $trainingMock = $this->mock(Training::class, function ($mock) {
             $mock->shouldReceive('sendNotificationPlayers')
                 ->once()
@@ -47,6 +48,7 @@ class TrainingObserverTest extends TestCase
      */
     public function updated()
     {
+        $this->withoutExceptionHandling();
         $trainingMock = $this->mock(Training::class, function ($mock) {
             $mock->shouldReceive('sendNotificationPlayers')
                 ->once()
