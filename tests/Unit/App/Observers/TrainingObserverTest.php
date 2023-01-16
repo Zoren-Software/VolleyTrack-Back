@@ -13,6 +13,7 @@ class TrainingObserverTest extends TestCase
     {
         parent::setUp();
         config(['database.redis.default.connection' => 'disable']);
+        $this->app['config']->set('database.redis.default.connection', null);
     }
     /**
      * Test created method
