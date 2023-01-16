@@ -24,7 +24,8 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
 
     /**
      * Register the Horizon gate.
-     *
+     * ignorar nos testes testes
+     * @codeCoverageIgnore
      * This gate determines who can access Horizon in non-local environments.
      */
     protected function gate(): void
