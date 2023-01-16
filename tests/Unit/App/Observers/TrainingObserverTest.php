@@ -8,6 +8,11 @@ use Tests\TestCase;
 
 class TrainingObserverTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        config(['database.redis.default.connection' => 'disable']);
+    }
     /**
      * Test created method
      *
