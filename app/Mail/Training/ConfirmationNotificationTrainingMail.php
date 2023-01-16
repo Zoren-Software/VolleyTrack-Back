@@ -1,35 +1,12 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Training;
 
-use App\Models\Training;
-use App\Models\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
-class ConfirmationNotificationTrainingMail extends Mailable
+class ConfirmationNotificationTrainingMail extends Mail
 {
-    use Queueable;
-    use SerializesModels;
-
-    public $training;
-
-    public $user;
-
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(Training $training, User $user)
-    {
-        $this->training = $training;
-        $this->user = $user;
-    }
-
     /**
      * Get the message envelope.
      *
@@ -55,15 +32,5 @@ class ConfirmationNotificationTrainingMail extends Mailable
         return new Content(
             markdown: 'emails.training.confirmation-notification',
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array
-     */
-    public function attachments()
-    {
-        return [];
     }
 }

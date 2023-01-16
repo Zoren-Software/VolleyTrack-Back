@@ -29,12 +29,12 @@ Route::get('/test-notification-training-mail', function () {
     $training = App\Models\Training::find(1);
     $user = App\Models\User::find(1);
 
-    return new App\Mail\NotificationTrainingMail($training, $user);
+    return new App\Mail\Training\NotificationTrainingMail($training, $user);
 });
 
 Route::get('/test-confirmation-notification-training-mail', function () {
     $training = App\Models\Training::find(1);
     $user = App\Models\User::find(3);
 
-    return new App\Mail\ConfirmationNotificationTrainingMail($training, $user);
+    return new App\Mail\Training\ConfirmationNotificationTrainingMail($training, $user);
 });

@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Training;
 
-use App\Mail\ConfirmationNotificationTrainingMail;
+use App\Mail\Training\ConfirmationNotificationTrainingMail;
 
 class NotificationConfirmationTrainingNotification extends Notification
 {
@@ -10,7 +10,7 @@ class NotificationConfirmationTrainingNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \App\Mail\ConfirmationNotificationTrainingMail
+     * @return \App\Mail\Training\ConfirmationNotificationTrainingMail
      */
     public function toMail($notifiable)
     {
