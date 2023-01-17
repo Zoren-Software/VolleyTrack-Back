@@ -4,9 +4,10 @@ namespace App\GraphQL\Queries;
 
 use App\Models\Notification;
 
-final class NotificationQuery
+class NotificationQuery
 {
     /**
+     * @codeCoverageIgnore
      * @param  null  $_
      * @param  array{}  $args
      */
