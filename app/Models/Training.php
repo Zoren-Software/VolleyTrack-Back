@@ -108,28 +108,36 @@ class Training extends Model
         ];
     }
 
-    public function sendNotificationPlayers()
+    /**
+     * @codeCoverageIgnore
+     * @param null $daysNotification
+     *
+     * @return void
+     */
+    public function sendNotificationPlayers(int|null $daysNotification = null)
     {
-        $this->team->players()->each(function ($player) {
+        $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
+
+        $this->team->players()->each(function ($player) use ($daysNotification) {
             $format = 'd/m/Y';
             if (
                 $this->rangeDateNotification(
                     $this->date_start->format($format),
                     now()->format($format),
-                    now()->addDays(TrainingConfig::first()->days_notification)->format($format)
+                    now()->addDays($daysNotification)->format($format)
                 )
             ) {
                 $player->notify(new TrainingNotification($this));
             }
         });
 
-        $this->team->technicians()->each(function ($technician) {
+        $this->team->technicians()->each(function ($technician) use ($daysNotification) {
             $format = 'd/m/Y';
             if (
                 $this->rangeDateNotification(
                     $this->date_start->format($format),
                     now()->format($format),
-                    now()->addDays(TrainingConfig::first()->days_notification)->format($format)
+                    now()->addDays($daysNotification)->format($format)
                 )
             ) {
                 $technician->notify(new NotificationConfirmationTrainingNotification($this));
