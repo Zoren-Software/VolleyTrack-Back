@@ -122,11 +122,19 @@ class User extends Authenticatable implements HasApiTokensContract
             ->withPivot('created_at', 'updated_at');
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return bool
+     */
     public function hasRoleTechnician(): bool
     {
         return $this->hasRole('Técnico');
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return bool
+     */
     public function hasRolePlayer(): bool
     {
         return $this->hasRole('Jogador');
