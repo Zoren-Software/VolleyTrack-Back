@@ -15,12 +15,17 @@ class NotificationTest extends TestCase
      * @dataProvider dataProvider
      * @return void
      */
-    public function via($notificationTechnicianByEmail, $notificationTeamByEmail, $hasRoleTechnician, $hasRolePlayer, $expected)
-    {
+    public function via(
+        $notificationTechnicianByEmail,
+        $notificationTeamByEmail,
+        $hasRoleTechnician,
+        $hasRolePlayer,
+        $expected
+    ) {
         $userMock = $this->createMock(User::class);
         $userMock->method('hasRoleTechnician')->willReturn($hasRoleTechnician);
         $userMock->method('hasRolePlayer')->willReturn($hasRolePlayer);
-        
+
         $trainingMock = $this->createMock(Training::class);
         $notification = new Notification($trainingMock);
         $via = $notification->via($userMock, 'mock', $notificationTechnicianByEmail, $notificationTeamByEmail);
