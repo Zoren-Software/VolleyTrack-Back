@@ -17,6 +17,7 @@ return new class() extends Migration
             $table->id();
             $table->foreignId('team_id')->constrained('teams');
             $table->foreignId('user_id')->constrained('users');
+            $table->enum('role', ['player', 'technician']);
 
             $table->timestamps();
             $table->softDeletes();

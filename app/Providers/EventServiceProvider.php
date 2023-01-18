@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\TeamsUsers;
 use App\Models\Training;
+use App\Observers\TeamsUsersObserver;
 use App\Observers\TrainingObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -30,6 +32,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Training::observe(TrainingObserver::class);
+        TeamsUsers::observe(TeamsUsersObserver::class);
     }
 
     /**

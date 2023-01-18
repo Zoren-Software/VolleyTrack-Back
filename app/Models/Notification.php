@@ -9,16 +9,16 @@ class Notification extends Model
 {
     use HasFactory;
 
-    public static function list(array $args)
+    public function list(array $args)
     {
-        return Notification::userLogged()
+        return $this->userLogged()
             ->filterRead($args['read'] ?? false)
             ->orderBy('created_at', 'desc');
     }
 
     public function scopeUserLogged($query)
     {
-        return $query->where('notifiable_id', auth()->user()->id);
+        return $query->where('notifiable_id', auth()->user()->id ?? null);
     }
 
     public function scopeFilterRead($query, $read)

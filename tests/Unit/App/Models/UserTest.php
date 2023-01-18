@@ -14,9 +14,10 @@ class UserTest extends TestCase
     /**
      * A basic unit test make password.
      *
+     * @test
      * @return void
      */
-    public function test_make_password()
+    public function makePassword()
     {
         $password = 'password';
         $user = new User();
@@ -27,9 +28,10 @@ class UserTest extends TestCase
     /**
      * A basic unit test relation positions.
      *
+     * @test
      * @return void
      */
-    public function test_positions()
+    public function positions()
     {
         $user = new User();
         $this->assertInstanceOf(BelongsToMany::class, $user->positions());
@@ -39,10 +41,10 @@ class UserTest extends TestCase
      * A basic unit test relation positions.
      *
      * @dataProvider hasPermissionsViaRolesDataProvider
-     *
+     * @test
      * @return void
      */
-    public function test_has_permissions_via_roles($namePermission, $permissions, $expected)
+    public function hasPermissionsViaRoles($namePermission, $permissions, $expected)
     {
         $user = new User();
         $this->assertEquals($expected, $user->hasPermissionsViaRoles($namePermission, $permissions));
@@ -82,9 +84,10 @@ class UserTest extends TestCase
     /**
      * A basic unit test hasPermissionRole.
      *
+     * @test
      * @return void
      */
-    public function test_has_permission_role()
+    public function hasPermissionRole()
     {
         $userMock = $this->createMock(User::class);
         $permissionMock = $this->createMock(Permission::class);
@@ -103,9 +106,10 @@ class UserTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
         $user = new User();
         $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
@@ -114,9 +118,10 @@ class UserTest extends TestCase
     /**
      * A basic unit test relation teams.
      *
+     * @test
      * @return void
      */
-    public function test_teams()
+    public function teams()
     {
         $user = new User();
         $this->assertInstanceOf(BelongsToMany::class, $user->teams());

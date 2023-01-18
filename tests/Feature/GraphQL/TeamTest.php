@@ -162,7 +162,7 @@ class TeamTest extends TestCase
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
-                    'playerId' => [1, 2, 3],
+                    'playerId' => [1, 2, 3, 4, 5],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,

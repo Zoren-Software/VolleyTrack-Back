@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use App\Notifications\TrainingNotification;
+use App\Notifications\Training\NotificationConfirmationTrainingNotification;
+use App\Notifications\Training\TrainingNotification;
 use App\Rules\RelationshipSpecificFundamental;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,6 +32,8 @@ class Training extends Model
         'date_start',
         'date_end',
     ];
+
+    private $format = 'd/m/Y';
 
     public function user()
     {
@@ -106,24 +110,47 @@ class Training extends Model
         ];
     }
 
-    public function sendNotificationPlayers()
+    /**
+     * @codeCoverageIgnore
+     *
+     * @param  null  $daysNotification
+     * @return void
+     */
+    public function sendNotificationPlayers(int|null $daysNotification = null)
     {
-        $this->team->players()->each(function ($player) {
-            $format = 'd/m/Y';
+        $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
+
+        $this->team->players()->each(function ($player) use ($daysNotification) {
             if (
                 $this->rangeDateNotification(
-                    $this->date_start->format($format),
-                    now()->format($format),
-                    now()->addDays(TrainingConfig::first()->days_notification)->format($format)
+                    $this->date_start->format($this->format),
+                    now()->format($this->format),
+                    now()->addDays($daysNotification)->format($this->format)
                 )
             ) {
                 $player->notify(new TrainingNotification($this));
+            }
+        });
+
+        $this->team->technicians()->each(function ($technician) use ($daysNotification) {
+            if (
+                $this->rangeDateNotification(
+                    $this->date_start->format($this->format),
+                    now()->format($this->format),
+                    now()->addDays($daysNotification)->format($this->format)
+                )
+            ) {
+                $technician->notify(new NotificationConfirmationTrainingNotification($this));
             }
         });
     }
 
     public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit)
     {
+        $startDate = Carbon::createFromFormat($this->format, $startDate);
+        $dateToday = Carbon::createFromFormat($this->format, $dateToday);
+        $dateLimit = Carbon::createFromFormat($this->format, $dateLimit);
+
         return $startDate >= $dateToday && $startDate <= $dateLimit;
     }
 }

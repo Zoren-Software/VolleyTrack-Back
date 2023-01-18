@@ -9,6 +9,9 @@ class Kernel extends ConsoleKernel
 {
     /**
      * Define the application's command schedule.
+     * NOTE - Ignorado nos testes unitários por ser um método programada agendamentos
+     *
+     * @codeCoverageIgnore
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void

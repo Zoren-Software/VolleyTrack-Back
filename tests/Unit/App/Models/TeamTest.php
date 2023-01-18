@@ -42,4 +42,15 @@ class TeamTest extends TestCase
         $team = new Team();
         $this->assertInstanceOf(BelongsToMany::class, $team->players());
     }
+
+    /**
+     * A basic unit test relation technicians.
+     *
+     * @return void
+     */
+    public function test_technicians()
+    {
+        $team = new Team();
+        $this->assertInstanceOf(BelongsToMany::class, $team->technicians());
+    }
 }

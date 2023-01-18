@@ -1,23 +1,20 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Training;
 
 use App\Models\Training;
 use App\Models\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
-class NotificationTrainingMail extends Mailable
+class ConfirmationNotificationTrainingMail extends Mail
 {
-    use Queueable;
-    use SerializesModels;
-
-    public $training;
-
-    public $user;
+    /**
+     * The title of the mail.
+     *
+     * @var string
+     */
+    public $title;
 
     /**
      * Create a new message instance.
@@ -26,8 +23,9 @@ class NotificationTrainingMail extends Mailable
      */
     public function __construct(Training $training, User $user)
     {
-        $this->training = $training;
-        $this->user = $user;
+        parent::__construct($training, $user);
+        $this->title = "$training->name - {$training->date_start->format('d/m/Y')} das " .
+            "{$training->date_start->format('H:m')} ás {$training->date_end->format('H:m')}";
     }
 
     /**
@@ -39,9 +37,8 @@ class NotificationTrainingMail extends Mailable
     {
         return new Envelope(
             subject: env('APP_NAME') .
-            ' - ' . trans('TrainingNotification.title_mail') .
+            ' - ' . trans('TrainingNotification.title_mail_confirmation') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
-            ' ' . trans('TrainingNotification.title_mail') . ' ' .
             $this->training->date_end->format('H:m')
         );
     }
@@ -54,17 +51,7 @@ class NotificationTrainingMail extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'emails.training.notification',
+            markdown: 'emails.training.confirmation-notification',
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array
-     */
-    public function attachments()
-    {
-        return [];
     }
 }

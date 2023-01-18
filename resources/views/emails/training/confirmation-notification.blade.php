@@ -1,17 +1,31 @@
 <x-mail::message>
 
-# {{ trans('NotificationMail.title') }}
+# {{ trans('NotificationMail.title_confirmation') }}
 
 {{ trans('NotificationMail.hello') }}, {{$user->name}}!
 
 ## {{$title}}
+
+<br/>
 
 ## {{ trans('NotificationMail.description_training') }}:
 {{ $training->description }}
 
 <br/>
 
-{{ trans('NotificationMail.message_default') }}
+## {{ trans('NotificationMail.list_of_training_players') }}:
+
+@foreach ($training->team->players as $player)
+    - {{ $player->name }}
+
+@endforeach
+<br/>
+
+___
+<br/>
+<br/>
+
+{{ trans('NotificationMail.message_default_technician') }}
 
 {{ trans('NotificationMail.message_please') }}
 
