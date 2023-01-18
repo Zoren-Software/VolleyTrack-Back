@@ -18,7 +18,7 @@ class NotificationFactory extends Factory
     {
         return [
             'id' => $this->faker->uuid,
-            'type' => 'App\Notifications\TrainingNotification',
+            'type' => 'App\Notifications\Training\TrainingNotification',
             'notifiable_type' => 'App\Models\User',
             'notifiable_id' => 1,
             'data' => '[]',

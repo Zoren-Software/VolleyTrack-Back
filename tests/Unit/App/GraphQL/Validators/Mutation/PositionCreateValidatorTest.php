@@ -19,4 +19,17 @@ class PositionCreateValidatorTest extends TestCase
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
     }
+
+    /**
+     * A basic unit test rules.
+     *
+     * @return void
+     */
+    public function test_rules()
+    {
+        $validator = new PositionCreateValidator();
+
+        $this->assertIsArray($validator->rules());
+        $this->assertNotEmpty($validator->rules());
+    }
 }

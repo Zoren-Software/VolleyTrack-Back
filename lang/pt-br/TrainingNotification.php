@@ -14,5 +14,6 @@ return [
     */
 
     'title_mail' => 'Notificação de Treino',
+    'title_mail_confirmation' => 'Confirmação de Notificações de Treino',
     'preposition_hours' => 'ás',
 ];

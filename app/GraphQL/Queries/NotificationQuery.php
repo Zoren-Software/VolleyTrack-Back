@@ -4,14 +4,18 @@ namespace App\GraphQL\Queries;
 
 use App\Models\Notification;
 
-final class NotificationQuery
+class NotificationQuery
 {
     /**
+     * @codeCoverageIgnore
+     *
      * @param  null  $_
      * @param  array{}  $args
      */
     public function list($_, array $args)
     {
-        return Notification::list($args);
+        $notification = new Notification();
+
+        return $notification->list($args);
     }
 }

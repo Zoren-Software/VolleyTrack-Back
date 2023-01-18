@@ -3,15 +3,19 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Team;
+use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class TeamMutation
 {
     private $team;
 
-    public function __construct(Team $team)
+    private $user;
+
+    public function __construct(Team $team, User $user)
     {
         $this->team = $team;
+        $this->user = $user;
     }
 
     /**
@@ -27,8 +31,17 @@ final class TeamMutation
             $this->team = $this->team->create($args);
         }
 
-        if (isset($args['player_id'])) {
-            $this->team->players()->syncWithoutDetaching($args['player_id']);
+        if (isset($args['player_id']) && count($args['player_id']) > 0) {
+            $players = [];
+            $technicians = [];
+
+            foreach ($args['player_id'] as $playerId) {
+                ! $this->user->find($playerId)->hasRole('Jogador')
+                    ? $technicians[] = $playerId
+                    : $players[] = $playerId;
+            }
+            $this->team->players()->syncWithPivotValues($technicians, ['role' => 'technician']);
+            $this->team->players()->syncWithPivotValues($players, ['role' => 'player']);
         }
 
         return $this->team;
