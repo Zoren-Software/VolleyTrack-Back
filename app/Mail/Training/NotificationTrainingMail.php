@@ -2,11 +2,32 @@
 
 namespace App\Mail\Training;
 
+use App\Models\Training;
+use App\Models\User;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
 class NotificationTrainingMail extends Mail
 {
+    /**
+     * The title of the mail.
+     *
+     * @var string
+     */
+    public $title;
+
+    /**
+     * Create a new message instance.
+     *
+     * @return void
+     */
+    public function __construct(Training $training, User $user)
+    {
+        parent::__construct($training, $user);
+        $this->title = "{$training->name} - {$training->date_start->format('d/m/Y')} das " .
+            "{$training->date_start->format('H:m')} ás {$training->date_end->format('H:m')}";
+    }
+
     /**
      * Get the message envelope.
      *

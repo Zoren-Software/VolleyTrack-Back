@@ -4,7 +4,7 @@
 
 {{ trans('NotificationMail.hello') }}, {{$user->name}}!
 
-## {{ $training->name }} - {{ $training->date_start->format('d/m/Y') }} das {{ $training->date_start->format('H:m') }} ás {{ $training->date_end->format('H:m') }}
+## {{$title}}
 
 <br/>
 
