@@ -32,10 +32,21 @@ class Notification extends IlluminateNotification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via(User $notifiable, $mock = 'notMock', $notificationTechnicianByEmail = false, $notificationTeamByEmail = false)
-    {
-        $notificationTechnicianByEmail = $mock == 'notMock' ? TrainingConfig::first()->notification_technician_by_email : $notificationTechnicianByEmail;
-        $notificationTeamByEmail = $mock == 'notMock' ? TrainingConfig::first()->notification_team_by_email : $notificationTeamByEmail;
+    public function via(
+        User $notifiable,
+        $mock = 'notMock',
+        $notificationTechnicianByEmail = false,
+        $notificationTeamByEmail = false
+    ) {
+        $notificationTechnicianByEmail =
+            $mock == 'notMock'
+                ? TrainingConfig::first()->notification_technician_by_email
+                : $notificationTechnicianByEmail;
+
+        $notificationTeamByEmail =
+            $mock == 'notMock'
+            ? TrainingConfig::first()->notification_team_by_email
+            : $notificationTeamByEmail;
 
         if (
             ($notifiable->hasRoleTechnician() && $notificationTechnicianByEmail) ||
