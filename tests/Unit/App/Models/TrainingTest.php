@@ -87,14 +87,14 @@ class TrainingTest extends TestCase
     {
         return [
             'notification if training is on the day' => [
-                'startDate' => '15/01/2023',
-                'dateToday' => '15/01/2023',
-                'dateLimit' => '15/01/2023',
+                'startDate' => '13/01/2023',
+                'dateToday' => '13/01/2023',
+                'dateLimit' => '13/01/2023',
                 'expected' => true,
             ],
             'out-of-expected date range' => [
                 'startDate' => '17/01/2023',
-                'dateToday' => '15/01/2023',
+                'dateToday' => '16/01/2023',
                 'dateLimit' => '14/01/2023',
                 'expected' => false,
             ],
