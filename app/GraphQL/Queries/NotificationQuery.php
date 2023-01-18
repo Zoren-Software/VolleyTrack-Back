@@ -8,6 +8,7 @@ class NotificationQuery
 {
     /**
      * @codeCoverageIgnore
+     *
      * @param  null  $_
      * @param  array{}  $args
      */

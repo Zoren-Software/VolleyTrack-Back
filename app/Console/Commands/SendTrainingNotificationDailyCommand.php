@@ -26,6 +26,7 @@ class SendTrainingNotificationDailyCommand extends Command
      * Execute the console command.
      *
      * @codeCoverageIgnore
+     *
      * @return void
      */
     public function handle()

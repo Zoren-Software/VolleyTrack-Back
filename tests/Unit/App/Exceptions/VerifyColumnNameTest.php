@@ -9,7 +9,9 @@ class VerifyColumnNameTest extends TestCase
 {
     /**
      * A basic test method render.
+     *
      * @test
+     *
      * @return void
      */
     public function render()
@@ -20,7 +22,9 @@ class VerifyColumnNameTest extends TestCase
 
     /**
      * A basic test method report.
+     *
      * @test
+     *
      * @return void
      */
     public function report()

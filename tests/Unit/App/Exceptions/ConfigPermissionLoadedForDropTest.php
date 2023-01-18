@@ -9,7 +9,9 @@ class ConfigPermissionLoadedForDropTest extends TestCase
 {
     /**
      * A basic unit test example.
+     *
      * @test
+     *
      * @return void
      */
     public function example()
@@ -20,7 +22,9 @@ class ConfigPermissionLoadedForDropTest extends TestCase
 
     /**
      * A basic test method report.
+     *
      * @test
+     *
      * @return void
      */
     public function report()

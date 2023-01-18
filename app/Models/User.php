@@ -124,6 +124,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @codeCoverageIgnore
+     *
      * @return bool
      */
     public function hasRoleTechnician(): bool
@@ -133,6 +134,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @codeCoverageIgnore
+     *
      * @return bool
      */
     public function hasRolePlayer(): bool

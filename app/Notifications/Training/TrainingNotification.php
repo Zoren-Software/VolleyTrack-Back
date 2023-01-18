@@ -10,6 +10,7 @@ class TrainingNotification extends Notification
      * Get the mail representation of the notification.
      *
      * @codeCoverageIgnore
+     *
      * @param  mixed  $notifiable
      * @return \App\Mail\Training\NotificationTrainingMail
      */
@@ -23,6 +24,7 @@ class TrainingNotification extends Notification
      * Get the array representation of the notification.
      *
      * @codeCoverageIgnore
+     *
      * @param  mixed  $notifiable
      * @return array
      */
