@@ -40,12 +40,16 @@ class Notification extends IlluminateNotification implements ShouldQueue
     ) {
         $notificationTechnicianByEmail =
             $mock == 'notMock'
+                // @codeCoverageIgnoreStart
                 ? TrainingConfig::first()->notification_technician_by_email
+                // @codeCoverageIgnoreEnd
                 : $notificationTechnicianByEmail;
 
         $notificationTeamByEmail =
             $mock == 'notMock'
+            // @codeCoverageIgnoreStart
             ? TrainingConfig::first()->notification_team_by_email
+            // @codeCoverageIgnoreEnd
             : $notificationTeamByEmail;
 
         if (

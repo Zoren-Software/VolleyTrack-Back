@@ -27,9 +27,8 @@ class ConfirmationNotificationTrainingMailTest extends TestCase
                 // retornar a data de início do treino em formato Carbon
                 \Carbon\Carbon::parse('2020-01-01 00:00:00')
             );
-
         });
-        
+
         $userMock = $this->createMock(User::class);
         $mail = new ConfirmationNotificationTrainingMail($trainingMock, $userMock);
         $envelope = $mail->envelope();
@@ -44,9 +43,8 @@ class ConfirmationNotificationTrainingMailTest extends TestCase
      */
     public function content()
     {
-        $trainingMock = $this->mock(Training::class, function ($mock) {
-        });
-        
+        $trainingMock = $this->createMock(Training::class);
+
         $userMock = $this->createMock(User::class);
         $mail = new ConfirmationNotificationTrainingMail($trainingMock, $userMock);
         $content = $mail->content();

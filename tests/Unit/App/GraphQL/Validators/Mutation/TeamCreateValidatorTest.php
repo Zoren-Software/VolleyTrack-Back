@@ -33,5 +33,5 @@ class TeamCreateValidatorTest extends TestCase
 
         $this->assertIsArray($validator->rules());
         $this->assertNotEmpty($validator->rules());
-    }   
+    }
 }
