@@ -26,10 +26,10 @@ class NotificationTest extends TestCase
 
     /**
      * A basic feature test example.
-     *
+     * @test
      * @return void
      */
-    public function test_notification_list()
+    public function notificationList()
     {
         Notification::factory()->make()->save();
 

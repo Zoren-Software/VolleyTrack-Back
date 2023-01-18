@@ -29,10 +29,10 @@ class SpecificFundamentalTest extends TestCase
      * Listagem de todos os fundamentos especificos.
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_specific_fundamentals_list()
+    public function specificFundamentalsList()
     {
         SpecificFundamental::factory()->make()->save();
 
@@ -63,12 +63,12 @@ class SpecificFundamentalTest extends TestCase
 
     /**
      * Listagem de um fundamento especifico.
-     *
+     * @test
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_specific_fundamental_info()
+    public function specificFundamentalInfo()
     {
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
@@ -92,12 +92,12 @@ class SpecificFundamentalTest extends TestCase
      * Método de criação de um fundamento especifico.
      *
      * @dataProvider specificFundamentalCreateProvider
-     *
+     * @test
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
+    public function specificFundamentalCreate($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
         $this->checkPermission($permission, $this->permission, 'create-specific-fundamental');
 
@@ -228,12 +228,12 @@ class SpecificFundamentalTest extends TestCase
      * Método de edição de um fundamento especifico.
      *
      * @dataProvider specificFundamentalEditProvider
-     *
+     * @test
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_specific_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
+    public function specificFundamentalEdit($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
     {
         $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
 
@@ -373,12 +373,12 @@ class SpecificFundamentalTest extends TestCase
      * Método de exclusão de um time.
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @dataProvider specificFundamentalDeleteProvider
      *
      * @return void
      */
-    public function test_specific_fundamental_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function specificFundamentalDelete($data, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->login = true;
 

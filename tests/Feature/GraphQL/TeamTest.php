@@ -30,10 +30,11 @@ class TeamTest extends TestCase
      * Listagem de todos os times.
      *
      * @author Maicon Cerutti
+     * @test
      *
      * @return void
      */
-    public function test_teams_list()
+    public function teamsList()
     {
         Team::factory()->make()->save();
 
@@ -66,10 +67,11 @@ class TeamTest extends TestCase
      * Listagem de um time
      *
      * @author Maicon Cerutti
+     * @test
      *
      * @return void
      */
-    public function test_team_info()
+    public function teamInfo()
     {
         $team = Team::factory()->make();
         $team->save();
@@ -93,12 +95,13 @@ class TeamTest extends TestCase
      * Método de criação de um time.
      *
      * @dataProvider teamCreateProvider
+     * @test
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function teamCreate($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->checkPermission($permission, $this->permission, 'create-team');
 
@@ -222,12 +225,12 @@ class TeamTest extends TestCase
      * Método de edição de um time.
      *
      * @dataProvider teamEditProvider
-     *
+     * @test
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function teamEdit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->checkPermission($permission, $this->permission, 'edit-team');
 
@@ -357,10 +360,11 @@ class TeamTest extends TestCase
      * @author Maicon Cerutti
      *
      * @dataProvider teamDeleteProvider
+     * @test
      *
      * @return void
      */
-    public function test_team_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function teamDelete($data, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->login = true;
 

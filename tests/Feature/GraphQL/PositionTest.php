@@ -28,10 +28,10 @@ class PositionTest extends TestCase
      * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_positions_list()
+    public function positionsList()
     {
         Position::factory()->make()->save();
 
@@ -65,9 +65,10 @@ class PositionTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
      * @return void
      */
-    public function test_position_info()
+    public function positionInfo()
     {
         $position = Position::factory()->make();
         $position->save();
@@ -93,10 +94,11 @@ class PositionTest extends TestCase
      * @dataProvider positionCreateProvider
      *
      * @author Maicon Cerutti
+     * @test
      *
      * @return void
      */
-    public function test_position_create($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function positionCreate($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->checkPermission($permission, $this->permission, 'create-position');
 
@@ -200,12 +202,12 @@ class PositionTest extends TestCase
      * Método de edição de um fundamento.
      *
      * @dataProvider positionEditProvider
-     *
+     * @test
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_position_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function positionEdit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->checkPermission($permission, $this->permission, 'edit-position');
 
@@ -318,12 +320,12 @@ class PositionTest extends TestCase
      * Método de exclusão de uma posição.
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @dataProvider positionDeleteProvider
      *
      * @return void
      */
-    public function test_position_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function positionDelete($data, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->login = true;
 
