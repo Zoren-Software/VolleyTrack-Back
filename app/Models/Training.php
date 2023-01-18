@@ -33,6 +33,8 @@ class Training extends Model
         'date_end',
     ];
 
+    private $format = 'd/m/Y';
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -119,12 +121,11 @@ class Training extends Model
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
 
         $this->team->players()->each(function ($player) use ($daysNotification) {
-            $format = 'd/m/Y';
             if (
                 $this->rangeDateNotification(
-                    $this->date_start->format($format),
-                    now()->format($format),
-                    now()->addDays($daysNotification)->format($format)
+                    $this->date_start->format($this->format),
+                    now()->format($this->format),
+                    now()->addDays($daysNotification)->format($this->format)
                 )
             ) {
                 $player->notify(new TrainingNotification($this));
@@ -132,12 +133,11 @@ class Training extends Model
         });
 
         $this->team->technicians()->each(function ($technician) use ($daysNotification) {
-            $format = 'd/m/Y';
             if (
                 $this->rangeDateNotification(
-                    $this->date_start->format($format),
-                    now()->format($format),
-                    now()->addDays($daysNotification)->format($format)
+                    $this->date_start->format($this->format),
+                    now()->format($this->format),
+                    now()->addDays($daysNotification)->format($this->format)
                 )
             ) {
                 $technician->notify(new NotificationConfirmationTrainingNotification($this));
@@ -147,9 +147,9 @@ class Training extends Model
 
     public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit)
     {
-        $startDate = Carbon::createFromFormat('d/m/Y', $startDate);
-        $dateToday = Carbon::createFromFormat('d/m/Y', $dateToday);
-        $dateLimit = Carbon::createFromFormat('d/m/Y', $dateLimit);
+        $startDate = Carbon::createFromFormat($this->format, $startDate);
+        $dateToday = Carbon::createFromFormat($this->format, $dateToday);
+        $dateLimit = Carbon::createFromFormat($this->format, $dateLimit);
 
         return $startDate >= $dateToday && $startDate <= $dateLimit;
     }
