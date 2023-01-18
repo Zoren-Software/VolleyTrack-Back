@@ -85,11 +85,13 @@ class TrainingTest extends TestCase
 
     public function rangeDateNotificationProvider()
     {
+        $sameDate = '13/01/2023';
+
         return [
             'notification if training is on the day' => [
-                'startDate' => '13/01/2023',
-                'dateToday' => '13/01/2023',
-                'dateLimit' => '13/01/2023',
+                'startDate' => $sameDate,
+                'dateToday' => $sameDate,
+                'dateLimit' => $sameDate,
                 'expected' => true,
             ],
             'out-of-expected date range' => [
