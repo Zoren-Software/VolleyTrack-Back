@@ -11,6 +11,8 @@ use Illuminate\Mail\Mailables\Content;
 
 class ConfirmationNotificationTrainingMailTest extends TestCase
 {
+    public $dateStart = '2020-01-01 00:00:00';
+
     /**
      * A method to test the envelope.
      * @test
@@ -20,10 +22,10 @@ class ConfirmationNotificationTrainingMailTest extends TestCase
     {
         $trainingMock = $this->mock(Training::class, function ($mock) {
             $mock->shouldReceive('getAttribute')->with('date_start')->andReturn(
-                \Carbon\Carbon::parse('2020-01-01 00:00:00')
+                \Carbon\Carbon::parse($this->dateStart)
             );
             $mock->shouldReceive('getAttribute')->with('date_end')->andReturn(
-                \Carbon\Carbon::parse('2020-01-01 00:00:00')
+                \Carbon\Carbon::parse($this->dateStart)
             );
             $mock->shouldReceive('getAttribute')->with('name')->andReturn(
                 'Test name'
@@ -46,10 +48,10 @@ class ConfirmationNotificationTrainingMailTest extends TestCase
     {
         $trainingMock = $this->mock(Training::class, function ($mock) {
             $mock->shouldReceive('getAttribute')->with('date_start')->andReturn(
-                \Carbon\Carbon::parse('2020-01-01 00:00:00')
+                \Carbon\Carbon::parse($this->dateStart)
             );
             $mock->shouldReceive('getAttribute')->with('date_end')->andReturn(
-                \Carbon\Carbon::parse('2020-01-01 00:00:00')
+                \Carbon\Carbon::parse($this->dateStart)
             );
             $mock->shouldReceive('getAttribute')->with('name')->andReturn(
                 'Test name'
