@@ -12,10 +12,10 @@ class UserPolicyTest extends TestCase
      * A basic unit test create.
      *
      * @dataProvider permissionProvider
-     *
+     * @test
      * @return void
      */
-    public function test_create(bool $expected): void
+    public function create(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -43,10 +43,10 @@ class UserPolicyTest extends TestCase
      * A basic unit test edit.
      *
      * @dataProvider permissionProvider
-     *
+     * @test
      * @return void
      */
-    public function test_edit(bool $expected): void
+    public function edit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -62,10 +62,10 @@ class UserPolicyTest extends TestCase
      * A basic unit test delete.
      *
      * @dataProvider permissionProvider
-     *
+     * @test
      * @return void
      */
-    public function test_delete(bool $expected): void
+    public function deleteUserPolicy(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())

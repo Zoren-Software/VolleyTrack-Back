@@ -10,10 +10,10 @@ class FundamentalEditValidatorTest extends TestCase
 {
     /**
      * A basic unit test messages.
-     *
+     * @test
      * @return void
      */
-    public function test_messages()
+    public function messages()
     {
         $validator = new FundamentalEditValidator();
 
@@ -23,10 +23,10 @@ class FundamentalEditValidatorTest extends TestCase
 
     /**
      * A basic unit test rules.
-     *
+     * @test
      * @return void
      */
-    public function test_rules()
+    public function rules()
     {
         $args = new ArgumentSet();
         $args->toArray('id');

@@ -11,11 +11,12 @@ class FundamentalPolicyTest extends TestCase
     /**
      * A basic unit test create.
      *
+     * @test
      * @dataProvider permissionProvider
      *
      * @return void
      */
-    public function test_create(bool $expected): void
+    public function create(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -30,11 +31,12 @@ class FundamentalPolicyTest extends TestCase
     /**
      * A basic unit test edit.
      *
+     * @test
      * @dataProvider permissionProvider
      *
      * @return void
      */
-    public function test_edit(bool $expected): void
+    public function edit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -53,7 +55,7 @@ class FundamentalPolicyTest extends TestCase
      *
      * @return void
      */
-    public function test_delete(bool $expected): void
+    public function deleteFundamentalPolicy(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())

@@ -29,10 +29,10 @@ class TrainingConfigTest extends TestCase
      * Listagem de configurações de treino.
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_training_config_info()
+    public function trainingConfigInfo()
     {
         $this->graphQL(
             'trainingConfig',
@@ -55,10 +55,10 @@ class TrainingConfigTest extends TestCase
      * @dataProvider ConfigEditProvider
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_training_config_edit(
+    public function trainingConfigEdit(
         $parameters,
         $typeMessageError,
         $expectedMessage,

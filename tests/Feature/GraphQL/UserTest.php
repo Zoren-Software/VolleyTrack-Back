@@ -30,10 +30,10 @@ class UserTest extends TestCase
      * Listagem de todos os usuários.
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_users_list()
+    public function usersList()
     {
         $this->login = true;
 
@@ -70,10 +70,10 @@ class UserTest extends TestCase
      * Listagem de um usuário
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_user_info()
+    public function userInfo()
     {
         $this->login = true;
 
@@ -103,10 +103,10 @@ class UserTest extends TestCase
      * @dataProvider userCreateProvider
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_user_create($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function userCreate($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->login = true;
 
@@ -356,10 +356,11 @@ class UserTest extends TestCase
      * @dataProvider userEditProvider
      *
      * @author Maicon Cerutti
+     * @test
      *
      * @return void
      */
-    public function test_user_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function userEdit($parameters, $type_message_error, $expected_message, $expected, $permission)
     {
         $this->login = true;
 
@@ -617,7 +618,7 @@ class UserTest extends TestCase
      * @dataProvider userDeleteProvider
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
     public function testDeleteUser($data, $type_message_error, $expected_message, $expected, $permission)

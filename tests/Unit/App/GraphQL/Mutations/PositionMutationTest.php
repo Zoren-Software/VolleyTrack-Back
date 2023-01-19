@@ -14,10 +14,10 @@ class PositionMutationTest extends TestCase
      * A basic unit test create and edit position.
      *
      * @dataProvider positionProvider
-     *
+     * @test
      * @return void
      */
-    public function test_position_make($data, $method)
+    public function positionMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $positionMock = $this->mock(Position::class, function (MockInterface $mock) use ($data, $method) {
@@ -67,10 +67,10 @@ class PositionMutationTest extends TestCase
      * A basic unit test in delete position.
      *
      * @dataProvider positionDeleteProvider
-     *
+     * @test
      * @return void
      */
-    public function test_position_delete($data, $number)
+    public function positionDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $position = $this->createMock(Position::class);

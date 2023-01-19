@@ -23,10 +23,11 @@ class TrainingMutationTest extends TestCase
      * A basic unit test create and edit training.
      *
      * @dataProvider trainingProvider
+     * @test
      *
      * @return void
      */
-    public function test_training_make($data, $method)
+    public function trainingMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $trainingMock = $this->mock(Training::class, function (MockInterface $mock) use ($data, $method) {
@@ -136,10 +137,10 @@ class TrainingMutationTest extends TestCase
      * A basic unit test delete training.
      *
      * @dataProvider trainingDeleteProvider
-     *
+     * @test
      * @return void
      */
-    public function test_training_delete($data)
+    public function trainingDelete($data)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $trainingMock = $this->mock(Training::class, function (MockInterface $mock) {

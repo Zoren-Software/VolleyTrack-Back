@@ -16,10 +16,10 @@ class TeamMutationTest extends TestCase
      * A basic unit test create and edit team.
      *
      * @dataProvider teamProvider
-     *
+     * @test
      * @return void
      */
-    public function test_team_make($data, $method)
+    public function teamMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $teamMock = $this->mock(Team::class, function (MockInterface $mock) use ($data, $method) {
@@ -124,10 +124,10 @@ class TeamMutationTest extends TestCase
      * A basic unit test in delete team.
      *
      * @dataProvider teamDeleteProvider
-     *
+     * @test
      * @return void
      */
-    public function test_team_delete($data, $number)
+    public function teamDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $team = $this->createMock(Team::class);

@@ -10,10 +10,10 @@ class TrainingConfigTest extends TestCase
 {
     /**
      * A basic unit test relation config.
-     *
+     * @test
      * @return void
      */
-    public function test_config()
+    public function config()
     {
         $trainingConfig = new TrainingConfig();
         $this->assertInstanceOf(BelongsTo::class, $trainingConfig->config());
@@ -21,10 +21,10 @@ class TrainingConfigTest extends TestCase
 
     /**
      * A basic unit test relation user.
-     *
+     * @test
      * @return void
      */
-    public function test_user()
+    public function user()
     {
         $trainingConfig = new TrainingConfig();
         $this->assertInstanceOf(BelongsTo::class, $trainingConfig->user());

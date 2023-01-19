@@ -10,10 +10,10 @@ class PositionsUsersTest extends TestCase
 {
     /**
      * A basic unit test relation getActivitylogOptions.
-     *
+     * @test
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
         $positionsUsers = new PositionsUsers();
         $this->assertInstanceOf(LogOptions::class, $positionsUsers->getActivitylogOptions());

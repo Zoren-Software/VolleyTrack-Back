@@ -10,10 +10,10 @@ class SpecificFundamentalsTrainingsTest extends TestCase
 {
     /**
      * A basic unit test relation getActivitylogOptions.
-     *
+     * @test
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
         $specificFundamentalsTrainings = new SpecificFundamentalsTrainings();
         $this->assertInstanceOf(LogOptions::class, $specificFundamentalsTrainings->getActivitylogOptions());

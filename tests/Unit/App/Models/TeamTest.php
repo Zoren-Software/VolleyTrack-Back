@@ -12,10 +12,10 @@ class TeamTest extends TestCase
 {
     /**
      * A basic unit test relation user.
-     *
+     * @test
      * @return void
      */
-    public function test_user()
+    public function user()
     {
         $team = new Team();
         $this->assertInstanceOf(BelongsTo::class, $team->user());
@@ -23,10 +23,10 @@ class TeamTest extends TestCase
 
     /**
      * A basic unit test relation getActivitylogOptions.
-     *
+     * @test
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
         $team = new Team();
         $this->assertInstanceOf(LogOptions::class, $team->getActivitylogOptions());
@@ -34,10 +34,10 @@ class TeamTest extends TestCase
 
     /**
      * A basic unit test relation players.
-     *
+     * @test
      * @return void
      */
-    public function test_players()
+    public function players()
     {
         $team = new Team();
         $this->assertInstanceOf(BelongsToMany::class, $team->players());
@@ -45,10 +45,10 @@ class TeamTest extends TestCase
 
     /**
      * A basic unit test relation technicians.
-     *
+     * @test
      * @return void
      */
-    public function test_technicians()
+    public function technicians()
     {
         $team = new Team();
         $this->assertInstanceOf(BelongsToMany::class, $team->technicians());

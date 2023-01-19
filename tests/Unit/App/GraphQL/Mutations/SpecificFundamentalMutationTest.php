@@ -15,10 +15,10 @@ class SpecificFundamentalMutationTest extends TestCase
      * A basic unit test create and edit fundamental.
      *
      * @dataProvider specificFundamentalProvider
-     *
+     * @test
      * @return void
      */
-    public function test_specific_fundamental_make($data, $method)
+    public function specificFundamentalMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $specificFundamentalMock = $this->mock(
@@ -77,10 +77,10 @@ class SpecificFundamentalMutationTest extends TestCase
      * A basic unit test in delete specificFundamental.
      *
      * @dataProvider specificFundamentalDeleteProvider
-     *
+     * @test
      * @return void
      */
-    public function test_specific_fundamental_delete($data, $number)
+    public function specificFundamentalDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $specificFundamental = $this->createMock(SpecificFundamental::class);

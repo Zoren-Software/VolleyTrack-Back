@@ -11,11 +11,12 @@ class ConfigPolicyTest extends TestCase
     /**
      * A basic unit test edit.
      *
+     * @test
      * @dataProvider permissionProvider
      *
      * @return void
      */
-    public function test_edit(bool $expected): void
+    public function edit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())

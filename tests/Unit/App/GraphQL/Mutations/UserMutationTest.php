@@ -17,10 +17,10 @@ class UserMutationTest extends TestCase
      * A basic unit test create and edit user.
      *
      * @dataProvider userProvider
-     *
+     * @test
      * @return void
      */
-    public function test_user_make($data)
+    public function userMake($data)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
@@ -116,10 +116,10 @@ class UserMutationTest extends TestCase
      * A basic unit test in delete user.
      *
      * @dataProvider userDeleteProvider
-     *
+     * @test
      * @return void
      */
-    public function test_user_delete($data, $number)
+    public function userDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $user = $this->createMock(User::class);

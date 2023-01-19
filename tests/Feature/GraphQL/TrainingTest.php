@@ -51,10 +51,10 @@ class TrainingTest extends TestCase
      * Listagem de todos os treinos.
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_training_list()
+    public function trainingList()
     {
         Training::factory()->make()->save();
 
@@ -87,10 +87,10 @@ class TrainingTest extends TestCase
      * Listagem de um time
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_training_info()
+    public function trainingInfo()
     {
         $training = Training::factory()->make();
         $training->save();
@@ -117,10 +117,10 @@ class TrainingTest extends TestCase
      * @dataProvider trainingCreateErrorProvider
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_training_create(
+    public function trainingCreate(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -439,10 +439,10 @@ class TrainingTest extends TestCase
      * @dataProvider trainingEditErrorProvider
      *
      * @author Maicon Cerutti
-     *
+     * @test
      * @return void
      */
-    public function test_training_edit(
+    public function trainingEdit(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -800,7 +800,7 @@ class TrainingTest extends TestCase
      *
      * @return void
      */
-    public function test_training_delete(
+    public function trainingDelete(
         $data,
         $typeMessageError,
         $expectedMessage,

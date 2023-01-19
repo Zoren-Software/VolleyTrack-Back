@@ -13,10 +13,10 @@ class FundamentalMutationTest extends TestCase
      * A basic unit test create and edit fundamental.
      *
      * @dataProvider fundamentalProvider
-     *
+     * @test
      * @return void
      */
-    public function test_fundamental_make($data, $method)
+    public function fundamentalMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
 
@@ -65,10 +65,10 @@ class FundamentalMutationTest extends TestCase
      * A basic unit test in delete position.
      *
      * @dataProvider positionDeleteProvider
-     *
+     * @test
      * @return void
      */
-    public function test_fundamental_delete($data, $number)
+    public function fundamentalDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $fundamental = $this->createMock(Fundamental::class);

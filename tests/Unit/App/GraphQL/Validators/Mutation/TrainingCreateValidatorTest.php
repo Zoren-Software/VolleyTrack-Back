@@ -11,10 +11,10 @@ class TrainingCreateValidatorTest extends TestCase
 {
     /**
      * A basic unit test messages.
-     *
+     * @test
      * @return void
      */
-    public function test_messages()
+    public function messages()
     {
         $validator = new TrainingCreateValidator();
 
@@ -24,10 +24,10 @@ class TrainingCreateValidatorTest extends TestCase
 
     /**
      * A basic unit test rules.
-     *
+     * @test
      * @return void
      */
-    public function test_rules()
+    public function rules()
     {
         $validator = new TrainingCreateValidator();
         $validator->setArgs($this->mock(ArgumentSet::class, function (MockInterface $mock) {
