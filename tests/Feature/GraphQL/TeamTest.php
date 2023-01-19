@@ -30,6 +30,7 @@ class TeamTest extends TestCase
      * Listagem de todos os times.
      *
      * @author Maicon Cerutti
+     *
      * @test
      *
      * @return void
@@ -67,6 +68,7 @@ class TeamTest extends TestCase
      * Listagem de um time
      *
      * @author Maicon Cerutti
+     *
      * @test
      *
      * @return void
@@ -95,6 +97,7 @@ class TeamTest extends TestCase
      * Método de criação de um time.
      *
      * @dataProvider teamCreateProvider
+     *
      * @test
      *
      * @author Maicon Cerutti
@@ -225,7 +228,9 @@ class TeamTest extends TestCase
      * Método de edição de um time.
      *
      * @dataProvider teamEditProvider
+     *
      * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -360,6 +365,7 @@ class TeamTest extends TestCase
      * @author Maicon Cerutti
      *
      * @dataProvider teamDeleteProvider
+     *
      * @test
      *
      * @return void

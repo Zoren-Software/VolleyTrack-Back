@@ -14,7 +14,9 @@ class PositionMutationTest extends TestCase
      * A basic unit test create and edit position.
      *
      * @dataProvider positionProvider
+     *
      * @test
+     *
      * @return void
      */
     public function positionMake($data, $method)
@@ -67,7 +69,9 @@ class PositionMutationTest extends TestCase
      * A basic unit test in delete position.
      *
      * @dataProvider positionDeleteProvider
+     *
      * @test
+     *
      * @return void
      */
     public function positionDelete($data, $number)

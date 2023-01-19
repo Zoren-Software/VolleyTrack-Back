@@ -12,7 +12,9 @@ class PositionPolicyTest extends TestCase
      * A basic unit test create.
      *
      * @dataProvider permissionProvider
+     *
      * @test
+     *
      * @return void
      */
     public function create(bool $expected): void
@@ -31,7 +33,9 @@ class PositionPolicyTest extends TestCase
      * A basic unit test edit.
      *
      * @dataProvider permissionProvider
+     *
      * @test
+     *
      * @return void
      */
     public function edit(bool $expected): void
@@ -50,7 +54,9 @@ class PositionPolicyTest extends TestCase
      * A basic unit test delete.
      *
      * @dataProvider permissionProvider
+     *
      * @test
+     *
      * @return void
      */
     public function deletePositionPolicy(bool $expected): void

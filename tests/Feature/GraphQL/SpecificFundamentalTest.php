@@ -29,7 +29,9 @@ class SpecificFundamentalTest extends TestCase
      * Listagem de todos os fundamentos especificos.
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function specificFundamentalsList()
@@ -63,7 +65,9 @@ class SpecificFundamentalTest extends TestCase
 
     /**
      * Listagem de um fundamento especifico.
+     *
      * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -92,7 +96,9 @@ class SpecificFundamentalTest extends TestCase
      * Método de criação de um fundamento especifico.
      *
      * @dataProvider specificFundamentalCreateProvider
+     *
      * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -228,7 +234,9 @@ class SpecificFundamentalTest extends TestCase
      * Método de edição de um fundamento especifico.
      *
      * @dataProvider specificFundamentalEditProvider
+     *
      * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -373,7 +381,9 @@ class SpecificFundamentalTest extends TestCase
      * Método de exclusão de um time.
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @dataProvider specificFundamentalDeleteProvider
      *
      * @return void

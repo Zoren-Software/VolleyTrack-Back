@@ -10,7 +10,9 @@ class TrainingConfigTest extends TestCase
 {
     /**
      * A basic unit test relation config.
+     *
      * @test
+     *
      * @return void
      */
     public function config()
@@ -21,7 +23,9 @@ class TrainingConfigTest extends TestCase
 
     /**
      * A basic unit test relation user.
+     *
      * @test
+     *
      * @return void
      */
     public function user()

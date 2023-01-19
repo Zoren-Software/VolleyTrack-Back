@@ -23,6 +23,7 @@ class TrainingMutationTest extends TestCase
      * A basic unit test create and edit training.
      *
      * @dataProvider trainingProvider
+     *
      * @test
      *
      * @return void
@@ -137,7 +138,9 @@ class TrainingMutationTest extends TestCase
      * A basic unit test delete training.
      *
      * @dataProvider trainingDeleteProvider
+     *
      * @test
+     *
      * @return void
      */
     public function trainingDelete($data)

@@ -12,6 +12,7 @@ class ConfigPolicyTest extends TestCase
      * A basic unit test edit.
      *
      * @test
+     *
      * @dataProvider permissionProvider
      *
      * @return void

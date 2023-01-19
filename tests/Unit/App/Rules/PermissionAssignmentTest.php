@@ -11,6 +11,7 @@ class PermissionAssignmentTest extends TestCase
      * A basic unit test message.
      *
      * @test
+     *
      * @return void
      */
     public function message()

@@ -15,6 +15,7 @@ class UserTest extends TestCase
      * A basic unit test make password.
      *
      * @test
+     *
      * @return void
      */
     public function makePassword()
@@ -29,6 +30,7 @@ class UserTest extends TestCase
      * A basic unit test relation positions.
      *
      * @test
+     *
      * @return void
      */
     public function positions()
@@ -41,7 +43,9 @@ class UserTest extends TestCase
      * A basic unit test relation positions.
      *
      * @dataProvider hasPermissionsViaRolesDataProvider
+     *
      * @test
+     *
      * @return void
      */
     public function hasPermissionsViaRoles($namePermission, $permissions, $expected)
@@ -85,6 +89,7 @@ class UserTest extends TestCase
      * A basic unit test hasPermissionRole.
      *
      * @test
+     *
      * @return void
      */
     public function hasPermissionRole()
@@ -107,6 +112,7 @@ class UserTest extends TestCase
      * A basic unit test relation getActivitylogOptions.
      *
      * @test
+     *
      * @return void
      */
     public function getActivitylogOptions()
@@ -119,6 +125,7 @@ class UserTest extends TestCase
      * A basic unit test relation teams.
      *
      * @test
+     *
      * @return void
      */
     public function teams()

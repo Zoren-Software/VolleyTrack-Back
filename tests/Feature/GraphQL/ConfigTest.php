@@ -28,6 +28,7 @@ class ConfigTest extends TestCase
      * Listagem de configurações.
      *
      * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -53,6 +54,7 @@ class ConfigTest extends TestCase
      * Método de edição de configurações.
      *
      * @dataProvider configEditProvider
+     *
      * @test
      *
      * @author Maicon Cerutti

@@ -28,7 +28,9 @@ class PositionTest extends TestCase
      * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function positionsList()
@@ -66,6 +68,7 @@ class PositionTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
+     *
      * @return void
      */
     public function positionInfo()
@@ -94,6 +97,7 @@ class PositionTest extends TestCase
      * @dataProvider positionCreateProvider
      *
      * @author Maicon Cerutti
+     *
      * @test
      *
      * @return void
@@ -202,7 +206,9 @@ class PositionTest extends TestCase
      * Método de edição de um fundamento.
      *
      * @dataProvider positionEditProvider
+     *
      * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -320,7 +326,9 @@ class PositionTest extends TestCase
      * Método de exclusão de uma posição.
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @dataProvider positionDeleteProvider
      *
      * @return void

@@ -16,7 +16,9 @@ class TeamMutationTest extends TestCase
      * A basic unit test create and edit team.
      *
      * @dataProvider teamProvider
+     *
      * @test
+     *
      * @return void
      */
     public function teamMake($data, $method)
@@ -124,7 +126,9 @@ class TeamMutationTest extends TestCase
      * A basic unit test in delete team.
      *
      * @dataProvider teamDeleteProvider
+     *
      * @test
+     *
      * @return void
      */
     public function teamDelete($data, $number)

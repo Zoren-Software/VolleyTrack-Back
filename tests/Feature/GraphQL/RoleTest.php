@@ -21,7 +21,9 @@ class RoleTest extends TestCase
      * Listagem de uma role
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function rolInfo()
@@ -47,6 +49,7 @@ class RoleTest extends TestCase
      * Listagem de todos as roles.
      *
      * @author Maicon Cerutti
+     *
      * @test
      *
      * @return void

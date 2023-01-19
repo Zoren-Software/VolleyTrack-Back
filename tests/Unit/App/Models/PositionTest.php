@@ -12,7 +12,9 @@ class PositionTest extends TestCase
 {
     /**
      * A basic unit test relation users.
+     *
      * @test
+     *
      * @return void
      */
     public function users()
@@ -23,7 +25,9 @@ class PositionTest extends TestCase
 
     /**
      * A basic unit test relation user.
+     *
      * @test
+     *
      * @return void
      */
     public function user()
@@ -34,7 +38,9 @@ class PositionTest extends TestCase
 
     /**
      * A basic unit test relation getActivitylogOptions.
+     *
      * @test
+     *
      * @return void
      */
     public function getActivitylogOptions()

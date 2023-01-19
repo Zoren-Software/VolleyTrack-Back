@@ -17,7 +17,9 @@ class UserMutationTest extends TestCase
      * A basic unit test create and edit user.
      *
      * @dataProvider userProvider
+     *
      * @test
+     *
      * @return void
      */
     public function userMake($data)
@@ -116,7 +118,9 @@ class UserMutationTest extends TestCase
      * A basic unit test in delete user.
      *
      * @dataProvider userDeleteProvider
+     *
      * @test
+     *
      * @return void
      */
     public function userDelete($data, $number)

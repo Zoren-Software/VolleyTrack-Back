@@ -25,7 +25,9 @@ class SanctumTest extends TestCase
 
     /**
      * Teste da rota de login.
+     *
      * @test
+     *
      * @return void
      */
     public function login()
@@ -53,7 +55,9 @@ class SanctumTest extends TestCase
 
     /**
      * Teste da rota de logout.
+     *
      * @test
+     *
      * @return void
      */
     public function logout()
@@ -81,7 +85,9 @@ class SanctumTest extends TestCase
 
     /**
      * Teste da rota de registro de usuários.
+     *
      * @test
+     *
      * @return void
      */
     public function register()
@@ -111,7 +117,9 @@ class SanctumTest extends TestCase
 
     /**
      * Teste de reenvio de email de verificação.
+     *
      * @test
+     *
      * @return void
      */
     public function resendEmailVerification()
@@ -135,7 +143,9 @@ class SanctumTest extends TestCase
 
     /**
      * Teste de reenvio de email para recuperar senha.
+     *
      * @test
+     *
      * @return void
      */
     public function forgotPassword()
@@ -162,7 +172,9 @@ class SanctumTest extends TestCase
 
     /**
      * Teste de reenvio de email para atualizar senha.
+     *
      * @test
+     *
      * @return void
      */
     public function updatePassword()

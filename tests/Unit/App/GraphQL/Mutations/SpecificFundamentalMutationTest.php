@@ -15,7 +15,9 @@ class SpecificFundamentalMutationTest extends TestCase
      * A basic unit test create and edit fundamental.
      *
      * @dataProvider specificFundamentalProvider
+     *
      * @test
+     *
      * @return void
      */
     public function specificFundamentalMake($data, $method)
@@ -77,7 +79,9 @@ class SpecificFundamentalMutationTest extends TestCase
      * A basic unit test in delete specificFundamental.
      *
      * @dataProvider specificFundamentalDeleteProvider
+     *
      * @test
+     *
      * @return void
      */
     public function specificFundamentalDelete($data, $number)

@@ -13,7 +13,9 @@ class FundamentalMutationTest extends TestCase
      * A basic unit test create and edit fundamental.
      *
      * @dataProvider fundamentalProvider
+     *
      * @test
+     *
      * @return void
      */
     public function fundamentalMake($data, $method)
@@ -65,7 +67,9 @@ class FundamentalMutationTest extends TestCase
      * A basic unit test in delete position.
      *
      * @dataProvider positionDeleteProvider
+     *
      * @test
+     *
      * @return void
      */
     public function fundamentalDelete($data, $number)

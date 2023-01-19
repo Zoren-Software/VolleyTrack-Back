@@ -28,6 +28,7 @@ class FundamentalTest extends TestCase
      * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
+     *
      * @test
      *
      * @return void
@@ -65,6 +66,7 @@ class FundamentalTest extends TestCase
      * Listagem de um fundamento
      *
      * @author Maicon Cerutti
+     *
      * @test
      *
      * @return void
@@ -204,6 +206,7 @@ class FundamentalTest extends TestCase
      * @dataProvider fundamentalEditProvider
      *
      * @author Maicon Cerutti
+     *
      * @test
      *
      * @return void
@@ -323,6 +326,7 @@ class FundamentalTest extends TestCase
      * @author Maicon Cerutti
      *
      * @dataProvider fundamentalDeleteProvider
+     *
      * @test
      *
      * @return void

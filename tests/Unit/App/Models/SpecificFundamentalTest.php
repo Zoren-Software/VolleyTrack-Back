@@ -12,7 +12,9 @@ class SpecificFundamentalTest extends TestCase
 {
     /**
      * A basic unit test relation users.
+     *
      * @test
+     *
      * @return void
      */
     public function user()
@@ -23,7 +25,9 @@ class SpecificFundamentalTest extends TestCase
 
     /**
      * A basic unit test relation users.
+     *
      * @test
+     *
      * @return void
      */
     public function fundamentals()
@@ -34,7 +38,9 @@ class SpecificFundamentalTest extends TestCase
 
     /**
      * A basic unit test relation getActivitylogOptions.
+     *
      * @test
+     *
      * @return void
      */
     public function get_activitylog_options()

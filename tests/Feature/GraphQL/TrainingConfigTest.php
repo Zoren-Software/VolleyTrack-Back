@@ -29,7 +29,9 @@ class TrainingConfigTest extends TestCase
      * Listagem de configurações de treino.
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function trainingConfigInfo()
@@ -55,7 +57,9 @@ class TrainingConfigTest extends TestCase
      * @dataProvider ConfigEditProvider
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function trainingConfigEdit(

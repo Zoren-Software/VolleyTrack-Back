@@ -12,6 +12,7 @@ class FundamentalPolicyTest extends TestCase
      * A basic unit test create.
      *
      * @test
+     *
      * @dataProvider permissionProvider
      *
      * @return void
@@ -32,6 +33,7 @@ class FundamentalPolicyTest extends TestCase
      * A basic unit test edit.
      *
      * @test
+     *
      * @dataProvider permissionProvider
      *
      * @return void

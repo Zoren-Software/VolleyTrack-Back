@@ -12,7 +12,9 @@ class TeamTest extends TestCase
 {
     /**
      * A basic unit test relation user.
+     *
      * @test
+     *
      * @return void
      */
     public function user()
@@ -23,7 +25,9 @@ class TeamTest extends TestCase
 
     /**
      * A basic unit test relation getActivitylogOptions.
+     *
      * @test
+     *
      * @return void
      */
     public function getActivitylogOptions()
@@ -34,7 +38,9 @@ class TeamTest extends TestCase
 
     /**
      * A basic unit test relation players.
+     *
      * @test
+     *
      * @return void
      */
     public function players()
@@ -45,7 +51,9 @@ class TeamTest extends TestCase
 
     /**
      * A basic unit test relation technicians.
+     *
      * @test
+     *
      * @return void
      */
     public function technicians()

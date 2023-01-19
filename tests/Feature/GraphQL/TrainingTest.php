@@ -51,7 +51,9 @@ class TrainingTest extends TestCase
      * Listagem de todos os treinos.
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function trainingList()
@@ -87,7 +89,9 @@ class TrainingTest extends TestCase
      * Listagem de um time
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function trainingInfo()
@@ -117,7 +121,9 @@ class TrainingTest extends TestCase
      * @dataProvider trainingCreateErrorProvider
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function trainingCreate(
@@ -439,7 +445,9 @@ class TrainingTest extends TestCase
      * @dataProvider trainingEditErrorProvider
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function trainingEdit(

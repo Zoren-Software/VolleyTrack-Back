@@ -14,6 +14,7 @@ class ConfigMutationTest extends TestCase
      * A basic unit test make.
      *
      * @test
+     *
      * @return void
      */
     public function make()

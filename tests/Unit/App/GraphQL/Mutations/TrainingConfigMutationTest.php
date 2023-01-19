@@ -12,6 +12,7 @@ class TrainingConfigMutationTest extends TestCase
 {
     /**
      * A basic unit test make.
+     *
      * @test
      *
      * @return void

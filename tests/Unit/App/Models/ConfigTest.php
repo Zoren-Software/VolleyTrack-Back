@@ -11,7 +11,9 @@ class ConfigTest extends TestCase
 {
     /**
      * A basic unit test relation language.
+     *
      * @test
+     *
      * @return void
      */
     public function language()
@@ -22,7 +24,9 @@ class ConfigTest extends TestCase
 
     /**
      * A basic unit test relation trainingConfig.
+     *
      * @test
+     *
      * @return void
      */
     public function trainingConfig()
@@ -33,7 +37,9 @@ class ConfigTest extends TestCase
 
     /**
      * A basic unit test relation user.
+     *
      * @test
+     *
      * @return void
      */
     public function user()

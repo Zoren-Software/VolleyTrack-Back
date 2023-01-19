@@ -10,7 +10,9 @@ class PositionsUsersTest extends TestCase
 {
     /**
      * A basic unit test relation getActivitylogOptions.
+     *
      * @test
+     *
      * @return void
      */
     public function getActivitylogOptions()

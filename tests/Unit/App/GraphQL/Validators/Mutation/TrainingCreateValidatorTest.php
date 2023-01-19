@@ -11,7 +11,9 @@ class TrainingCreateValidatorTest extends TestCase
 {
     /**
      * A basic unit test messages.
+     *
      * @test
+     *
      * @return void
      */
     public function messages()
@@ -24,7 +26,9 @@ class TrainingCreateValidatorTest extends TestCase
 
     /**
      * A basic unit test rules.
+     *
      * @test
+     *
      * @return void
      */
     public function rules()

@@ -30,7 +30,9 @@ class UserTest extends TestCase
      * Listagem de todos os usuários.
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function usersList()
@@ -70,7 +72,9 @@ class UserTest extends TestCase
      * Listagem de um usuário
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function userInfo()
@@ -103,7 +107,9 @@ class UserTest extends TestCase
      * @dataProvider userCreateProvider
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function userCreate($parameters, $type_message_error, $expected_message, $expected, $permission)
@@ -356,6 +362,7 @@ class UserTest extends TestCase
      * @dataProvider userEditProvider
      *
      * @author Maicon Cerutti
+     *
      * @test
      *
      * @return void
@@ -618,7 +625,9 @@ class UserTest extends TestCase
      * @dataProvider userDeleteProvider
      *
      * @author Maicon Cerutti
+     *
      * @test
+     *
      * @return void
      */
     public function testDeleteUser($data, $type_message_error, $expected_message, $expected, $permission)
