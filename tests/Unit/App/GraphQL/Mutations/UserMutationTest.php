@@ -123,17 +123,24 @@ class UserMutationTest extends TestCase
      *
      * @return void
      */
-    public function userDelete($data, $number)
+    public function userDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $user = $this->mock(User::class, function (MockInterface $mock) use ($data, $number) {
+        $user = $this->mock(User::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
             $mock->shouldReceive('findOrFail')
-                ->once()
+                ->times($numberFind)
                 ->with(1)
                 ->andReturn($mock);
+
+            if(count($data) > 1) {
+                $mock->shouldReceive('findOrFail')
+                    ->times(1)
+                    ->with(2)
+                    ->andReturn($mock);
+            }
             
             $mock->shouldReceive('delete')
-                ->once()
+                ->times($numberDelete)
                 ->andReturn(true);
         });
 
@@ -150,17 +157,20 @@ class UserMutationTest extends TestCase
     public function userDeleteProvider()
     {
         return [
-            'send array, success' => [
-                [1],
-                1,
+            'send data delete, success' => [
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiple users, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0
             ],
         ];
     }
