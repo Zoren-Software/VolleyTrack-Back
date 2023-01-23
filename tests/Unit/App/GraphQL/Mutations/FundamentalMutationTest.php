@@ -81,7 +81,7 @@ class FundamentalMutationTest extends TestCase
                 ->with(1)
                 ->andReturn($mock);
 
-            if(count($data) > 1) {
+            if (count($data) > 1) {
                 $mock->shouldReceive('findOrFail')
                     ->times($numberFind)
                     ->with(2)
@@ -91,7 +91,6 @@ class FundamentalMutationTest extends TestCase
             $mock->shouldReceive('delete')
                 ->times($numberDelete)
                 ->andReturn(true);
-
         });
 
         $fundamentalMutation = new FundamentalMutation($fundamental);
@@ -110,17 +109,17 @@ class FundamentalMutationTest extends TestCase
             'send array, success' => [
                 'data' => [1],
                 'numberFind' => 1,
-                'numberDelete' => 1
+                'numberDelete' => 1,
             ],
             'send multiple itens in array, success' => [
                 'data' => [1, 2],
                 'numberFind' => 1,
-                'numberDelete' => 2
+                'numberDelete' => 2,
             ],
             'send empty array, success' => [
                 'data' => [],
                 'numberFind' => 0,
-                'numberDelete' => 0
+                'numberDelete' => 0,
             ],
         ];
     }

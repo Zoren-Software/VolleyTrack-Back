@@ -132,13 +132,13 @@ class UserMutationTest extends TestCase
                 ->with(1)
                 ->andReturn($mock);
 
-            if(count($data) > 1) {
+            if (count($data) > 1) {
                 $mock->shouldReceive('findOrFail')
                     ->times(1)
                     ->with(2)
                     ->andReturn($mock);
             }
-            
+
             $mock->shouldReceive('delete')
                 ->times($numberDelete)
                 ->andReturn(true);
@@ -160,17 +160,17 @@ class UserMutationTest extends TestCase
             'send data delete, success' => [
                 'data' => [1],
                 'numberFind' => 1,
-                'numberDelete' => 1
+                'numberDelete' => 1,
             ],
             'send data delete multiple users, success' => [
                 'data' => [1, 2],
                 'numberFind' => 1,
-                'numberDelete' => 2
+                'numberDelete' => 2,
             ],
             'send data delete no items, success' => [
                 'data' => [],
                 'numberFind' => 0,
-                'numberDelete' => 0
+                'numberDelete' => 0,
             ],
         ];
     }

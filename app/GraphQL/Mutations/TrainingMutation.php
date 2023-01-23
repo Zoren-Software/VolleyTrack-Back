@@ -8,7 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 final class TrainingMutation
 {
     private $training;
-    
+
     public function __construct(Training $training)
     {
         $this->training = $training;

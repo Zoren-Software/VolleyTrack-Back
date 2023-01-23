@@ -146,12 +146,12 @@ class TeamMutationTest extends TestCase
                     ->with(2)
                     ->andReturn($mock);
             }
-            
+
             $mock->shouldReceive('delete')
                 ->times($numberDelete)
                 ->andReturn(true);
         });
-        
+
         $user = $this->createMock(User::class);
 
         $teamMutation = new TeamMutation($team, $user);
@@ -168,19 +168,19 @@ class TeamMutationTest extends TestCase
     {
         return [
             'send data delete, success' => [
-                'data' =>  [1],
+                'data' => [1],
                 'numberFind' => 1,
-                'numberDelete' => 1
+                'numberDelete' => 1,
             ],
             'send data delete multiple teams, success' => [
                 'data' => [1, 2],
                 'numberFind' => 1,
-                'numberDelete' => 2
+                'numberDelete' => 2,
             ],
             'send data delete no items, success' => [
                 'data' => [],
                 'numberFind' => 0,
-                'numberDelete' => 0
+                'numberDelete' => 0,
             ],
         ];
     }

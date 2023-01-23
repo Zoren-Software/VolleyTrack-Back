@@ -87,20 +87,20 @@ class SpecificFundamentalMutationTest extends TestCase
     public function specificFundamentalDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        
+
         $specificFundamental = $this->mock(SpecificFundamental::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
             $mock->shouldReceive('findOrFail')
                 ->times($numberFind)
                 ->with(1)
                 ->andReturn($mock);
 
-            if(count($data) > 1) {
+            if (count($data) > 1) {
                 $mock->shouldReceive('findOrFail')
                     ->times($numberFind)
                     ->with(2)
                     ->andReturn($mock);
             }
-            
+
             $mock->shouldReceive('delete')
                 ->times($numberDelete)
                 ->andReturn(true);
