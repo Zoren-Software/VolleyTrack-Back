@@ -84,18 +84,25 @@ class SpecificFundamentalMutationTest extends TestCase
      *
      * @return void
      */
-    public function specificFundamentalDelete($data, $number)
+    public function specificFundamentalDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         
-        $specificFundamental = $this->mock(SpecificFundamental::class, function (MockInterface $mock) use ($data, $number) {
+        $specificFundamental = $this->mock(SpecificFundamental::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
             $mock->shouldReceive('findOrFail')
-                ->once()
+                ->times($numberFind)
                 ->with(1)
                 ->andReturn($mock);
+
+            if(count($data) > 1) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(2)
+                    ->andReturn($mock);
+            }
             
             $mock->shouldReceive('delete')
-                ->once()
+                ->times($numberDelete)
                 ->andReturn(true);
         });
 
@@ -112,17 +119,20 @@ class SpecificFundamentalMutationTest extends TestCase
     public function specificFundamentalDeleteProvider()
     {
         return [
-            'send array, success' => [
-                [1],
-                1,
+            'send data delete, success' => [
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiple specific fundamentals, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }
