@@ -54,6 +54,7 @@ class FundamentalPolicyTest extends TestCase
      * A basic unit test delete.
      *
      * @dataProvider permissionProvider
+     * @test
      *
      * @return void
      */
