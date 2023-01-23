@@ -32,19 +32,6 @@ class Position extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
-    /**
-     * @codeCoverageIgnore
-     *
-     * @return Position
-     */
-    public function deletePosition(int $id): Position
-    {
-        $position = $this->findOrFail($id);
-        $position->delete();
-
-        return $position;
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

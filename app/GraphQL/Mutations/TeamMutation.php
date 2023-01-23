@@ -55,8 +55,9 @@ final class TeamMutation
     {
         $teams = [];
         foreach ($args['id'] as $id) {
-            $this->team = $this->team->deleteTeam($id);
+            $this->team = $this->team->findOrFail($id);
             $teams[] = $this->team;
+            $this->team->delete();
         }
 
         return $teams;

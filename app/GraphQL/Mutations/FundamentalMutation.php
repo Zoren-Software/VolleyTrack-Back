@@ -36,8 +36,9 @@ final class FundamentalMutation
     {
         $fundamentals = [];
         foreach ($args['id'] as $id) {
-            $this->fundamental = $this->fundamental->deleteFundamental($id);
+            $this->fundamental = $this->fundamental->findOrFail($id);
             $fundamentals[] = $this->fundamental;
+            $this->fundamental->delete();
         }
 
         return $fundamentals;

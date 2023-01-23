@@ -80,19 +80,6 @@ class User extends Authenticatable implements HasApiTokensContract
         );
     }
 
-    /**
-     * @codeCoverageIgnore
-     *
-     * @return User
-     */
-    public function deleteUser(int $id): User
-    {
-        $user = $this->findOrFail($id);
-        $user->delete();
-
-        return $user;
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

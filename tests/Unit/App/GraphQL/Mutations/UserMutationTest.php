@@ -126,12 +126,16 @@ class UserMutationTest extends TestCase
     public function userDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $user = $this->createMock(User::class);
-
-        $user
-            ->expects($this->exactly($number))
-            ->method('deleteUser')
-            ->willReturn($user);
+        $user = $this->mock(User::class, function (MockInterface $mock) use ($data, $number) {
+            $mock->shouldReceive('findOrFail')
+                ->once()
+                ->with(1)
+                ->andReturn($mock);
+            
+            $mock->shouldReceive('delete')
+                ->once()
+                ->andReturn(true);
+        });
 
         $userMutation = new UserMutation($user);
         $userMutation->delete(

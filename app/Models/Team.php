@@ -24,19 +24,6 @@ class Team extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * @codeCoverageIgnore
-     *
-     * @return Team
-     */
-    public function deleteTeam(int $id): Team
-    {
-        $team = $this->findOrFail($id);
-        $team->delete();
-
-        return $team;
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

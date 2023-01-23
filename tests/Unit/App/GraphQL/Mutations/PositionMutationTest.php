@@ -77,11 +77,16 @@ class PositionMutationTest extends TestCase
     public function positionDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $position = $this->createMock(Position::class);
+        $position = $this->mock(Position::class, function (MockInterface $mock) use ($data, $number) {
+            $mock->shouldReceive('findOrFail')
+                ->once()
+                ->with(1)
+                ->andReturn(true);
 
-        $position->expects($this->exactly($number))
-            ->method('deletePosition')
-            ->willReturn($position);
+            $mock->shouldReceive('destroy')
+                ->once()
+                ->andReturn(true);
+        });
 
         $positionMutation = new PositionMutation($position);
         $positionMutation->delete(

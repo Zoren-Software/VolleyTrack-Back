@@ -40,19 +40,6 @@ class Fundamental extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
-    /**
-     * @codeCoverageIgnore
-     *
-     * @return Fundamental
-     */
-    public function deleteFundamental(int $id): Fundamental
-    {
-        $fundamental = $this->findOrFail($id);
-        $fundamental->delete();
-
-        return $fundamental;
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

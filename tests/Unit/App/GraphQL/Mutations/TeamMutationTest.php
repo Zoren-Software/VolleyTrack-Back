@@ -134,14 +134,19 @@ class TeamMutationTest extends TestCase
     public function teamDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $team = $this->createMock(Team::class);
+        $team = $this->mock(Team::class, function (MockInterface $mock) use ($data) {
+            $mock->shouldReceive('findOrFail')
+                ->once()
+                ->with(1)
+                ->andReturn($mock);
+            
+            $mock->shouldReceive('delete')
+                ->once()
+                ->andReturn(true);
+        });
+        
         $user = $this->createMock(User::class);
-
-        $team
-            ->expects($this->exactly($number))
-            ->method('deleteTeam')
-            ->willReturn($team);
-
+        
         $teamMutation = new TeamMutation($team, $user);
         $teamMutation->delete(
             null,

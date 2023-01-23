@@ -75,11 +75,17 @@ class FundamentalMutationTest extends TestCase
     public function fundamentalDelete($data, $number)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $fundamental = $this->createMock(Fundamental::class);
+        $fundamental = $this->mock(Fundamental::class, function ($mock) use ($data, $number) {
+            $mock->shouldReceive('findOrFail')
+                ->once()
+                ->with(1)
+                ->andReturn($mock);
 
-        $fundamental->expects($this->exactly($number))
-            ->method('deleteFundamental')
-            ->willReturn($fundamental);
+            $mock->shouldReceive('delete')
+                ->once()
+                ->andReturn(true);
+
+        });
 
         $fundamentalMutation = new FundamentalMutation($fundamental);
         $fundamentalMutation->delete(
