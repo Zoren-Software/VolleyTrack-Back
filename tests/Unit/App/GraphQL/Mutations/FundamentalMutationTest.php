@@ -66,23 +66,30 @@ class FundamentalMutationTest extends TestCase
     /**
      * A basic unit test in delete position.
      *
-     * @dataProvider positionDeleteProvider
+     * @dataProvider fundamentalDeleteProvider
      *
      * @test
      *
      * @return void
      */
-    public function fundamentalDelete($data, $number)
+    public function fundamentalDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $fundamental = $this->mock(Fundamental::class, function ($mock) use ($data, $number) {
+        $fundamental = $this->mock(Fundamental::class, function ($mock) use ($data, $numberFind, $numberDelete) {
             $mock->shouldReceive('findOrFail')
-                ->once()
+                ->times($numberFind)
                 ->with(1)
                 ->andReturn($mock);
 
+            if(count($data) > 1) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(2)
+                    ->andReturn($mock);
+            }
+
             $mock->shouldReceive('delete')
-                ->once()
+                ->times($numberDelete)
                 ->andReturn(true);
 
         });
@@ -97,20 +104,23 @@ class FundamentalMutationTest extends TestCase
         );
     }
 
-    public function positionDeleteProvider()
+    public function fundamentalDeleteProvider()
     {
         return [
             'send array, success' => [
-                [1],
-                1,
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1
             ],
             'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2
             ],
             'send empty array, success' => [
-                [],
-                0,
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0
             ],
         ];
     }
