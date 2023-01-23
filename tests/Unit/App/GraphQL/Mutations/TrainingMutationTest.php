@@ -143,17 +143,24 @@ class TrainingMutationTest extends TestCase
      *
      * @return void
      */
-    public function trainingDelete($data)
+    public function trainingDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $trainingMock = $this->mock(Training::class, function (MockInterface $mock) {
+        $trainingMock = $this->mock(Training::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete ) {
             $mock->shouldReceive('findOrFail')
-                ->once()
+                ->times($numberFind)
                 ->with(1)
                 ->andReturn($mock);
 
+            if (count($data) > 1) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(2)
+                    ->andReturn($mock);
+            }
+
             $mock->shouldReceive('delete')
-                ->once()
+                ->times($numberDelete)
                 ->andReturn(true);
         });
 
@@ -161,7 +168,9 @@ class TrainingMutationTest extends TestCase
 
         $specificFundamentalMutation->delete(
             null,
-            ['id' => [1]],
+            [
+                'id' => $data
+            ],
             $graphQLContext
         );
     }
@@ -170,14 +179,19 @@ class TrainingMutationTest extends TestCase
     {
         return [
             'send data delete, success' => [
-                'data' => [
-                    'id' => [1],
-                ],
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1
             ],
             'send data delete multiple trainings, success' => [
-                'data' => [
-                    'id' => [1, 2, 3],
-                ],
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2
+            ],
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0
             ],
         ];
     }
