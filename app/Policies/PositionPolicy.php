@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Position;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PositionPolicy
@@ -46,7 +45,7 @@ class PositionPolicy
      *
      * @return bool
      */
-    public function view(User $user, Position $position): bool
+    public function view(User $user): bool
     {
         return $user->hasPermissionTo('edit-position') || $user->hasPermissionTo('view-position');
     }
