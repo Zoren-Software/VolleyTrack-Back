@@ -3,5 +3,7 @@ extend type Query {
     config(
         id: ID!
         @eq
-    ): Config @find
+    ): Config
+        @can(ability: "view", resolved: true)
+        @find
 }
