@@ -29,7 +29,6 @@ class PositionPolicy
         return $user->hasPermissionTo('edit-position');
     }
 
-
     /**
      * Delete a position instance.
      *

@@ -11,9 +11,8 @@ class UserPolicy
 
     /**
      * Create a new user instance.
-     * 
-     * @param User $user
-     * 
+     *
+     * @param  User  $user
      * @return bool
      */
     public function create(User $user): bool
@@ -23,9 +22,8 @@ class UserPolicy
 
     /**
      * Edit a user instance.
-     * 
-     * @param User $user
-     * 
+     *
+     * @param  User  $user
      * @return bool
      */
     public function edit(User $user): bool
@@ -35,9 +33,8 @@ class UserPolicy
 
     /**
      * Delete a user instance.
-     * 
-     * @param User $user
-     * 
+     *
+     * @param  User  $user
      * @return bool
      */
     public function delete(User $user): bool
@@ -47,9 +44,8 @@ class UserPolicy
 
     /**
      * View a user instance.
-     * 
-     * @param User $user
-     * 
+     *
+     * @param  User  $user
      * @return bool
      */
     public function view(User $user): bool

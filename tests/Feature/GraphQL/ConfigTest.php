@@ -61,7 +61,7 @@ class ConfigTest extends TestCase
             $expectedMessage
         );
 
-        if($permission) {
+        if ($permission) {
             $response
                 ->assertJsonStructure($expected)
                 ->assertStatus(200);

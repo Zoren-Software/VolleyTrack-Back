@@ -11,9 +11,8 @@ class FundamentalPolicy
 
     /**
      * Create a new fundamental instance.
-     * 
-     * @param User $user
-     * 
+     *
+     * @param  User  $user
      * @return bool
      */
     public function create(User $user): bool
@@ -23,9 +22,8 @@ class FundamentalPolicy
 
     /**
      * Edit a fundamental instance.
-     * 
-     * @param User $user
-     * 
+     *
+     * @param  User  $user
      * @return bool
      */
     public function edit(User $user): bool
@@ -35,9 +33,8 @@ class FundamentalPolicy
 
     /**
      * Delete a fundamental instance.
-     * 
-     * @param User $user
-     * 
+     *
+     * @param  User  $user
      * @return bool
      */
     public function delete(User $user): bool
@@ -47,9 +44,8 @@ class FundamentalPolicy
 
     /**
      * View a fundamental instance.
-     * 
-     * @param User $user
-     * 
+     *
+     * @param  User  $user
      * @return bool
      */
     public function view(User $user): bool
