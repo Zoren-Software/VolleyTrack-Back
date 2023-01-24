@@ -15,7 +15,7 @@ class UserTest extends TestCase
 
     protected $otherUser = false;
 
-    private $permission = 'Técnico';
+    private $permission = 'technician';
 
     private $data = [
         'id',
@@ -123,7 +123,7 @@ class UserTest extends TestCase
 
         $faker = Faker::create();
 
-        $this->checkPermission($permission, $this->permission, 'create-user');
+        $this->checkPermission($permission, $this->permission, 'edit-user');
 
         $parameters['name'] = $faker->name;
 
@@ -639,7 +639,7 @@ class UserTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'delete-user');
+        $this->checkPermission($permission, $this->permission, 'edit-user');
 
         $user = User::factory()
             ->has(Position::factory()->count(3))
