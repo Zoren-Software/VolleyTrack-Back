@@ -29,13 +29,22 @@ class ConfigTest extends TestCase
      *
      * @test
      *
+     * @dataProvider infoProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function configInfo()
-    {
-        $this->graphQL(
+    public function configInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    ) {
+        $this->checkPermission($permission, $this->permission, 'edit-config');
+        $this->checkPermission($permission, $this->permission, 'view-config');
+
+        $response = $this->graphQL(
             'config',
             [
                 'id' => 1,
@@ -43,11 +52,50 @@ class ConfigTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'config' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+
+        if($permission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        $configEdit = ['configEdit'];
+
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'config' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $configEdit,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
@@ -66,7 +114,7 @@ class ConfigTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $permission
     ) {
         $this->checkPermission($permission, $this->permission, 'edit-config');
 
