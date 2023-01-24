@@ -68,15 +68,25 @@ class FundamentalTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
+     * 
+     * @dataProvider infoProvider
      *
      * @return void
      */
-    public function fundamentalInfo()
+    public function fundamentalInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
+        $this->checkPermission($permission, $this->permission, 'view-fundamental');
+
+        $response = $this->graphQL(
             'fundamental',
             [
                 'id' => $fundamental->id,
@@ -84,11 +94,52 @@ class FundamentalTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'fundamental' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+        
+        if($permission) {
+            $response->assertJsonStructure([
+                'data' => [
+                    'fundamental' => $this->data,
+                ],
+            ])->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        $configEdit = ['configEdit'];
+
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'config' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $configEdit,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
