@@ -11,7 +11,7 @@ class PositionPolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
+     * Create a new position instance.
      *
      * @return bool
      */
@@ -21,7 +21,7 @@ class PositionPolicy
     }
 
     /**
-     * Edit a policy instance.
+     * Edit a position instance.
      *
      * @return bool
      */
@@ -32,7 +32,7 @@ class PositionPolicy
 
 
     /**
-     * Delete a policy instance.
+     * Delete a position instance.
      *
      * @return bool
      */
@@ -42,7 +42,7 @@ class PositionPolicy
     }
 
     /**
-     * View a policy instance.
+     * View a position instance.
      *
      * @return bool
      */
