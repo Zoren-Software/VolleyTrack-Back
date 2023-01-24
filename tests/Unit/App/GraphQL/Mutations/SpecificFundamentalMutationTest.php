@@ -16,9 +16,11 @@ class SpecificFundamentalMutationTest extends TestCase
      *
      * @dataProvider specificFundamentalProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_specific_fundamental_make($data, $method)
+    public function specificFundamentalMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $specificFundamentalMock = $this->mock(
@@ -78,16 +80,34 @@ class SpecificFundamentalMutationTest extends TestCase
      *
      * @dataProvider specificFundamentalDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_specific_fundamental_delete($data, $number)
+    public function specificFundamentalDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamental = $this->createMock(SpecificFundamental::class);
 
-        $specificFundamental->expects($this->exactly($number))
-            ->method('deleteSpecificFundamental')
-            ->willReturn($specificFundamental);
+        $specificFundamental = $this->mock(
+            SpecificFundamental::class,
+            function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(1)
+                    ->andReturn($mock);
+
+                if (count($data) > 1) {
+                    $mock->shouldReceive('findOrFail')
+                        ->times($numberFind)
+                        ->with(2)
+                        ->andReturn($mock);
+                }
+
+                $mock->shouldReceive('delete')
+                    ->times($numberDelete)
+                    ->andReturn(true);
+            }
+        );
 
         $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
         $specificFundamentalMutation->delete(
@@ -102,17 +122,20 @@ class SpecificFundamentalMutationTest extends TestCase
     public function specificFundamentalDeleteProvider()
     {
         return [
-            'send array, success' => [
-                [1],
-                1,
+            'send data delete, success' => [
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiple specific fundamentals, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }

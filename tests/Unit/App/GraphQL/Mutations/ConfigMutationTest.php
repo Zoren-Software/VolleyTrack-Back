@@ -13,9 +13,11 @@ class ConfigMutationTest extends TestCase
     /**
      * A basic unit test make.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_make()
+    public function make()
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $configMock = $this->mock(Config::class, function (MockInterface $mock) {

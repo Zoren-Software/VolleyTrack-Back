@@ -17,9 +17,11 @@ class TeamMutationTest extends TestCase
      *
      * @dataProvider teamProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_team_make($data, $method)
+    public function teamMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $teamMock = $this->mock(Team::class, function (MockInterface $mock) use ($data, $method) {
@@ -125,18 +127,32 @@ class TeamMutationTest extends TestCase
      *
      * @dataProvider teamDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_team_delete($data, $number)
+    public function teamDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $team = $this->createMock(Team::class);
-        $user = $this->createMock(User::class);
+        $team = $this->mock(Team::class, function (MockInterface $mock) use ($numberFind, $numberDelete, $data) {
+            $mock->shouldReceive('findOrFail')
+                ->times($numberFind)
+                ->with(1)
+                ->andReturn($mock);
 
-        $team
-            ->expects($this->exactly($number))
-            ->method('deleteTeam')
-            ->willReturn($team);
+            if (count($data) > 1) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(2)
+                    ->andReturn($mock);
+            }
+
+            $mock->shouldReceive('delete')
+                ->times($numberDelete)
+                ->andReturn(true);
+        });
+
+        $user = $this->createMock(User::class);
 
         $teamMutation = new TeamMutation($team, $user);
         $teamMutation->delete(
@@ -151,17 +167,20 @@ class TeamMutationTest extends TestCase
     public function teamDeleteProvider()
     {
         return [
-            'send array, success' => [
-                [1],
-                1,
+            'send data delete, success' => [
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiple teams, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }

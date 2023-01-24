@@ -15,9 +15,11 @@ class PositionMutationTest extends TestCase
      *
      * @dataProvider positionProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_position_make($data, $method)
+    public function positionMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $positionMock = $this->mock(Position::class, function (MockInterface $mock) use ($data, $method) {
@@ -68,16 +70,33 @@ class PositionMutationTest extends TestCase
      *
      * @dataProvider positionDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_position_delete($data, $number)
+    public function positionDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $position = $this->createMock(Position::class);
+        $position = $this->mock(
+            Position::class,
+            function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(1)
+                    ->andReturn($mock);
 
-        $position->expects($this->exactly($number))
-            ->method('deletePosition')
-            ->willReturn($position);
+                if (count($data) > 1) {
+                    $mock->shouldReceive('findOrFail')
+                        ->times($numberFind)
+                        ->with(2)
+                        ->andReturn($mock);
+                }
+
+                $mock->shouldReceive('delete')
+                    ->times($numberDelete)
+                    ->andReturn(true);
+            }
+        );
 
         $positionMutation = new PositionMutation($position);
         $positionMutation->delete(
@@ -93,16 +112,19 @@ class PositionMutationTest extends TestCase
     {
         return [
             'send array, success' => [
-                [1],
-                1,
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiples positions, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }

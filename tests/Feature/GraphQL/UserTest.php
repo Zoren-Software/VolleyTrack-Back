@@ -31,9 +31,11 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_users_list()
+    public function usersList()
     {
         $this->login = true;
 
@@ -71,9 +73,11 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user_info()
+    public function userInfo()
     {
         $this->login = true;
 
@@ -104,10 +108,17 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user_create($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
+    public function userCreate(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $permission
+        ) {
         $this->login = true;
 
         $faker = Faker::create();
@@ -125,7 +136,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -357,9 +368,11 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function userEdit($parameters, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -375,7 +388,7 @@ class UserTest extends TestCase
 
         $parameters['id'] = $user->id;
 
-        if ($expected_message == 'UserEdit.email_unique') {
+        if ($expectedMessage == 'UserEdit.email_unique') {
             $parameters['email'] = $userExist->email;
         }
 
@@ -388,7 +401,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -618,9 +631,11 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function testDeleteUser($data, $type_message_error, $expected_message, $expected, $permission)
+    public function testDeleteUser($data, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -645,7 +660,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)

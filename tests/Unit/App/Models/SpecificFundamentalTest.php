@@ -13,9 +13,11 @@ class SpecificFundamentalTest extends TestCase
     /**
      * A basic unit test relation users.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user()
+    public function user()
     {
         $specificFundamental = new SpecificFundamental();
         $this->assertInstanceOf(BelongsTo::class, $specificFundamental->user());
@@ -24,9 +26,11 @@ class SpecificFundamentalTest extends TestCase
     /**
      * A basic unit test relation users.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_fundamentals()
+    public function fundamentals()
     {
         $specificFundamental = new SpecificFundamental();
         $this->assertInstanceOf(BelongsToMany::class, $specificFundamental->fundamentals());
@@ -35,9 +39,11 @@ class SpecificFundamentalTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function get_activitylog_options()
     {
         $specificFundamental = new SpecificFundamental();
         $this->assertInstanceOf(LogOptions::class, $specificFundamental->getActivitylogOptions());

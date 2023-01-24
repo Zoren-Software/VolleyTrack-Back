@@ -2,16 +2,18 @@
 
 namespace Tests\Unit\App\Mail\Training;
 
-use Tests\TestCase;
 use App\Mail\Training\Mail;
 use App\Models\Training;
 use App\Models\User;
+use Tests\TestCase;
 
 class MailTest extends TestCase
 {
     /**
      * A basic unit test example.
+     *
      * @test
+     *
      * @return void
      */
     public function attachments()

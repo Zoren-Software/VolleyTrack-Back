@@ -12,9 +12,11 @@ class ConfigTest extends TestCase
     /**
      * A basic unit test relation language.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_language()
+    public function language()
     {
         $config = new Config();
         $this->assertInstanceOf(BelongsTo::class, $config->language());
@@ -23,9 +25,11 @@ class ConfigTest extends TestCase
     /**
      * A basic unit test relation trainingConfig.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_trainingConfig()
+    public function trainingConfig()
     {
         $config = new Config();
         $this->assertInstanceOf(HasOne::class, $config->trainingConfig());
@@ -34,9 +38,11 @@ class ConfigTest extends TestCase
     /**
      * A basic unit test relation user.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user()
+    public function user()
     {
         $config = new Config();
         $this->assertInstanceOf(BelongsTo::class, $config->user());

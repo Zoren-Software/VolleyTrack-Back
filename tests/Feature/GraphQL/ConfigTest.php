@@ -27,11 +27,13 @@ class ConfigTest extends TestCase
     /**
      * Listagem de configurações.
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_config_info()
+    public function configInfo()
     {
         $this->graphQL(
             'config',
@@ -51,13 +53,15 @@ class ConfigTest extends TestCase
     /**
      * Método de edição de configurações.
      *
-     * @dataProvider ConfigEditProvider
+     * @dataProvider configEditProvider
+     *
+     * @test
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_config_edit(
+    public function configEdit(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -92,7 +96,7 @@ class ConfigTest extends TestCase
     /**
      * @return array
      */
-    public function ConfigEditProvider()
+    public function configEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
