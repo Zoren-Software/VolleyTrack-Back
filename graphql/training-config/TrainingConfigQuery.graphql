@@ -1,4 +1,4 @@
-extend type Query {
+extend type Query @guard {
     "Find attribute by ID=1, there will always be only one configuration record"
     trainingConfig(
         id: ID!
