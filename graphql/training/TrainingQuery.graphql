@@ -4,7 +4,9 @@ extend type Query @guard {
     training(
         id: ID!
         @eq
-    ): Training @find
+    ): Training
+        @can(ability: "view", resolved: true)
+        @find
 
     "List multiple trainings."
     trainings(        
@@ -20,5 +22,7 @@ extend type Query @guard {
         "Filters by the training's date."
         dateStart: String @where(operator: "eq", field: "date_start")
 
-    ): [Training!]! @paginate(defaultCount: 10, maxCount: 100)
+    ): [Training!]! 
+        @can(ability: "view", resolved: true)
+        @paginate(defaultCount: 10, maxCount: 100)
 }
