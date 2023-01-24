@@ -11,7 +11,7 @@ class UserPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create-user');
+        return $user->hasPermissionTo('edit-user');
     }
 
     public function edit(User $user): bool
@@ -21,6 +21,6 @@ class UserPolicy
 
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo('delete-user');
+        return $user->hasPermissionTo('edit-user');
     }
 }

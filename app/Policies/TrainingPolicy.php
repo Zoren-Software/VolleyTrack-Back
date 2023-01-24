@@ -16,7 +16,7 @@ class TrainingPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create-training');
+        return $user->hasPermissionTo('edit-training');
     }
 
     public function edit(User $user): bool
@@ -26,6 +26,6 @@ class TrainingPolicy
 
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo('delete-training');
+        return $user->hasPermissionTo('edit-training');
     }
 }

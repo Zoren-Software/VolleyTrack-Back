@@ -16,7 +16,7 @@ class PositionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create-position');
+        return $user->hasPermissionTo('edit-position');
     }
 
     public function edit(User $user): bool
@@ -26,6 +26,6 @@ class PositionPolicy
 
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo('delete-position');
+        return $user->hasPermissionTo('edit-position');
     }
 }

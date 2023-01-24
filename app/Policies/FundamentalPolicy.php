@@ -11,7 +11,7 @@ class FundamentalPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create-fundamental');
+        return $user->hasPermissionTo('edit-fundamental');
     }
 
     public function edit(User $user): bool
@@ -21,6 +21,6 @@ class FundamentalPolicy
 
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo('delete-fundamental');
+        return $user->hasPermissionTo('edit-fundamental');
     }
 }

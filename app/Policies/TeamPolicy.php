@@ -11,7 +11,7 @@ class TeamPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create-team');
+        return $user->hasPermissionTo('edit-team');
     }
 
     public function edit(User $user): bool
@@ -21,6 +21,6 @@ class TeamPolicy
 
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo('delete-team');
+        return $user->hasPermissionTo('edit-team');
     }
 }
