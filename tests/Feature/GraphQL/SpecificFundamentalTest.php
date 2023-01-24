@@ -15,7 +15,7 @@ class SpecificFundamentalTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $permission = 'technician';
 
     private $data = [
         'id',
@@ -111,7 +111,7 @@ class SpecificFundamentalTest extends TestCase
         $permission,
         $addRelationship
         ) {
-        $this->checkPermission($permission, $this->permission, 'create-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
@@ -404,7 +404,7 @@ class SpecificFundamentalTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'delete-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
 
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
