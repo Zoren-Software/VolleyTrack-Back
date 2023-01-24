@@ -78,7 +78,7 @@ class PositionMutationTest extends TestCase
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $position = $this->mock(
-            Position::class, 
+            Position::class,
             function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
                 $mock->shouldReceive('findOrFail')
                     ->times($numberFind)

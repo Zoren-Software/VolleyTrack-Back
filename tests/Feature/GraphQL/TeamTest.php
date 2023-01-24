@@ -105,13 +105,12 @@ class TeamTest extends TestCase
      * @return void
      */
     public function teamCreate(
-        $parameters, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         $permission
-        )
-    {
+        ) {
         $this->checkPermission($permission, $this->permission, 'create-team');
 
         $response = $this->graphQL(
@@ -242,13 +241,12 @@ class TeamTest extends TestCase
      * @return void
      */
     public function teamEdit(
-        $parameters, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         $permission
-        )
-    {
+        ) {
         $this->checkPermission($permission, $this->permission, 'edit-team');
 
         $teamExist = Team::factory()->make();

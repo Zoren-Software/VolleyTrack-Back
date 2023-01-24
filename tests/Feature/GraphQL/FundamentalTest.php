@@ -101,13 +101,12 @@ class FundamentalTest extends TestCase
      * @return void
      */
     public function fundamentalCreate(
-        $parameters, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         $permission
-        )
-    {
+        ) {
         $this->checkPermission($permission, $this->permission, 'create-fundamental');
 
         $response = $this->graphQL(
@@ -218,13 +217,12 @@ class FundamentalTest extends TestCase
      * @return void
      */
     public function fundamentalEdit(
-        $parameters, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         $permission
-        )
-    {
+        ) {
         $this->checkPermission($permission, $this->permission, 'edit-fundamental');
 
         $fundamentalExist = Fundamental::factory()->make();

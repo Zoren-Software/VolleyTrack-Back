@@ -113,13 +113,12 @@ class UserTest extends TestCase
      * @return void
      */
     public function userCreate(
-        $parameters, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         $permission
-        )
-    {
+        ) {
         $this->login = true;
 
         $faker = Faker::create();

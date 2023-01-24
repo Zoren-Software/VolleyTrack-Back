@@ -146,7 +146,7 @@ class TrainingMutationTest extends TestCase
     public function trainingDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $trainingMock = $this->mock(Training::class, 
+        $trainingMock = $this->mock(Training::class,
             function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
                 $mock->shouldReceive('findOrFail')
                     ->times($numberFind)

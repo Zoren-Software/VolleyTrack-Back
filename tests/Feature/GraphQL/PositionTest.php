@@ -103,13 +103,12 @@ class PositionTest extends TestCase
      * @return void
      */
     public function positionCreate(
-        $parameters, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         $permission
-        )
-    {
+        ) {
         $this->checkPermission($permission, $this->permission, 'create-position');
 
         $response = $this->graphQL(
@@ -220,13 +219,12 @@ class PositionTest extends TestCase
      * @return void
      */
     public function positionEdit(
-        $parameters, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         $permission
-        )
-    {
+        ) {
         $this->checkPermission($permission, $this->permission, 'edit-position');
 
         $positionExist = Position::factory()->make();

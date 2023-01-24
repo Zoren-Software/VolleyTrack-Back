@@ -104,14 +104,13 @@ class SpecificFundamentalTest extends TestCase
      * @return void
      */
     public function specificFundamentalCreate(
-        $parameters, 
-        $typeMessageError, 
-        $expected_message, 
-        $expected, 
-        $permission, 
+        $parameters,
+        $typeMessageError,
+        $expected_message,
+        $expected,
+        $permission,
         $addRelationship
-        )
-    {
+        ) {
         $this->checkPermission($permission, $this->permission, 'create-specific-fundamental');
 
         $fundamental = Fundamental::factory()->make();
@@ -249,14 +248,13 @@ class SpecificFundamentalTest extends TestCase
      * @return void
      */
     public function specificFundamentalEdit(
-        $parameters, 
-        $typeMessageError, 
-        $expected_message, 
-        $expected, 
-        $permission, 
+        $parameters,
+        $typeMessageError,
+        $expected_message,
+        $expected,
+        $permission,
         $addRelationship
-        )
-    {
+        ) {
         $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
 
         $specificFundamentalExist = SpecificFundamental::factory()->make();
