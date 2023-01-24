@@ -16,7 +16,7 @@ class TeamTest extends TestCase
 
     private $teamText = ' TEAM';
 
-    private $permission = 'Técnico';
+    private $permission = 'technician';
 
     private $data = [
         'id',
@@ -111,7 +111,7 @@ class TeamTest extends TestCase
         $expected,
         $permission
         ) {
-        $this->checkPermission($permission, $this->permission, 'create-team');
+        $this->checkPermission($permission, $this->permission, 'edit-team');
 
         $response = $this->graphQL(
             'teamCreate',
@@ -384,7 +384,7 @@ class TeamTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'delete-team');
+        $this->checkPermission($permission, $this->permission, 'edit-team');
 
         $team = Team::factory()->make();
         $team->save();
