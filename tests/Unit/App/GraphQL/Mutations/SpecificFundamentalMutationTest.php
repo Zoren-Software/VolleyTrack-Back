@@ -88,7 +88,8 @@ class SpecificFundamentalMutationTest extends TestCase
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
 
-        $specificFundamental = $this->mock(SpecificFundamental::class,
+        $specificFundamental = $this->mock(
+            SpecificFundamental::class,
             function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
                 $mock->shouldReceive('findOrFail')
                     ->times($numberFind)
