@@ -73,8 +73,6 @@ class ConfigTest extends TestCase
      */
     public function infoProvider()
     {
-        $configEdit = ['configEdit'];
-
         return [
             'with permission' => [
                 'type_message_error' => false,
@@ -91,7 +89,6 @@ class ConfigTest extends TestCase
                 'expected_message' => $this->unauthorized,
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $configEdit,
                 ],
                 'permission' => false,
             ],

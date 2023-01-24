@@ -92,14 +92,24 @@ class TrainingTest extends TestCase
      *
      * @test
      *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function trainingInfo()
+    public function trainingInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         $training = Training::factory()->make();
         $training->save();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-training');
+        $this->checkPermission($permission, $this->permission, 'view-training');
+
+        $response = $this->graphQL(
             'training',
             [
                 'id' => $training->id,
@@ -107,11 +117,49 @@ class TrainingTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'training' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+        
+        if($permission) {
+            $response->assertJsonStructure([
+                'data' => [
+                    'training' => $this->data,
+                ],
+            ])->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'config' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**

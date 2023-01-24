@@ -116,7 +116,7 @@ class User extends Authenticatable implements HasApiTokensContract
      */
     public function hasRoleTechnician(): bool
     {
-        return $this->hasRole('Técnico');
+        return $this->hasRole('technician');
     }
 
     /**
@@ -126,6 +126,16 @@ class User extends Authenticatable implements HasApiTokensContract
      */
     public function hasRolePlayer(): bool
     {
-        return $this->hasRole('Jogador');
+        return $this->hasRole('player');
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return bool
+     */
+    public function hasRoleAdmin(): bool
+    {
+        return $this->hasRole('admin');
     }
 }

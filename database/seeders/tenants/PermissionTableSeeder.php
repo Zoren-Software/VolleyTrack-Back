@@ -59,27 +59,26 @@ class PermissionTableSeeder extends Seeder
         /**
          * Permissões de Funções
          */
-        Permission::updateOrCreate(['id' => 11], ['name' => 'view-role-admin']);
-        $role[] = Permission::updateOrCreate(['id' => 12], ['name' => 'view-role-technician']);
-        $role[] = Permission::updateOrCreate(['id' => 13], ['name' => 'view-role-player']);
+        $role[] = Permission::updateOrCreate(['id' => 11], ['name' => 'edit-role']);
+        $role[] = Permission::updateOrCreate(['id' => 12], ['name' => 'view-role']);
 
         /**
          * Permissões de Treinos
          */
-        $training[] = Permission::updateOrCreate(['id' => 14], ['name' => 'edit-training']);
-        $training[] = Permission::updateOrCreate(['id' => 15], ['name' => 'view-training']);
+        $training[] = Permission::updateOrCreate(['id' => 13], ['name' => 'edit-training']);
+        $training[] = Permission::updateOrCreate(['id' => 14], ['name' => 'view-training']);
 
         /**
          * Permissões de Configurações
          */
-        $config[] = Permission::updateOrCreate(['id' => 16], ['name' => 'edit-config']);
-        $config[] = Permission::updateOrCreate(['id' => 17], ['name' => 'view-config']);
+        $config[] = Permission::updateOrCreate(['id' => 15], ['name' => 'edit-config']);
+        $config[] = Permission::updateOrCreate(['id' => 16], ['name' => 'view-config']);
 
         /**
          * Permissões de Configurações de Treino
          */
-        $trainingConfig[] = Permission::updateOrCreate(['id' => 18], ['name' => 'edit-training-config']);
-        $trainingConfig[] = Permission::updateOrCreate(['id' => 19], ['name' => 'view-training-config']);
+        $trainingConfig[] = Permission::updateOrCreate(['id' => 17], ['name' => 'edit-training-config']);
+        $trainingConfig[] = Permission::updateOrCreate(['id' => 18], ['name' => 'view-training-config']);
 
         /**
          * Relacionando Permissões

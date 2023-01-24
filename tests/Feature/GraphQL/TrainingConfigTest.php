@@ -32,11 +32,21 @@ class TrainingConfigTest extends TestCase
      *
      * @test
      *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function trainingConfigInfo()
+    public function trainingConfigInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-training-config');
+        $this->checkPermission($permission, $this->permission, 'view-training-config');
+
+        $response = $this->graphQL(
             'trainingConfig',
             [
                 'id' => 1,
@@ -44,11 +54,49 @@ class TrainingConfigTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'trainingConfig' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+        
+        if($permission) {
+            $response->assertJsonStructure([
+                'data' => [
+                    'trainingConfig' => $this->data,
+                ],
+            ])->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'config' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**

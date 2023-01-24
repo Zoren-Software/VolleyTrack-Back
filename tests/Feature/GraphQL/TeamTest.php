@@ -70,15 +70,25 @@ class TeamTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
+     * 
+     * @dataProvider infoProvider
      *
      * @return void
      */
-    public function teamInfo()
+    public function teamInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         $team = Team::factory()->make();
         $team->save();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-team');
+        $this->checkPermission($permission, $this->permission, 'view-team');
+
+        $response = $this->graphQL(
             'team',
             [
                 'id' => $team->id,
@@ -86,11 +96,49 @@ class TeamTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'team' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+        
+        if($permission) {
+            $response->assertJsonStructure([
+                'data' => [
+                    'team' => $this->data,
+                ],
+            ])->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'config' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**

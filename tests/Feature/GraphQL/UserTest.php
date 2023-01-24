@@ -75,18 +75,28 @@ class UserTest extends TestCase
      *
      * @test
      *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function userInfo()
+    public function userInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         $this->login = true;
+
+        $this->checkPermission($permission, $this->permission, 'edit-user');
+        $this->checkPermission($permission, $this->permission, 'view-user');
 
         $user = User::factory()
             ->has(Position::factory()->count(3))
             ->create();
         $user->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'user',
             [
                 'id' => $user->id,
@@ -94,11 +104,49 @@ class UserTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'user' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+        
+        if($permission) {
+            $response->assertJsonStructure([
+                'data' => [
+                    'user' => $this->data,
+                ],
+            ])->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'config' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
