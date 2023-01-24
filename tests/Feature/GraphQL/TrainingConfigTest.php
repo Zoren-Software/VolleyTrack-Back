@@ -13,7 +13,7 @@ class TrainingConfigTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $permission = 'technician';
 
     private $data = [
         'id',
