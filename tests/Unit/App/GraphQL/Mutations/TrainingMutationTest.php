@@ -146,23 +146,25 @@ class TrainingMutationTest extends TestCase
     public function trainingDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $trainingMock = $this->mock(Training::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
-            $mock->shouldReceive('findOrFail')
-                ->times($numberFind)
-                ->with(1)
-                ->andReturn($mock);
-
-            if (count($data) > 1) {
+        $trainingMock = $this->mock(Training::class, 
+            function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
                 $mock->shouldReceive('findOrFail')
                     ->times($numberFind)
-                    ->with(2)
+                    ->with(1)
                     ->andReturn($mock);
-            }
 
-            $mock->shouldReceive('delete')
-                ->times($numberDelete)
-                ->andReturn(true);
-        });
+                if (count($data) > 1) {
+                    $mock->shouldReceive('findOrFail')
+                        ->times($numberFind)
+                        ->with(2)
+                        ->andReturn($mock);
+                }
+
+                $mock->shouldReceive('delete')
+                    ->times($numberDelete)
+                    ->andReturn(true);
+            }
+        );
 
         $specificFundamentalMutation = new TrainingMutation($trainingMock);
 

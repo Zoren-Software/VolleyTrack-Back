@@ -77,23 +77,26 @@ class PositionMutationTest extends TestCase
     public function positionDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $position = $this->mock(Position::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
-            $mock->shouldReceive('findOrFail')
-                ->times($numberFind)
-                ->with(1)
-                ->andReturn($mock);
-
-            if (count($data) > 1) {
+        $position = $this->mock(
+            Position::class, 
+            function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
                 $mock->shouldReceive('findOrFail')
                     ->times($numberFind)
-                    ->with(2)
+                    ->with(1)
                     ->andReturn($mock);
-            }
 
-            $mock->shouldReceive('delete')
-                ->times($numberDelete)
-                ->andReturn(true);
-        });
+                if (count($data) > 1) {
+                    $mock->shouldReceive('findOrFail')
+                        ->times($numberFind)
+                        ->with(2)
+                        ->andReturn($mock);
+                }
+
+                $mock->shouldReceive('delete')
+                    ->times($numberDelete)
+                    ->andReturn(true);
+            }
+        );
 
         $positionMutation = new PositionMutation($position);
         $positionMutation->delete(

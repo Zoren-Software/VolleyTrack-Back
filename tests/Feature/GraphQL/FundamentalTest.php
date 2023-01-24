@@ -100,7 +100,13 @@ class FundamentalTest extends TestCase
      *
      * @return void
      */
-    public function fundamentalCreate($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function fundamentalCreate(
+        $parameters, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        $permission
+        )
     {
         $this->checkPermission($permission, $this->permission, 'create-fundamental');
 
@@ -113,7 +119,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -211,7 +217,13 @@ class FundamentalTest extends TestCase
      *
      * @return void
      */
-    public function fundamentalEdit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function fundamentalEdit(
+        $parameters, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        $permission
+        )
     {
         $this->checkPermission($permission, $this->permission, 'edit-fundamental');
 
@@ -222,7 +234,7 @@ class FundamentalTest extends TestCase
 
         $parameters['id'] = $fundamental->id;
 
-        if ($expected_message == 'FundamentalEdit.name_unique') {
+        if ($expectedMessage == 'FundamentalEdit.name_unique') {
             $parameters['name'] = $fundamentalExist->name;
         }
 
@@ -235,7 +247,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -331,7 +343,7 @@ class FundamentalTest extends TestCase
      *
      * @return void
      */
-    public function fundamentalDelete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function fundamentalDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -355,7 +367,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)

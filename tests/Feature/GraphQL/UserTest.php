@@ -112,7 +112,13 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function userCreate($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function userCreate(
+        $parameters, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        $permission
+        )
     {
         $this->login = true;
 
@@ -131,7 +137,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -367,7 +373,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function userEdit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function userEdit($parameters, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -383,7 +389,7 @@ class UserTest extends TestCase
 
         $parameters['id'] = $user->id;
 
-        if ($expected_message == 'UserEdit.email_unique') {
+        if ($expectedMessage == 'UserEdit.email_unique') {
             $parameters['email'] = $userExist->email;
         }
 
@@ -396,7 +402,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -630,7 +636,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testDeleteUser($data, $type_message_error, $expected_message, $expected, $permission)
+    public function testDeleteUser($data, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -655,7 +661,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)

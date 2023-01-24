@@ -104,7 +104,13 @@ class TeamTest extends TestCase
      *
      * @return void
      */
-    public function teamCreate($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function teamCreate(
+        $parameters, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        $permission
+        )
     {
         $this->checkPermission($permission, $this->permission, 'create-team');
 
@@ -117,7 +123,7 @@ class TeamTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -235,7 +241,13 @@ class TeamTest extends TestCase
      *
      * @return void
      */
-    public function teamEdit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function teamEdit(
+        $parameters, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        $permission
+        )
     {
         $this->checkPermission($permission, $this->permission, 'edit-team');
 
@@ -246,7 +258,7 @@ class TeamTest extends TestCase
 
         $parameters['id'] = $team->id;
 
-        if ($expected_message == 'TeamEdit.name_unique') {
+        if ($expectedMessage == 'TeamEdit.name_unique') {
             $parameters['name'] = $teamExist->name;
         }
 
@@ -259,7 +271,7 @@ class TeamTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -370,7 +382,7 @@ class TeamTest extends TestCase
      *
      * @return void
      */
-    public function teamDelete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function teamDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -394,7 +406,7 @@ class TeamTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)

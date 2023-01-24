@@ -102,7 +102,13 @@ class PositionTest extends TestCase
      *
      * @return void
      */
-    public function positionCreate($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function positionCreate(
+        $parameters, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        $permission
+        )
     {
         $this->checkPermission($permission, $this->permission, 'create-position');
 
@@ -115,7 +121,7 @@ class PositionTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -213,7 +219,13 @@ class PositionTest extends TestCase
      *
      * @return void
      */
-    public function positionEdit($parameters, $type_message_error, $expected_message, $expected, $permission)
+    public function positionEdit(
+        $parameters, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        $permission
+        )
     {
         $this->checkPermission($permission, $this->permission, 'edit-position');
 
@@ -224,7 +236,7 @@ class PositionTest extends TestCase
 
         $parameters['id'] = $position->id;
 
-        if ($expected_message == 'PositionEdit.name_unique') {
+        if ($expectedMessage == 'PositionEdit.name_unique') {
             $parameters['name'] = $positionExist->name;
         }
 
@@ -237,7 +249,7 @@ class PositionTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -333,7 +345,7 @@ class PositionTest extends TestCase
      *
      * @return void
      */
-    public function positionDelete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function positionDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -357,7 +369,7 @@ class PositionTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
