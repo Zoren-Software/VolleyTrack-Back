@@ -14,7 +14,7 @@ class FundamentalTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $permission = 'technician';
 
     private $data = [
         'id',
@@ -107,7 +107,7 @@ class FundamentalTest extends TestCase
         $expected,
         $permission
         ) {
-        $this->checkPermission($permission, $this->permission, 'create-fundamental');
+        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
 
         $response = $this->graphQL(
             'fundamentalCreate',
@@ -345,7 +345,7 @@ class FundamentalTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'delete-fundamental');
+        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
