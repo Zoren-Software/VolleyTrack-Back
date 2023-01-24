@@ -18,7 +18,7 @@ class TrainingTest extends TestCase
 
     private $trainingText = ' TRAINING';
 
-    private $permission = 'Técnico';
+    private $permission = 'technician';
 
     private $dateStart = '2022-10-23 13:50:00';
 
@@ -136,7 +136,7 @@ class TrainingTest extends TestCase
         $this->checkPermission(
             $permission,
             $this->permission,
-            'create-training'
+            'edit-training'
         );
 
         $team = Team::factory()
@@ -817,7 +817,7 @@ class TrainingTest extends TestCase
     ) {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'delete-training');
+        $this->checkPermission($permission, $this->permission, 'edit-training');
 
         $training = Training::factory()->make();
         $training->save();
