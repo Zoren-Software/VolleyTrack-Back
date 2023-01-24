@@ -14,7 +14,7 @@ class PositionTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $permission = 'technician';
 
     private $data = [
         'id',
@@ -109,7 +109,7 @@ class PositionTest extends TestCase
         $expected,
         $permission
         ) {
-        $this->checkPermission($permission, $this->permission, 'create-position');
+        $this->checkPermission($permission, $this->permission, 'edit-position');
 
         $response = $this->graphQL(
             'positionCreate',
@@ -347,7 +347,7 @@ class PositionTest extends TestCase
     {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'delete-position');
+        $this->checkPermission($permission, $this->permission, 'edit-position');
 
         $position = Position::factory()->make();
         $position->save();
