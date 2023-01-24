@@ -3,5 +3,7 @@ extend type Query {
     trainingConfig(
         id: ID!
         @eq
-    ): TrainingConfig @find
+    ): TrainingConfig
+        @can(ability: "view", resolved: true)
+        @find
 }
