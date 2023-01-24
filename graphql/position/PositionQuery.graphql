@@ -4,7 +4,11 @@ extend type Query {
     position(
         id: ID!
         @eq
-    ): Position @find
+        
+    ): Position 
+        @can(ability: "view", resolved: true)
+        @find
+        @softDeletes
 
     "List multiple positions."
     positions (
@@ -14,5 +18,7 @@ extend type Query {
         "Filters by the position's user_id."
         user_id: Int @where(operator: "eq", field: "user_id")
 
-    ): [Position!]! @paginate(defaultCount: 10, maxCount: 100)
+    ): [Position!]! 
+        @paginate(defaultCount: 10, maxCount: 100)
+        @can(ability: "view", resolved: true)
 }
