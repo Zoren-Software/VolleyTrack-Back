@@ -18,9 +18,11 @@ class UserMutationTest extends TestCase
      *
      * @dataProvider userProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user_make($data)
+    public function userMake($data)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
@@ -117,17 +119,30 @@ class UserMutationTest extends TestCase
      *
      * @dataProvider userDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user_delete($data, $number)
+    public function userDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $user = $this->createMock(User::class);
+        $user = $this->mock(User::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
+            $mock->shouldReceive('findOrFail')
+                ->times($numberFind)
+                ->with(1)
+                ->andReturn($mock);
 
-        $user
-            ->expects($this->exactly($number))
-            ->method('deleteUser')
-            ->willReturn($user);
+            if (count($data) > 1) {
+                $mock->shouldReceive('findOrFail')
+                    ->times(1)
+                    ->with(2)
+                    ->andReturn($mock);
+            }
+
+            $mock->shouldReceive('delete')
+                ->times($numberDelete)
+                ->andReturn(true);
+        });
 
         $userMutation = new UserMutation($user);
         $userMutation->delete(
@@ -142,17 +157,20 @@ class UserMutationTest extends TestCase
     public function userDeleteProvider()
     {
         return [
-            'send array, success' => [
-                [1],
-                1,
+            'send data delete, success' => [
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiple users, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }

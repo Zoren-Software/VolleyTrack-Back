@@ -2,17 +2,20 @@
 
 namespace Tests\Unit\App\Notifications\Training;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Training;
+use App\Models\User;
 use App\Notifications\Training\Notification;
+use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
     /**
      * A test method via.
+     *
      * @test
+     *
      * @dataProvider dataProvider
+     *
      * @return void
      */
     public function via(
@@ -36,6 +39,7 @@ class NotificationTest extends TestCase
 
     /**
      * A data provider for via.
+     *
      * @return array
      */
     public function dataProvider()
@@ -48,8 +52,8 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => true,
                 'expected' => [
                     'database',
-                    'mail'
-                ]
+                    'mail',
+                ],
             ],
             'notify player by email and database' => [
                 'notificationTechnicianByEmail' => false,
@@ -58,8 +62,8 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => true,
                 'expected' => [
                     'database',
-                    'mail'
-                ]
+                    'mail',
+                ],
             ],
             'notify technician by email and database' => [
                 'notificationTechnicianByEmail' => true,
@@ -68,8 +72,8 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => false,
                 'expected' => [
                     'database',
-                    'mail'
-                ]
+                    'mail',
+                ],
             ],
             'notify technician by database only' => [
                 'notificationTechnicianByEmail' => false,
@@ -78,7 +82,7 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => false,
                 'expected' => [
                     'database',
-                ]
+                ],
             ],
             'notify player by database only' => [
                 'notificationTechnicianByEmail' => false,
@@ -87,7 +91,7 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => true,
                 'expected' => [
                     'database',
-                ]
+                ],
             ],
         ];
     }

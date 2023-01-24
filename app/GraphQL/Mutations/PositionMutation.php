@@ -38,8 +38,9 @@ final class PositionMutation
     {
         $positions = [];
         foreach ($args['id'] as $id) {
-            $this->position = $this->position->deletePosition($id);
+            $this->position = $this->position->findOrFail($id);
             $positions[] = $this->position;
+            $this->position->delete();
         }
 
         return $positions;

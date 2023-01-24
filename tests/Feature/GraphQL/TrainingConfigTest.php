@@ -30,9 +30,11 @@ class TrainingConfigTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_training_config_info()
+    public function trainingConfigInfo()
     {
         $this->graphQL(
             'trainingConfig',
@@ -56,9 +58,11 @@ class TrainingConfigTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_training_config_edit(
+    public function trainingConfigEdit(
         $parameters,
         $typeMessageError,
         $expectedMessage,

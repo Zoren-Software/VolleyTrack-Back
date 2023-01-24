@@ -13,9 +13,11 @@ class PositionTest extends TestCase
     /**
      * A basic unit test relation users.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_users()
+    public function users()
     {
         $position = new Position();
         $this->assertInstanceOf(BelongsToMany::class, $position->users());
@@ -24,9 +26,11 @@ class PositionTest extends TestCase
     /**
      * A basic unit test relation user.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user()
+    public function user()
     {
         $position = new Position();
         $this->assertInstanceOf(BelongsTo::class, $position->user());
@@ -35,9 +39,11 @@ class PositionTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
         $position = new Position();
         $this->assertInstanceOf(LogOptions::class, $position->getActivitylogOptions());

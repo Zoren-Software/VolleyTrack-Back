@@ -13,9 +13,11 @@ class PositionPolicyTest extends TestCase
      *
      * @dataProvider permissionProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_create(bool $expected): void
+    public function create(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -32,9 +34,11 @@ class PositionPolicyTest extends TestCase
      *
      * @dataProvider permissionProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_edit(bool $expected): void
+    public function edit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -51,9 +55,11 @@ class PositionPolicyTest extends TestCase
      *
      * @dataProvider permissionProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_delete(bool $expected): void
+    public function deletePositionPolicy(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())

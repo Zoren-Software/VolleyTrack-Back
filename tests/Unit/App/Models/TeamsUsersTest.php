@@ -13,9 +13,11 @@ class TeamsUsersTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
         $teamsUsers = new TeamsUsers();
         $this->assertInstanceOf(LogOptions::class, $teamsUsers->getActivitylogOptions());
@@ -30,7 +32,7 @@ class TeamsUsersTest extends TestCase
      *
      * @return void
      */
-    public function update_role_in_relationship($data)
+    public function updateRoleInRelationship($data)
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
             $mock->shouldReceive('find')

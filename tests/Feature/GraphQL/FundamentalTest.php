@@ -29,9 +29,11 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_fundamentals_list()
+    public function fundamentalsList()
     {
         Fundamental::factory()->make()->save();
 
@@ -65,9 +67,11 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_fundamental_info()
+    public function fundamentalInfo()
     {
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
@@ -96,8 +100,13 @@ class FundamentalTest extends TestCase
      *
      * @return void
      */
-    public function test_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
+    public function fundamentalCreate(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $permission
+        ) {
         $this->checkPermission($permission, $this->permission, 'create-fundamental');
 
         $response = $this->graphQL(
@@ -109,7 +118,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -203,10 +212,17 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
+    public function fundamentalEdit(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $permission
+        ) {
         $this->checkPermission($permission, $this->permission, 'edit-fundamental');
 
         $fundamentalExist = Fundamental::factory()->make();
@@ -216,7 +232,7 @@ class FundamentalTest extends TestCase
 
         $parameters['id'] = $fundamental->id;
 
-        if ($expected_message == 'FundamentalEdit.name_unique') {
+        if ($expectedMessage == 'FundamentalEdit.name_unique') {
             $parameters['name'] = $fundamentalExist->name;
         }
 
@@ -229,7 +245,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -321,9 +337,11 @@ class FundamentalTest extends TestCase
      *
      * @dataProvider fundamentalDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_fundamental_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function fundamentalDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -347,7 +365,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)

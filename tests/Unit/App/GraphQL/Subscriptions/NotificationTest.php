@@ -2,21 +2,22 @@
 
 namespace Tests\Unit\App\GraphQL\Subscriptions;
 
-use Tests\TestCase;
 use App\GraphQL\Subscriptions\Notification;
-use Nuwave\Lighthouse\Subscriptions\Subscriber;
 use Illuminate\Http\Request;
+use Nuwave\Lighthouse\Subscriptions\Subscriber;
+use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
     /**
      * A basic test method authorize.
+     *
      * @test
+     *
      * @return void
      */
     public function authorize()
     {
-
         $subscriberMock = $this->createMock(Subscriber::class);
         $requestMock = $this->createMock(Request::class);
 
@@ -27,7 +28,9 @@ class NotificationTest extends TestCase
 
     /**
      * A basic test method filter.
+     *
      * @test
+     *
      * @return void
      */
     public function filter()

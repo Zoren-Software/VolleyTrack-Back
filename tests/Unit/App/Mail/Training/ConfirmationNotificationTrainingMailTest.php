@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\App\Mail\Training;
 
-use Tests\TestCase;
 use App\Mail\Training\ConfirmationNotificationTrainingMail;
 use App\Models\Training;
 use App\Models\User;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Tests\TestCase;
 
 class ConfirmationNotificationTrainingMailTest extends TestCase
 {
@@ -15,7 +15,9 @@ class ConfirmationNotificationTrainingMailTest extends TestCase
 
     /**
      * A method to test the envelope.
+     *
      * @test
+     *
      * @return void
      */
     public function envelope()
@@ -41,7 +43,9 @@ class ConfirmationNotificationTrainingMailTest extends TestCase
 
     /**
      * A method to test the content.
+     *
      * @test
+     *
      * @return void
      */
     public function content()

@@ -22,9 +22,11 @@ class RoleTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_role_info()
+    public function rolInfo()
     {
         $this->login = true;
 
@@ -48,9 +50,11 @@ class RoleTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_roles_list()
+    public function rolesList()
     {
         $this->login = true;
 

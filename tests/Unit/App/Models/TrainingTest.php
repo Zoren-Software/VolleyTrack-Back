@@ -14,6 +14,7 @@ class TrainingTest extends TestCase
      * A basic unit test relation getActivitylogOptions.
      *
      * @test
+     *
      * @return void
      */
     public function getActivitylogOptions()
@@ -26,6 +27,7 @@ class TrainingTest extends TestCase
      * A basic unit test relation user.
      *
      * @test
+     *
      * @return void
      */
     public function relationUser()
@@ -38,6 +40,7 @@ class TrainingTest extends TestCase
      * A basic unit test relation team.
      *
      * @test
+     *
      * @return void
      */
     public function relationTeam()
@@ -50,6 +53,7 @@ class TrainingTest extends TestCase
      * A basic unit test relation fundamentals.
      *
      * @test
+     *
      * @return void
      */
     public function relationFundamentals()
@@ -62,6 +66,7 @@ class TrainingTest extends TestCase
      * A basic unit test relation specificFundamentals.
      *
      * @test
+     *
      * @return void
      */
     public function relationSpecificFundamentals()
@@ -74,7 +79,9 @@ class TrainingTest extends TestCase
      * A basic unit test range date notification.
      *
      * @dataProvider rangeDateNotificationProvider
+     *
      * @test
+     *
      * @return void
      */
     public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit, bool $expected)

@@ -30,9 +30,11 @@ class SpecificFundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_specific_fundamentals_list()
+    public function specificFundamentalsList()
     {
         SpecificFundamental::factory()->make()->save();
 
@@ -64,11 +66,13 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Listagem de um fundamento especifico.
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_specific_fundamental_info()
+    public function specificFundamentalInfo()
     {
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
@@ -93,12 +97,20 @@ class SpecificFundamentalTest extends TestCase
      *
      * @dataProvider specificFundamentalCreateProvider
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_specific_fundamental_create($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
-    {
+    public function specificFundamentalCreate(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $permission,
+        $addRelationship
+        ) {
         $this->checkPermission($permission, $this->permission, 'create-specific-fundamental');
 
         $fundamental = Fundamental::factory()->make();
@@ -117,7 +129,7 @@ class SpecificFundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -229,12 +241,20 @@ class SpecificFundamentalTest extends TestCase
      *
      * @dataProvider specificFundamentalEditProvider
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_specific_fundamental_edit($parameters, $type_message_error, $expected_message, $expected, $permission, $addRelationship)
-    {
+    public function specificFundamentalEdit(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $permission,
+        $addRelationship
+        ) {
         $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
 
         $specificFundamentalExist = SpecificFundamental::factory()->make();
@@ -244,7 +264,7 @@ class SpecificFundamentalTest extends TestCase
 
         $parameters['id'] = $specificFundamental->id;
 
-        if ($expected_message == 'SpecificFundamentalEdit.name_unique') {
+        if ($expectedMessage == 'SpecificFundamentalEdit.name_unique') {
             $parameters['name'] = $specificFundamentalExist->name;
         }
 
@@ -264,7 +284,7 @@ class SpecificFundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -374,11 +394,13 @@ class SpecificFundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @dataProvider specificFundamentalDeleteProvider
      *
      * @return void
      */
-    public function test_specific_fundamental_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function specificFundamentalDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -402,7 +424,7 @@ class SpecificFundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)

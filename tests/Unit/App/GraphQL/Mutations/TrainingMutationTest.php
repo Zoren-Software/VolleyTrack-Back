@@ -24,9 +24,11 @@ class TrainingMutationTest extends TestCase
      *
      * @dataProvider trainingProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_training_make($data, $method)
+    public function trainingMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $trainingMock = $this->mock(Training::class, function (MockInterface $mock) use ($data, $method) {
@@ -137,27 +139,41 @@ class TrainingMutationTest extends TestCase
      *
      * @dataProvider trainingDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_training_delete($data)
+    public function trainingDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $trainingMock = $this->mock(Training::class, function (MockInterface $mock) {
-            $mock->shouldReceive('findOrFail')
-                ->once()
-                ->with(1)
-                ->andReturn($mock);
+        $trainingMock = $this->mock(
+            Training::class,
+            function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(1)
+                    ->andReturn($mock);
 
-            $mock->shouldReceive('delete')
-                ->once()
-                ->andReturn(true);
-        });
+                if (count($data) > 1) {
+                    $mock->shouldReceive('findOrFail')
+                        ->times($numberFind)
+                        ->with(2)
+                        ->andReturn($mock);
+                }
+
+                $mock->shouldReceive('delete')
+                    ->times($numberDelete)
+                    ->andReturn(true);
+            }
+        );
 
         $specificFundamentalMutation = new TrainingMutation($trainingMock);
 
         $specificFundamentalMutation->delete(
             null,
-            ['id' => [1]],
+            [
+                'id' => $data,
+            ],
             $graphQLContext
         );
     }
@@ -166,14 +182,19 @@ class TrainingMutationTest extends TestCase
     {
         return [
             'send data delete, success' => [
-                'data' => [
-                    'id' => [1],
-                ],
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
             'send data delete multiple trainings, success' => [
-                'data' => [
-                    'id' => [1, 2, 3],
-                ],
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
+            ],
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }

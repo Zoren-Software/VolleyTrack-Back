@@ -46,8 +46,9 @@ final class SpecificFundamentalMutation
     {
         $specificFundamentals = [];
         foreach ($args['id'] as $id) {
-            $this->specificFundamental = $this->specificFundamental->deleteSpecificFundamental($id);
+            $this->specificFundamental = $this->specificFundamental->findOrFail($id);
             $specificFundamentals[] = $this->specificFundamental;
+            $this->specificFundamental->delete();
         }
 
         return $specificFundamentals;

@@ -31,9 +31,11 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_teams_list()
+    public function teamsList()
     {
         Team::factory()->make()->save();
 
@@ -67,9 +69,11 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_team_info()
+    public function teamInfo()
     {
         $team = Team::factory()->make();
         $team->save();
@@ -94,12 +98,19 @@ class TeamTest extends TestCase
      *
      * @dataProvider teamCreateProvider
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
+    public function teamCreate(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $permission
+        ) {
         $this->checkPermission($permission, $this->permission, 'create-team');
 
         $response = $this->graphQL(
@@ -111,7 +122,7 @@ class TeamTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -223,12 +234,19 @@ class TeamTest extends TestCase
      *
      * @dataProvider teamEditProvider
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
+    public function teamEdit(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $permission
+        ) {
         $this->checkPermission($permission, $this->permission, 'edit-team');
 
         $teamExist = Team::factory()->make();
@@ -238,7 +256,7 @@ class TeamTest extends TestCase
 
         $parameters['id'] = $team->id;
 
-        if ($expected_message == 'TeamEdit.name_unique') {
+        if ($expectedMessage == 'TeamEdit.name_unique') {
             $parameters['name'] = $teamExist->name;
         }
 
@@ -251,7 +269,7 @@ class TeamTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -358,9 +376,11 @@ class TeamTest extends TestCase
      *
      * @dataProvider teamDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_team_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function teamDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
     {
         $this->login = true;
 
@@ -384,7 +404,7 @@ class TeamTest extends TestCase
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
