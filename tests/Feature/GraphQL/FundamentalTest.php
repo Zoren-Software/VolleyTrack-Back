@@ -200,7 +200,6 @@ class FundamentalTest extends TestCase
         $expected,
         $hasPermission
         ) {
-        
         $this->setPermissions($hasPermission);
 
         $response = $this->graphQL(
@@ -436,13 +435,12 @@ class FundamentalTest extends TestCase
      * @return void
      */
     public function fundamentalDelete(
-        $data, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $data,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         $hasPermission
-    )
-    {
+    ) {
         $this->login = true;
 
         $this->setPermissions($hasPermission);

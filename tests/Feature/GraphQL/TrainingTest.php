@@ -47,7 +47,7 @@ class TrainingTest extends TestCase
         'updatedAt',
     ];
 
-    private function setPermissions(bool $hasPermission) : void
+    private function setPermissions(bool $hasPermission): void
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-training');
         $this->checkPermission($hasPermission, $this->role, 'view-training');

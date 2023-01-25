@@ -24,7 +24,7 @@ class PositionTest extends TestCase
         'updatedAt',
     ];
 
-    private function setPermissions (bool $hasPermission)
+    private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-position');
         $this->checkPermission($hasPermission, $this->role, 'view-position');
@@ -131,7 +131,6 @@ class PositionTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-
         $position = Position::factory()->make();
         $position->save();
 
@@ -204,7 +203,6 @@ class PositionTest extends TestCase
         $expected,
         bool $hasPermission
         ) {
-
         $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $response = $this->graphQL(
@@ -440,9 +438,9 @@ class PositionTest extends TestCase
      * @return void
      */
     public function positionDelete(
-        $data, 
-        $typeMessageError, 
-        $expectedMessage, 
+        $data,
+        $typeMessageError,
+        $expectedMessage,
         $expected,
         bool $hasPermission)
     {
@@ -469,9 +467,9 @@ class PositionTest extends TestCase
         );
 
         $this->assertMessageError(
-            $typeMessageError, 
-            $response, 
-            $hasPermission, 
+            $typeMessageError,
+            $response,
+            $hasPermission,
             $expectedMessage
         );
 

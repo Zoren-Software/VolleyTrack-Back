@@ -29,7 +29,8 @@ class UserTest extends TestCase
         'updatedAt',
     ];
 
-    private function setPermissions(bool $hasPermission) {
+    private function setPermissions(bool $hasPermission)
+    {
         $this->checkPermission($hasPermission, $this->role, 'edit-user');
         $this->checkPermission($hasPermission, $this->role, 'view-user');
     }
