@@ -26,7 +26,7 @@ class RoleTest extends TestCase
      *
      * @return void
      */
-    public function rolInfo()
+    public function roleInfo()
     {
         $this->login = true;
 

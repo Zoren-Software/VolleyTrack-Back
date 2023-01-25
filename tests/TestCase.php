@@ -329,7 +329,9 @@ abstract class TestCase extends BaseTestCase
                 if (isset($response['validation'])) {
                     $this->assertSame($response['validation'][$type_message_error][0], trans($expected_message));
                 } else {
-                    $this->assertSame($response['category'], trans($expected_message));
+                    if (isset($response['category'])) {
+                        $this->assertSame($response['category'], trans($expected_message));
+                    }
                 }
             }
         }

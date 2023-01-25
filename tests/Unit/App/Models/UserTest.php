@@ -58,27 +58,27 @@ class UserTest extends TestCase
     {
         return [
             'has permission' => [
-                'namePermission' => 'list-role-administrador',
-                'permissions' => ['list-role-administrador'],
+                'namePermission' => 'view-role-admin',
+                'permissions' => ['view-role-admin'],
                 'expected' => true,
             ],
             'has permission and with more than one permissions' => [
-                'namePermission' => 'list-role-administrador',
-                'permissions' => ['list-role-administrador', 'list-role-technician', 'list-role-player'],
+                'namePermission' => 'view-role-admin',
+                'permissions' => ['view-role-admin', 'list-role-technician', 'list-role-player'],
                 'expected' => true,
             ],
             'not has permission' => [
-                'namePermission' => 'list-role-administrador',
+                'namePermission' => 'view-role-admin',
                 'permissions' => ['list-role-player'],
                 'expected' => false,
             ],
             'not has permission and no permission' => [
-                'namePermission' => 'list-role-administrador',
+                'namePermission' => 'view-role-admin',
                 'permissions' => [],
                 'expected' => false,
             ],
             'not has permission and with more than one permissions' => [
-                'namePermission' => 'list-role-administrador',
+                'namePermission' => 'view-role-admin',
                 'permissions' => ['list-role-technician', 'list-role-player', 'list-role-player'],
                 'expected' => false,
             ],
@@ -105,7 +105,7 @@ class UserTest extends TestCase
         $this->be($userMock);
 
         $user = new User();
-        $user->hasPermissionRole('list-role-administrador');
+        $user->hasPermissionRole('view-role-admin');
     }
 
     /**

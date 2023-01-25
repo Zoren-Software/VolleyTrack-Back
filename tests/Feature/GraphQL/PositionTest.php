@@ -14,7 +14,7 @@ class PositionTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $role = 'technician';
 
     private $data = [
         'id',
@@ -24,6 +24,12 @@ class PositionTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-position');
+        $this->checkPermission($hasPermission, $this->role, 'view-position');
+    }
+
     /**
      * Listagem de todos os fundamentos.
      *
@@ -31,13 +37,21 @@ class PositionTest extends TestCase
      *
      * @test
      *
+     * @dataProvider listProvider
+     *
      * @return void
      */
-    public function positionsList()
-    {
+    public function positionsList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
         Position::factory()->make()->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'positions',
             [
                 'name' => '%%',
@@ -50,16 +64,52 @@ class PositionTest extends TestCase
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'positions' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'positions' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ],
                     ],
                 ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -69,14 +119,22 @@ class PositionTest extends TestCase
      *
      * @test
      *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function positionInfo()
-    {
+    public function positionInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
         $position = Position::factory()->make();
         $position->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'position',
             [
                 'id' => $position->id,
@@ -84,11 +142,47 @@ class PositionTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'position' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'position' => $this->data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -107,9 +201,9 @@ class PositionTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasPermission
         ) {
-        $this->checkPermission($permission, $this->permission, 'create-position');
+        $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $response = $this->graphQL(
             'positionCreate',
@@ -120,7 +214,7 @@ class PositionTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -150,7 +244,7 @@ class PositionTest extends TestCase
                         'positionCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create position without permission, expected error' => [
                 [
@@ -163,7 +257,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -176,7 +270,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
@@ -189,7 +283,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -202,7 +296,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -223,9 +317,9 @@ class PositionTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasPermission
         ) {
-        $this->checkPermission($permission, $this->permission, 'edit-position');
+        $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $positionExist = Position::factory()->make();
         $positionExist->save();
@@ -247,7 +341,7 @@ class PositionTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -275,7 +369,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit position, success' => [
                 [
@@ -289,7 +383,7 @@ class PositionTest extends TestCase
                         'positionEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -301,7 +395,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
@@ -314,7 +408,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -327,7 +421,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -343,11 +437,17 @@ class PositionTest extends TestCase
      *
      * @return void
      */
-    public function positionDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
+    public function positionDelete(
+        $data,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    )
     {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'delete-position');
+        $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $position = Position::factory()->make();
         $position->save();
@@ -367,7 +467,12 @@ class PositionTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
 
         $response
             ->assertJsonStructure($expected)
@@ -395,7 +500,7 @@ class PositionTest extends TestCase
                         'positionDelete' => [$this->data],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete position without permission, expected error' => [
                 [
@@ -407,7 +512,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete position that does not exist, expected error' => [
                 [
@@ -419,7 +524,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

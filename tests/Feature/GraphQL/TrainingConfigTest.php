@@ -13,7 +13,7 @@ class TrainingConfigTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $role = 'technician';
 
     private $data = [
         'id',
@@ -25,6 +25,12 @@ class TrainingConfigTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-training-config');
+        $this->checkPermission($hasPermission, $this->role, 'view-training-config');
+    }
+
     /**
      * Listagem de configurações de treino.
      *
@@ -32,11 +38,19 @@ class TrainingConfigTest extends TestCase
      *
      * @test
      *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function trainingConfigInfo()
-    {
-        $this->graphQL(
+    public function trainingConfigInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
+        $response = $this->graphQL(
             'trainingConfig',
             [
                 'id' => 1,
@@ -44,11 +58,46 @@ class TrainingConfigTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'trainingConfig' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingConfig' => $this->data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -67,9 +116,9 @@ class TrainingConfigTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasPermission
     ) {
-        $this->checkPermission($permission, $this->permission, 'edit-training-config');
+        $this->setPermissions($hasPermission);
 
         $parameters['id'] = 1;
 
@@ -85,7 +134,7 @@ class TrainingConfigTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
@@ -117,7 +166,7 @@ class TrainingConfigTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingConfigEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit config, success' => [
                 [
@@ -133,7 +182,7 @@ class TrainingConfigTest extends TestCase
                         'trainingConfigEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
