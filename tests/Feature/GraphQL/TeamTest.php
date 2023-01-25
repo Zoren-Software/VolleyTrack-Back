@@ -101,7 +101,7 @@ class TeamTest extends TestCase
                         ],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -109,7 +109,7 @@ class TeamTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -173,7 +173,7 @@ class TeamTest extends TestCase
                         'team' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -181,7 +181,7 @@ class TeamTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -245,7 +245,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamCreate,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'create team, success' => [
                 [
@@ -260,7 +260,7 @@ class TeamTest extends TestCase
                         'teamCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create team and relating a players, success' => [
                 [
@@ -275,7 +275,7 @@ class TeamTest extends TestCase
                         'teamCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -289,7 +289,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
@@ -303,7 +303,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -317,7 +317,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -390,7 +390,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit team, success' => [
                 [
@@ -404,7 +404,7 @@ class TeamTest extends TestCase
                         'teamEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit team and relating a players, success' => [
                 [
@@ -419,7 +419,7 @@ class TeamTest extends TestCase
                         'teamEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -431,7 +431,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
@@ -444,7 +444,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -457,7 +457,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -523,7 +523,7 @@ class TeamTest extends TestCase
                         'teamDelete' => [$this->data],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete team without permission, expected error' => [
                 [
@@ -535,7 +535,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete team that does not exist, expected error' => [
                 [
@@ -547,7 +547,7 @@ class TeamTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $teamDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

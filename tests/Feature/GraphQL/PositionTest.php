@@ -173,7 +173,7 @@ class PositionTest extends TestCase
                         'position' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -181,7 +181,7 @@ class PositionTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -246,7 +246,7 @@ class PositionTest extends TestCase
                         'positionCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create position without permission, expected error' => [
                 [
@@ -259,7 +259,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -272,7 +272,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
@@ -285,7 +285,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -298,7 +298,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -371,7 +371,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit position, success' => [
                 [
@@ -385,7 +385,7 @@ class PositionTest extends TestCase
                         'positionEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -397,7 +397,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
@@ -410,7 +410,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -423,7 +423,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -501,7 +501,7 @@ class PositionTest extends TestCase
                         'positionDelete' => [$this->data],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete position without permission, expected error' => [
                 [
@@ -513,7 +513,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete position that does not exist, expected error' => [
                 [
@@ -525,7 +525,7 @@ class PositionTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $positionDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

@@ -100,7 +100,7 @@ class SpecificFundamentalTest extends TestCase
                         ],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -108,7 +108,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -172,7 +172,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamental' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -180,7 +180,7 @@ class SpecificFundamentalTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -252,7 +252,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => true,
             ],
             'create specific fundamental, no relationship, success' => [
@@ -267,7 +267,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'create specific fundamental without permission, expected error' => [
@@ -281,7 +281,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalCreate,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
                 'add_relationship' => false,
             ],
             'name field is not unique, expected error' => [
@@ -295,7 +295,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'name field is required, expected error' => [
@@ -309,7 +309,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
@@ -323,7 +323,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
         ];
@@ -405,7 +405,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
                 'add_relationship' => false,
             ],
             'edit specific fundamental, no relationship, success' => [
@@ -420,7 +420,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'edit specific fundamental, with relationship, success' => [
@@ -435,7 +435,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => true,
             ],
             'name field is not unique, expected error' => [
@@ -448,7 +448,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'name field is required, expected error' => [
@@ -462,7 +462,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
@@ -476,7 +476,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
         ];
@@ -543,7 +543,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalDelete' => [$this->data],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete specific fundamental without permission, expected error' => [
                 [
@@ -555,7 +555,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete specific fundamental that does not exist, expected error' => [
                 [
@@ -567,7 +567,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

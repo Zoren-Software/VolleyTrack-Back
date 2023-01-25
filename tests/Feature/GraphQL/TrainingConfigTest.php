@@ -87,7 +87,7 @@ class TrainingConfigTest extends TestCase
                         'trainingConfig' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -95,7 +95,7 @@ class TrainingConfigTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -166,7 +166,7 @@ class TrainingConfigTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingConfigEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit config, success' => [
                 [
@@ -182,7 +182,7 @@ class TrainingConfigTest extends TestCase
                         'trainingConfigEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

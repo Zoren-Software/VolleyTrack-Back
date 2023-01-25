@@ -105,7 +105,7 @@ class UserTest extends TestCase
                         ],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -113,7 +113,7 @@ class UserTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -179,7 +179,7 @@ class UserTest extends TestCase
                         'user' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -187,7 +187,7 @@ class UserTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -267,7 +267,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => true,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create user with position, success' => [
                 [
@@ -285,7 +285,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'declare roleId is required, expected error' => [
                 [
@@ -301,7 +301,7 @@ class UserTest extends TestCase
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create user, success' => [
                 [
@@ -318,7 +318,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create user with 2 roles, success' => [
                 [
@@ -335,7 +335,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create user with permission that shouldnt have, expected error' => [
                 [
@@ -351,7 +351,7 @@ class UserTest extends TestCase
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create user without permission, expected error' => [
                 [
@@ -367,7 +367,7 @@ class UserTest extends TestCase
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'text password less than 6 characters, expected error' => [
                 [
@@ -383,7 +383,7 @@ class UserTest extends TestCase
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'no text password, expected error' => [
                 [
@@ -398,7 +398,7 @@ class UserTest extends TestCase
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'text password with 6 characters, success' => [
                 [
@@ -415,7 +415,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'email field is required, expected error' => [
                 [
@@ -431,7 +431,7 @@ class UserTest extends TestCase
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'email field is not unique, expected error' => [
                 [
@@ -447,7 +447,7 @@ class UserTest extends TestCase
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'email field is not email valid, expected error' => [
                 [
@@ -463,7 +463,7 @@ class UserTest extends TestCase
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -549,7 +549,7 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit user with permission that shouldnt have, expected error' => [
                 [
@@ -565,7 +565,7 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit user without permission, expected error' => [
                 [
@@ -581,7 +581,7 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit user with team, success' => [
                 [
@@ -599,7 +599,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => true,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit user with position, success' => [
                 [
@@ -617,7 +617,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit user, success' => [
                 [
@@ -634,7 +634,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit user with 2 roles, success' => [
                 [
@@ -651,7 +651,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'text password less than 6 characters, expected error' => [
                 [
@@ -667,7 +667,7 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'no text password, expected error' => [
                 [
@@ -683,7 +683,7 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'text password with 6 characters, success' => [
                 [
@@ -700,7 +700,7 @@ class UserTest extends TestCase
                     ],
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'email field is required, expected error' => [
                 [
@@ -716,7 +716,7 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'email field is not unique, expected error' => [
                 [
@@ -731,7 +731,7 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'email field is not email valid, expected error' => [
                 [
@@ -747,7 +747,7 @@ class UserTest extends TestCase
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -810,7 +810,7 @@ class UserTest extends TestCase
                 'expected' => [
                     'data' => $userDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete user without permission, expected error' => [
                 [
@@ -822,7 +822,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete user that does not exist, expected error' => [
                 [
@@ -834,7 +834,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

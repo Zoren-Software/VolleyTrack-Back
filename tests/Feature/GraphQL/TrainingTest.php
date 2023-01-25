@@ -122,7 +122,7 @@ class TrainingTest extends TestCase
                         ],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -130,7 +130,7 @@ class TrainingTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -194,7 +194,7 @@ class TrainingTest extends TestCase
                         'training' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -202,7 +202,7 @@ class TrainingTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -303,7 +303,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'create training with minimal parameters, success' => [
                 [
@@ -320,7 +320,7 @@ class TrainingTest extends TestCase
                         'trainingCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create training with full parameters, success' => [
                 [
@@ -337,7 +337,7 @@ class TrainingTest extends TestCase
                         'trainingCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create training with relationship fundamentals, success' => [
                 [
@@ -355,7 +355,7 @@ class TrainingTest extends TestCase
                         'trainingCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create training with relationship specific fundamental, success' => [
                 [
@@ -374,7 +374,7 @@ class TrainingTest extends TestCase
                         'trainingCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create training with notification if training date is current day, success' => [
                 [
@@ -393,7 +393,7 @@ class TrainingTest extends TestCase
                         'trainingCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -430,7 +430,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -445,7 +445,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'DateStart must be less than dateEnd, expected error' => [
                 [
@@ -460,7 +460,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'DateEnd must be greater than dateStart, expected error' => [
                 [
@@ -475,7 +475,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'DateEnd without correct formatting, expected error' => [
                 [
@@ -490,7 +490,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'DateStart without correct formatting, expected error' => [
                 [
@@ -505,7 +505,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'specific fundamentals unrelated to fundamentals on record, expected error' => [
                 [
@@ -522,7 +522,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -627,7 +627,7 @@ class TrainingTest extends TestCase
                         'trainingEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit training with full parameters, success' => [
                 [
@@ -644,7 +644,7 @@ class TrainingTest extends TestCase
                         'trainingEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit training with relationship fundamentals, success' => [
                 [
@@ -662,7 +662,7 @@ class TrainingTest extends TestCase
                         'trainingEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit training with relationship specific fundamental, success' => [
                 [
@@ -681,7 +681,7 @@ class TrainingTest extends TestCase
                         'trainingEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit training cancel, success' => [
                 [
@@ -699,7 +699,7 @@ class TrainingTest extends TestCase
                         'trainingEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit training reactivate, success' => [
                 [
@@ -717,7 +717,7 @@ class TrainingTest extends TestCase
                         'trainingEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'edit training with notification if training date is current day, success' => [
                 [
@@ -735,7 +735,7 @@ class TrainingTest extends TestCase
                         'trainingEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -772,7 +772,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'name field is required, expected error' => [
                 [
@@ -787,7 +787,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -802,7 +802,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'DateStart must be less than dateEnd, expected error' => [
                 [
@@ -817,7 +817,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'DateEnd must be greater than dateStart, expected error' => [
                 [
@@ -832,7 +832,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'DateEnd without correct formatting, expected error' => [
                 [
@@ -847,7 +847,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'DateStart without correct formatting, expected error' => [
                 [
@@ -862,7 +862,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'specific fundamentals unrelated to fundamentals on record, expected error' => [
                 [
@@ -879,7 +879,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -948,7 +948,7 @@ class TrainingTest extends TestCase
                         'trainingDelete' => [$this->data],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete training without permission, expected error' => [
                 [
@@ -960,7 +960,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete training that does not exist, expected error' => [
                 [
@@ -972,7 +972,7 @@ class TrainingTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $trainingDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

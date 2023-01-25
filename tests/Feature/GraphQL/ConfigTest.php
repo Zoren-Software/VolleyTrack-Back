@@ -87,7 +87,7 @@ class ConfigTest extends TestCase
                         'config' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
@@ -95,7 +95,7 @@ class ConfigTest extends TestCase
                 'expected' => [
                     'errors' => $this->errors,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
         ];
     }
@@ -165,7 +165,7 @@ class ConfigTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $configEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit config, success' => [
                 [
@@ -180,7 +180,7 @@ class ConfigTest extends TestCase
                         'configEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'nameTenant field is required, expected error' => [
                 [
@@ -193,7 +193,7 @@ class ConfigTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $configEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'nameTenant field is min 3 characteres, expected error' => [
                 [
@@ -206,7 +206,7 @@ class ConfigTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $configEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
