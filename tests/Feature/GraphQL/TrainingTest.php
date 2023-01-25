@@ -53,14 +53,24 @@ class TrainingTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
+     * 
+     * @dataProvider listProvider
      *
      * @return void
      */
-    public function trainingList()
+    public function trainingList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         Training::factory()->make()->save();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-training');
+        $this->checkPermission($permission, $this->permission, 'view-training');
+
+        $response = $this->graphQL(
             'trainings',
             [
                 'name' => '%%',
@@ -73,16 +83,52 @@ class TrainingTest extends TestCase
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'trainings' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+
+        if ($permission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'trainings' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ],
                     ],
                 ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
@@ -126,11 +172,8 @@ class TrainingTest extends TestCase
         );
 
         if ($permission) {
-            $response->assertJsonStructure([
-                'data' => [
-                    'training' => $this->data,
-                ],
-            ])->assertStatus(200);
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
         }
     }
 
@@ -145,7 +188,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'config' => $this->data,
+                        'training' => $this->data,
                     ],
                 ],
                 'permission' => true,
