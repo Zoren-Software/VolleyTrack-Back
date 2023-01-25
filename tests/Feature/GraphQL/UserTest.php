@@ -32,10 +32,17 @@ class UserTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
+     * 
+     * @dataProvider listProvider
      *
      * @return void
      */
-    public function usersList()
+    public function usersList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         $this->login = true;
 
@@ -43,7 +50,10 @@ class UserTest extends TestCase
             ->has(Position::factory()->count(3))
             ->create();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-user');
+        $this->checkPermission($permission, $this->permission, 'view-user');
+
+        $response = $this->graphQL(
             'users',
             [
                 'name' => '%%',
@@ -56,16 +66,52 @@ class UserTest extends TestCase
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'users' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+
+        if ($permission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'users' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ],
                     ],
                 ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
@@ -113,11 +159,8 @@ class UserTest extends TestCase
         );
 
         if ($permission) {
-            $response->assertJsonStructure([
-                'data' => [
-                    'user' => $this->data,
-                ],
-            ])->assertStatus(200);
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
         }
     }
 
@@ -132,7 +175,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'config' => $this->data,
+                        'user' => $this->data,
                     ],
                 ],
                 'permission' => true,
