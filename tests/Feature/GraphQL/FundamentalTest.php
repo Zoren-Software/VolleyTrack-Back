@@ -31,13 +31,22 @@ class FundamentalTest extends TestCase
      *
      * @test
      *
+     * @dataProvider listProvider
+     *
      * @return void
      */
-    public function fundamentalsList()
-    {
+    public function fundamentalsList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    ) {
         Fundamental::factory()->make()->save();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
+        $this->checkPermission($permission, $this->permission, 'view-fundamental');
+
+        $response = $this->graphQL(
             'fundamentals',
             [
                 'name' => '%%',
@@ -50,16 +59,55 @@ class FundamentalTest extends TestCase
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'fundamentals' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+
+        if ($permission) {
+            $response
+                ->assertJsonStructure(
+                    ['data' => [
+                        'fundamentals' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ]]]
+                )
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'fundamentals' => $this->data,
                     ],
                 ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
@@ -68,7 +116,7 @@ class FundamentalTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider infoProvider
      *
      * @return void
@@ -78,8 +126,7 @@ class FundamentalTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
 
@@ -102,8 +149,8 @@ class FundamentalTest extends TestCase
             $permission,
             $expectedMessage
         );
-        
-        if($permission) {
+
+        if ($permission) {
             $response->assertJsonStructure([
                 'data' => [
                     'fundamental' => $this->data,
