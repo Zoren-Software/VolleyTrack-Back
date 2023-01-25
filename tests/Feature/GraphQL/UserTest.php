@@ -84,8 +84,7 @@ class UserTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         $this->login = true;
 
         $this->checkPermission($permission, $this->permission, 'edit-user');
@@ -112,8 +111,8 @@ class UserTest extends TestCase
             $permission,
             $expectedMessage
         );
-        
-        if($permission) {
+
+        if ($permission) {
             $response->assertJsonStructure([
                 'data' => [
                     'user' => $this->data,

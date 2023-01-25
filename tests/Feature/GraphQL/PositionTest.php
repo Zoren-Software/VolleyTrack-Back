@@ -68,7 +68,7 @@ class PositionTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider infoProvider
      *
      * @return void
@@ -78,8 +78,7 @@ class PositionTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         $this->checkPermission($permission, $this->permission, 'edit-position');
         $this->checkPermission($permission, $this->permission, 'view-position');
 

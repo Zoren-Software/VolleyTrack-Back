@@ -70,7 +70,7 @@ class TeamTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider infoProvider
      *
      * @return void
@@ -80,8 +80,7 @@ class TeamTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         $team = Team::factory()->make();
         $team->save();
 
@@ -104,8 +103,8 @@ class TeamTest extends TestCase
             $permission,
             $expectedMessage
         );
-        
-        if($permission) {
+
+        if ($permission) {
             $response->assertJsonStructure([
                 'data' => [
                     'team' => $this->data,

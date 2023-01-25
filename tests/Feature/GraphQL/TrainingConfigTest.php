@@ -41,8 +41,7 @@ class TrainingConfigTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         $this->checkPermission($permission, $this->permission, 'edit-training-config');
         $this->checkPermission($permission, $this->permission, 'view-training-config');
 
@@ -62,8 +61,8 @@ class TrainingConfigTest extends TestCase
             $permission,
             $expectedMessage
         );
-        
-        if($permission) {
+
+        if ($permission) {
             $response->assertJsonStructure([
                 'data' => [
                     'trainingConfig' => $this->data,

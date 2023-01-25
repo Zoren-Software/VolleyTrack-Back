@@ -69,7 +69,7 @@ class SpecificFundamentalTest extends TestCase
      * @test
      *
      * @author Maicon Cerutti
-     * 
+     *
      * @dataProvider infoProvider
      *
      * @return void

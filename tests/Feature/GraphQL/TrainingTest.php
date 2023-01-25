@@ -101,8 +101,7 @@ class TrainingTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         $training = Training::factory()->make();
         $training->save();
 
@@ -125,8 +124,8 @@ class TrainingTest extends TestCase
             $permission,
             $expectedMessage
         );
-        
-        if($permission) {
+
+        if ($permission) {
             $response->assertJsonStructure([
                 'data' => [
                     'training' => $this->data,
