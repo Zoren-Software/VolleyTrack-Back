@@ -345,7 +345,7 @@ class UserTest extends TestCase
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'roleId' => [1, 2],
+                    'roleId' => [1],
                     'password' => $password,
                 ],
                 'type_message_error' => 'roleId',
@@ -563,7 +563,7 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => $password,
-                    'roleId' => [1, 2],
+                    'roleId' => [1],
                 ],
                 'type_message_error' => 'roleId',
                 'expected_message' => 'PermissionAssignment.validation_message_error',

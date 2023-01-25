@@ -61,7 +61,7 @@ class PermissionTableSeeder extends Seeder
          */
         $role[] = Permission::updateOrCreate(['id' => 11], ['name' => 'edit-role']);
         $role[] = Permission::updateOrCreate(['id' => 12], ['name' => 'view-role']);
-        $role[] = Permission::updateOrCreate(['id' => 13], ['name' => 'view-role-admin']);
+        Permission::updateOrCreate(['id' => 13], ['name' => 'view-role-admin']);
         $role[] = Permission::updateOrCreate(['id' => 14], ['name' => 'view-role-technician']);
         $role[] = Permission::updateOrCreate(['id' => 15], ['name' => 'view-role-player']);
 
