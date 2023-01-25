@@ -32,14 +32,24 @@ class TeamTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
+     * 
+     * @dataProvider listProvider
      *
      * @return void
      */
-    public function teamsList()
+    public function teamsList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         Team::factory()->make()->save();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-team');
+        $this->checkPermission($permission, $this->permission, 'view-team');
+
+        $response = $this->graphQL(
             'teams',
             [
                 'name' => '%%',
@@ -52,16 +62,52 @@ class TeamTest extends TestCase
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'teams' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+
+        if ($permission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'teams' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ],
                     ],
                 ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
@@ -105,11 +151,8 @@ class TeamTest extends TestCase
         );
 
         if ($permission) {
-            $response->assertJsonStructure([
-                'data' => [
-                    'team' => $this->data,
-                ],
-            ])->assertStatus(200);
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
         }
     }
 
@@ -124,8 +167,8 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'config' => $this->data,
-                    ],
+                        'team' => $this->data,
+                    ]
                 ],
                 'permission' => true,
             ],
