@@ -13,7 +13,7 @@ class TrainingConfigTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'technician';
+    private $role = 'technician';
 
     private $data = [
         'id',
@@ -24,6 +24,12 @@ class TrainingConfigTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-training-config');
+        $this->checkPermission($hasPermission, $this->role, 'view-training-config');
+    }
 
     /**
      * Listagem de configurações de treino.
@@ -40,10 +46,9 @@ class TrainingConfigTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
-        $this->checkPermission($permission, $this->permission, 'edit-training-config');
-        $this->checkPermission($permission, $this->permission, 'view-training-config');
+        $this->setPermissions($hasPermission);
 
         $response = $this->graphQL(
             'trainingConfig',
@@ -58,11 +63,11 @@ class TrainingConfigTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
-        if ($permission) {
+        if ($hasPermission) {
             $response->assertJsonStructure($expected)
                 ->assertStatus(200);
         }
@@ -111,9 +116,9 @@ class TrainingConfigTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasPermission
     ) {
-        $this->checkPermission($permission, $this->permission, 'edit-training-config');
+        $this->setPermissions($hasPermission);
 
         $parameters['id'] = 1;
 
@@ -129,7 +134,7 @@ class TrainingConfigTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 

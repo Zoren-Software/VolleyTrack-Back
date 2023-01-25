@@ -14,7 +14,7 @@ class FundamentalTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'technician';
+    private $role = 'technician';
 
     private $data = [
         'id',
@@ -23,6 +23,12 @@ class FundamentalTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-fundamental');
+        $this->checkPermission($hasPermission, $this->role, 'view-fundamental');
+    }
 
     /**
      * Listagem de todos os fundamentos.
@@ -39,12 +45,11 @@ class FundamentalTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
-        Fundamental::factory()->make()->save();
+        $this->setPermissions($hasPermission);
 
-        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
-        $this->checkPermission($permission, $this->permission, 'view-fundamental');
+        Fundamental::factory()->make()->save();
 
         $response = $this->graphQL(
             'fundamentals',
@@ -64,11 +69,11 @@ class FundamentalTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
-        if ($permission) {
+        if ($hasPermission) {
             $response
                 ->assertJsonStructure($expected)
                 ->assertStatus(200);
@@ -122,13 +127,12 @@ class FundamentalTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
+        $this->setPermissions($hasPermission);
+
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
-
-        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
-        $this->checkPermission($permission, $this->permission, 'view-fundamental');
 
         $response = $this->graphQL(
             'fundamental',
@@ -143,16 +147,13 @@ class FundamentalTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
-        if ($permission) {
-            $response->assertJsonStructure([
-                'data' => [
-                    'fundamental' => $this->data,
-                ],
-            ])->assertStatus(200);
+        if ($hasPermission) {
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
         }
     }
 
@@ -167,7 +168,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'config' => $this->data,
+                        'fundamental' => $this->data,
                     ],
                 ],
                 'permission' => true,
@@ -197,9 +198,10 @@ class FundamentalTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        $hasPermission
         ) {
-        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
+        
+        $this->setPermissions($hasPermission);
 
         $response = $this->graphQL(
             'fundamentalCreate',
@@ -210,7 +212,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -313,9 +315,9 @@ class FundamentalTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        $hasPermission
         ) {
-        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
+        $this->setPermissions($hasPermission);
 
         $fundamentalExist = Fundamental::factory()->make();
         $fundamentalExist->save();
@@ -337,7 +339,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -433,11 +435,17 @@ class FundamentalTest extends TestCase
      *
      * @return void
      */
-    public function fundamentalDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
+    public function fundamentalDelete(
+        $data, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        $hasPermission
+    )
     {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'edit-fundamental');
+        $this->setPermissions($hasPermission);
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
@@ -457,7 +465,7 @@ class FundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)

@@ -18,7 +18,7 @@ class TrainingTest extends TestCase
 
     private $trainingText = ' TRAINING';
 
-    private $permission = 'technician';
+    private $role = 'technician';
 
     private $dateStart = '2022-10-23 13:50:00';
 
@@ -47,6 +47,12 @@ class TrainingTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission) : void
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-training');
+        $this->checkPermission($hasPermission, $this->role, 'view-training');
+    }
+
     /**
      * Listagem de todos os treinos.
      *
@@ -62,12 +68,11 @@ class TrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
-        Training::factory()->make()->save();
+        $this->setPermissions($hasPermission);
 
-        $this->checkPermission($permission, $this->permission, 'edit-training');
-        $this->checkPermission($permission, $this->permission, 'view-training');
+        Training::factory()->make()->save();
 
         $response = $this->graphQL(
             'trainings',
@@ -87,11 +92,11 @@ class TrainingTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
-        if ($permission) {
+        if ($hasPermission) {
             $response
                 ->assertJsonStructure($expected)
                 ->assertStatus(200);
@@ -145,13 +150,12 @@ class TrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
+        $this->setPermissions($hasPermission);
+
         $training = Training::factory()->make();
         $training->save();
-
-        $this->checkPermission($permission, $this->permission, 'edit-training');
-        $this->checkPermission($permission, $this->permission, 'view-training');
 
         $response = $this->graphQL(
             'training',
@@ -166,11 +170,11 @@ class TrainingTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
-        if ($permission) {
+        if ($hasPermission) {
             $response->assertJsonStructure($expected)
                 ->assertStatus(200);
         }
@@ -220,13 +224,9 @@ class TrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasPermission
     ) {
-        $this->checkPermission(
-            $permission,
-            $this->permission,
-            'edit-training'
-        );
+        $this->setPermissions($hasPermission);
 
         $team = Team::factory()
             ->hasPlayers(10)
@@ -254,7 +254,7 @@ class TrainingTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
@@ -544,13 +544,9 @@ class TrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasPermission
     ) {
-        $this->checkPermission(
-            $permission,
-            $this->permission,
-            'edit-training'
-        );
+        $this->setPermissions($hasPermission);
 
         $training = Training::factory()->make();
         $training->save();
@@ -582,7 +578,7 @@ class TrainingTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
@@ -902,11 +898,9 @@ class TrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasPermission
     ) {
-        $this->login = true;
-
-        $this->checkPermission($permission, $this->permission, 'edit-training');
+        $this->setPermissions($hasPermission);
 
         $training = Training::factory()->make();
         $training->save();
@@ -926,7 +920,7 @@ class TrainingTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)

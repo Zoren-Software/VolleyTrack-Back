@@ -13,7 +13,7 @@ class ConfigTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'technician';
+    private $role = 'technician';
 
     private $data = [
         'id',
@@ -23,6 +23,12 @@ class ConfigTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-config');
+        $this->checkPermission($hasPermission, $this->role, 'view-config');
+    }
 
     /**
      * Listagem de configurações.
@@ -39,10 +45,9 @@ class ConfigTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
-        $this->checkPermission($permission, $this->permission, 'edit-config');
-        $this->checkPermission($permission, $this->permission, 'view-config');
+        $this->setPermissions($hasPermission);
 
         $response = $this->graphQL(
             'config',
@@ -57,11 +62,11 @@ class ConfigTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
-        if ($permission) {
+        if ($hasPermission) {
             $response
                 ->assertJsonStructure($expected)
                 ->assertStatus(200);
@@ -111,9 +116,9 @@ class ConfigTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
-        $this->checkPermission($permission, $this->permission, 'edit-config');
+        $this->setPermissions($hasPermission);
 
         $parameters['id'] = 1;
 
@@ -129,7 +134,7 @@ class ConfigTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 

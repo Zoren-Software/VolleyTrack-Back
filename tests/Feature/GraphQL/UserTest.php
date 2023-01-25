@@ -16,7 +16,9 @@ class UserTest extends TestCase
 
     protected $otherUser = false;
 
-    private $permission = 'technician';
+    protected $login = true;
+
+    private $role = 'technician';
 
     private $data = [
         'id',
@@ -26,6 +28,11 @@ class UserTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    private function setPermissions(bool $hasPermission) {
+        $this->checkPermission($hasPermission, $this->role, 'edit-user');
+        $this->checkPermission($hasPermission, $this->role, 'view-user');
+    }
 
     /**
      * Listagem de todos os usuários.
@@ -42,16 +49,13 @@ class UserTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
-        $this->login = true;
+        $this->setPermissions($hasPermission);
 
         User::factory()
             ->has(Position::factory()->count(3))
             ->create();
-
-        $this->checkPermission($permission, $this->permission, 'edit-user');
-        $this->checkPermission($permission, $this->permission, 'view-user');
 
         $response = $this->graphQL(
             'users',
@@ -71,11 +75,11 @@ class UserTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
-        if ($permission) {
+        if ($hasPermission) {
             $response
                 ->assertJsonStructure($expected)
                 ->assertStatus(200);
@@ -129,12 +133,9 @@ class UserTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $permission
+        bool $hasPermission
     ) {
-        $this->login = true;
-
-        $this->checkPermission($permission, $this->permission, 'edit-user');
-        $this->checkPermission($permission, $this->permission, 'view-user');
+        $this->setPermissions($hasPermission);
 
         $user = User::factory()
             ->has(Position::factory()->count(3))
@@ -154,11 +155,11 @@ class UserTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
-        if ($permission) {
+        if ($hasPermission) {
             $response->assertJsonStructure($expected)
                 ->assertStatus(200);
         }
@@ -208,9 +209,9 @@ class UserTest extends TestCase
         $expectedMessage,
         $expected,
         bool $hasTeam,
-        bool $permission
+        bool $hasPermission
         ) {
-        $this->login = true;
+        $this->setPermissions($hasPermission);
 
         $faker = Faker::create();
 
@@ -218,8 +219,6 @@ class UserTest extends TestCase
             $team = Team::factory()->create();
             $parameters['teamId'] = $team->id;
         }
-
-        $this->checkPermission($permission, $this->permission, 'edit-user');
 
         $parameters['name'] = $faker->name;
 
@@ -232,7 +231,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -486,11 +485,9 @@ class UserTest extends TestCase
         $expectedMessage,
         $expected,
         bool $hasTeam,
-        bool $permission
+        bool $hasPermission
         ) {
-        $this->login = true;
-
-        $this->checkPermission($permission, $this->permission, 'edit-user');
+        $this->setPermissions($hasPermission);
 
         $userExist = User::factory()
             ->has(Position::factory()->count(3))
@@ -520,7 +517,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -766,11 +763,9 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testDeleteUser($data, $typeMessageError, $expectedMessage, $expected, $permission)
+    public function testDeleteUser($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
-        $this->login = true;
-
-        $this->checkPermission($permission, $this->permission, 'edit-user');
+        $this->setPermissions($hasPermission);
 
         $user = User::factory()
             ->has(Position::factory()->count(3))
@@ -791,7 +786,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
