@@ -63,11 +63,8 @@ class TrainingConfigTest extends TestCase
         );
 
         if ($permission) {
-            $response->assertJsonStructure([
-                'data' => [
-                    'trainingConfig' => $this->data,
-                ],
-            ])->assertStatus(200);
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
         }
     }
 
@@ -82,8 +79,8 @@ class TrainingConfigTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'config' => $this->data,
-                    ],
+                        'trainingConfig' => $this->data,
+                    ]
                 ],
                 'permission' => true,
             ],
