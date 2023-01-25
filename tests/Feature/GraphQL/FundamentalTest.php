@@ -70,16 +70,7 @@ class FundamentalTest extends TestCase
 
         if ($permission) {
             $response
-                ->assertJsonStructure([
-                    'data' => [
-                        'fundamentals' => [
-                            'paginatorInfo' => $this->paginatorInfo,
-                            'data' => [
-                                '*' => $this->data,
-                            ],
-                        ]
-                    ]
-                ])
+                ->assertJsonStructure($expected)
                 ->assertStatus(200);
         }
     }
@@ -95,8 +86,13 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'fundamentals' => $this->data,
-                    ],
+                        'fundamentals' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ]
+                    ]
                 ],
                 'permission' => true,
             ],
