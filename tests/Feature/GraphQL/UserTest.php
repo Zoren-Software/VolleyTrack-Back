@@ -3,8 +3,8 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Position;
-use App\Models\User;
 use App\Models\Team;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -33,7 +33,7 @@ class UserTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider listProvider
      *
      * @return void
@@ -43,8 +43,7 @@ class UserTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         $this->login = true;
 
         User::factory()
@@ -215,7 +214,7 @@ class UserTest extends TestCase
 
         $faker = Faker::create();
 
-        if($hasTeam) {
+        if ($hasTeam) {
             $team = Team::factory()->create();
             $parameters['teamId'] = $team->id;
         }
@@ -484,14 +483,13 @@ class UserTest extends TestCase
      * @return void
      */
     public function userEdit(
-        $parameters, 
-        $typeMessageError, 
-        $expectedMessage, 
-        $expected, 
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
         bool $hasTeam,
         bool $permission
-        )
-    {
+        ) {
         $this->login = true;
 
         $this->checkPermission($permission, $this->permission, 'edit-user');
@@ -504,7 +502,7 @@ class UserTest extends TestCase
             ->has(Position::factory()->count(3))
             ->create();
 
-        if($hasTeam) {
+        if ($hasTeam) {
             $team = Team::factory()->create();
             $parameters['teamId'] = $team->id;
         }

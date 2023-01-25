@@ -4,9 +4,8 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\FundamentalPolicy;
-use Tests\TestCase;
 use Mockery\MockInterface;
-
+use Tests\TestCase;
 
 class FundamentalPolicyTest extends TestCase
 {
@@ -96,7 +95,7 @@ class FundamentalPolicyTest extends TestCase
 
         $fundamentalPolicy = new FundamentalPolicy();
         $return = $fundamentalPolicy->view($userMock);
-        
+
         $this->assertEquals($expected, $return);
     }
 }

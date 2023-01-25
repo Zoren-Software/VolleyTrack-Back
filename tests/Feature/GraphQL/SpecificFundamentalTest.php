@@ -31,7 +31,7 @@ class SpecificFundamentalTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider listProvider
      *
      * @return void
@@ -41,8 +41,7 @@ class SpecificFundamentalTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         SpecificFundamental::factory()->make()->save();
 
         $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
@@ -125,8 +124,7 @@ class SpecificFundamentalTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
 

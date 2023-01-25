@@ -53,7 +53,7 @@ class TrainingTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider listProvider
      *
      * @return void
@@ -63,8 +63,7 @@ class TrainingTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         Training::factory()->make()->save();
 
         $this->checkPermission($permission, $this->permission, 'edit-training');

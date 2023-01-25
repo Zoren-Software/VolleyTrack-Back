@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\TrainingConfigPolicy;
-use Tests\TestCase;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class TrainingConfigPolicyTest extends TestCase
 {
@@ -52,7 +52,7 @@ class TrainingConfigPolicyTest extends TestCase
         });
 
         $trainingConfigPolicy = new TrainingConfigPolicy();
-        
+
         $this->assertEquals($expected, $trainingConfigPolicy->view($userMock));
     }
 }

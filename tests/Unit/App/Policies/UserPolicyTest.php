@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\UserPolicy;
-use Tests\TestCase;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class UserPolicyTest extends TestCase
 {
@@ -106,7 +106,7 @@ class UserPolicyTest extends TestCase
         });
 
         $userPolicy = new UserPolicy();
-        
+
         $this->assertEquals($expected, $userPolicy->view($userMock));
     }
 }

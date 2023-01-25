@@ -80,7 +80,7 @@ class TrainingConfigTest extends TestCase
                 'expected' => [
                     'data' => [
                         'trainingConfig' => $this->data,
-                    ]
+                    ],
                 ],
                 'permission' => true,
             ],

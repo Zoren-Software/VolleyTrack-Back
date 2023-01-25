@@ -30,7 +30,7 @@ class PositionTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider listProvider
      *
      * @return void
@@ -40,8 +40,7 @@ class PositionTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         Position::factory()->make()->save();
 
         $this->checkPermission($permission, $this->permission, 'edit-position');

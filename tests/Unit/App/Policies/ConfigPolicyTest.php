@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\ConfigPolicy;
-use Tests\TestCase;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class ConfigPolicyTest extends TestCase
 {

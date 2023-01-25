@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\TrainingPolicy;
-use Tests\TestCase;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class TrainingPolicyTest extends TestCase
 {

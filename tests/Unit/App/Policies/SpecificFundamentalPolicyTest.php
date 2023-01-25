@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\SpecificFundamentalPolicy;
-use Tests\TestCase;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class SpecificFundamentalPolicyTest extends TestCase
 {
@@ -94,7 +94,7 @@ class SpecificFundamentalPolicyTest extends TestCase
         });
 
         $specificFundamentalPolicy = new SpecificFundamentalPolicy();
-        
+
         $this->assertEquals($expected, $specificFundamentalPolicy->view($userMock));
     }
 }

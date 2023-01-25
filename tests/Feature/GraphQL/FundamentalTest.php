@@ -91,8 +91,8 @@ class FundamentalTest extends TestCase
                             'data' => [
                                 '*' => $this->data,
                             ],
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'permission' => true,
             ],

@@ -32,7 +32,7 @@ class TeamTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider listProvider
      *
      * @return void
@@ -42,8 +42,7 @@ class TeamTest extends TestCase
         $expectedMessage,
         $expected,
         bool $permission
-    )
-    {
+    ) {
         Team::factory()->make()->save();
 
         $this->checkPermission($permission, $this->permission, 'edit-team');
@@ -168,7 +167,7 @@ class TeamTest extends TestCase
                 'expected' => [
                     'data' => [
                         'team' => $this->data,
-                    ]
+                    ],
                 ],
                 'permission' => true,
             ],

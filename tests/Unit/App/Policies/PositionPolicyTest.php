@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\PositionPolicy;
-use Tests\TestCase;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class PositionPolicyTest extends TestCase
 {
@@ -96,6 +96,5 @@ class PositionPolicyTest extends TestCase
         $positionPolicy = new PositionPolicy();
 
         $this->assertEquals($expected, $positionPolicy->view($userMock));
-
     }
 }
