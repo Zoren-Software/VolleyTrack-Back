@@ -22,7 +22,7 @@ class FundamentalPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('create-fundamental')
+            ->with('edit-fundamental')
             ->willReturn($expected);
 
         $fundamentalPolicy = new FundamentalPolicy();

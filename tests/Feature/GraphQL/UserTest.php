@@ -4,6 +4,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Position;
 use App\Models\User;
+use App\Models\Team;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -207,11 +208,17 @@ class UserTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasTeam,
+        bool $permission
         ) {
         $this->login = true;
 
         $faker = Faker::create();
+
+        if($hasTeam) {
+            $team = Team::factory()->create();
+            $parameters['teamId'] = $team->id;
+        }
 
         $this->checkPermission($permission, $this->permission, 'edit-user');
 
@@ -228,6 +235,8 @@ class UserTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
+        /* dump($expected);
+        dd($response->json()); */
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
@@ -252,7 +261,6 @@ class UserTest extends TestCase
                     'email' => $faker->email,
                     'roleId' => [2],
                     'positionId' => [1],
-                    'teamId' => [1, 2],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
@@ -262,6 +270,7 @@ class UserTest extends TestCase
                         'userCreate' => $this->data,
                     ],
                 ],
+                'hasTeam' => true,
                 'permission' => true,
             ],
             'create user with position, success' => [
@@ -279,6 +288,7 @@ class UserTest extends TestCase
                         'userCreate' => $this->data,
                     ],
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'declare roleId is required, expected error' => [
@@ -294,6 +304,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userCreate,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'create user, success' => [
@@ -310,13 +321,14 @@ class UserTest extends TestCase
                         'userCreate' => $this->data,
                     ],
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'create user with 2 roles, success' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'roleId' => [2, 3],
+                    'roleId' => [3],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
@@ -326,6 +338,7 @@ class UserTest extends TestCase
                         'userCreate' => $this->data,
                     ],
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'create user with permission that shouldnt have, expected error' => [
@@ -341,6 +354,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userCreate,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'create user without permission, expected error' => [
@@ -356,6 +370,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userCreate,
                 ],
+                'hasTeam' => false,
                 'permission' => false,
             ],
             'text password less than 6 characters, expected error' => [
@@ -371,6 +386,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userCreate,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'no text password, expected error' => [
@@ -385,6 +401,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userCreate,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'text password with 6 characters, success' => [
@@ -401,6 +418,7 @@ class UserTest extends TestCase
                         'userCreate' => $this->data,
                     ],
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'email field is required, expected error' => [
@@ -416,6 +434,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userCreate,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'email field is not unique, expected error' => [
@@ -431,6 +450,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userCreate,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'email field is not email valid, expected error' => [
@@ -446,6 +466,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userCreate,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
         ];
@@ -462,7 +483,14 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function userEdit($parameters, $typeMessageError, $expectedMessage, $expected, $permission)
+    public function userEdit(
+        $parameters, 
+        $typeMessageError, 
+        $expectedMessage, 
+        $expected, 
+        bool $hasTeam,
+        bool $permission
+        )
     {
         $this->login = true;
 
@@ -475,6 +503,11 @@ class UserTest extends TestCase
         $user = User::factory()
             ->has(Position::factory()->count(3))
             ->create();
+
+        if($hasTeam) {
+            $team = Team::factory()->create();
+            $parameters['teamId'] = $team->id;
+        }
 
         $parameters['id'] = $user->id;
 
@@ -522,6 +555,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userEdit,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'edit user with permission that shouldnt have, expected error' => [
@@ -537,6 +571,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userEdit,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'edit user without permission, expected error' => [
@@ -552,6 +587,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userEdit,
                 ],
+                'hasTeam' => false,
                 'permission' => false,
             ],
             'edit user with team, success' => [
@@ -561,7 +597,6 @@ class UserTest extends TestCase
                     'password' => $password,
                     'roleId' => [2],
                     'positionId' => [2],
-                    'teamId' => [1, 2],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -570,6 +605,7 @@ class UserTest extends TestCase
                         'userEdit' => $this->data,
                     ],
                 ],
+                'hasTeam' => true,
                 'permission' => true,
             ],
             'edit user with position, success' => [
@@ -587,6 +623,7 @@ class UserTest extends TestCase
                         'userEdit' => $this->data,
                     ],
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'edit user, success' => [
@@ -603,6 +640,7 @@ class UserTest extends TestCase
                         'userEdit' => $this->data,
                     ],
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'edit user with 2 roles, success' => [
@@ -619,6 +657,7 @@ class UserTest extends TestCase
                         'userEdit' => $this->data,
                     ],
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'text password less than 6 characters, expected error' => [
@@ -634,6 +673,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userEdit,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'no text password, expected error' => [
@@ -649,6 +689,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userEdit,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'text password with 6 characters, success' => [
@@ -665,6 +706,7 @@ class UserTest extends TestCase
                         'userEdit' => $this->data,
                     ],
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'email field is required, expected error' => [
@@ -680,6 +722,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userEdit,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'email field is not unique, expected error' => [
@@ -694,6 +737,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userEdit,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
             'email field is not email valid, expected error' => [
@@ -709,6 +753,7 @@ class UserTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $userEdit,
                 ],
+                'hasTeam' => false,
                 'permission' => true,
             ],
         ];

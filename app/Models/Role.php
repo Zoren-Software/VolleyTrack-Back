@@ -25,7 +25,7 @@ class Role extends SpatieRole
              * if not, remove role id 1 from query (admin)
              */
             return $builder->when(
-                ! auth()->user()->hasRoleAdmin(),
+                ! auth()->user()->hasPermissionRole('view-role-admin'),
                 function (Builder $builder) {
                     $builder->whereNot('id', 1);
                 }
@@ -36,7 +36,7 @@ class Role extends SpatieRole
              * if not, remove role id 2 from query (Técnico)
              */
             ->when(
-                ! auth()->user()->hasRoleTechnician(),
+                ! auth()->user()->hasPermissionRole('view-role-technician'),
                 function (Builder $builder) {
                     $builder->whereNot('id', 2);
                 }
@@ -46,7 +46,7 @@ class Role extends SpatieRole
              * if not, remove role id 3 from query (Jogador)
              */
             ->when(
-                ! auth()->user()->hasRolePlayer(),
+                ! auth()->user()->hasPermissionRole('view-role-player'),
                 function (Builder $builder) {
                     $builder->whereNot('id', 3);
                 }

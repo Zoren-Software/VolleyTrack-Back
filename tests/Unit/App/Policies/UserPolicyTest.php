@@ -22,7 +22,7 @@ class UserPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('create-user')
+            ->with('edit-user')
             ->willReturn($expected);
 
         $userPolicy = new UserPolicy();

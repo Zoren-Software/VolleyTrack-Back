@@ -40,7 +40,7 @@ class TeamsUsersTest extends TestCase
                 ->with(1)
                 ->andReturn($mock);
             $mock->shouldReceive('hasRole')
-                ->with('Técnico')
+                ->with('technician')
                 ->once()->andReturn($data['user_relation_team_technian']);
         });
 
