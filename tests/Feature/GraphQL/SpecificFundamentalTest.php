@@ -15,7 +15,7 @@ class SpecificFundamentalTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $role = 'technician';
 
     private $data = [
         'id',
@@ -25,6 +25,12 @@ class SpecificFundamentalTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-specific-fundamental');
+        $this->checkPermission($hasPermission, $this->role, 'view-specific-fundamental');
+    }
+
     /**
      * Listagem de todos os fundamentos especificos.
      *
@@ -32,13 +38,21 @@ class SpecificFundamentalTest extends TestCase
      *
      * @test
      *
+     * @dataProvider listProvider
+     *
      * @return void
      */
-    public function specificFundamentalsList()
-    {
+    public function specificFundamentalsList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
         SpecificFundamental::factory()->make()->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'specificFundamentals',
             [
                 'name' => '%%',
@@ -51,16 +65,52 @@ class SpecificFundamentalTest extends TestCase
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'specificFundamentals' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'specificFundamentals' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ],
                     ],
                 ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -70,14 +120,22 @@ class SpecificFundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function specificFundamentalInfo()
-    {
+    public function specificFundamentalInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'specificFundamental',
             [
                 'id' => $specificFundamental->id,
@@ -85,11 +143,46 @@ class SpecificFundamentalTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'specificFundamental' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'specificFundamental' => $this->data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -108,10 +201,10 @@ class SpecificFundamentalTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission,
+        $hasPermission,
         $addRelationship
         ) {
-        $this->checkPermission($permission, $this->permission, 'create-specific-fundamental');
+        $this->setPermissions($hasPermission);
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
@@ -129,7 +222,7 @@ class SpecificFundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -159,7 +252,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => true,
             ],
             'create specific fundamental, no relationship, success' => [
@@ -174,7 +267,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalCreate' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'create specific fundamental without permission, expected error' => [
@@ -188,7 +281,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalCreate,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
                 'add_relationship' => false,
             ],
             'name field is not unique, expected error' => [
@@ -202,7 +295,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'name field is required, expected error' => [
@@ -216,7 +309,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
@@ -230,7 +323,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
         ];
@@ -252,10 +345,10 @@ class SpecificFundamentalTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission,
+        $hasPermission,
         $addRelationship
         ) {
-        $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
+        $this->setPermissions($hasPermission);
 
         $specificFundamentalExist = SpecificFundamental::factory()->make();
         $specificFundamentalExist->save();
@@ -284,7 +377,7 @@ class SpecificFundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -312,7 +405,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
                 'add_relationship' => false,
             ],
             'edit specific fundamental, no relationship, success' => [
@@ -327,7 +420,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'edit specific fundamental, with relationship, success' => [
@@ -342,7 +435,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => true,
             ],
             'name field is not unique, expected error' => [
@@ -355,7 +448,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'name field is required, expected error' => [
@@ -369,7 +462,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
@@ -383,7 +476,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $fundamentalEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
                 'add_relationship' => false,
             ],
         ];
@@ -400,11 +493,9 @@ class SpecificFundamentalTest extends TestCase
      *
      * @return void
      */
-    public function specificFundamentalDelete($data, $typeMessageError, $expectedMessage, $expected, $permission)
+    public function specificFundamentalDelete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
-        $this->login = true;
-
-        $this->checkPermission($permission, $this->permission, 'delete-specific-fundamental');
+        $this->setPermissions($hasPermission);
 
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
@@ -424,7 +515,7 @@ class SpecificFundamentalTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -452,7 +543,7 @@ class SpecificFundamentalTest extends TestCase
                         'specificFundamentalDelete' => [$this->data],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete specific fundamental without permission, expected error' => [
                 [
@@ -464,7 +555,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete specific fundamental that does not exist, expected error' => [
                 [
@@ -476,7 +567,7 @@ class SpecificFundamentalTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $specificFundamentalDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

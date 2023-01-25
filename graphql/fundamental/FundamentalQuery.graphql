@@ -4,7 +4,9 @@ extend type Query @guard {
     fundamental(
         id: ID!
         @eq
-    ): Fundamental @find
+    ): Fundamental
+        @can(ability: "view", resolved: true)
+        @find
 
     "List multiple fundamentals."
     fundamentals(
@@ -14,5 +16,7 @@ extend type Query @guard {
         "Filters by the fundamental's user_id."
         user_id: Int @where(operator: "eq", field: "user_id")
 
-    ): [Fundamental!]! @paginate(defaultCount: 10, maxCount: 100)
+    ): [Fundamental!]!
+        @can(ability: "view", resolved: true)
+        @paginate(defaultCount: 10, maxCount: 100)
 }

@@ -10,22 +10,42 @@ class PositionPolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
+     * Create a new position instance.
      *
-     * @return void
+     * @return bool
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create-position');
+        return $user->hasPermissionTo('edit-position');
     }
 
+    /**
+     * Edit a position instance.
+     *
+     * @return bool
+     */
     public function edit(User $user): bool
     {
         return $user->hasPermissionTo('edit-position');
     }
 
+    /**
+     * Delete a position instance.
+     *
+     * @return bool
+     */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo('delete-position');
+        return $user->hasPermissionTo('edit-position');
+    }
+
+    /**
+     * View a position instance.
+     *
+     * @return bool
+     */
+    public function view(User $user): bool
+    {
+        return $user->hasPermissionTo('edit-position') || $user->hasPermissionTo('view-position');
     }
 }

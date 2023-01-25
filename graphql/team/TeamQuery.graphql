@@ -4,7 +4,9 @@ extend type Query @guard {
     team(
         id: ID!
         @eq
-    ): Team @find
+    ): Team
+        @can(ability: "view", resolved: true)
+        @find
 
     "List multiple teams."
     teams(
@@ -14,5 +16,7 @@ extend type Query @guard {
         "Filters by the team's user_id."
         user_id: Int @where(operator: "eq", field: "user_id")
 
-    ): [Team!]! @paginate(defaultCount: 10, maxCount: 100)
+    ): [Team!]!
+        @can(ability: "view", resolved: true)
+        @paginate(defaultCount: 10, maxCount: 100)
 }

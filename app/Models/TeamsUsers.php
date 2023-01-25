@@ -46,7 +46,7 @@ class TeamsUsers extends Pivot
 
     public function updateRoleInRelationship()
     {
-        if ($this->user->find($this->user_id)->hasRole('Técnico')) {
+        if ($this->user->find($this->user_id)->hasRole('technician')) {
             $this->role = 'technician';
         }
     }

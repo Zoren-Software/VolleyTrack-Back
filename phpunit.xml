@@ -14,6 +14,39 @@
         <testsuite name="FeatureTenant">
             <directory suffix="Test.php">./tests/Feature/Tenant</directory>
         </testsuite>
+        <testsuite name="ConfigTest">
+            <file>./tests/Feature/GraphQL/ConfigTest.php</file>
+        </testsuite>
+        <testsuite name="FundamentalTest">
+            <file>./tests/Feature/GraphQL/FundamentalTest.php</file>
+        </testsuite>
+        <testsuite name="NotificationTest">
+            <file>./tests/Feature/GraphQL/NotificationTest.php</file>
+        </testsuite>
+        <testsuite name="PositionTest">
+            <file>./tests/Feature/GraphQL/PositionTest.php</file>
+        </testsuite>
+        <testsuite name="RoleTest">
+            <file>./tests/Feature/GraphQL/RoleTest.php</file>
+        </testsuite>
+        <testsuite name="SanctumTest">
+            <file>./tests/Feature/GraphQL/SanctumTest.php</file>
+        </testsuite>
+        <testsuite name="SpecificFundamentalTest">
+            <file>./tests/Feature/GraphQL/SpecificFundamentalTest.php</file>
+        </testsuite>
+        <testsuite name="TeamTest">
+            <file>./tests/Feature/GraphQL/TeamTest.php</file>
+        </testsuite>
+        <testsuite name="TrainingConfigTest">
+            <file>./tests/Feature/GraphQL/TrainingConfigTest.php</file>
+        </testsuite>
+        <testsuite name="TrainingTest">
+            <file>./tests/Feature/GraphQL/TrainingTest.php</file>
+        </testsuite>
+        <testsuite name="UserTest">
+            <file>./tests/Feature/GraphQL/UserTest.php</file>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

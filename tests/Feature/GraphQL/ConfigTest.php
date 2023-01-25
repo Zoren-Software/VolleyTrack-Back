@@ -13,7 +13,7 @@ class ConfigTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $role = 'technician';
 
     private $data = [
         'id',
@@ -24,18 +24,32 @@ class ConfigTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-config');
+        $this->checkPermission($hasPermission, $this->role, 'view-config');
+    }
+
     /**
      * Listagem de configurações.
      *
      * @test
      *
+     * @dataProvider infoProvider
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function configInfo()
-    {
-        $this->graphQL(
+    public function configInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
+        $response = $this->graphQL(
             'config',
             [
                 'id' => 1,
@@ -43,11 +57,47 @@ class ConfigTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'config' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'config' => $this->data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -66,9 +116,9 @@ class ConfigTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $permission
+        bool $hasPermission
     ) {
-        $this->checkPermission($permission, $this->permission, 'edit-config');
+        $this->setPermissions($hasPermission);
 
         $parameters['id'] = 1;
 
@@ -84,7 +134,7 @@ class ConfigTest extends TestCase
         $this->assertMessageError(
             $typeMessageError,
             $response,
-            $permission,
+            $hasPermission,
             $expectedMessage
         );
 
@@ -115,7 +165,7 @@ class ConfigTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $configEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit config, success' => [
                 [
@@ -130,7 +180,7 @@ class ConfigTest extends TestCase
                         'configEdit' => $this->data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'nameTenant field is required, expected error' => [
                 [
@@ -143,7 +193,7 @@ class ConfigTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $configEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'nameTenant field is min 3 characteres, expected error' => [
                 [
@@ -156,7 +206,7 @@ class ConfigTest extends TestCase
                     'errors' => $this->errors,
                     'data' => $configEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
