@@ -234,8 +234,6 @@ class UserTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $permission, $expectedMessage);
 
-        /* dump($expected);
-        dd($response->json()); */
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
