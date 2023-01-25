@@ -442,7 +442,8 @@ class PositionTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $hasPermission)
+        bool $hasPermission
+    )
     {
         $this->login = true;
 
