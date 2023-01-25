@@ -64,7 +64,7 @@ class TrainingPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('delete-training')
+            ->with('edit-training')
             ->willReturn($expected);
 
         $teamPolicy = new TrainingPolicy();

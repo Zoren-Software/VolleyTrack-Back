@@ -64,7 +64,7 @@ class PositionPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('delete-position')
+            ->with('edit-position')
             ->willReturn($expected);
 
         $positionPolicy = new PositionPolicy();

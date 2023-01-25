@@ -64,7 +64,7 @@ class SpecificFundamentalPolicyTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('delete-specific-fundamental')
+            ->with('edit-specific-fundamental')
             ->willReturn($expected);
 
         $specificFundamentalPolicy = new SpecificFundamentalPolicy();
