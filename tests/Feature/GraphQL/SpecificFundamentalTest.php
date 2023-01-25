@@ -31,14 +31,24 @@ class SpecificFundamentalTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
+     * 
+     * @dataProvider listProvider
      *
      * @return void
      */
-    public function specificFundamentalsList()
+    public function specificFundamentalsList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         SpecificFundamental::factory()->make()->save();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'view-specific-fundamental');
+
+        $response = $this->graphQL(
             'specificFundamentals',
             [
                 'name' => '%%',
@@ -51,16 +61,52 @@ class SpecificFundamentalTest extends TestCase
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'specificFundamentals' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+
+        if ($permission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'specificFundamentals' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ],
                     ],
                 ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
@@ -74,12 +120,20 @@ class SpecificFundamentalTest extends TestCase
      *
      * @return void
      */
-    public function specificFundamentalInfo()
+    public function specificFundamentalInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $permission
+    )
     {
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
 
-        $this->graphQL(
+        $this->checkPermission($permission, $this->permission, 'edit-specific-fundamental');
+        $this->checkPermission($permission, $this->permission, 'view-specific-fundamental');
+
+        $response = $this->graphQL(
             'specificFundamental',
             [
                 'id' => $specificFundamental->id,
@@ -87,11 +141,46 @@ class SpecificFundamentalTest extends TestCase
             $this->data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'specificFundamental' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $permission,
+            $expectedMessage
+        );
+
+        if ($permission) {
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'specificFundamental' => $this->data,
+                    ],
+                ],
+                'permission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'permission' => false,
+            ],
+        ];
     }
 
     /**
