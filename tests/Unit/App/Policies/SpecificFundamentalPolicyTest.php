@@ -5,6 +5,7 @@ namespace Tests\Unit\App\Policies;
 use App\Models\User;
 use App\Policies\SpecificFundamentalPolicy;
 use Tests\TestCase;
+use Mockery\MockInterface;
 
 class SpecificFundamentalPolicyTest extends TestCase
 {
@@ -17,7 +18,7 @@ class SpecificFundamentalPolicyTest extends TestCase
      *
      * @return void
      */
-    public function create(bool $expected): void
+    public function permissionCreate(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -38,7 +39,7 @@ class SpecificFundamentalPolicyTest extends TestCase
      *
      * @return void
      */
-    public function edit(bool $expected): void
+    public function permissionEdit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -59,7 +60,7 @@ class SpecificFundamentalPolicyTest extends TestCase
      *
      * @return void
      */
-    public function deleteSpecificFundamentalPolicy(bool $expected): void
+    public function permissionDelete(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -69,5 +70,31 @@ class SpecificFundamentalPolicyTest extends TestCase
 
         $specificFundamentalPolicy = new SpecificFundamentalPolicy();
         $specificFundamentalPolicy->delete($user);
+    }
+
+    /**
+     * A basic unit test view.
+     *
+     * @dataProvider permissionProvider
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function permissionView(bool $expected): void
+    {
+        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
+            $mock->shouldReceive('hasPermissionTo')
+                ->with('edit-specific-fundamental')
+                ->andReturn($expected);
+
+            $mock->shouldReceive('hasPermissionTo')
+                ->with('view-specific-fundamental')
+                ->andReturn($expected);
+        });
+
+        $specificFundamentalPolicy = new SpecificFundamentalPolicy();
+        
+        $this->assertEquals($expected, $specificFundamentalPolicy->view($userMock));
     }
 }

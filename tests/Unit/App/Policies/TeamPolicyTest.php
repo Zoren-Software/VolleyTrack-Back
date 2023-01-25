@@ -5,6 +5,7 @@ namespace Tests\Unit\App\Policies;
 use App\Models\User;
 use App\Policies\TeamPolicy;
 use Tests\TestCase;
+use Mockery\MockInterface;
 
 class TeamPolicyTest extends TestCase
 {
@@ -17,7 +18,7 @@ class TeamPolicyTest extends TestCase
      *
      * @return void
      */
-    public function create(bool $expected): void
+    public function permissionCreate(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -38,7 +39,7 @@ class TeamPolicyTest extends TestCase
      *
      * @return void
      */
-    public function edit(bool $expected): void
+    public function permissionEdit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -59,7 +60,7 @@ class TeamPolicyTest extends TestCase
      *
      * @return void
      */
-    public function deleteTeamPolicy(bool $expected): void
+    public function permissionDelete(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -69,5 +70,31 @@ class TeamPolicyTest extends TestCase
 
         $teamPolicy = new TeamPolicy();
         $teamPolicy->delete($user);
+    }
+
+    /**
+     * A basic unit test view.
+     *
+     * @dataProvider permissionProvider
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function permissionView(bool $expected): void
+    {
+        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
+            $mock->shouldReceive('hasPermissionTo')
+                ->with('edit-team')
+                ->andReturn($expected);
+
+            $mock->shouldReceive('hasPermissionTo')
+                ->with('view-team')
+                ->andReturn($expected);
+        });
+
+        $teamPolicy = new TeamPolicy();
+        
+        $this->assertEquals($expected, $teamPolicy->view($userMock));
     }
 }
