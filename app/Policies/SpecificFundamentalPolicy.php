@@ -50,6 +50,7 @@ class SpecificFundamentalPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo('edit-specific-fundamental') || $user->hasPermissionTo('view-specific-fundamental');
+        return $user->hasPermissionTo('edit-specific-fundamental') ||
+            $user->hasPermissionTo('view-specific-fundamental');
     }
 }
