@@ -70,15 +70,16 @@ class FundamentalTest extends TestCase
 
         if ($permission) {
             $response
-                ->assertJsonStructure(
-                    ['data' => [
+                ->assertJsonStructure([
+                    'data' => [
                         'fundamentals' => [
                             'paginatorInfo' => $this->paginatorInfo,
                             'data' => [
                                 '*' => $this->data,
                             ],
-                        ]]]
-                )
+                        ]
+                    ]
+                ])
                 ->assertStatus(200);
         }
     }
