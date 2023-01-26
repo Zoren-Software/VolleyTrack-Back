@@ -7,7 +7,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class PositionMutation
 {
-    private $position;
+    private Position $position;
 
     public function __construct(Position $position)
     {

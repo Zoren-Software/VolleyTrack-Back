@@ -7,6 +7,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class UserMutation
 {
+    private User $user;
+
     public function __construct(User $user)
     {
         $this->user = $user;

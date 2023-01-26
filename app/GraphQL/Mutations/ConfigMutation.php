@@ -7,6 +7,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class ConfigMutation
 {
+    private Config $config;
+
     public function __construct(Config $config)
     {
         $this->config = $config;
