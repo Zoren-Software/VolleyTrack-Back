@@ -63,6 +63,11 @@ class Training extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
+    public function confirmationsTraining()
+    {
+        return $this->hasMany(ConfirmationTraining::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
