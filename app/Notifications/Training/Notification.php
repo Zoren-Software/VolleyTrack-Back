@@ -5,6 +5,7 @@ namespace App\Notifications\Training;
 use App\Models\Training;
 use App\Models\TrainingConfig;
 use App\Models\User;
+use App\Models\ConfirmationTraining;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification as IlluminateNotification;
@@ -13,16 +14,19 @@ class Notification extends IlluminateNotification implements ShouldQueue
 {
     use Queueable;
 
-    public $training;
+    public Training $training;
+
+    public $confirmationTraining;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Training $training)
+    public function __construct(Training $training, ConfirmationTraining $confirmationTraining = null)
     {
         $this->training = $training;
+        $this->confirmationTraining = $confirmationTraining;
         $this->afterCommit();
     }
 

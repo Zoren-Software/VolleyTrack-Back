@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('confirmation_trainings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('player_id')->constrained('users');
-            $table->foreignId('training_id')->constrained('trainings');
-            $table->foreignId('team_id')->constrained('teams');
+            $table->foreignId('user_id')->constrained('users')->nullable();
+            $table->foreignId('player_id')->constrained('users')->nullable();
+            $table->foreignId('training_id')->constrained('trainings')->nullable();
+            $table->foreignId('team_id')->constrained('teams')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
             $table->boolean('presence')->default(false);
 
