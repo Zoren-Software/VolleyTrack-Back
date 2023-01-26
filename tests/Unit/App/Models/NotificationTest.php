@@ -9,7 +9,7 @@ use Tests\TestCase;
 class NotificationTest extends TestCase
 {
     /**
-     * A basic unit test example.
+     * A basic unit test list.
      *
      * @test
      *
