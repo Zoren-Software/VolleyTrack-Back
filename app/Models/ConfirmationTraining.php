@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ConfirmationTraining extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
 
     protected $fillable = [
@@ -18,7 +17,7 @@ class ConfirmationTraining extends Model
         'training_id',
         'team_id',
         'status',
-        'presence'
+        'presence',
     ];
 
     public function user()
@@ -70,5 +69,4 @@ class ConfirmationTraining extends Model
     {
         return $query->where('user_id', $user);
     }
-
 }

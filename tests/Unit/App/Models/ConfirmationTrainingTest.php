@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\App\Models;
 
-use Tests\TestCase;
 use App\Models\ConfirmationTraining;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Tests\TestCase;
 
 class ConfirmationTrainingTest extends TestCase
 {
@@ -71,7 +71,7 @@ class ConfirmationTrainingTest extends TestCase
     public function scopeStatus()
     {
         $confirmationTraining = new ConfirmationTraining();
-        
+
         $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeStatus($confirmationTraining, true));
     }
 
@@ -85,7 +85,7 @@ class ConfirmationTrainingTest extends TestCase
     public function scopePresence()
     {
         $confirmationTraining = new ConfirmationTraining();
-        
+
         $this->assertInstanceOf(Builder::class, $confirmationTraining->scopePresence($confirmationTraining, true));
     }
 
@@ -99,7 +99,7 @@ class ConfirmationTrainingTest extends TestCase
     public function scopePlayer()
     {
         $confirmationTraining = new ConfirmationTraining();
-        
+
         $this->assertInstanceOf(Builder::class, $confirmationTraining->scopePlayer($confirmationTraining, true));
     }
 
@@ -113,7 +113,7 @@ class ConfirmationTrainingTest extends TestCase
     public function scopeTeam()
     {
         $confirmationTraining = new ConfirmationTraining();
-        
+
         $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeTeam($confirmationTraining, true));
     }
 
@@ -127,7 +127,7 @@ class ConfirmationTrainingTest extends TestCase
     public function scopeTraining()
     {
         $confirmationTraining = new ConfirmationTraining();
-        
+
         $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeTraining($confirmationTraining, true));
     }
 
@@ -141,7 +141,7 @@ class ConfirmationTrainingTest extends TestCase
     public function scopeUser()
     {
         $confirmationTraining = new ConfirmationTraining();
-        
+
         $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeUser($confirmationTraining, true));
     }
 }
