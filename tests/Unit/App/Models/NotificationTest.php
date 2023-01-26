@@ -27,4 +27,18 @@ class NotificationTest extends TestCase
 
         $this->assertInstanceOf(Builder::class, $notification->list($args));
     }
+
+    /**
+     * A basic unit test scopeFilterRead.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function scopeFilterRead()
+    {
+        $notification = new Notification();
+
+        $this->assertInstanceOf(Builder::class, $notification->scopeFilterRead($notification, true));
+    }
 }

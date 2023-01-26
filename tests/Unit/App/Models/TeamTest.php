@@ -5,6 +5,7 @@ namespace Tests\Unit\App\Models;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Tests\TestCase;
 
@@ -24,18 +25,30 @@ class TeamTest extends TestCase
     }
 
     /**
-     * A basic unit test relation getActivitylogOptions.
+     * A basic unit test relation confirmationsTraining.
      *
      * @test
      *
      * @return void
      */
-    public function getActivitylogOptions()
+    public function confirmationsTraining()
     {
         $team = new Team();
-        $this->assertInstanceOf(LogOptions::class, $team->getActivitylogOptions());
+        $this->assertInstanceOf(HasMany::class, $team->confirmationsTraining());
     }
 
+    /**
+     * A basic unit test relation technicians.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function technicians()
+    {
+        $team = new Team();
+        $this->assertInstanceOf(BelongsToMany::class, $team->technicians());
+    }
     /**
      * A basic unit test relation players.
      *
@@ -50,15 +63,15 @@ class TeamTest extends TestCase
     }
 
     /**
-     * A basic unit test relation technicians.
+     * A basic unit test relation getActivitylogOptions.
      *
      * @test
      *
      * @return void
      */
-    public function technicians()
+    public function getActivitylogOptions()
     {
         $team = new Team();
-        $this->assertInstanceOf(BelongsToMany::class, $team->technicians());
+        $this->assertInstanceOf(LogOptions::class, $team->getActivitylogOptions());
     }
 }

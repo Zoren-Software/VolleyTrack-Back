@@ -4,6 +4,7 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Permission\Models\Permission;
@@ -132,5 +133,31 @@ class UserTest extends TestCase
     {
         $user = new User();
         $this->assertInstanceOf(BelongsToMany::class, $user->teams());
+    }
+
+    /**
+     * A basic unit test relation playerConfirmationsTraining
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function playerConfirmationsTraining()
+    {
+        $user = new User();
+        $this->assertInstanceOf(HasMany::class, $user->playerConfirmationsTraining());
+    }
+
+    /**
+     * A basic unit test relation userConfirmationsTraining
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function userConfirmationsTraining()
+    {
+        $user = new User();
+        $this->assertInstanceOf(HasMany::class, $user->userConfirmationsTraining());
     }
 }

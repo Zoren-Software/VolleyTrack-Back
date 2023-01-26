@@ -5,6 +5,7 @@ namespace Tests\Unit\App\Models;
 use App\Models\Training;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Tests\TestCase;
 
@@ -76,6 +77,19 @@ class TrainingTest extends TestCase
     }
 
     /**
+     * A basic unit test relation confirmationsTraining.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function relationConfirmationsTraining()
+    {
+        $training = new Training();
+        $this->assertInstanceOf(HasMany::class, $training->confirmationsTraining());
+    }
+
+    /**
      * A basic unit test range date notification.
      *
      * @dataProvider rangeDateNotificationProvider
@@ -90,6 +104,9 @@ class TrainingTest extends TestCase
         $this->assertEquals($expected, $training->rangeDateNotification($startDate, $dateToday, $dateLimit));
     }
 
+    /**
+     * @return array
+     */
     public function rangeDateNotificationProvider()
     {
         $sameDate = '13/01/2023';
