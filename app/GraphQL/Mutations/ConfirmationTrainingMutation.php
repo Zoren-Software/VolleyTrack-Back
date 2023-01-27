@@ -24,11 +24,9 @@ final class ConfirmationTrainingMutation
                 ->where('player_id', $args['player_id'])->first();
         }
 
-        if(isset($args['status'])) {
-            $this->confirmationTraining->status = $args['status'];
-            $this->confirmationTraining->save();
-    
-            return $this->confirmationTraining;
-        }
+        $this->confirmationTraining->status = $args['status'];
+        $this->confirmationTraining->save();
+
+        return $this->confirmationTraining;
     }
 }
