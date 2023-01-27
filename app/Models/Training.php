@@ -145,6 +145,13 @@ class Training extends Model
         return $startDate >= $dateToday && $startDate <= $dateLimit;
     }
 
+    /**
+     * @codeCoverageIgnore
+     * 
+     * @param int|null|null $daysNotification
+     * 
+     * @return void
+     */
     public function createConfirmationsPlayers(int|null $daysNotification = null)
     {
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
