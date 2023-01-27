@@ -9,16 +9,22 @@ class CheckPlayerIsInTraining implements Rule
 {
     private int $playerId;
     private int $trainingId;
+    private ConfirmationTraining $confirmationTraining;
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(int $playerId, int $trainingId)
+    public function __construct(
+        int $playerId, 
+        int $trainingId, 
+        ConfirmationTraining|null $confirmationTraining = null
+    )
     {
         $this->playerId = $playerId;
         $this->trainingId = $trainingId;
+        $this->confirmationTraining = $confirmationTraining ?? new ConfirmationTraining();
     }
 
     /**
@@ -30,7 +36,7 @@ class CheckPlayerIsInTraining implements Rule
      */
     public function passes($attribute, $value)
     {
-        return ConfirmationTraining::where('player_id', $this->playerId)
+        return $this->confirmationTraining::where('player_id', $this->playerId)
             ->where('training_id', $this->trainingId)
             ->first() != null;
     }
