@@ -13,7 +13,6 @@ return [
     |
     */
 
-    'message_error' => 'Este jogador não está relacionado a este treino.',
     'playerId_required' => 'O campo playerId é obrigatório',
     'trainingId_required' => 'O campo trainingId é obrigatório',
     'status_required' => 'O campo status é obrigatório',

@@ -14,16 +14,19 @@ final class ConfirmTrainingValidator extends Validator
      */
     public function rules(): array
     {
+        $playerId = $this->arg('playerId') ?? null;
+        $trainingId = $this->arg('trainingId') ?? null;
+
         return [
             'id' => [
-                'required_with:player_id,training_id'
+                'required'
             ],
             'playerId' => [
-                'required_with:id',
-                new CheckPlayerIsInTraining($this->arg('playerId'), $this->arg('trainingId')),
+                'required',
+                new CheckPlayerIsInTraining($playerId, $trainingId),
             ],
             'trainingId' => [
-                'required_with:id'
+                'required'
             ],
             'status' => [
                 'required'
@@ -37,11 +40,9 @@ final class ConfirmTrainingValidator extends Validator
     public function messages(): array
     {
         return [
-            'id.required_without_all' => 'É necessário informar o id ou player_id e training_id',
-            'playerId.required_without_all' => 'É necessário informar o id ou player_id e training_id',
-            'trainingId.required_without_all' => 'É necessário informar o id ou player_id e training_id',
-            'status.required' => 'É necessário informar o status',
-            'status.in' => 'O status deve ser confirmed ou not_confirmed',
+            'playerId.required' => trans('ConfirmTraining.playerId_required'),
+            'trainingId.required' => trans('ConfirmTraining.trainingId_required'),
+            'status.required' => trans('ConfirmTraining.status_required'),
         ];
     }
 }

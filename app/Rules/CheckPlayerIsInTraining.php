@@ -7,8 +7,8 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CheckPlayerIsInTraining implements Rule
 {
-    private int $playerId;
-    private int $trainingId;
+    private int|null $playerId;
+    private int|null $trainingId;
     private ConfirmationTraining $confirmationTraining;
 
     /**
@@ -17,8 +17,8 @@ class CheckPlayerIsInTraining implements Rule
      * @return void
      */
     public function __construct(
-        int $playerId, 
-        int $trainingId, 
+        int|null $playerId, 
+        int|null $trainingId, 
         ConfirmationTraining|null $confirmationTraining = null
     )
     {
