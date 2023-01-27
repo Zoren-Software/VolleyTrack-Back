@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'playerId_required' =>'The playerId is a required field',
-    'trainingId_required' =>'The trainingId is a required field',
-    'status_required' =>'The status is a required field',
+    'playerId_required' => 'The playerId is a required field',
+    'trainingId_required' => 'The trainingId is a required field',
+    'status_required' => 'The status is a required field',
 ];

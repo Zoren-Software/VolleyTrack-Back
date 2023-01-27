@@ -2,8 +2,8 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
-use Nuwave\Lighthouse\Validation\Validator;
 use App\Rules\CheckPlayerIsInTraining;
+use Nuwave\Lighthouse\Validation\Validator;
 
 final class ConfirmTrainingValidator extends Validator
 {
@@ -19,17 +19,17 @@ final class ConfirmTrainingValidator extends Validator
 
         return [
             'id' => [
-                'required'
+                'required',
             ],
             'playerId' => [
                 'required',
                 new CheckPlayerIsInTraining($playerId, $trainingId),
             ],
             'trainingId' => [
-                'required'
+                'required',
             ],
             'status' => [
-                'required'
+                'required',
             ],
         ];
     }

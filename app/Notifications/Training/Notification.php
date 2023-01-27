@@ -2,10 +2,10 @@
 
 namespace App\Notifications\Training;
 
+use App\Models\ConfirmationTraining;
 use App\Models\Training;
 use App\Models\TrainingConfig;
 use App\Models\User;
-use App\Models\ConfirmationTraining;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification as IlluminateNotification;

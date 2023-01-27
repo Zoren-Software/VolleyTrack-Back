@@ -147,9 +147,8 @@ class Training extends Model
 
     /**
      * @codeCoverageIgnore
-     * 
-     * @param int|null|null $daysNotification
-     * 
+     *
+     * @param  int|null|null  $daysNotification
      * @return void
      */
     public function createConfirmationsPlayers(int|null $daysNotification = null)

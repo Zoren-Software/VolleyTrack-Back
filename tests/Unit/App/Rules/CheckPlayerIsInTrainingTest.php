@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\App\Rules;
 
-use App\Rules\CheckPlayerIsInTraining;
-use Tests\TestCase;
 use App\Models\ConfirmationTraining;
+use App\Rules\CheckPlayerIsInTraining;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class CheckPlayerIsInTrainingTest extends TestCase
 {
@@ -30,7 +30,7 @@ class CheckPlayerIsInTrainingTest extends TestCase
      * A basic unit test passes.
      *
      * @test
-     * 
+     *
      * @dataProvider passesProvider
      *
      * @return void
@@ -41,7 +41,7 @@ class CheckPlayerIsInTrainingTest extends TestCase
         $trainingId = 1;
         $confirmationTrainingMock = $this->mock(
             ConfirmationTraining::class,
-            function (MockInterface $mock) use ($passes){
+            function (MockInterface $mock) use ($passes) {
                 $mock->shouldReceive('where')
                     ->once()
                     ->with('player_id', 1)
@@ -53,7 +53,6 @@ class CheckPlayerIsInTrainingTest extends TestCase
                 $mock->shouldReceive('first')
                     ->once()
                     ->andReturn($passes);
-                
             }
         );
 
@@ -65,10 +64,10 @@ class CheckPlayerIsInTrainingTest extends TestCase
     {
         return [
             'when there is player related to training' => [
-                'passes' => true
+                'passes' => true,
             ],
             'if there is no player related to training' => [
-                'passes' => false
+                'passes' => false,
             ],
         ];
     }

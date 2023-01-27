@@ -16,9 +16,9 @@ final class ConfirmationTrainingMutation
 
     public function confirmTraining($rootValue, array $args, GraphQLContext $context): ConfirmationTraining
     {
-        if(isset($args['id'])) {
+        if (isset($args['id'])) {
             $this->confirmationTraining = $this->confirmationTraining->find($args['id']);
-        } else if(isset($args['training_id']) && isset($args['player_id'])) {
+        } elseif (isset($args['training_id']) && isset($args['player_id'])) {
             $this->confirmationTraining = $this->confirmationTraining
                 ->where('training_id', $args['training_id'])
                 ->where('player_id', $args['player_id'])->first();

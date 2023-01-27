@@ -15,7 +15,7 @@ class ConfirmationTrainingMutationTest extends TestCase
      * @test
      *
      * @dataProvider confirmationTrainingProvider
-     * 
+     *
      * @return void
      */
     public function confirmTraining($data)
@@ -23,15 +23,14 @@ class ConfirmationTrainingMutationTest extends TestCase
         $graphQLContext = $this->createMock(GraphQLContext::class);
 
         $confirmationTrainingMock = $this->mock(ConfirmationTraining::class, function ($mock) use ($data) {
-            
-            if(isset($data['id'])) {
+            if (isset($data['id'])) {
                 $mock->shouldReceive('find')
                     ->once()
                     ->with(1)
                     ->andReturn($mock);
             }
 
-            if(isset($data['training_id']) && isset($data['player_id'])) {
+            if (isset($data['training_id']) && isset($data['player_id'])) {
                 $mock->shouldReceive('where')
                     ->once()
                     ->with('training_id', 1)
@@ -54,7 +53,6 @@ class ConfirmationTrainingMutationTest extends TestCase
             $mock->shouldReceive('save')
                 ->once()
                 ->andReturn(true);
-
         });
 
         $confirmationTrainingMutation = new ConfirmationTrainingMutation($confirmationTrainingMock);
@@ -67,7 +65,8 @@ class ConfirmationTrainingMutationTest extends TestCase
         $this->assertEquals($confirmationTrainingMock, $confirmationTrainingMockReturn);
     }
 
-    public function confirmationTrainingProvider() {
+    public function confirmationTrainingProvider()
+    {
         return [
             'sending single id parameter as reference, success' => [
                 'data' => [

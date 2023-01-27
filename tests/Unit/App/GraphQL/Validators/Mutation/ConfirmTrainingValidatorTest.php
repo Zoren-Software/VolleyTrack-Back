@@ -3,9 +3,9 @@
 namespace Tests\Unit\App\GraphQL\Validators\Mutation;
 
 use App\GraphQL\Validators\Mutation\ConfirmTrainingValidator;
-use Tests\TestCase;
 use Mockery\MockInterface;
 use Nuwave\Lighthouse\Execution\Arguments\ArgumentSet;
+use Tests\TestCase;
 
 class ConfirmTrainingValidatorTest extends TestCase
 {
