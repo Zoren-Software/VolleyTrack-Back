@@ -1,0 +1,17 @@
+
+extend type Mutation @guard {
+    confirmTraining(
+        id: Int
+        playerId: Int @rename(attribute: "player_id") 
+        trainingId: Int @rename(attribute: "training_id")
+        status: ConfirmationTrainingStatus!
+    ): ConfirmationTraining
+        @field(resolver: "ConfirmationTrainingMutation@confirmTraining") 
+        @validator
+}
+
+enum ConfirmationTrainingStatus {
+  PENDING @enum(value: pending)
+  CONFIRMED @enum(value: confirmed)
+  REJECTED @enum(value: rejected)
+}
