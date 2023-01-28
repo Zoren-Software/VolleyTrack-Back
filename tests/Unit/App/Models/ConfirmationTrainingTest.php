@@ -65,83 +65,118 @@ class ConfirmationTrainingTest extends TestCase
      * A basic unit test relation scopeStatus.
      *
      * @test
+     * 
+     * @dataProvider scopeFilterProvider
      *
      * @return void
      */
-    public function scopeStatus()
+    public function scopeStatus($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeStatus($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopeStatus($confirmationTraining, $parameter));
     }
 
     /**
      * A basic unit test relation scopePresence.
      *
      * @test
+     * 
+     * @dataProvider scopeFilterProvider
      *
      * @return void
      */
-    public function scopePresence()
+    public function scopePresence($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopePresence($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopePresence($confirmationTraining, $parameter));
     }
 
     /**
      * A basic unit test relation scopePlayer.
      *
      * @test
+     * 
+     * @dataProvider scopeFilterProvider
      *
      * @return void
      */
-    public function scopePlayer()
+    public function scopePlayer($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopePlayer($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopePlayer($confirmationTraining, $parameter));
     }
 
     /**
      * A basic unit test relation scopeTeam.
      *
      * @test
+     * 
+     * @dataProvider scopeFilterProvider
      *
      * @return void
      */
-    public function scopeTeam()
+    public function scopeTeam($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeTeam($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopeTeam($confirmationTraining, $parameter));
     }
 
     /**
      * A basic unit test relation scopeTraining.
      *
      * @test
+     * 
+     * @dataProvider scopeFilterProvider
      *
      * @return void
      */
-    public function scopeTraining()
+    public function scopeTraining($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeTraining($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopeTraining($confirmationTraining, $parameter));
     }
 
     /**
      * A basic unit test relation scopeUser.
      *
      * @test
+     * 
+     * @dataProvider scopeFilterProvider
      *
      * @return void
      */
-    public function scopeUser()
+    public function scopeUser($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeUser($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopeUser($confirmationTraining, $parameter));
+    }
+
+    /**
+     * A dataProvider scopeFilterProvider.
+     *
+     * @return void
+     */
+    public function scopeFilterProvider()
+    {
+        return [
+            'parameter with value' => [
+                'parameter' => true,
+            ],
+            'parameter without value' => [
+                'parameter' => null,
+            ],
+        ];
     }
 }

@@ -1,0 +1,5 @@
+enum ConfirmationTrainingStatus {
+  PENDING @enum(value: pending)
+  CONFIRMED @enum(value: confirmed)
+  REJECTED @enum(value: rejected)
+}

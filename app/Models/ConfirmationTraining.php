@@ -42,31 +42,60 @@ class ConfirmationTraining extends Model
 
     public function scopeStatus($query, $status)
     {
+        if ($status === null) {
+            return $query;
+        }
         return $query->where('status', $status);
     }
 
-    public function scopePresence($query, $presence)
+    public function scopePresence($query, $presenceId)
     {
-        return $query->where('presence', $presence);
+        if ($presenceId === null) {
+            return $query;
+        }
+        return $query->where('presence', $presenceId);
     }
 
-    public function scopePlayer($query, $player)
+    public function scopePlayer($query, $playerId)
     {
-        return $query->where('player_id', $player);
+        if ($playerId === null) {
+            return $query;
+        }
+        return $query->where('player_id', $playerId);
     }
 
-    public function scopeTeam($query, $team)
+    public function scopeTeam($query, $teamId)
     {
-        return $query->where('team_id', $team);
+        if ($teamId === null) {
+            return $query;
+        }
+        return $query->where('team_id', $teamId);
     }
 
-    public function scopeTraining($query, $training)
+    public function scopeTraining($query, $trainingId)
     {
-        return $query->where('training_id', $training);
+        if ($trainingId === null) {
+            return $query;
+        }
+        return $query->where('training_id', $trainingId);
     }
 
-    public function scopeUser($query, $user)
+    public function scopeUser($query, $userId)
     {
-        return $query->where('user_id', $user);
+        if ($userId === null) {
+            return $query;
+        }
+        return $query->where('user_id', $userId);
+    }
+
+    public function list(array $args) {
+
+        return $this->status($args['status'] ?? null)
+            ->presence($args['presence'] ?? null)
+            ->player($args['player_id'] ?? null)
+            ->team($args['team_id'] ?? null)
+            ->training($args['training_id'] ?? null)
+            ->user($args['user_id'] ?? null)
+            ->orderBy('created_at', 'desc');
     }
 }
