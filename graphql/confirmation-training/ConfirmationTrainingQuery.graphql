@@ -17,6 +17,9 @@ extend type Query @guard {
         "Filters by the training's status. One of `PENDING`, `CONFIRMED`, `REJECTED`."
         status: ConfirmationTrainingStatus
 
+        "Filters by the training's presence."
+        presence: Boolean
+
     ): [ConfirmationTrainingList!]! 
         @can(ability: "view", resolved: true)
         @paginate(
