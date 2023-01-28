@@ -196,14 +196,11 @@ abstract class TestCase extends BaseTestCase
         $query = "$nomeQueryGraphQL $inputOpen";
 
         foreach ($dadosEntrada as $key => $value) {
-            if(is_array($value) && isset($value['type']) && $value['type'] == 'ENUM')
-            {
+            if (is_array($value) && isset($value['type']) && $value['type'] == 'ENUM') {
                 $query .= $this->converteDadosString($query, $key, $value, $input, $value['type'], $parametrosEntrada);
-            }
-            elseif (is_array($value)) {
+            } elseif (is_array($value)) {
                 $query .= $this->converteDadosArrayEntrada($key, $value);
-            } 
-            elseif ($value) {
+            } elseif ($value) {
                 $query .= $this->converteDadosString($query, $key, $value, $input, $type, $parametrosEntrada);
             }
         }
