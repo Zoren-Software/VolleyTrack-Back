@@ -3,6 +3,7 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
+use App\Models\User;
 use App\Models\TeamsUsers;
 use App\Models\Training;
 use Faker\Factory as Faker;
@@ -70,6 +71,8 @@ class TrainingTest extends TestCase
         $expected,
         bool $hasPermission
     ) {
+        $this->be(User::find(3));
+
         $this->setPermissions($hasPermission);
 
         Training::factory()->make()->save();
@@ -152,6 +155,8 @@ class TrainingTest extends TestCase
         $expected,
         bool $hasPermission
     ) {
+        $this->be(User::find(3));
+        
         $this->setPermissions($hasPermission);
 
         $training = Training::factory()->make();
@@ -227,6 +232,8 @@ class TrainingTest extends TestCase
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
+
+        $this->be(User::find(3));
 
         $team = Team::factory()
             ->hasPlayers(10)
@@ -547,6 +554,8 @@ class TrainingTest extends TestCase
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
+
+        $this->be(User::find(3));
 
         $training = Training::factory()->make();
         $training->save();
