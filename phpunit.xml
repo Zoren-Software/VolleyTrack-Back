@@ -47,6 +47,9 @@
         <testsuite name="UserTest">
             <file>./tests/Feature/GraphQL/UserTest.php</file>
         </testsuite>
+        <testsuite name="ConfirmationTrainingTest">
+            <file>./tests/Feature/GraphQL/ConfirmationTrainingTest.php</file>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

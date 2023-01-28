@@ -63,6 +63,11 @@ class Training extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
+    public function confirmationsTraining()
+    {
+        return $this->hasMany(ConfirmationTraining::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -116,22 +121,8 @@ class Training extends Model
      * @param  null  $daysNotification
      * @return void
      */
-    public function sendNotificationPlayers(int|null $daysNotification = null)
+    public function sendNotificationTechnicians(int|null $daysNotification = null)
     {
-        $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
-
-        $this->team->players()->each(function ($player) use ($daysNotification) {
-            if (
-                $this->rangeDateNotification(
-                    $this->date_start->format($this->format),
-                    now()->format($this->format),
-                    now()->addDays($daysNotification)->format($this->format)
-                )
-            ) {
-                $player->notify(new TrainingNotification($this));
-            }
-        });
-
         $this->team->technicians()->each(function ($technician) use ($daysNotification) {
             if (
                 $this->rangeDateNotification(
@@ -140,7 +131,7 @@ class Training extends Model
                     now()->addDays($daysNotification)->format($this->format)
                 )
             ) {
-                $technician->notify(new NotificationConfirmationTrainingNotification($this));
+                $technician->notify(new NotificationConfirmationTrainingNotification($this, null));
             }
         });
     }
@@ -152,5 +143,38 @@ class Training extends Model
         $dateLimit = Carbon::createFromFormat($this->format, $dateLimit);
 
         return $startDate >= $dateToday && $startDate <= $dateLimit;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @param  int|null|null  $daysNotification
+     * @return void
+     */
+    public function createConfirmationsPlayers(int|null $daysNotification = null)
+    {
+        $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
+        $this->team->players()->each(function ($player) use ($daysNotification) {
+            $confirmationTraining = $this->confirmationsTraining()->create([
+                'user_id' => auth()->user()->id ?? null,
+                'player_id' => $player->id ?? null,
+                'team_id' => $this->team_id ?? null,
+                'training_id' => $this->id ?? null,
+                'status' => 'pending',
+                'presence' => false,
+            ]);
+
+            if (
+                $this->rangeDateNotification(
+                    $this->date_start->format($this->format),
+                    now()->format($this->format),
+                    now()->addDays($daysNotification)->format($this->format)
+                )
+            ) {
+                $player->notify(new TrainingNotification($this, $confirmationTraining));
+            }
+        });
+
+        $this->sendNotificationTechnicians($daysNotification);
     }
 }

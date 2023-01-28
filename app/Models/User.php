@@ -138,4 +138,14 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         return $this->hasRole('admin');
     }
+
+    public function playerConfirmationsTraining()
+    {
+        return $this->hasMany(ConfirmationTraining::class, 'player_id');
+    }
+
+    public function userConfirmationsTraining()
+    {
+        return $this->hasMany(ConfirmationTraining::class, 'user_id');
+    }
 }

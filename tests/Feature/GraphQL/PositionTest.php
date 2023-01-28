@@ -443,8 +443,7 @@ class PositionTest extends TestCase
         $expectedMessage,
         $expected,
         bool $hasPermission
-    )
-    {
+    ) {
         $this->login = true;
 
         $this->checkPermission($hasPermission, $this->role, 'edit-position');

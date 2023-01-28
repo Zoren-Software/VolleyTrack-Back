@@ -32,6 +32,7 @@ class TrainingNotification extends Notification
     {
         return [
             'training' => $this->training,
+            'confirmationTraining' => $this->confirmationTraining,
             'message' => trans('TrainingNotification.title_mail'),
         ];
     }
