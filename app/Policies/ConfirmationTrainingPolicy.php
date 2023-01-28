@@ -9,7 +9,6 @@ class ConfirmationTrainingPolicy
 {
     use HandlesAuthorization;
 
-   
     /**
      * View a training instance.
      *

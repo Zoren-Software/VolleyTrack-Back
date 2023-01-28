@@ -45,6 +45,7 @@ class ConfirmationTraining extends Model
         if ($status === null) {
             return $query;
         }
+
         return $query->where('status', $status);
     }
 
@@ -53,6 +54,7 @@ class ConfirmationTraining extends Model
         if ($presenceId === null) {
             return $query;
         }
+
         return $query->where('presence', $presenceId);
     }
 
@@ -61,6 +63,7 @@ class ConfirmationTraining extends Model
         if ($playerId === null) {
             return $query;
         }
+
         return $query->where('player_id', $playerId);
     }
 
@@ -69,6 +72,7 @@ class ConfirmationTraining extends Model
         if ($teamId === null) {
             return $query;
         }
+
         return $query->where('team_id', $teamId);
     }
 
@@ -77,6 +81,7 @@ class ConfirmationTraining extends Model
         if ($trainingId === null) {
             return $query;
         }
+
         return $query->where('training_id', $trainingId);
     }
 
@@ -85,11 +90,12 @@ class ConfirmationTraining extends Model
         if ($userId === null) {
             return $query;
         }
+
         return $query->where('user_id', $userId);
     }
 
-    public function list(array $args) {
-
+    public function list(array $args)
+    {
         return $this->status($args['status'] ?? null)
             ->presence($args['presence'] ?? null)
             ->player($args['player_id'] ?? null)

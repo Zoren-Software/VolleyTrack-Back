@@ -21,7 +21,6 @@ class ConfirmationTrainingPolicyTest extends TestCase
     public function permissionView(bool $expected): void
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
-
             $mock->shouldReceive('hasPermissionTo')
                 ->with('view-confirmation-training')
                 ->andReturn($expected);

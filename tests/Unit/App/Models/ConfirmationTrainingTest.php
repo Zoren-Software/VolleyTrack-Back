@@ -65,7 +65,7 @@ class ConfirmationTrainingTest extends TestCase
      * A basic unit test relation scopeStatus.
      *
      * @test
-     * 
+     *
      * @dataProvider scopeFilterProvider
      *
      * @return void
@@ -82,7 +82,7 @@ class ConfirmationTrainingTest extends TestCase
      * A basic unit test relation scopePresence.
      *
      * @test
-     * 
+     *
      * @dataProvider scopeFilterProvider
      *
      * @return void
@@ -99,7 +99,7 @@ class ConfirmationTrainingTest extends TestCase
      * A basic unit test relation scopePlayer.
      *
      * @test
-     * 
+     *
      * @dataProvider scopeFilterProvider
      *
      * @return void
@@ -116,7 +116,7 @@ class ConfirmationTrainingTest extends TestCase
      * A basic unit test relation scopeTeam.
      *
      * @test
-     * 
+     *
      * @dataProvider scopeFilterProvider
      *
      * @return void
@@ -133,7 +133,7 @@ class ConfirmationTrainingTest extends TestCase
      * A basic unit test relation scopeTraining.
      *
      * @test
-     * 
+     *
      * @dataProvider scopeFilterProvider
      *
      * @return void
@@ -150,7 +150,7 @@ class ConfirmationTrainingTest extends TestCase
      * A basic unit test relation scopeUser.
      *
      * @test
-     * 
+     *
      * @dataProvider scopeFilterProvider
      *
      * @return void
@@ -184,12 +184,11 @@ class ConfirmationTrainingTest extends TestCase
      * A basic unit test method list.
      *
      * @test
-     * 
+     *
      * @dataProvider listProvider
-     * 
+     *
      * @return void
      */
-
     public function list($args)
     {
         $confirmationTraining = new ConfirmationTraining();
