@@ -27,6 +27,99 @@ class ConfirmationTrainingTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'view-confirmation-training');
+    }
+
+    /**
+     * Listagem de todos os fundamentos.
+     *
+     * @author Maicon Cerutti
+     *
+     * @test
+     *
+     * @dataProvider listProvider
+     *
+     * @return void
+     */
+    public function confirmationsTrainingsList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
+        $team = Team::factory()
+            ->hasPlayers(10)
+            ->create();
+
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
+
+        $response = $this->graphQL(
+            'confirmationsTraining',
+            [
+                'trainingId' => $training->id,
+                'first' => 10,
+                'page' => 1,
+            ],
+            [
+                'paginatorInfo' => $this->paginatorInfo,
+                'data' => $this->data,
+            ],
+            'query',
+            false
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'confirmationsTraining' => [
+                            'paginatorInfo' => $this->paginatorInfo,
+                            'data' => [
+                                '*' => $this->data,
+                            ],
+                        ],
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => $this->unauthorized,
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
+    }
+
     /**
      * Método de exclusão de um fundamento.
      *

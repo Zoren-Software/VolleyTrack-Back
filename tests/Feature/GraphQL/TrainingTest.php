@@ -3,9 +3,9 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
-use App\Models\User;
 use App\Models\TeamsUsers;
 use App\Models\Training;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -156,7 +156,7 @@ class TrainingTest extends TestCase
         bool $hasPermission
     ) {
         $this->be(User::find(3));
-        
+
         $this->setPermissions($hasPermission);
 
         $training = Training::factory()->make();
