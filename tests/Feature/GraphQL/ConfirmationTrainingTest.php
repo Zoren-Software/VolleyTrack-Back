@@ -62,7 +62,7 @@ class ConfirmationTrainingTest extends TestCase
         $response = $this->graphQL(
             'confirmationsTraining',
             [
-                'trainingId' => 1,
+                'trainingId' => $training->id,
                 'first' => 10,
                 'page' => 1,
             ],
@@ -80,7 +80,6 @@ class ConfirmationTrainingTest extends TestCase
             $hasPermission,
             $expectedMessage
         );
-
 
         if ($hasPermission) {
             $response
