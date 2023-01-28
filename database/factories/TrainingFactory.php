@@ -33,4 +33,13 @@ class TrainingFactory extends Factory
             'date_end' => $dateEnd,
         ];
     }
+
+    public function setTeamId(int $teamId)
+    {
+        return $this->state(function (array $attributes) use ($teamId) {
+            return [
+                'team_id' => $teamId,
+            ];
+        });
+    }
 }

@@ -7,6 +7,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class SpecificFundamentalMutation
 {
+    private SpecificFundamental $specificFundamental;
+
     public function __construct(SpecificFundamental $specificFundamental)
     {
         $this->specificFundamental = $specificFundamental;

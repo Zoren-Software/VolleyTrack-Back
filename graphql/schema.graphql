@@ -10,3 +10,4 @@
 #import specific-fundamental/*.graphql
 #import position/*.graphql
 #import notification/*.graphql
+#import confirmation-training/*.graphql

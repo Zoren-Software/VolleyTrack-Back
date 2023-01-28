@@ -8,9 +8,9 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class TeamMutation
 {
-    private $team;
+    private Team $team;
 
-    private $user;
+    private User $user;
 
     public function __construct(Team $team, User $user)
     {

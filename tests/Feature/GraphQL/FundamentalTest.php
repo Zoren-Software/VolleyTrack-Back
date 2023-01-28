@@ -441,8 +441,6 @@ class FundamentalTest extends TestCase
         $expected,
         $hasPermission
     ) {
-        $this->login = true;
-
         $this->setPermissions($hasPermission);
 
         $fundamental = Fundamental::factory()->make();

@@ -24,20 +24,9 @@ class Team extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getActivitylogOptions(): LogOptions
+    public function confirmationsTraining()
     {
-        return LogOptions::defaults()
-            ->useLogName($this->table)
-            ->logOnly(['*'])
-            ->logOnlyDirty()
-            ->dontLogIfAttributesChangedOnly(
-                [
-                    'updated_at',
-                    'created_at',
-                    'deleted_at',
-                ]
-            )
-            ->dontSubmitEmptyLogs();
+        return $this->hasMany(ConfirmationTraining::class);
     }
 
     public function technicians()
@@ -58,5 +47,21 @@ class Team extends Model
             ->where('teams_users.role', 'player')
             ->withTimestamps()
             ->withPivot('created_at', 'updated_at');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName($this->table)
+            ->logOnly(['*'])
+            ->logOnlyDirty()
+            ->dontLogIfAttributesChangedOnly(
+                [
+                    'updated_at',
+                    'created_at',
+                    'deleted_at',
+                ]
+            )
+            ->dontSubmitEmptyLogs();
     }
 }
