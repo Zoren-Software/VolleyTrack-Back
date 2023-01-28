@@ -196,9 +196,14 @@ abstract class TestCase extends BaseTestCase
         $query = "$nomeQueryGraphQL $inputOpen";
 
         foreach ($dadosEntrada as $key => $value) {
-            if (is_array($value)) {
+            if(is_array($value) && isset($value['type']) && $value['type'] == 'ENUM')
+            {
+                $query .= $this->converteDadosString($query, $key, $value, $input, $value['type'], $parametrosEntrada);
+            }
+            elseif (is_array($value)) {
                 $query .= $this->converteDadosArrayEntrada($key, $value);
-            } elseif ($value) {
+            } 
+            elseif ($value) {
                 $query .= $this->converteDadosString($query, $key, $value, $input, $type, $parametrosEntrada);
             }
         }
@@ -260,7 +265,9 @@ abstract class TestCase extends BaseTestCase
         string $type,
         bool $receberComoParametro
     ): string {
-        if ($input || $type == 'query') {
+        if ($type == 'ENUM') {
+            return $key . ': ' . $value['value'] . ' ';
+        } elseif ($input || $type == 'query') {
             if (is_int($value) || is_bool($value)) {
                 if ($value === true) {
                     $value = 'true';
