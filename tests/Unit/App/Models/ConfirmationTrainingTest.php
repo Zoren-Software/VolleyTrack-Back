@@ -179,4 +179,52 @@ class ConfirmationTrainingTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * A basic unit test method list.
+     *
+     * @test
+     * 
+     * @dataProvider listProvider
+     * 
+     * @return void
+     */
+
+    public function list($args)
+    {
+        $confirmationTraining = new ConfirmationTraining();
+
+        $this->assertInstanceOf(Builder::class, $confirmationTraining->list($args));
+    }
+
+    /**
+     * A dataProvider listProvider.
+     *
+     * @return void
+     */
+    public function listProvider()
+    {
+        return [
+            'parameter with value' => [
+                'args' => [
+                    'status' => 'confirmed',
+                    'presence' => false,
+                    'player_id' => 1,
+                    'user_id' => 1,
+                    'team_id' => 1,
+                    'training_id' => 1,
+                ],
+            ],
+            'parameter without value' => [
+                'args' => [
+                    'status' => null,
+                    'presence' => null,
+                    'player_id' => null,
+                    'user_id' => null,
+                    'team_id' => null,
+                    'training_id' => null,
+                ],
+            ],
+        ];
+    }
 }
