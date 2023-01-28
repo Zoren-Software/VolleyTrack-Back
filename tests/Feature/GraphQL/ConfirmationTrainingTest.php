@@ -22,6 +22,7 @@ class ConfirmationTrainingTest extends TestCase
         'playerId',
         'trainingId',
         'status',
+        'presence',
         'teamId',
         'createdAt',
         'updatedAt',
@@ -142,8 +143,6 @@ class ConfirmationTrainingTest extends TestCase
         ->hasPlayers(10)
         ->create();
 
-        $this->be($team->user);
-
         $training = Training::factory()
             ->setTeamId($team->id)
             ->create();
@@ -188,7 +187,7 @@ class ConfirmationTrainingTest extends TestCase
      */
     public function confirmTrainingProvider()
     {
-        $fundamentalDelete = ['fundamentalDelete'];
+        $confirmationTraining = ['confirmTraining'];
 
         return [
             'confirm training, success' => [
@@ -204,7 +203,7 @@ class ConfirmationTrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-            'training confirmation for player not part of training, expected error' => [
+           'training confirmation for player not part of training, expected error' => [
                 [
                     'error' => true,
                     'data_error' => [
@@ -221,7 +220,7 @@ class ConfirmationTrainingTest extends TestCase
                 'expected_message' => 'CheckPlayerIsInTraining.message_error',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalDelete,
+                    'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
             ],
@@ -241,7 +240,7 @@ class ConfirmationTrainingTest extends TestCase
                 'expected_message' => 'CheckPlayerIsInTraining.playerId_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalDelete,
+                    'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
             ],
@@ -261,7 +260,7 @@ class ConfirmationTrainingTest extends TestCase
                 'expected_message' => 'CheckPlayerIsInTraining.trainingId_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalDelete,
+                    'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
             ],
@@ -278,7 +277,7 @@ class ConfirmationTrainingTest extends TestCase
                 'expected_message' => 'CheckPlayerIsInTraining.status_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalDelete,
+                    'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
             ],
