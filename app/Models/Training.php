@@ -157,9 +157,9 @@ class Training extends Model
         $this->team->players()->each(function ($player) use ($daysNotification) {
             $confirmationTraining = $this->confirmationsTraining()->create([
                 'user_id' => auth()->user()->id ?? null,
-                'player_id' => $player->id ?? null,
-                'team_id' => $this->team_id ?? null,
-                'training_id' => $this->id ?? null,
+                'player_id' => $player->id,
+                'team_id' => $this->team_id,
+                'training_id' => $this->id,
                 'status' => 'pending',
                 'presence' => false,
             ]);

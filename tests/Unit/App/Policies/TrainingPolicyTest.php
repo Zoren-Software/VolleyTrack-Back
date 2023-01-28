@@ -26,8 +26,8 @@ class TrainingPolicyTest extends TestCase
             ->with('edit-training')
             ->willReturn($expected);
 
-        $teamPolicy = new TrainingPolicy();
-        $teamPolicy->create($user);
+        $trainingPolicy = new TrainingPolicy();
+        $trainingPolicy->create($user);
     }
 
     /**
@@ -47,8 +47,8 @@ class TrainingPolicyTest extends TestCase
             ->with('edit-training')
             ->willReturn($expected);
 
-        $teamPolicy = new TrainingPolicy();
-        $teamPolicy->edit($user);
+        $trainingPolicy = new TrainingPolicy();
+        $trainingPolicy->edit($user);
     }
 
     /**
@@ -68,8 +68,8 @@ class TrainingPolicyTest extends TestCase
             ->with('edit-training')
             ->willReturn($expected);
 
-        $teamPolicy = new TrainingPolicy();
-        $teamPolicy->delete($user);
+        $trainingPolicy = new TrainingPolicy();
+        $trainingPolicy->delete($user);
     }
 
     /**

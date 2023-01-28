@@ -66,13 +66,16 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @test
      *
+     * @dataProvider scopeFilterProvider
+     *
      * @return void
      */
-    public function scopeStatus()
+    public function scopeStatus($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeStatus($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopeStatus($confirmationTraining, $parameter));
     }
 
     /**
@@ -80,13 +83,16 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @test
      *
+     * @dataProvider scopeFilterProvider
+     *
      * @return void
      */
-    public function scopePresence()
+    public function scopePresence($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopePresence($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopePresence($confirmationTraining, $parameter));
     }
 
     /**
@@ -94,13 +100,16 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @test
      *
+     * @dataProvider scopeFilterProvider
+     *
      * @return void
      */
-    public function scopePlayer()
+    public function scopePlayer($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopePlayer($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopePlayer($confirmationTraining, $parameter));
     }
 
     /**
@@ -108,13 +117,16 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @test
      *
+     * @dataProvider scopeFilterProvider
+     *
      * @return void
      */
-    public function scopeTeam()
+    public function scopeTeam($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeTeam($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopeTeam($confirmationTraining, $parameter));
     }
 
     /**
@@ -122,13 +134,16 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @test
      *
+     * @dataProvider scopeFilterProvider
+     *
      * @return void
      */
-    public function scopeTraining()
+    public function scopeTraining($parameter)
     {
         $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeTraining($confirmationTraining, true));
+        $this->assertInstanceOf($class, $confirmationTraining->scopeTraining($confirmationTraining, $parameter));
     }
 
     /**
@@ -136,12 +151,79 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @test
      *
+     * @dataProvider scopeFilterProvider
+     *
      * @return void
      */
-    public function scopeUser()
+    public function scopeUser($parameter)
+    {
+        $confirmationTraining = new ConfirmationTraining();
+        $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
+
+        $this->assertInstanceOf($class, $confirmationTraining->scopeUser($confirmationTraining, $parameter));
+    }
+
+    /**
+     * A dataProvider scopeFilterProvider.
+     *
+     * @return void
+     */
+    public function scopeFilterProvider()
+    {
+        return [
+            'parameter with value' => [
+                'parameter' => true,
+            ],
+            'parameter without value' => [
+                'parameter' => null,
+            ],
+        ];
+    }
+
+    /**
+     * A basic unit test method list.
+     *
+     * @test
+     *
+     * @dataProvider listProvider
+     *
+     * @return void
+     */
+    public function list($args)
     {
         $confirmationTraining = new ConfirmationTraining();
 
-        $this->assertInstanceOf(Builder::class, $confirmationTraining->scopeUser($confirmationTraining, true));
+        $this->assertInstanceOf(Builder::class, $confirmationTraining->list($args));
+    }
+
+    /**
+     * A dataProvider listProvider.
+     *
+     * @return void
+     */
+    public function listProvider()
+    {
+        return [
+            'parameter with value' => [
+                'args' => [
+                    'status' => 'confirmed',
+                    'presence' => false,
+                    'player_id' => 1,
+                    'user_id' => 1,
+                    'team_id' => 1,
+                    'training_id' => 1,
+                ],
+            ],
+            'parameter without value' => [
+                'args' => [
+                    'status' => null,
+                    'presence' => null,
+                    'player_id' => null,
+                    'user_id' => null,
+                    'team_id' => null,
+                    'training_id' => null,
+                ],
+            ],
+        ];
     }
 }
