@@ -332,7 +332,6 @@ abstract class TestCase extends BaseTestCase
                 if (isset($response->json()['errors'][0]['extensions'])) {
                     $response = $response->json()['errors'][0]['extensions'];
                 }
-
                 if (isset($response['validation'])) {
                     $this->assertSame($response['validation'][$type_message_error][0], trans($expected_message));
                 } else {
