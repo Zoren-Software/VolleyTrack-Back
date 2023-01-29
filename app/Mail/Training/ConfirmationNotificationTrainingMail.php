@@ -24,8 +24,8 @@ class ConfirmationNotificationTrainingMail extends Mail
     public function __construct(Training $training, User $user)
     {
         parent::__construct($training, $user);
-        $this->title = "$training->name - {$training->date_start->format('d/m/Y')} " . 
-            trans('TrainingNotification.preposition_hours_from') . " " .
+        $this->title = "$training->name - {$training->date_start->format('d/m/Y')} " .
+            trans('TrainingNotification.preposition_hours_from') . ' ' .
             "{$training->date_start->format('H:m')} " . trans('TrainingNotification.preposition_hours_to') .
             " {$training->date_end->format('H:m')}";
     }
@@ -40,7 +40,7 @@ class ConfirmationNotificationTrainingMail extends Mail
         return new Envelope(
             subject: env('APP_NAME') .
             ' - ' . trans('TrainingNotification.title_mail_confirmation') .
-            ' - ' . $this->training->date_start->format('d/m/Y H:m') . 
+            ' - ' . $this->training->date_start->format('d/m/Y H:m') .
             ' ' . trans('TrainingNotification.preposition_hours_to') . ' ' .
             $this->training->date_end->format('H:m')
         );

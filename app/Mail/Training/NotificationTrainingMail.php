@@ -26,7 +26,7 @@ class NotificationTrainingMail extends Mail
         parent::__construct($training, $user);
         $this->title = "{$training->name} - {$training->date_start->format('d/m/Y')} " .
             trans('TrainingNotification.preposition_hours_from') .
-            " {$training->date_start->format('H:m')} " . trans('TrainingNotification.preposition_hours_to') . 
+            " {$training->date_start->format('H:m')} " . trans('TrainingNotification.preposition_hours_to') .
             " {$training->date_end->format('H:m')}";
     }
 
