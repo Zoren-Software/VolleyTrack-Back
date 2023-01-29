@@ -35,9 +35,9 @@ class ConfirmationTrainingPolicyTest extends TestCase
      * A basic unit test confirmTraining.
      *
      * @test
-     * 
+     *
      * @dataProvider permissionProvider
-     * 
+     *
      * @return void
      */
     public function permissionConfirmTraining(bool $expected): void
@@ -47,7 +47,6 @@ class ConfirmationTrainingPolicyTest extends TestCase
         ];
 
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($args, $expected) {
-
             $mock->shouldReceive('hasRoleAdmin')
                 ->andReturn($expected);
 
@@ -57,7 +56,6 @@ class ConfirmationTrainingPolicyTest extends TestCase
             $mock->shouldReceive('getAttribute')
                 ->with('id')
                 ->andReturn($args['player_id']);
-
         });
 
         $confirmationTrainingPolicy = new ConfirmationTrainingPolicy();
@@ -69,9 +67,9 @@ class ConfirmationTrainingPolicyTest extends TestCase
      * A basic unit test view.
      *
      * @test
-     * 
+     *
      * @dataProvider permissionProvider
-     * 
+     *
      * @return void
      */
     public function permissionConfirmPresence(bool $expected): void
@@ -81,13 +79,11 @@ class ConfirmationTrainingPolicyTest extends TestCase
         ];
 
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
-
             $mock->shouldReceive('hasRoleAdmin')
                 ->andReturn($expected);
 
             $mock->shouldReceive('hasRoleTechnician')
                 ->andReturn($expected);
-
         });
 
         $confirmationTrainingPolicy = new ConfirmationTrainingPolicy();

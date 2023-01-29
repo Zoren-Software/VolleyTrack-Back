@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\ConfirmationTraining;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -42,5 +41,4 @@ class ConfirmationTrainingPolicy
     {
         return $user->hasRoleAdmin() || $user->hasRoleTechnician();
     }
-
 }

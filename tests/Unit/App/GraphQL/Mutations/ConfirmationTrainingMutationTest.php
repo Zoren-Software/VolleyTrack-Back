@@ -80,7 +80,7 @@ class ConfirmationTrainingMutationTest extends TestCase
                     'status' => 'confirmed',
                 ],
                 'variable' => 'status',
-                'method' => 'confirmTraining'
+                'method' => 'confirmTraining',
             ],
             'sending player and training parameters as a reference, confirm training, success' => [
                 'data' => [
@@ -89,7 +89,7 @@ class ConfirmationTrainingMutationTest extends TestCase
                     'status' => 'confirmed',
                 ],
                 'variable' => 'status',
-                'method' => 'confirmTraining'
+                'method' => 'confirmTraining',
             ],
             'sending single id parameter as reference, confirm presence, success' => [
                 'data' => [
@@ -97,7 +97,7 @@ class ConfirmationTrainingMutationTest extends TestCase
                     'presence' => true,
                 ],
                 'variable' => 'presence',
-                'method' => 'confirmPresence'
+                'method' => 'confirmPresence',
             ],
             'sending player and training parameters as a reference, confirm presence, success' => [
                 'data' => [
@@ -106,7 +106,7 @@ class ConfirmationTrainingMutationTest extends TestCase
                     'presence' => true,
                 ],
                 'variable' => 'presence',
-                'method' => 'confirmPresence'
+                'method' => 'confirmPresence',
             ],
         ];
     }

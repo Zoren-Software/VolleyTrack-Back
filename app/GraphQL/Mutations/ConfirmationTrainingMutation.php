@@ -33,7 +33,7 @@ final class ConfirmationTrainingMutation
             ->where('training_id', $args['training_id'])
             ->where('player_id', $args['player_id'])->first();
         }
-        
+
         $this->confirmationTraining->$parameterSave = $args[$parameterSave];
         $this->confirmationTraining->save();
 

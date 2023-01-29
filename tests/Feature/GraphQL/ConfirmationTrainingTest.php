@@ -200,7 +200,7 @@ class ConfirmationTrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-           'training confirmation for player not part of training, expected error' => [
+            'training confirmation for player not part of training, expected error' => [
                 [
                     'error' => true,
                     'data_error' => [
@@ -272,7 +272,7 @@ class ConfirmationTrainingTest extends TestCase
         ];
     }
 
-        /**
+    /**
      * Método de confirmação de Treino.
      *
      * @author Maicon Cerutti
@@ -354,7 +354,7 @@ class ConfirmationTrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-           'training confirmation for player not part of training, expected error' => [
+            'training confirmation for player not part of training, expected error' => [
                 [
                     'error' => true,
                     'data_error' => [
