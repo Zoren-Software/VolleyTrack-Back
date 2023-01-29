@@ -22,7 +22,10 @@ type ConfirmationTraining {
     training: Training @belongsTo
 
     "Confirmation status. One of `PENDING`, `CONFIRMED`, `REJECTED`."
-    status: String
+    status: ConfirmationTrainingStatus! @rename(attribute: "status")
+
+    "Confirmation presence."
+    presence: Boolean
 
     "Team Id confirming training."
     teamId: Int @rename(attribute: "team_id")

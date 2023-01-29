@@ -16,4 +16,5 @@ return [
     'playerId_required' => 'O campo playerId é obrigatório',
     'trainingId_required' => 'O campo trainingId é obrigatório',
     'status_required' => 'O campo status é obrigatório',
+    'presence_required' => 'O campo presence é obrigatório',
 ];
