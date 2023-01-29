@@ -18,11 +18,11 @@ class ConfirmationTrainingMutationTest extends TestCase
      *
      * @return void
      */
-    public function confirmTraining($data)
+    public function confirmTraining($data, $variable, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
 
-        $confirmationTrainingMock = $this->mock(ConfirmationTraining::class, function ($mock) use ($data) {
+        $confirmationTrainingMock = $this->mock(ConfirmationTraining::class, function ($mock) use ($data, $variable) {
             if (isset($data['id'])) {
                 $mock->shouldReceive('find')
                     ->once()
@@ -46,9 +46,15 @@ class ConfirmationTrainingMutationTest extends TestCase
                     ->andReturn($mock);
             }
 
-            $mock->shouldReceive('setAttribute')
-                ->once()
-                ->with('status', 'confirmed');
+            if ($variable === 'status') {
+                $mock->shouldReceive('setAttribute')
+                    ->once()
+                    ->with('status', 'confirmed');
+            } else {
+                $mock->shouldReceive('setAttribute')
+                    ->once()
+                    ->with('presence', true);
+            }
 
             $mock->shouldReceive('save')
                 ->once()
@@ -56,7 +62,7 @@ class ConfirmationTrainingMutationTest extends TestCase
         });
 
         $confirmationTrainingMutation = new ConfirmationTrainingMutation($confirmationTrainingMock);
-        $confirmationTrainingMockReturn = $confirmationTrainingMutation->confirmTraining(
+        $confirmationTrainingMockReturn = $confirmationTrainingMutation->$method(
             null,
             $data,
             $graphQLContext
@@ -68,18 +74,39 @@ class ConfirmationTrainingMutationTest extends TestCase
     public function confirmationTrainingProvider()
     {
         return [
-            'sending single id parameter as reference, success' => [
+            'sending single id parameter as reference, confirm training, success' => [
                 'data' => [
                     'id' => 1,
                     'status' => 'confirmed',
                 ],
+                'variable' => 'status',
+                'method' => 'confirmTraining'
             ],
-            'sending player and training parameters as a reference, success' => [
+            'sending player and training parameters as a reference, confirm training, success' => [
                 'data' => [
                     'training_id' => 1,
                     'player_id' => 1,
                     'status' => 'confirmed',
                 ],
+                'variable' => 'status',
+                'method' => 'confirmTraining'
+            ],
+            'sending single id parameter as reference, confirm presence, success' => [
+                'data' => [
+                    'id' => 1,
+                    'presence' => true,
+                ],
+                'variable' => 'presence',
+                'method' => 'confirmPresence'
+            ],
+            'sending player and training parameters as a reference, confirm presence, success' => [
+                'data' => [
+                    'training_id' => 1,
+                    'player_id' => 1,
+                    'presence' => true,
+                ],
+                'variable' => 'presence',
+                'method' => 'confirmPresence'
             ],
         ];
     }
