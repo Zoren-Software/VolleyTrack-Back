@@ -151,7 +151,7 @@ class Training extends Model
      * @param  int|null|null  $daysNotification
      * @return void
      */
-    public function createConfirmationsPlayers(int|null $daysNotification = null)
+    public function createConfirmationsPlayers($daysNotification = null)
     {
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
         $this->team->players()->each(function ($player) use ($daysNotification) {

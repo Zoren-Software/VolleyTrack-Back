@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'title_mail' => 'Notificação de Treino',
-    'title_mail_confirmation' => 'Confirmação de Notificações de Treino',
-    'preposition_hours_from' => 'até',
-    'preposition_hours_to' => 'ás',
+    'title_mail' => 'Training Notification',
+    'title_mail_confirmation' => 'Training Notification Confirmation',
+    'preposition_hours_from' => 'from',
+    'preposition_hours_to' => 'to',
 ];

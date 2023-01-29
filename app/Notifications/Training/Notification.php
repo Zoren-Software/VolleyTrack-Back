@@ -57,8 +57,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
             : $notificationTeamByEmail;
 
         if (
-            ($notifiable->hasRoleTechnician() && $notificationTechnicianByEmail) ||
-            ($notifiable->hasRolePlayer() && $notificationTeamByEmail)
+            $notificationTechnicianByEmail || $notificationTeamByEmail
         ) {
             return ['database', 'mail'];
         }
