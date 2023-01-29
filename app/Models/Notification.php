@@ -9,6 +9,11 @@ class Notification extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'read_at',
+    ];
+
     public function list(array $args)
     {
         return $this->userLogged()
@@ -31,5 +36,10 @@ class Notification extends Model
             $read === false,
             fn ($query) => $query->whereNull('read_at')
         );
+    }
+
+    public function userNotifiable()
+    {
+        return $this->belongsTo(User::class, 'notifiable_id');
     }
 }

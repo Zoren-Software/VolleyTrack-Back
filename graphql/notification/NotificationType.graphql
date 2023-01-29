@@ -12,6 +12,8 @@ type Notification {
     "Notification id."
     notifiableId: ID! @rename(attribute: "notifiable_id")
 
+    userNotifiable: User @belongsTo
+
     "Notification data."
     data: String!
 
