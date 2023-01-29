@@ -1,7 +1,7 @@
 "Notifications"
 type Notification {
     "Unique primary key."
-    id: ID!
+    id: String!
 
     "Notification template identification."
     type: String!

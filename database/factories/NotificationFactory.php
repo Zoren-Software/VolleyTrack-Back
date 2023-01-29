@@ -24,4 +24,13 @@ class NotificationFactory extends Factory
             'data' => '[]',
         ];
     }
+
+    public function setNotifiableId($notifiableId)
+    {
+        return $this->state(function (array $attributes) use ($notifiableId) {
+            return [
+                'notifiable_id' => $notifiableId,
+            ];
+        });
+    }
 }

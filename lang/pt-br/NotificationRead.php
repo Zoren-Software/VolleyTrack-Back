@@ -15,4 +15,5 @@ return [
 
     'id_required' => 'O campo id é obrigatório',
     'id_string' => 'O campo id deve ser uma string',
+    'read_all_notifications' => 'Todas as notificações foram lidas com sucesso!',
 ];
