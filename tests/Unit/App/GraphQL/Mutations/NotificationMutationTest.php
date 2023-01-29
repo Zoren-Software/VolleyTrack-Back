@@ -3,17 +3,16 @@
 namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\NotificationMutation;
-use App\Models\Notification;
 use App\Models\User;
+use Carbon\Carbon;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class NotificationMutationTest extends TestCase
 {
     /**
      * A test for notificationRead method.
-     * 
+     *
      * @test
      *
      * @dataProvider confirmationTrainingProvider
@@ -35,17 +34,15 @@ class NotificationMutationTest extends TestCase
         $userMock = $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('find')
                 ->andReturnSelf();
-            
+
             $mock->shouldReceive('unreadNotifications')
                 ->andReturnSelf();
-            
+
             $mock->shouldReceive('update')
                 ->once()
                 ->with(['read_at' => Carbon::now()->toDateTimeString()])
                 ->andReturnSelf();
         });
-
-        
 
         $notificationMutation = new NotificationMutation($userMock);
         $notificationMockReturn = $notificationMutation->notificationsRead(
@@ -57,8 +54,6 @@ class NotificationMutationTest extends TestCase
         $this->assertIsArray($notificationMockReturn);
         $this->assertArrayHasKey('message', $notificationMockReturn);
         $this->assertEquals(trans('NotificationRead.read_all_notifications'), $notificationMockReturn['message']);
-
-        
     }
 
     public function confirmationTrainingProvider()

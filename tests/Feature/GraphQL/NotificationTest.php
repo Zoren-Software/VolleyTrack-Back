@@ -61,7 +61,6 @@ class NotificationTest extends TestCase
         ])->assertStatus(200);
     }
 
-
     /**
      * Método de leitura de notificação.
      *
@@ -80,13 +79,13 @@ class NotificationTest extends TestCase
         $expected,
         $hasLogin
     ) {
-        if($hasLogin) {
+        if ($hasLogin) {
             $user = User::factory()->create();
 
             Notification::factory(10)
                 ->setNotifiableId($user->id)
                 ->create();
-                
+
             $this->be($user);
         } else {
             $this->login = false;
@@ -96,7 +95,7 @@ class NotificationTest extends TestCase
             'notificationsRead',
             [],
             [
-                'message'
+                'message',
             ],
             'mutation',
             false,
@@ -140,7 +139,7 @@ class NotificationTest extends TestCase
                     'error' => 'error',
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => "Unauthenticated.",
+                'expected_message' => 'Unauthenticated.',
                 'expected' => [
                     'errors' => $this->errors,
                 ],
