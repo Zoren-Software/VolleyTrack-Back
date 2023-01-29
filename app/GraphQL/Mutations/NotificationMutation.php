@@ -2,30 +2,29 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Models\Notification;
 use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class NotificationMutation
 {
-    private Notification $notification;
+    private null|User $user;
 
-    public function __construct(Notification $notification)
+    public function __construct(null|User $user = null)
     {
-        $this->notification = $notification;
+        $this->user = $user;
     }
 
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function notificationRead($rootValue, array $args, GraphQLContext $context)
+    public function notificationsRead($rootValue, array $args, GraphQLContext $context)
     {
-        $user = User::find($context->user()->id);
-        $user->unreadNotifications()->update(['read_at' => now()]);
+        $this->user = $this->user->find($context->user()->id);
+        $this->user->unreadNotifications()->update(['read_at' => now()]);
 
         return [
-            'message' => 'Todas as notificações foram lidas com sucesso!',
+            'message' => trans('NotificationRead.read_all_notifications'),
         ];
     }
 }

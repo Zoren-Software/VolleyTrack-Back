@@ -4,6 +4,7 @@ namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\NotificationMutation;
 use App\Models\Notification;
+use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 use Carbon\Carbon;
@@ -21,28 +22,43 @@ class NotificationMutationTest extends TestCase
      */
     public function notificationRead($data)
     {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
+        $graphQLContext = $this->mock(GraphQLContext::class, function ($mock) {
+            $userMock = $this->mock(User::class, function ($mock) {
+                $mock->shouldReceive('getAttribute')
+                    ->with('id')
+                    ->andReturn(1);
+            });
+            $mock->shouldReceive('user')
+                ->andReturn($userMock);
+        });
 
-        $notificationMock = $this->mock(Notification::class, function ($mock) use ($data) {
+        $userMock = $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('find')
-                ->once()
-                ->with($data['id'])
                 ->andReturnSelf();
-
+            
+            $mock->shouldReceive('unreadNotifications')
+                ->andReturnSelf();
+            
             $mock->shouldReceive('update')
                 ->once()
                 ->with(['read_at' => Carbon::now()->toDateTimeString()])
                 ->andReturnSelf();
         });
 
-        $notificationMutation = new NotificationMutation($notificationMock);
-        $notificationMockReturn = $notificationMutation->notificationRead(
+        
+
+        $notificationMutation = new NotificationMutation($userMock);
+        $notificationMockReturn = $notificationMutation->notificationsRead(
             null,
             $data,
             $graphQLContext
         );
 
-        $this->assertEquals($notificationMock, $notificationMockReturn);
+        $this->assertIsArray($notificationMockReturn);
+        $this->assertArrayHasKey('message', $notificationMockReturn);
+        $this->assertEquals(trans('NotificationRead.read_all_notifications'), $notificationMockReturn['message']);
+
+        
     }
 
     public function confirmationTrainingProvider()
