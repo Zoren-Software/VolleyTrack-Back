@@ -7,7 +7,7 @@ use App\Policies\ConfirmationTrainingPolicy;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class ConfirmationTrainingPolicyTest extends TestCase
+class ConfirmTrainingPolicyTest extends TestCase
 {
     /**
      * A basic unit test view.
