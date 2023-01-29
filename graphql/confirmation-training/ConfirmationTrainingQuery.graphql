@@ -21,10 +21,10 @@ extend type Query {
         presence: Boolean
 
     ): [ConfirmationTraining!]!
-        @can(ability: "view", resolved: true)
         @paginate(
             builder: "App\\GraphQL\\Queries\\ConfirmationTrainingQuery@list"
             defaultCount: 10, 
             maxCount: 100
         )
+        @can(ability: "view", resolved: true)
 }

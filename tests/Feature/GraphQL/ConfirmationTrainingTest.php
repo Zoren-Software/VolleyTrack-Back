@@ -22,6 +22,7 @@ class ConfirmationTrainingTest extends TestCase
         'playerId',
         'trainingId',
         'status',
+        'presence',
         'teamId',
         'createdAt',
         'updatedAt',
@@ -121,7 +122,158 @@ class ConfirmationTrainingTest extends TestCase
     }
 
     /**
-     * Método de exclusão de um fundamento.
+     * Método de confirmação de Treino.
+     *
+     * @author Maicon Cerutti
+     *
+     * @dataProvider confirmPresenceProvider
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function confirmPresence(
+        $data,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $hasPermission
+    ) {
+        $team = Team::factory()
+        ->hasPlayers(10)
+        ->create();
+
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
+
+        if ($data['error'] === null) {
+            $confirmationTraining = $training->confirmationsTraining->first();
+            $parameters = [
+                'id' => $confirmationTraining->id,
+                'trainingId' => $confirmationTraining->training_id,
+                'playerId' => $confirmationTraining->player_id,
+                'presence' => true,
+            ];
+        } else {
+            $parameters = $data['data_error'];
+        }
+
+        $response = $this->graphQL(
+            'confirmPresence',
+            $parameters,
+            $this->data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
+
+        if ($data['error'] === null) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return array
+     */
+    public function confirmPresenceProvider()
+    {
+        $confirmationTraining = ['confirmTraining'];
+
+        return [
+            'confirm presence, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'confirmPresence' => $this->data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
+            'training confirmation for player not part of training, expected error' => [
+                [
+                    'error' => true,
+                    'data_error' => [
+                        'id' => 9999,
+                        'trainingId' => 9999,
+                        'playerId' => 9999,
+                        'presence' => true,
+                    ],
+                ],
+                'type_message_error' => 'playerId',
+                'expected_message' => 'CheckPlayerIsInTraining.message_error',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $confirmationTraining,
+                ],
+                'hasPermission' => true,
+            ],
+            'playerId must be a required field, expected error' => [
+                [
+                    'error' => true,
+                    'data_error' => [
+                        'id' => 9999,
+                        'trainingId' => 9999,
+                        'presence' => true,
+                    ],
+                ],
+                'type_message_error' => 'playerId',
+                'expected_message' => 'CheckPlayerIsInTraining.playerId_required',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $confirmationTraining,
+                ],
+                'hasPermission' => true,
+            ],
+            'trainingId must be a required field, expected error' => [
+                [
+                    'error' => true,
+                    'data_error' => [
+                        'id' => 9999,
+                        'playerId' => 9999,
+                        'presence' => true,
+                    ],
+                ],
+                'type_message_error' => 'trainingId',
+                'expected_message' => 'CheckPlayerIsInTraining.trainingId_required',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $confirmationTraining,
+                ],
+                'hasPermission' => true,
+            ],
+            'presence must be a required field, expected error' => [
+                [
+                    'error' => true,
+                    'data_error' => [
+                        'id' => 9999,
+                        'playerId' => 9999,
+                        'trainingId' => 9999,
+                    ],
+                ],
+                'type_message_error' => 'presence',
+                'expected_message' => 'ConfirmTraining.presence_required',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $confirmationTraining,
+                ],
+                'hasPermission' => true,
+            ],
+        ];
+    }
+
+    /**
+     * Método de confirmação de Treino.
      *
      * @author Maicon Cerutti
      *
@@ -141,8 +293,6 @@ class ConfirmationTrainingTest extends TestCase
         $team = Team::factory()
         ->hasPlayers(10)
         ->create();
-
-        $this->be($team->user);
 
         $training = Training::factory()
             ->setTeamId($team->id)
@@ -188,7 +338,7 @@ class ConfirmationTrainingTest extends TestCase
      */
     public function confirmTrainingProvider()
     {
-        $fundamentalDelete = ['fundamentalDelete'];
+        $confirmationTraining = ['confirmTraining'];
 
         return [
             'confirm training, success' => [
@@ -221,7 +371,7 @@ class ConfirmationTrainingTest extends TestCase
                 'expected_message' => 'CheckPlayerIsInTraining.message_error',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalDelete,
+                    'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
             ],
@@ -241,7 +391,7 @@ class ConfirmationTrainingTest extends TestCase
                 'expected_message' => 'CheckPlayerIsInTraining.playerId_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalDelete,
+                    'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
             ],
@@ -261,7 +411,7 @@ class ConfirmationTrainingTest extends TestCase
                 'expected_message' => 'CheckPlayerIsInTraining.trainingId_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalDelete,
+                    'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
             ],
@@ -278,7 +428,7 @@ class ConfirmationTrainingTest extends TestCase
                 'expected_message' => 'CheckPlayerIsInTraining.status_required',
                 'expected' => [
                     'errors' => $this->errors,
-                    'data' => $fundamentalDelete,
+                    'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
             ],
