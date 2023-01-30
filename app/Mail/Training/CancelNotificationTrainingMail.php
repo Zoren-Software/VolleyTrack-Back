@@ -42,7 +42,7 @@ class CancelNotificationTrainingMail extends Mail
             ' - ' . trans('TrainingNotification.title_mail_confirmation') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
             ' ' . trans('TrainingNotification.preposition_hours_to') . ' ' .
-            $this->training->date_end->format('H:m') . " - " . trans('TrainingNotification.cancel')
+            $this->training->date_end->format('H:m') . ' - ' . trans('TrainingNotification.cancel')
         );
     }
 

@@ -25,9 +25,9 @@ return [
     'message_please' => 'Please confirm your presence or absence.',
     'description_training' => 'Training Description',
     'list_of_training_players' => 'List of players notified for training',
-    'message_default_cancellation' => "We hope you are having a good day. " .
-        "Unfortunately, we would like to inform you that the scheduled training has been canceled. " .
-        "We apologize for any inconvenience this may have caused and we would like to thank you for your understanding. " .
-        "If you have any questions or need more information, please contact your coach.",
-    'good_cancellation' => 'We appreciate your participation and look forward to seeing you at our next events'
+    'message_default_cancellation' => 'We hope you are having a good day. ' .
+        'Unfortunately, we would like to inform you that the scheduled training has been canceled. ' .
+        'We apologize for any inconvenience this may have caused and we would like to thank you for your understanding. ' .
+        'If you have any questions or need more information, please contact your coach.',
+    'good_cancellation' => 'We appreciate your participation and look forward to seeing you at our next events',
 ];

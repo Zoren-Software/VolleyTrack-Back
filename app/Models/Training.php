@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Notifications\Training\NotificationCancelTrainingNotification;
 use App\Notifications\Training\NotificationConfirmationTrainingNotification;
 use App\Notifications\Training\TrainingNotification;
-use App\Notifications\Training\NotificationCancelTrainingNotification;
 use App\Rules\RelationshipSpecificFundamental;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

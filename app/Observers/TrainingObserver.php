@@ -19,22 +19,19 @@ class TrainingObserver
     public function created(Training $training)
     {
         $training->createConfirmationsPlayers();
-        #Subscription::broadcast('notification', $training);
+        //Subscription::broadcast('notification', $training);
     }
 
     /**
      * @param  Training  $training
      *
      * NOTE - Ignorado nos testes unitários por ser um método que envia notificação
-     *
-     * 
-     *
      * @return void
      */
     public function updated(Training $training)
     {
         $training->createConfirmationsPlayers();
-        #Subscription::broadcast('notification', $training);
+        //Subscription::broadcast('notification', $training);
 
         //dd($training->getOriginal('status'), $training->status);
         if ($training->getOriginal('status')) {

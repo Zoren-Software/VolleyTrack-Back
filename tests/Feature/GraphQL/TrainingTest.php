@@ -579,7 +579,7 @@ class TrainingTest extends TestCase
 
         $parameters['teamId'] = $team->id;
 
-        if($cancellation) {
+        if ($cancellation) {
             $parameters['status'] = false;
         }
 
