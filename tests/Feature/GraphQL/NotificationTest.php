@@ -3,6 +3,7 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Notification;
+use App\Models\User;
 use Tests\TestCase;
 
 class NotificationTest extends TestCase
@@ -58,5 +59,92 @@ class NotificationTest extends TestCase
                 ],
             ],
         ])->assertStatus(200);
+    }
+
+    /**
+     * Método de leitura de notificação.
+     *
+     * @author Maicon Cerutti
+     *
+     * @dataProvider notificationReadProvider
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function notificationsRead(
+        $data,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $hasLogin
+    ) {
+        if ($hasLogin) {
+            $user = User::factory()->create();
+
+            Notification::factory(10)
+                ->setNotifiableId($user->id)
+                ->create();
+
+            $this->be($user);
+        } else {
+            $this->login = false;
+        }
+
+        $response = $this->graphQL(
+            'notificationsRead',
+            [],
+            [
+                'message',
+            ],
+            'mutation',
+            false,
+            false
+        );
+
+        $this->assertMessageError($typeMessageError, $response, $hasLogin, $expectedMessage);
+
+        if ($data['error'] === null) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @author Maicon Cerutti
+     *
+     * @return array
+     */
+    public function notificationReadProvider()
+    {
+        return [
+            'read all notifications, success' => [
+                [
+                    'error' => null,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationsRead' => [
+                            'message',
+                        ],
+                    ],
+                ],
+                'hasLogin' => true,
+            ],
+            'read all notifications, error' => [
+                [
+                    'error' => 'error',
+                ],
+                'type_message_error' => 'message',
+                'expected_message' => 'Unauthenticated.',
+                'expected' => [
+                    'errors' => $this->errors,
+                ],
+                'hasLogin' => false,
+            ],
+        ];
     }
 }

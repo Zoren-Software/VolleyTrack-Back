@@ -1,7 +1,7 @@
 "Notifications"
 type Notification {
     "Unique primary key."
-    id: ID!
+    id: String!
 
     "Notification template identification."
     type: String!
@@ -11,6 +11,8 @@ type Notification {
 
     "Notification id."
     notifiableId: ID! @rename(attribute: "notifiable_id")
+
+    userNotifiable: User @belongsTo
 
     "Notification data."
     data: String!
