@@ -793,6 +793,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'status' => true,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -801,6 +802,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => false,
+                'cancellation' => false,
             ],
             'name field is required, expected error' => [
                 [
@@ -808,6 +810,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'status' => true,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_required',
@@ -816,6 +819,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -823,6 +827,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'status' => true,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_min',
@@ -831,6 +836,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'DateStart must be less than dateEnd, expected error' => [
                 [
@@ -838,6 +844,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $this->dateStart,
                     'dateEnd' => $this->dateEnd,
+                    'status' => true,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingEdit.date_start_before',
@@ -846,6 +853,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'DateEnd must be greater than dateStart, expected error' => [
                 [
@@ -853,6 +861,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $this->dateStart,
                     'dateEnd' => $this->dateEnd,
+                    'status' => true,
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingEdit.date_end_after',
@@ -861,6 +870,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'DateEnd without correct formatting, expected error' => [
                 [
@@ -868,6 +878,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $this->dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
+                    'status' => true,
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingEdit.date_end_date_format',
@@ -876,6 +887,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'DateStart without correct formatting, expected error' => [
                 [
@@ -883,6 +895,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $this->dateStartError,
                     'dateEnd' => $this->dateEndError,
+                    'status' => true,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingEdit.date_start_date_format',
@@ -891,6 +904,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'specific fundamentals unrelated to fundamentals on record, expected error' => [
                 [
@@ -898,6 +912,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $this->dateStartError,
                     'dateEnd' => $this->dateEndError,
+                    'status' => true,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
@@ -908,6 +923,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
         ];
     }
