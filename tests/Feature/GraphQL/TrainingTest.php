@@ -551,14 +551,18 @@ class TrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        bool $hasPermission
+        bool $hasPermission,
+        bool $cancellation
     ) {
         $this->setPermissions($hasPermission);
 
         $this->be(User::find(3));
 
-        $training = Training::factory()->make();
+        $training = Training::factory()
+            ->setStatus($parameters['status'])
+            ->make();
         $training->save();
+
         $parameters['id'] = $training->id;
 
         $team = Team::factory()
@@ -574,6 +578,10 @@ class TrainingTest extends TestCase
         $team->save();
 
         $parameters['teamId'] = $team->id;
+
+        if($cancellation) {
+            $parameters['status'] = false;
+        }
 
         $response = $this->graphQL(
             'trainingEdit',
@@ -628,6 +636,7 @@ class TrainingTest extends TestCase
                     'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'status' => true,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -637,6 +646,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'edit training with full parameters, success' => [
                 [
@@ -645,6 +655,7 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'status' => true,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -654,6 +665,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'edit training with relationship fundamentals, success' => [
                 [
@@ -662,6 +674,7 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'status' => true,
                     'fundamentalId' => [1, 2, 3],
                 ],
                 'type_message_error' => false,
@@ -672,6 +685,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'edit training with relationship specific fundamental, success' => [
                 [
@@ -680,6 +694,7 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'status' => true,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2, 3],
                 ],
@@ -691,13 +706,14 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'edit training cancel, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
                     'description' => $faker->text,
-                    'status' => false,
+                    'status' => true,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
@@ -709,6 +725,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'cancellation' => true,
             ],
             'edit training reactivate, success' => [
                 [
@@ -727,6 +744,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
             'edit training with notification if training date is current day, success' => [
                 [
@@ -745,6 +763,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'cancellation' => false,
             ],
         ];
     }

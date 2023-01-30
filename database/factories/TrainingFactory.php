@@ -28,6 +28,7 @@ class TrainingFactory extends Factory
             'name' => $this->faker->city . ' TRAINING',
             'user_id' => 1,
             'team_id' => 1,
+            'status' => true,
             'description' => $this->faker->text,
             'date_start' => $dateStart,
             'date_end' => $dateEnd,
@@ -36,9 +37,18 @@ class TrainingFactory extends Factory
 
     public function setTeamId(int $teamId)
     {
-        return $this->state(function (array $attributes) use ($teamId) {
+        return $this->state(function () use ($teamId) {
             return [
                 'team_id' => $teamId,
+            ];
+        });
+    }
+
+    public function setStatus(bool $status)
+    {
+        return $this->state(function () use ($status) {
+            return [
+                'status' => $status,
             ];
         });
     }
