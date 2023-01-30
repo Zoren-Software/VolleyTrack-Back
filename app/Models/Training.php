@@ -179,6 +179,11 @@ class Training extends Model
         $this->sendNotificationTechnicians($daysNotification);
     }
 
+    /**
+     * @codeCoverageIgnore
+     * 
+     * @return void
+     */
     public function sendNotificationPlayersTrainingCancelled()
     {
         $this->team->players()->each(function ($player) {
