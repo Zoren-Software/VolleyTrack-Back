@@ -43,5 +43,5 @@ Route::get('/test-cancellation-notification-training-mail', function () {
     $training = App\Models\Training::find(1);
     $user = App\Models\User::find(3);
 
-    return new App\Mail\Training\CancelNotificationTrainingMail($training, $user);
+    return new App\Mail\Training\CancellationNotificationTrainingMail($training, $user);
 });

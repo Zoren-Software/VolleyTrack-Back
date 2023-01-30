@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-class CancelNotificationTrainingMail extends Mail
+class CancellationNotificationTrainingMail extends Mail
 {
     /**
      * The title of the mail.
