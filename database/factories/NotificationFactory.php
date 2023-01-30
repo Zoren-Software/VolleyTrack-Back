@@ -27,7 +27,7 @@ class NotificationFactory extends Factory
 
     public function setNotifiableId($notifiableId)
     {
-        return $this->state(function (array $attributes) use ($notifiableId) {
+        return $this->state(function() use ($notifiableId) {
             return [
                 'notifiable_id' => $notifiableId,
             ];
