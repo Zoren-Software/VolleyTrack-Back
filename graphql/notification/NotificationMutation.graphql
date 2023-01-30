@@ -1,0 +1,5 @@
+
+extend type Mutation @guard {
+    notificationsRead: NotificationsRead
+        @field(resolver: "NotificationMutation@notificationsRead") 
+}
