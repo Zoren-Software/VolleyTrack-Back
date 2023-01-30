@@ -13,9 +13,5 @@ return [
     |
     */
 
-    'playerId_required' => 'O campo playerId é obrigatório',
-    'trainingId_required' => 'O campo trainingId é obrigatório',
-    'trainingId_exists' => 'O campo trainingId precisa ser de um treino que existente',
-    'status_required' => 'O campo status é obrigatório',
-    'presence_required' => 'O campo presence é obrigatório',
+    'message_error' => 'This workout has been cancelled, unable to do this action.',
 ];

@@ -288,7 +288,8 @@ class ConfirmationTrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $hasPermission
+        bool $hasPermission,
+        bool $trainingCancelled
     ) {
         $team = Team::factory()
         ->hasPlayers(10)
@@ -296,6 +297,7 @@ class ConfirmationTrainingTest extends TestCase
 
         $training = Training::factory()
             ->setTeamId($team->id)
+            ->setStatus(!$trainingCancelled)
             ->create();
 
         if ($data['error'] === null) {
@@ -353,6 +355,7 @@ class ConfirmationTrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'training confirmation for player not part of training, expected error' => [
                 [
@@ -374,6 +377,7 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'playerId must be a required field, expected error' => [
                 [
@@ -394,6 +398,7 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'trainingId must be a required field, expected error' => [
                 [
@@ -414,6 +419,7 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'status must be a required field, expected error' => [
                 [
@@ -431,6 +437,29 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
+            ],
+            'action validation with training canceled, expected error' => [
+                [
+                    'error' => true,
+                    'data_error' => [
+                        // TODO - Colocar aqui um objeto cadastrado para fazer o teste correto e fazer a nova validação
+                        'id' => 9999,
+                        'playerId' => 9999,
+                        'status' => [
+                            'type' => 'ENUM',
+                            'value' => 'CONFIRMED',
+                        ],
+                    ],
+                ],
+                'type_message_error' => 'trainingId',
+                'expected_message' => 'CheckPlayerIsInTraining.trainingId_required',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $confirmationTraining,
+                ],
+                'hasPermission' => true,
+                'trainingCancelled' => true,
             ],
         ];
     }
