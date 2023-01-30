@@ -19,7 +19,7 @@ class TrainingObserver
     public function created(Training $training)
     {
         $training->createConfirmationsPlayers();
-        Subscription::broadcast('notification', $training);
+        #Subscription::broadcast('notification', $training);
     }
 
     /**
@@ -34,6 +34,6 @@ class TrainingObserver
     public function updated(Training $training)
     {
         $training->createConfirmationsPlayers();
-        Subscription::broadcast('notification', $training);
+        #Subscription::broadcast('notification', $training);
     }
 }
