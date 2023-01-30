@@ -26,6 +26,9 @@ class TrainingObserver
      * @param  Training  $training
      *
      * NOTE - Ignorado nos testes unitários por ser um método que envia notificação
+     * 
+     * @codeCoverageIgnore
+     * 
      * @return void
      */
     public function updated(Training $training)
@@ -33,7 +36,6 @@ class TrainingObserver
         $training->createConfirmationsPlayers();
         //Subscription::broadcast('notification', $training);
 
-        //dd($training->getOriginal('status'), $training->status);
         if ($training->getOriginal('status')) {
             if ($training->status == 0) {
                 $training->sendNotificationPlayersTrainingCancelled();
