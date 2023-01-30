@@ -35,5 +35,11 @@ class TrainingObserver
     {
         $training->createConfirmationsPlayers();
         #Subscription::broadcast('notification', $training);
+
+        if ($training->isDirty('status')) {
+            if ($training->status == 0) {
+                $training->sendNotificationPlayersTrainingCancelled();
+            }
+        }
     }
 }
