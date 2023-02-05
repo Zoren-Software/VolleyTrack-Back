@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Training;
-use Nuwave\Lighthouse\Execution\Utils\Subscription;
 
 class TrainingObserver
 {

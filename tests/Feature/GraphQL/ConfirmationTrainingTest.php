@@ -161,10 +161,11 @@ class ConfirmationTrainingTest extends TestCase
             ];
         } else {
             $parameters = $data['data_error'];
-            if (isset($data['data_error']['trainingId'])) {
-                if ($data['data_error']['trainingId'] == 'find') {
-                    $parameters['trainingId'] = $training->id;
-                }
+            if (
+                isset($data['data_error']['trainingId']) &&
+                $data['data_error']['trainingId'] == 'find'
+            ) {
+                $parameters['trainingId'] = $training->id;
             }
         }
 
@@ -344,10 +345,11 @@ class ConfirmationTrainingTest extends TestCase
             ];
         } else {
             $parameters = $data['data_error'];
-            if (isset($data['data_error']['trainingId'])) {
-                if ($data['data_error']['trainingId'] == 'find') {
-                    $parameters['trainingId'] = $training->id;
-                }
+            if (
+                isset($data['data_error']['trainingId']) &&
+                $data['data_error']['trainingId'] == 'find'
+            ) {
+                $parameters['trainingId'] = $training->id;
             }
         }
 
