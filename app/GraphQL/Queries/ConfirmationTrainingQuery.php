@@ -27,6 +27,6 @@ class ConfirmationTrainingQuery
      */
     public function metrics(Training $training)
     {
-        return $training->metrics($training);
+        return $training->metrics();
     }
 }

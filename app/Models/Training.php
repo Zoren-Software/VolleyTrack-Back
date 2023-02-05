@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Builder;
 
 class Training extends Model
 {
@@ -157,12 +156,11 @@ class Training extends Model
     {
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
         $this->team->players()->each(function ($player) use ($trainingId, $daysNotification) {
-            
             $confirmationTraining = $this->confirmationsTraining()
                 ->where('training_id', $trainingId)
                 ->where('player_id', $player->id)
                 ->first();
-            if($trainingId === null || $confirmationTraining === null) {
+            if ($trainingId === null || $confirmationTraining === null) {
                 $confirmationTraining = $this->confirmationsTraining()->create([
                     'user_id' => auth()->user()->id ?? null,
                     'player_id' => $player->id,
@@ -209,15 +207,15 @@ class Training extends Model
     }
 
     /**
-     * @param Training $training
-     * 
+     * @codeCoverageIgnore
+     *
      * @return array
      */
-    public function metrics(Training $training) 
+    public function metrics()
     {
-        $confirmed = $training->confirmationsTraining()->status('confirmed')->count() ?? 0;
-        $pending = $training->confirmationsTraining()->status('pending')->count() ?? 0;
-        $rejected = $training->confirmationsTraining()->status('rejected')->count() ?? 0;
+        $confirmed = $this->confirmationsTraining()->status('confirmed')->count() ?? 0;
+        $pending = $this->confirmationsTraining()->status('pending')->count() ?? 0;
+        $rejected = $this->confirmationsTraining()->status('rejected')->count() ?? 0;
         $total = $confirmed + $pending + $rejected;
 
         return [
