@@ -19,7 +19,7 @@ type Training {
     team: Team @belongsTo
 
     "Confirmations Training relation."
-    confirmationsTraining: ConfirmationTraining @hasMany
+    confirmationsTraining: [ConfirmationTraining] @hasMany
 
     "Training status. Active(true) or Canceled(false)."
     status: Boolean
