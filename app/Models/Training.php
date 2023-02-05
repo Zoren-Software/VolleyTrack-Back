@@ -152,18 +152,34 @@ class Training extends Model
      * @param  int|null|null  $daysNotification
      * @return void
      */
-    public function createConfirmationsPlayers($daysNotification = null)
+    public function confirmationsPlayers(int|null $trainingId = null, int|null $daysNotification = null)
     {
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
-        $this->team->players()->each(function ($player) use ($daysNotification) {
-            $confirmationTraining = $this->confirmationsTraining()->create([
-                'user_id' => auth()->user()->id ?? null,
-                'player_id' => $player->id,
-                'team_id' => $this->team_id,
-                'training_id' => $this->id,
-                'status' => 'pending',
-                'presence' => false,
-            ]);
+        $this->team->players()->each(function ($player) use ($trainingId, $daysNotification) {
+            
+            $confirmationTraining = $this->confirmationsTraining()
+                ->where('training_id', $trainingId)
+                ->where('player_id', $player->id)
+                ->first();
+            if($trainingId === null || $confirmationTraining === null) {
+                $confirmationTraining = $this->confirmationsTraining()->create([
+                    'user_id' => auth()->user()->id ?? null,
+                    'player_id' => $player->id,
+                    'team_id' => $this->team_id,
+                    'training_id' => $this->id,
+                    'status' => 'pending',
+                    'presence' => false,
+                ]);
+            } else {
+                $confirmationTraining->update([
+                    'user_id' => auth()->user()->id ?? null,
+                    'player_id' => $player->id,
+                    'team_id' => $this->team_id,
+                    'training_id' => $this->id,
+                    'status' => 'pending',
+                    'presence' => false,
+                ]);
+            }
 
             if (
                 $this->rangeDateNotification(
