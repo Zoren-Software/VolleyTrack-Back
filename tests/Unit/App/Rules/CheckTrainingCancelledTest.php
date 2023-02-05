@@ -47,10 +47,8 @@ class CheckTrainingTestCancelled extends TestCase
 
                 $mock->shouldReceive('find')
                     ->once()
-                    ->with( 1)
+                    ->with(1)
                     ->andReturnSelf();
-                
-                
             }
         );
 
