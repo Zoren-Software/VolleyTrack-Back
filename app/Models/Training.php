@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Builder;
 
 class Training extends Model
 {
@@ -205,5 +206,22 @@ class Training extends Model
         $this->team->players()->each(function ($player) {
             $player->notify(new NotificationCancelTrainingNotification($this, null));
         });
+    }
+
+    public function metrics(Training $training) 
+    {
+        $confirmed = $training->confirmationsTraining()->status('confirmed')->count() ?? 0;
+        $pending = $training->confirmationsTraining()->status('pending')->count() ?? 0;
+        $rejected = $training->confirmationsTraining()->status('rejected')->count() ?? 0;
+
+        return [
+            'confirmed' => $confirmed,
+            'pending' => $pending,
+            'rejected' => $rejected,
+            'total' => $confirmed + $pending + $rejected,
+            'confirmedPercentage' => $confirmed > 0 ? ($confirmed / ($confirmed + $pending + $rejected) * 100) : 0,
+            'pendingPercentage' => $pending > 0 ? ($pending / ($confirmed + $pending + $rejected) * 100) : 0,
+            'rejectedPercentage' => $rejected > 0 ? ($rejected / ($confirmed + $pending + $rejected) * 100) : 0,
+        ];
     }
 }

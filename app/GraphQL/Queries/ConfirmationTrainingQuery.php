@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\ConfirmationTraining;
+use App\Models\Training;
 
 class ConfirmationTrainingQuery
 {
@@ -17,5 +18,15 @@ class ConfirmationTrainingQuery
         $confirmationTraining = new ConfirmationTraining();
 
         return $confirmationTraining->list($args);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @param  Training  $training
+     */
+    public function metrics(Training $training)
+    {
+        return $training->metrics($training);
     }
 }

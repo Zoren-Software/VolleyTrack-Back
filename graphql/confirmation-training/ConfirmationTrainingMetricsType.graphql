@@ -1,0 +1,16 @@
+"ConfirmationsTrainingMetrics"
+type ConfirmationTrainingMetrics {
+    "The number of trainings that were confirmed"
+    confirmed: Int!
+    "The number of trainings that were pending"
+    pending: Int!
+    "The number of trainings that were rejected"
+    rejected: Int!
+
+    "The number of trainings that were confirmed in percentage"
+    confirmedPercentage: Float!
+    "The number of trainings that were pending in percentage"
+    pendingPercentage: Float!
+    "The number of trainings that were rejected in percentage"
+    rejectedPercentage: Float!
+}

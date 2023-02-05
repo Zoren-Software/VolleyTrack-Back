@@ -21,6 +21,8 @@ type Training {
     "Confirmations Training relation."
     confirmationsTraining: [ConfirmationTraining] @hasMany
 
+    confirmationTrainingMetrics: ConfirmationTrainingMetrics @field(resolver: "App\\GraphQL\\Queries\\ConfirmationTrainingQuery@metrics")
+
     "Training status. Active(true) or Canceled(false)."
     status: Boolean
 
