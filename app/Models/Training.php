@@ -213,15 +213,16 @@ class Training extends Model
         $confirmed = $training->confirmationsTraining()->status('confirmed')->count() ?? 0;
         $pending = $training->confirmationsTraining()->status('pending')->count() ?? 0;
         $rejected = $training->confirmationsTraining()->status('rejected')->count() ?? 0;
+        $total = $confirmed + $pending + $rejected;
 
         return [
             'confirmed' => $confirmed,
             'pending' => $pending,
             'rejected' => $rejected,
-            'total' => $confirmed + $pending + $rejected,
-            'confirmedPercentage' => $confirmed > 0 ? ($confirmed / ($confirmed + $pending + $rejected) * 100) : 0,
-            'pendingPercentage' => $pending > 0 ? ($pending / ($confirmed + $pending + $rejected) * 100) : 0,
-            'rejectedPercentage' => $rejected > 0 ? ($rejected / ($confirmed + $pending + $rejected) * 100) : 0,
+            'total' => $total,
+            'confirmedPercentage' => $confirmed > 0 ? ($confirmed / ($total) * 100) : 0,
+            'pendingPercentage' => $pending > 0 ? ($pending / ($total) * 100) : 0,
+            'rejectedPercentage' => $rejected > 0 ? ($rejected / ($total) * 100) : 0,
         ];
     }
 }
