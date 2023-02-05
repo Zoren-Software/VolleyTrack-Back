@@ -181,7 +181,7 @@ class Training extends Model
 
     /**
      * @codeCoverageIgnore
-     * 
+     *
      * @return void
      */
     public function sendNotificationPlayersTrainingCancelled()

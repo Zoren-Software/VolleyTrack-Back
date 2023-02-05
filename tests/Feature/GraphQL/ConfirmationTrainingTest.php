@@ -147,7 +147,7 @@ class ConfirmationTrainingTest extends TestCase
 
         $training = Training::factory()
             ->setTeamId($team->id)
-            ->setStatus(!$trainingCancelled)
+            ->setStatus(! $trainingCancelled)
             ->create();
 
         $confirmationTraining = $training->confirmationsTraining->first();
@@ -161,8 +161,8 @@ class ConfirmationTrainingTest extends TestCase
             ];
         } else {
             $parameters = $data['data_error'];
-            if(isset($data['data_error']['trainingId'])) {
-                if($data['data_error']['trainingId'] == 'find') {
+            if (isset($data['data_error']['trainingId'])) {
+                if ($data['data_error']['trainingId'] == 'find') {
                     $parameters['trainingId'] = $training->id;
                 }
             }
@@ -327,12 +327,12 @@ class ConfirmationTrainingTest extends TestCase
 
         $training = Training::factory()
             ->setTeamId($team->id)
-            ->setStatus(!$trainingCancelled)
+            ->setStatus(! $trainingCancelled)
             ->create();
 
         $confirmationTraining = $training->confirmationsTraining->first();
 
-        if($data['error'] !== true) {
+        if ($data['error'] !== true) {
             $parameters = [
                 'id' => $confirmationTraining->id,
                 'trainingId' => $confirmationTraining->training_id,
@@ -342,11 +342,10 @@ class ConfirmationTrainingTest extends TestCase
                     'value' => 'CONFIRMED',
                 ],
             ];
-        }
-        else {
+        } else {
             $parameters = $data['data_error'];
-            if(isset($data['data_error']['trainingId'])) {
-                if($data['data_error']['trainingId'] == 'find') {
+            if (isset($data['data_error']['trainingId'])) {
+                if ($data['data_error']['trainingId'] == 'find') {
                     $parameters['trainingId'] = $training->id;
                 }
             }

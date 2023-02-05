@@ -47,7 +47,7 @@ final class ConfirmTrainingValidator extends Validator
             'trainingId.required' => trans('ConfirmTraining.trainingId_required'),
             'trainingId.exists' => trans('ConfirmTraining.trainingId_exists'),
             'status.required' => trans('ConfirmTraining.status_required'),
-            
+
         ];
     }
 }

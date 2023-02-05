@@ -34,6 +34,7 @@ class CheckTrainingCancelled implements Rule
     public function passes($attribute, $value)
     {
         $this->training = $this->training->find($this->trainingId);
+
         return $this->training->status;
     }
 
