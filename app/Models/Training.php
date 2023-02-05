@@ -208,6 +208,11 @@ class Training extends Model
         });
     }
 
+    /**
+     * @param Training $training
+     * 
+     * @return array
+     */
     public function metrics(Training $training) 
     {
         $confirmed = $training->confirmationsTraining()->status('confirmed')->count() ?? 0;
