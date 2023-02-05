@@ -15,6 +15,7 @@ return [
 
     'playerId_required' => 'The playerId is a required field',
     'trainingId_required' => 'The trainingId is a required field',
+    'trainingId_exists' => 'The trainingId field needs to be from an existing training',
     'status_required' => 'The status is a required field',
     'presence_required' => 'The presence is a required field',
 ];

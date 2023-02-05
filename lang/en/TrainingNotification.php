@@ -15,6 +15,8 @@ return [
 
     'title_mail' => 'Training Notification',
     'title_mail_confirmation' => 'Training Notification Confirmation',
+    'title_mail_cancel' => 'Training Notification Confirmation',
     'preposition_hours_from' => 'from',
     'preposition_hours_to' => 'to',
+    'cancel' => 'CANCELLED',
 ];

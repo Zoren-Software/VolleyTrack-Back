@@ -3,6 +3,7 @@
 namespace App\GraphQL\Validators\Mutation;
 
 use App\Rules\CheckPlayerIsInTraining;
+use App\Rules\CheckTrainingCancelled;
 use Nuwave\Lighthouse\Validation\Validator;
 
 final class ConfirmPresenceValidator extends Validator
@@ -27,6 +28,8 @@ final class ConfirmPresenceValidator extends Validator
             ],
             'trainingId' => [
                 'required',
+                'exists:trainings,id',
+                new CheckTrainingCancelled($trainingId),
             ],
             'presence' => [
                 'required',

@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Training;
-use Nuwave\Lighthouse\Execution\Utils\Subscription;
 
 class TrainingObserver
 {
@@ -19,7 +18,6 @@ class TrainingObserver
     public function created(Training $training)
     {
         $training->createConfirmationsPlayers();
-        Subscription::broadcast('notification', $training);
     }
 
     /**
@@ -34,6 +32,9 @@ class TrainingObserver
     public function updated(Training $training)
     {
         $training->createConfirmationsPlayers();
-        Subscription::broadcast('notification', $training);
+
+        if ($training->getOriginal('status') && $training->status == 0) {
+            $training->sendNotificationPlayersTrainingCancelled();
+        }
     }
 }
