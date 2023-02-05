@@ -38,3 +38,10 @@ Route::get('/test-confirmation-notification-training-mail', function () {
 
     return new App\Mail\Training\ConfirmationNotificationTrainingMail($training, $user);
 });
+
+Route::get('/test-cancellation-notification-training-mail', function () {
+    $training = App\Models\Training::find(1);
+    $user = App\Models\User::find(3);
+
+    return new App\Mail\Training\CancellationNotificationTrainingMail($training, $user);
+});

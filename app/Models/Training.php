@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\Training\NotificationCancelTrainingNotification;
 use App\Notifications\Training\NotificationConfirmationTrainingNotification;
 use App\Notifications\Training\TrainingNotification;
 use App\Rules\RelationshipSpecificFundamental;
@@ -176,5 +177,17 @@ class Training extends Model
         });
 
         $this->sendNotificationTechnicians($daysNotification);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return void
+     */
+    public function sendNotificationPlayersTrainingCancelled()
+    {
+        $this->team->players()->each(function ($player) {
+            $player->notify(new NotificationCancelTrainingNotification($this, null));
+        });
     }
 }

@@ -137,7 +137,9 @@ class ConfirmationTrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $hasPermission
+        bool $hasPermission,
+        bool $trainingCancelled
+
     ) {
         $team = Team::factory()
         ->hasPlayers(10)
@@ -145,10 +147,12 @@ class ConfirmationTrainingTest extends TestCase
 
         $training = Training::factory()
             ->setTeamId($team->id)
+            ->setStatus(! $trainingCancelled)
             ->create();
 
+        $confirmationTraining = $training->confirmationsTraining->first();
+
         if ($data['error'] === null) {
-            $confirmationTraining = $training->confirmationsTraining->first();
             $parameters = [
                 'id' => $confirmationTraining->id,
                 'trainingId' => $confirmationTraining->training_id,
@@ -157,6 +161,12 @@ class ConfirmationTrainingTest extends TestCase
             ];
         } else {
             $parameters = $data['data_error'];
+            if (
+                isset($data['data_error']['trainingId']) &&
+                $data['data_error']['trainingId'] == 'find'
+            ) {
+                $parameters['trainingId'] = $training->id;
+            }
         }
 
         $response = $this->graphQL(
@@ -199,13 +209,14 @@ class ConfirmationTrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'training confirmation for player not part of training, expected error' => [
                 [
                     'error' => true,
                     'data_error' => [
                         'id' => 9999,
-                        'trainingId' => 9999,
+                        'trainingId' => 'find',
                         'playerId' => 9999,
                         'presence' => true,
                     ],
@@ -217,13 +228,14 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'playerId must be a required field, expected error' => [
                 [
                     'error' => true,
                     'data_error' => [
                         'id' => 9999,
-                        'trainingId' => 9999,
+                        'trainingId' => 'find',
                         'presence' => true,
                     ],
                 ],
@@ -234,6 +246,7 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'trainingId must be a required field, expected error' => [
                 [
@@ -251,6 +264,7 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'presence must be a required field, expected error' => [
                 [
@@ -258,7 +272,7 @@ class ConfirmationTrainingTest extends TestCase
                     'data_error' => [
                         'id' => 9999,
                         'playerId' => 9999,
-                        'trainingId' => 9999,
+                        'trainingId' => 'find',
                     ],
                 ],
                 'type_message_error' => 'presence',
@@ -268,6 +282,23 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
+            ],
+            'action validation with training canceled, expected error' => [
+                [
+                    'error' => true,
+                    'data_error' => [
+                        'trainingId' => 'find',
+                    ],
+                ],
+                'type_message_error' => 'trainingId',
+                'expected_message' => 'CheckTrainingCancelled.message_error',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $confirmationTraining,
+                ],
+                'hasPermission' => true,
+                'trainingCancelled' => true,
             ],
         ];
     }
@@ -288,18 +319,21 @@ class ConfirmationTrainingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-        $hasPermission
+        bool $hasPermission,
+        bool $trainingCancelled
     ) {
         $team = Team::factory()
-        ->hasPlayers(10)
-        ->create();
+            ->hasPlayers(10)
+            ->create();
 
         $training = Training::factory()
             ->setTeamId($team->id)
+            ->setStatus(! $trainingCancelled)
             ->create();
 
-        if ($data['error'] === null) {
-            $confirmationTraining = $training->confirmationsTraining->first();
+        $confirmationTraining = $training->confirmationsTraining->first();
+
+        if ($data['error'] !== true) {
             $parameters = [
                 'id' => $confirmationTraining->id,
                 'trainingId' => $confirmationTraining->training_id,
@@ -311,6 +345,12 @@ class ConfirmationTrainingTest extends TestCase
             ];
         } else {
             $parameters = $data['data_error'];
+            if (
+                isset($data['data_error']['trainingId']) &&
+                $data['data_error']['trainingId'] == 'find'
+            ) {
+                $parameters['trainingId'] = $training->id;
+            }
         }
 
         $response = $this->graphQL(
@@ -344,6 +384,7 @@ class ConfirmationTrainingTest extends TestCase
             'confirm training, success' => [
                 [
                     'error' => null,
+                    'data_error' => null,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -353,13 +394,12 @@ class ConfirmationTrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
-            'training confirmation for player not part of training, expected error' => [
+            'training confirmation for player nott part of training, expected error' => [
                 [
                     'error' => true,
                     'data_error' => [
-                        'id' => 9999,
-                        'trainingId' => 9999,
                         'playerId' => 9999,
                         'status' => [
                             'type' => 'ENUM',
@@ -374,13 +414,14 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'playerId must be a required field, expected error' => [
                 [
                     'error' => true,
                     'data_error' => [
                         'id' => 9999,
-                        'trainingId' => 9999,
+                        'trainingId' => 'find',
                         'status' => [
                             'type' => 'ENUM',
                             'value' => 'CONFIRMED',
@@ -394,6 +435,7 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'trainingId must be a required field, expected error' => [
                 [
@@ -414,14 +456,13 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
             ],
             'status must be a required field, expected error' => [
                 [
                     'error' => true,
                     'data_error' => [
-                        'id' => 9999,
-                        'playerId' => 9999,
-                        'trainingId' => 9999,
+                        'trainingId' => 'find',
                     ],
                 ],
                 'type_message_error' => 'status',
@@ -431,6 +472,23 @@ class ConfirmationTrainingTest extends TestCase
                     'data' => $confirmationTraining,
                 ],
                 'hasPermission' => true,
+                'trainingCancelled' => false,
+            ],
+            'action validation with training canceled, expected error' => [
+                [
+                    'error' => true,
+                    'data_error' => [
+                        'trainingId' => 'find',
+                    ],
+                ],
+                'type_message_error' => 'trainingId',
+                'expected_message' => 'CheckTrainingCancelled.message_error',
+                'expected' => [
+                    'errors' => $this->errors,
+                    'data' => $confirmationTraining,
+                ],
+                'hasPermission' => true,
+                'trainingCancelled' => true,
             ],
         ];
     }
