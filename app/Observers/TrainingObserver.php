@@ -17,7 +17,7 @@ class TrainingObserver
      */
     public function created(Training $training)
     {
-        $training->createConfirmationsPlayers();
+        $training->confirmationsPlayers();
     }
 
     /**
@@ -31,7 +31,7 @@ class TrainingObserver
      */
     public function updated(Training $training)
     {
-        $training->createConfirmationsPlayers();
+        $training->confirmationsPlayers($training->id);
 
         if ($training->getOriginal('status') && $training->status == 0) {
             $training->sendNotificationPlayersTrainingCancelled();

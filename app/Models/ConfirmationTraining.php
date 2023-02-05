@@ -40,7 +40,7 @@ class ConfirmationTraining extends Model
         return $this->belongsTo(Team::class);
     }
 
-    public function scopeStatus($query, $status)
+    public function scopeStatus($query, $status = null)
     {
         if ($status === null) {
             return $query;

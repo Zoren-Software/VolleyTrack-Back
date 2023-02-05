@@ -152,18 +152,33 @@ class Training extends Model
      * @param  int|null|null  $daysNotification
      * @return void
      */
-    public function createConfirmationsPlayers($daysNotification = null)
+    public function confirmationsPlayers(int|null $trainingId = null, int|null $daysNotification = null)
     {
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
-        $this->team->players()->each(function ($player) use ($daysNotification) {
-            $confirmationTraining = $this->confirmationsTraining()->create([
-                'user_id' => auth()->user()->id ?? null,
-                'player_id' => $player->id,
-                'team_id' => $this->team_id,
-                'training_id' => $this->id,
-                'status' => 'pending',
-                'presence' => false,
-            ]);
+        $this->team->players()->each(function ($player) use ($trainingId, $daysNotification) {
+            $confirmationTraining = $this->confirmationsTraining()
+                ->where('training_id', $trainingId)
+                ->where('player_id', $player->id)
+                ->first();
+            if ($trainingId === null || $confirmationTraining === null) {
+                $confirmationTraining = $this->confirmationsTraining()->create([
+                    'user_id' => auth()->user()->id ?? null,
+                    'player_id' => $player->id,
+                    'team_id' => $this->team_id,
+                    'training_id' => $this->id,
+                    'status' => 'pending',
+                    'presence' => false,
+                ]);
+            } else {
+                $confirmationTraining->update([
+                    'user_id' => auth()->user()->id ?? null,
+                    'player_id' => $player->id,
+                    'team_id' => $this->team_id,
+                    'training_id' => $this->id,
+                    'status' => 'pending',
+                    'presence' => false,
+                ]);
+            }
 
             if (
                 $this->rangeDateNotification(
@@ -189,5 +204,28 @@ class Training extends Model
         $this->team->players()->each(function ($player) {
             $player->notify(new NotificationCancelTrainingNotification($this, null));
         });
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return array
+     */
+    public function metrics()
+    {
+        $confirmed = $this->confirmationsTraining()->status('confirmed')->count() ?? 0;
+        $pending = $this->confirmationsTraining()->status('pending')->count() ?? 0;
+        $rejected = $this->confirmationsTraining()->status('rejected')->count() ?? 0;
+        $total = $confirmed + $pending + $rejected;
+
+        return [
+            'confirmed' => $confirmed,
+            'pending' => $pending,
+            'rejected' => $rejected,
+            'total' => $total,
+            'confirmedPercentage' => $confirmed > 0 ? ($confirmed / ($total) * 100) : 0,
+            'pendingPercentage' => $pending > 0 ? ($pending / ($total) * 100) : 0,
+            'rejectedPercentage' => $rejected > 0 ? ($rejected / ($total) * 100) : 0,
+        ];
     }
 }
