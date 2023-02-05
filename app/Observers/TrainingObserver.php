@@ -34,10 +34,8 @@ class TrainingObserver
     {
         $training->createConfirmationsPlayers();
 
-        if ($training->getOriginal('status')) {
-            if ($training->status == 0) {
-                $training->sendNotificationPlayersTrainingCancelled();
-            }
+        if ($training->getOriginal('status') && $training->status == 0) {
+            $training->sendNotificationPlayersTrainingCancelled();
         }
     }
 }
