@@ -34,7 +34,6 @@ class CheckTrainingCancelled implements Rule
     public function passes($attribute, $value)
     {
         $this->training = $this->training->find($this->trainingId);
-        dd($this->training, $this->trainingId);
         return $this->training->status;
     }
 
@@ -45,6 +44,6 @@ class CheckTrainingCancelled implements Rule
      */
     public function message()
     {
-        return trans('CheckPlayerIsInTraining.message_error');
+        return trans('CheckTrainingCancelled.message_error');
     }
 }
