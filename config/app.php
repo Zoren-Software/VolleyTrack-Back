@@ -184,6 +184,11 @@ return [
          * Application Service Providers Websocket
          */
         \Nuwave\Lighthouse\Subscriptions\SubscriptionServiceProvider::class,
+
+        /*
+         * Application Service Socialite
+         */
+         \SocialiteProviders\Manager\ServiceProvider::class
     ],
 
     /*
@@ -199,6 +204,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // ...
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ])->toArray(),
 
 ];

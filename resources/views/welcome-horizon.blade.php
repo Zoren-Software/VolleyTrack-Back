@@ -61,7 +61,7 @@
                             Você precisa estar autenticado para acessar o painel.
                         </div>
                         <div class="mt-4">
-                            <a href="" class="mt-8 text-sm text-gray-700 dark:text-gray-500 underline">Login</a>
+                            <a href="{{route('github.login')}}" class="mt-8 text-sm text-gray-700 dark:text-gray-500 underline">Login</a>
                         </div>
                     </div>
                 </div>
