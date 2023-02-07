@@ -22,10 +22,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
-            // ... other providers
-            \SocialiteProviders\GitHub\GitHubExtendSocialite::class.'@handle',
-        ],
+        // \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+        //     // ... other providers
+        //     \SocialiteProviders\GitHub\GitHubExtendSocialite::class.'@handle',
+        // ],
     ];
 
     /**

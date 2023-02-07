@@ -188,7 +188,8 @@ return [
         /*
          * Application Service Socialite
          */
-         \SocialiteProviders\Manager\ServiceProvider::class
+         //\SocialiteProviders\Manager\ServiceProvider::class
+         Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*
@@ -204,7 +205,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // ...
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ])->toArray(),
 
 ];

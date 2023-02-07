@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Horizon\Horizon;
-use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Auth\LoginController;
 
 /*
@@ -26,8 +24,8 @@ Route::group(['domain' => 'horizon.' . appHost()], function () {
             return true;
         });
     }); */
- 
-    Route::get('/auth/github/redirect', [LoginController::class, 'gitHubRedirect'])->name('github.login');
-    
-    Route::get('/auth/github/callback', [LoginController::class, 'gitHubCallback'])->name('github.callback');
+
+    Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])->name('github.login');
+
+    Route::get('/auth/github/callback', [LoginController::class, 'githubCallback']);
 });
