@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client as GuzzleClient;
 use App\Services\GitHubService;
-use App\Models\UserCentral;
+use App\Models\Central\User;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
 
@@ -29,7 +29,7 @@ class LoginController extends Controller
     {
         $githubUser = Socialite::driver('github')->user();
 
-        $user = UserCentral::updateOrCreate(
+        $user = User::updateOrCreate(
             ['github_id' => $githubUser->getId()],
             [
                 'name' => $githubUser->getName(),
@@ -40,7 +40,7 @@ class LoginController extends Controller
             ]
         );
 
-        Auth::guard('web')->login($user);
+        auth()->guard('web')->login($user);
 
         return redirect()->route('horizon.index');
     }

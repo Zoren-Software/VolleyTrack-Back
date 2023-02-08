@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use Laravel\Horizon\Horizon;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +20,11 @@ Route::group(['domain' => 'horizon.' . appHost()], function () {
         return view('welcome-horizon');
     });
 
-    /* Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => 'auth'], function () {
         Horizon::auth(function ($request) {
-            return true;
+            return auth()->check();
         });
-    }); */
+    });
 
     Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])->name('github.login');
 
