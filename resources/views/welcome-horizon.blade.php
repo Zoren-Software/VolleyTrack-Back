@@ -51,20 +51,36 @@
                     {{-- Adicionar header --}}
                     <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
                         <div class="mt-2 text-2xl">
+                            @auth
+                                Olá, {{auth()->user()->name}}!!
+                                <br>
+                            @endauth
                             Bem vindo ao Laravel Horizon
                         </div>
-                        <div class="mt-8 text-gray-500">
-                            Este é um caminho para acessar o painel do Laravel Horizon. 
-                        </div>
-                        <div class="mt-6 text-gray-500">
-                            Você precisa estar autenticado no GitHub para acessar o painel.
-                        </div>
-                        <div class="mt-6 text-gray-500">
-                            E ter permissão para acessar o repositório.
-                        </div>
-                        <div class="mt-4">
-                            <a href="{{route('github.login')}}" class="mt-8 text-sm text-gray-700 dark:text-gray-500 underline">Login</a>
-                        </div>
+                        @auth
+                            <div class="mt-4 text-gray-500">
+                                Volte ao painel do Laravel Horizon.
+                            </div>
+                        @else
+                            <div class="mt-8 text-gray-500">
+                                Este é um caminho para acessar o painel do Laravel Horizon. 
+                            </div>
+                            <div class="mt-6 text-gray-500">
+                                Você precisa estar autenticado no GitHub para acessar o painel.
+                            </div>
+                            <div class="mt-6 text-gray-500">
+                                E ter permissão para acessar o repositório.
+                            </div>
+                        @endauth
+                        @auth
+                            <div class="mt-4">
+                                <a href="{{route('horizon.index')}}" class="mt-8 text-sm text-gray-700 dark:text-gray-500 underline">Painel</a>
+                            </div>
+                        @else
+                            <div class="mt-4">
+                                <a href="{{route('github.login')}}" class="mt-8 text-sm text-gray-700 dark:text-gray-500 underline">Login</a>
+                            </div>
+                        @endauth
                     </div>
                 </div>
 
