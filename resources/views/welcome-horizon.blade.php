@@ -53,12 +53,14 @@
                         <div class="mt-2 text-2xl">
                             Bem vindo ao Laravel Horizon
                         </div>
-
-                        <div class="mt-6 text-gray-500">
+                        <div class="mt-8 text-gray-500">
                             Este é um caminho para acessar o painel do Laravel Horizon. 
                         </div>
                         <div class="mt-6 text-gray-500">
-                            Você precisa estar autenticado para acessar o painel.
+                            Você precisa estar autenticado no GitHub para acessar o painel.
+                        </div>
+                        <div class="mt-6 text-gray-500">
+                            E ter permissão para acessar o repositório.
                         </div>
                         <div class="mt-4">
                             <a href="{{route('github.login')}}" class="mt-8 text-sm text-gray-700 dark:text-gray-500 underline">Login</a>
