@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Socialite;
 
-final class GibHubService extends Model
+final class GitHubService extends Model
 {
     /**
      * @codeCoverageIgnore
@@ -17,31 +17,43 @@ final class GibHubService extends Model
      */
     public function __construct(GuzzleClient $client = null)
     {
-        $this->client = $client;
-    }
+        $this->client = $client ?? new GuzzleClient();
 
-    /**
-     * @codeCoverageIgnore
-     *
-     */
-    public function gitHubLogin()
-    {
-        return Socialite::driver('github')->redirect();
-    }
+        $this->accessToken = config('services.github.access_token');
 
-    public function gitHubCallback()
-    {
-        try {
-     
-           // TODO - Passar função pra cá
-     
-        } catch (\Exception $e) {
-            dd($e);
-            report($e);
+        if (!$this->accessToken) {
+            throw new \Throwable('Variáveis de conexão do GitHub não declaradas');
         }
     }
 
-    public function validationUserGitHubAccess(){
-
+    /**
+     * Verifica se o usuário tem permissão para acessar o repositório.
+     *
+     * @param string $nickName
+     *
+     * @return bool
+     */
+    public function verifyPermissionUser(string $nickName)
+    {
+        try {
+            $response = $this->client->get(
+                "https://api.github.com/repos/Zoren-Software/VoleiClub/collaborators/$nickName",
+                [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . env('GITHUB_ACCESS_TOKEN'),
+                    ],
+                ]
+            );
+            // se o status code for 204, o usuário tem acesso ao repositório
+            if ($response->getStatusCode() == 204) {
+                return true;
+            } elseif ($response->getStatusCode() == 404) {
+                return false;
+            } elseif ($response->getStatusCode() == 401) {
+                throw new \Exception('Token de acesso inválido');
+            }
+        } catch (\Exception $e) {
+            report($e);
+        }
     }
 }

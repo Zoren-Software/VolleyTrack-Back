@@ -17,13 +17,15 @@ use Laravel\Horizon\Horizon;
 
 Route::get('/', function () {
     return view('welcome-horizon');
-});
+})->name('welcome-horizon');
 
 Route::group(['middleware' => 'auth'], function () {
     Horizon::auth(function ($request) {
         return auth()->check();
     });
 });
+
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])->name('github.login');
 

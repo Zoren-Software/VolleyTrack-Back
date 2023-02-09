@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use GuzzleHttp\Client as GuzzleClient;
 use App\Services\GitHubService;
-use App\Models\Central\User;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Central\User;
 
 class LoginController extends Controller
 {
@@ -29,6 +26,14 @@ class LoginController extends Controller
     {
         $githubUser = Socialite::driver('github')->user();
 
+        $githubService = new GitHubService();
+
+        $login = $githubService->verifyPermissionUser($githubUser->getNickname());
+
+        if (!$login) {
+            return redirect()->route('welcome-horizon', ['error' => 'Você não tem permissão para acessar o Horizon']);
+        }
+
         $user = User::updateOrCreate(
             ['github_id' => $githubUser->getId()],
             [
@@ -43,5 +48,14 @@ class LoginController extends Controller
         auth()->guard('web')->login($user);
 
         return redirect()->route('horizon.index');
+    }
+
+    /**
+     * @return [type]
+     */
+    public function logout()
+    {
+        auth()->guard('web')->logout();
+        return redirect()->route('welcome-horizon');
     }
 }
