@@ -15,6 +15,8 @@ return [
     |
     */
 
+    // TODO - Ajustar para o domínio correto
+    // Para funcionar apenas no domínio especificado
     'domain' => env('HORIZON_DOMAIN'),
 
     /*
@@ -54,10 +56,7 @@ return [
     |
     */
 
-    'prefix' => env(
-        'HORIZON_PREFIX',
-        Str::slug(env('APP_NAME', 'laravel'), '_') . '_horizon:'
-    ),
+    'prefix' => env('HORIZON_PREFIX', 'horizon:'),
 
     /*
     |--------------------------------------------------------------------------
