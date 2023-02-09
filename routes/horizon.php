@@ -15,18 +15,16 @@ use Laravel\Horizon\Horizon;
 |
 */
 
-Route::group(['domain' => 'horizon.' . appHost()], function () {
-    Route::get('/', function () {
-        return view('welcome-horizon');
-    });
-
-    Route::group(['middleware' => 'auth'], function () {
-        Horizon::auth(function ($request) {
-            return auth()->check();
-        });
-    });
-
-    Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])->name('github.login');
-
-    Route::get('/auth/github/callback', [LoginController::class, 'githubCallback']);
+Route::get('/', function () {
+    return view('welcome-horizon');
 });
+
+Route::group(['middleware' => 'auth'], function () {
+    Horizon::auth(function ($request) {
+        return auth()->check();
+    });
+});
+
+Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])->name('github.login');
+
+Route::get('/auth/github/callback', [LoginController::class, 'githubCallback']);
