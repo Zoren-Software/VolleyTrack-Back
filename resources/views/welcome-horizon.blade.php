@@ -67,7 +67,7 @@
                                 Você precisa estar autenticado no GitHub para acessar o painel.
                             </div>
                             <div class="mt-6 text-gray-500">
-                                E ter permissão para acessar o repositório.
+                                E ter permissão de colaborador no projeto.
                             </div>
                         @endauth
                         @auth
