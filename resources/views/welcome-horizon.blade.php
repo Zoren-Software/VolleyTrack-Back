@@ -70,6 +70,7 @@
                                 E ter permissão de colaborador no projeto.
                             </div>
                         @endauth
+                        {{-- TODO - Falta apenas mostrar a mensagem de erro caso o usuário não tenha permissão para fazer login --}}
                         @auth
                             <div class="mt-4">
                                 <a href="{{ route('horizon.index') }}" class="mt-8 text-sm text-gray-700 dark:text-gray-500 underline">Painel</a>
