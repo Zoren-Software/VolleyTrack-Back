@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Env;
 use Laravel\Horizon\Horizon;
 
 /*
@@ -21,7 +22,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Horizon::auth(function ($request) {
-        return auth()->check();
+        return auth()->check() || env('APP_ENV') === 'local';
     });
 });
 
