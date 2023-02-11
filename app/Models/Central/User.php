@@ -12,9 +12,9 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements HasApiTokensContract
 {
     use HasApiTokens;
-    // use HasFactory;
-    // use Notifiable;
-    // use SoftDeletes;
+    use HasFactory;
+    use Notifiable;
+    use SoftDeletes;
 
     protected $table = 'users';
 
