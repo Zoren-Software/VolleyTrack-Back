@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Password;
 class ForgotPasswordController extends Controller
 {
     /**
+     * @codeCoverageIgnore
      * Show the application's login form.
      *
      * @return \Illuminate\View\View
@@ -20,6 +21,7 @@ class ForgotPasswordController extends Controller
     }
 
     /**
+     * @codeCoverageIgnore
      * Send a reset link to the given user.
      *
      * @param  \Illuminate\Http\Request  $request

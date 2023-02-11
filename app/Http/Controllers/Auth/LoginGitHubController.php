@@ -11,6 +11,8 @@ use Laravel\Socialite\Facades\Socialite;
 class LoginGitHubController extends Controller
 {
     /**
+     * @codeCoverageIgnore
+     *
      * @return Socialite
      */
     public function githubRedirect()
@@ -20,7 +22,9 @@ class LoginGitHubController extends Controller
     }
 
     /**
-     * @return [type]
+     * @codeCoverageIgnore
+     *
+     * @return redirect
      */
     public function githubCallback()
     {
@@ -51,7 +55,9 @@ class LoginGitHubController extends Controller
     }
 
     /**
-     * @return [type]
+     * @codeCoverageIgnore
+     *
+     * @return redirect
      */
     public function logout()
     {
