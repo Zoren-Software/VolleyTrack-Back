@@ -186,7 +186,7 @@ return [
         ],
 
         'local' => [
-            'supervisor-1' => [
+            'supervisor-default' => [
                 'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'simple',
