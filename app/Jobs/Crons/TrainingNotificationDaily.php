@@ -24,7 +24,7 @@ class TrainingNotificationDaily extends ExecCommand
 
     /**
      * @codeCoverageIgnore
-     * 
+     *
      * Create a new job instance.
      *
      * @return void

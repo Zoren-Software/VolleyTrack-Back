@@ -64,7 +64,6 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         if ($this->tenancy) {
-
             $this->tenant = $this->tenant ?? env('TENANT_TEST', 'test');
 
             $this->initializeTenancy();

@@ -14,6 +14,7 @@ class HorizonRoutesTest extends TestCase
      * A basic test route horizon for login.
      *
      * @test
+     *
      * @dataProvider routesProvider
      *
      * @return void
@@ -28,37 +29,36 @@ class HorizonRoutesTest extends TestCase
     /**
      * @return [type]
      */
-    public function routesProvider(){
+    public function routesProvider()
+    {
         return [
             'home dashboard horizon redirect' => [
-                '/horizon'
+                '/horizon',
             ],
             'home dashboard horizon' => [
-                '/horizon/dashboard'
+                '/horizon/dashboard',
             ],
             'monitoring' => [
-                '/horizon/monitoring'
+                '/horizon/monitoring',
             ],
             'metrics jobs' => [
-                '/horizon/metrics/jobs'
+                '/horizon/metrics/jobs',
             ],
             'batches' => [
-                '/horizon/batches'
+                '/horizon/batches',
             ],
             'jobs pending' => [
-                '/horizon/jobs/pending'
+                '/horizon/jobs/pending',
             ],
             'jobs completed' => [
-                '/horizon/jobs/completed'
+                '/horizon/jobs/completed',
             ],
             'jobs silenced' => [
-                '/horizon/jobs/silenced'
+                '/horizon/jobs/silenced',
             ],
             'failed' => [
-                '/horizon/failed'
+                '/horizon/failed',
             ],
         ];
-    } 
-
-
+    }
 }
