@@ -12,11 +12,8 @@ use Illuminate\Support\Facades\Artisan;
 class ExecCommand implements ShouldQueue
 {
     use Dispatchable;
-
     use InteractsWithQueue;
-
     use Queueable;
-
     use SerializesModels;
 
     /**

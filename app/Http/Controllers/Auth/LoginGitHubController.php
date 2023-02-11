@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\GitHubService;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Central\User;
+use App\Services\GitHubService;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginGitHubController extends Controller
 {
@@ -30,7 +30,7 @@ class LoginGitHubController extends Controller
 
         $login = $githubService->verifyPermissionUser($githubUser->getNickname());
 
-        if (!$login) {
+        if (! $login) {
             return redirect()->route('welcome-horizon', ['error' => 'Você não tem permissão para acessar o Horizon']);
         }
 
@@ -56,6 +56,7 @@ class LoginGitHubController extends Controller
     public function logout()
     {
         auth()->guard('web')->logout();
+
         return redirect()->route('welcome-horizon');
     }
 }

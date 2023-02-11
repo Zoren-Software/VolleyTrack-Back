@@ -11,11 +11,8 @@ use Illuminate\Queue\SerializesModels;
 class TrainingNotificationDaily extends ExecCommand
 {
     use Dispatchable;
-
     use InteractsWithQueue;
-
     use Queueable;
-
     use SerializesModels;
 
     /**

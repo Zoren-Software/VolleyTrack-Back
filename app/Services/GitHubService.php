@@ -2,11 +2,8 @@
 
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Client as GuzzleClient;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Socialite;
+use Illuminate\Database\Eloquent\Model;
 
 final class GitHubService extends Model
 {
@@ -21,7 +18,7 @@ final class GitHubService extends Model
 
         $this->accessToken = config('services.github.access_token');
 
-        if (!$this->accessToken) {
+        if (! $this->accessToken) {
             throw new \Throwable('Variáveis de conexão do GitHub não declaradas');
         }
     }
@@ -29,8 +26,7 @@ final class GitHubService extends Model
     /**
      * Verifica se o usuário tem permissão para acessar o repositório.
      *
-     * @param string $nickName
-     *
+     * @param  string  $nickName
      * @return bool
      */
     public function verifyPermissionUser(string $nickName)

@@ -2,10 +2,10 @@
 
 namespace App\Console;
 
-use Illuminate\Console\Scheduling\Schedule;
 use App\Jobs\Crons\TrainingNotificationDaily;
-use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\Tenant;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {

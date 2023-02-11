@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginGitHubController;
-use Illuminate\Support\Env;
+use Illuminate\Support\Facades\Route;
 use Laravel\Horizon\Horizon;
 
 /*
