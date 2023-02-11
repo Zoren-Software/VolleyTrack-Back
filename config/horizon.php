@@ -12,9 +12,6 @@ return [
     | application. Otherwise, this value will serve as the subdomain.
     |
     */
-
-    // TODO - Ajustar para o domínio correto
-    // Para funcionar apenas no domínio especificado
     'domain' => env('HORIZON_DOMAIN'),
 
     /*
