@@ -189,7 +189,32 @@ return [
 
         'local' => [
             'supervisor-1' => [
-                'maxProcesses' => 3,
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'simple',
+                'processes' => 2,
+                'tries' => 1,
+            ],
+            'supervisor-crons-lentas' => [
+                'connection' => 'redis',
+                'queue' => ['crons-lentas'],
+                'balance' => 'simple',
+                'processes' => 2,
+                'tries' => 1,
+            ],
+            'supervisor-crons-rapidas' => [
+                'connection' => 'redis',
+                'queue' => ['crons-rapidas'],
+                'balance' => 'simple',
+                'processes' => 2,
+                'tries' => 1,
+            ],
+            'supervisor-emails' => [
+                'connection' => 'redis',
+                'queue' => ['emails'],
+                'balance' => 'simple',
+                'processes' => 2,
+                'tries' => 1,
             ],
         ],
     ],

@@ -6,7 +6,7 @@ use App\Models\Tenant;
 use App\Models\Training;
 use Illuminate\Console\Command;
 
-class SendTrainingNotificationDailyCommand extends Command
+class TrainingNotificationDailyCommand extends Command
 {
     /**
      * The name and signature of the console command.
