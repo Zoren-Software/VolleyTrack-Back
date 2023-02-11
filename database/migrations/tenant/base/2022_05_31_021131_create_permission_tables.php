@@ -88,7 +88,8 @@ return new class() extends Migration
             }
         );
 
-        Schema::create($tableNames['model_has_roles'],
+        Schema::create(
+            $tableNames['model_has_roles'],
             function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
                 $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
 
@@ -128,28 +129,31 @@ return new class() extends Migration
             }
         );
 
-        Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames) {
-            $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
-            $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
+        Schema::create(
+            $tableNames['role_has_permissions'],
+            function (Blueprint $table) use ($tableNames) {
+                $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
+                $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
 
-            $table->foreign(PermissionRegistrar::$pivotPermission)
-                ->references('id')
-                ->on($tableNames['permissions'])
-                ->onDelete('cascade');
+                $table->foreign(PermissionRegistrar::$pivotPermission)
+                    ->references('id')
+                    ->on($tableNames['permissions'])
+                    ->onDelete('cascade');
 
-            $table->foreign(PermissionRegistrar::$pivotRole)
-                ->references('id')
-                ->on($tableNames['roles'])
-                ->onDelete('cascade');
+                $table->foreign(PermissionRegistrar::$pivotRole)
+                    ->references('id')
+                    ->on($tableNames['roles'])
+                    ->onDelete('cascade');
 
-            $table->primary(
-                [
-                    PermissionRegistrar::$pivotPermission,
-                    PermissionRegistrar::$pivotRole,
-                ],
-                'role_has_permissions_permission_id_role_id_primary'
-            );
-        });
+                $table->primary(
+                    [
+                        PermissionRegistrar::$pivotPermission,
+                        PermissionRegistrar::$pivotRole,
+                    ],
+                    'role_has_permissions_permission_id_role_id_primary'
+                );
+            }
+        );
 
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
