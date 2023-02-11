@@ -20,7 +20,7 @@ Route::get('/', function () {
 })->name('welcome-horizon');
 
 Route::group(['middleware' => 'auth'], function () {
-    Horizon::auth(function ($request) {
+    Horizon::auth(function () {
         return auth()->check() || env('APP_ENV') === 'local';
     });
 });

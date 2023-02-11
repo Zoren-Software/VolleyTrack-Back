@@ -61,7 +61,7 @@
                             </div>
                         @else
                             <div class="mt-8 text-gray-500">
-                                Este é um caminho para acessar o painel do Laravel Horizon. 
+                                Este é um caminho para acessar o painel do Laravel Horizon.
                             </div>
                             <div class="mt-6 text-gray-500">
                                 Você precisa estar autenticado no GitHub para acessar o painel.
