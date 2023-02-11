@@ -27,7 +27,8 @@ final class GitHubService extends Model
      * @codeCoverageIgnore
      * Verifica se o usuário tem permissão para acessar o repositório.
      *
-     * GitHub API Docs: https://docs.github.com/pt/rest/collaborators/collaborators?apiVersion=2022-11-28#check-if-a-user-is-a-repository-collaborator
+     * GitHub API Docs: 
+     * encurtador.com.br/oLTU0
      *
      * @param  string  $nickName
      * @return bool
