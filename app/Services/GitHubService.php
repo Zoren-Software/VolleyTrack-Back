@@ -49,7 +49,7 @@ final class GitHubService extends Model
             } elseif ($response->getStatusCode() == 404) {
                 return false;
             } elseif ($response->getStatusCode() == 401) {
-                throw new \Exception('Token de acesso inválido');
+                throw new \Throwable('Token de acesso inválido');
             }
         } catch (\Exception $e) {
             report($e);
