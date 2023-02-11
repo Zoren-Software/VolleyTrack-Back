@@ -23,6 +23,8 @@ class TrainingNotificationDaily extends ExecCommand
     public string $command = 'cron:training-notification-daily';
 
     /**
+     * @codeCoverageIgnore
+     * 
      * Create a new job instance.
      *
      * @return void

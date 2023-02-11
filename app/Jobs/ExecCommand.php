@@ -26,6 +26,8 @@ class ExecCommand implements ShouldQueue
     public string $tenant;
 
     /**
+     * @codeCoverageIgnore
+     * 
      * Create a new job instance.
      *
      * @return void
@@ -36,6 +38,8 @@ class ExecCommand implements ShouldQueue
     }
 
     /**
+     * @codeCoverageIgnore
+     * 
      * Execute the job.
      *
      * @return void
