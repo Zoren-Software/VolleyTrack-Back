@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LoginGitHubController;
 use Illuminate\Support\Env;
 use Laravel\Horizon\Horizon;
 
@@ -26,8 +26,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginGitHubController::class, 'logout'])->name('logout');
 
-Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])->name('github.login');
+Route::get('/auth/github/redirect', [LoginGitHubController::class, 'githubRedirect'])->name('github.login');
 
-Route::get('/auth/github/callback', [LoginController::class, 'githubCallback']);
+Route::get('/auth/github/callback', [LoginGitHubController::class, 'githubCallback']);

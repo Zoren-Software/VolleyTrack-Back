@@ -8,7 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Central\User;
 
-class LoginController extends Controller
+class LoginGitHubController extends Controller
 {
     /**
      * @return Socialite
