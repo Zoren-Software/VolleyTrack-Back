@@ -49,7 +49,7 @@ return new class() extends Migration
         });
 
         Schema::create(
-            $tableNames['model_has_permissions'], 
+            $tableNames['model_has_permissions'],
             function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
                 $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
 
@@ -59,8 +59,8 @@ return new class() extends Migration
                     [
                         $columnNames['model_morph_key'],
                         'model_type'],
-                        'model_has_permissions_model_id_model_type_index'
-                    );
+                    'model_has_permissions_model_id_model_type_index'
+                );
 
                 $table->foreign(PermissionRegistrar::$pivotPermission)
                     ->references('id')
@@ -72,10 +72,10 @@ return new class() extends Migration
 
                     $table->primary(
                         [
-                            $columnNames['team_foreign_key'], 
-                            PermissionRegistrar::$pivotPermission, 
-                            $columnNames['model_morph_key'], 
-                            'model_type'
+                            $columnNames['team_foreign_key'],
+                            PermissionRegistrar::$pivotPermission,
+                            $columnNames['model_morph_key'],
+                            'model_type',
                         ],
                         'model_has_permissions_permission_model_type_primary'
                     );
@@ -96,9 +96,9 @@ return new class() extends Migration
                 $table->unsignedBigInteger($columnNames['model_morph_key']);
                 $table->index(
                     [
-                        $columnNames['model_morph_key'], 
-                        'model_type'
-                    ], 
+                        $columnNames['model_morph_key'],
+                        'model_type',
+                    ],
                     'model_has_roles_model_id_model_type_index'
                 );
 
@@ -112,10 +112,10 @@ return new class() extends Migration
 
                     $table->primary(
                         [
-                            $columnNames['team_foreign_key'], 
-                            PermissionRegistrar::$pivotRole, 
-                            $columnNames['model_morph_key'], 
-                            'model_type'
+                            $columnNames['team_foreign_key'],
+                            PermissionRegistrar::$pivotRole,
+                            $columnNames['model_morph_key'],
+                            'model_type',
                         ],
                         'model_has_roles_role_model_type_primary'
                     );
@@ -144,9 +144,9 @@ return new class() extends Migration
 
             $table->primary(
                 [
-                    PermissionRegistrar::$pivotPermission, 
-                    PermissionRegistrar::$pivotRole
-                ], 
+                    PermissionRegistrar::$pivotPermission,
+                    PermissionRegistrar::$pivotRole,
+                ],
                 'role_has_permissions_permission_id_role_id_primary'
             );
         });

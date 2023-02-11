@@ -27,7 +27,7 @@ final class GitHubService extends Model
      * @codeCoverageIgnore
      * Verifica se o usuário tem permissão para acessar o repositório.
      *
-     * GitHub API Docs: 
+     * GitHub API Docs:
      * encurtador.com.br/oLTU0
      *
      * @param  string  $nickName
