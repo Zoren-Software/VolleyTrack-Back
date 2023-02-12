@@ -18,6 +18,8 @@ abstract class TestCase extends BaseTestCase
 
     protected $tenancy = false;
 
+    protected $tenant = 'test';
+
     protected $graphql = false;
 
     protected $login = false;
@@ -62,9 +64,11 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         if ($this->tenancy) {
+            $this->tenant = $this->tenant ?? env('TENANT_TEST', 'test');
+
             $this->initializeTenancy();
             $protocol = env('APP_ENV') === 'local' ? 'http' : 'https';
-            $this->tenantUrl = $protocol . '://' . env('TENANT_TEST', 'test') . '.' . env('APP_HOST');
+            $this->tenantUrl = $protocol . '://' . $this->tenant . '.' . env('APP_HOST');
         }
 
         if ($this->graphql) {

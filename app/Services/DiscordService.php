@@ -27,7 +27,7 @@ final class DiscordService extends Model
         $this->webhookPayments = config('services.discord.webhook_payments');
 
         if (! $this->webhookErrors || ! $this->webhookPayments) {
-            throw new \Throwable('Variáveis de conexão não declaradas');
+            throw new \Throwable('Variáveis de conexão do Discord não declaradas');
         }
     }
 

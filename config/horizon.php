@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Str;
-
 return [
 
     /*
@@ -14,7 +12,6 @@ return [
     | application. Otherwise, this value will serve as the subdomain.
     |
     */
-
     'domain' => env('HORIZON_DOMAIN'),
 
     /*
@@ -54,10 +51,7 @@ return [
     |
     */
 
-    'prefix' => env(
-        'HORIZON_PREFIX',
-        Str::slug(env('APP_NAME', 'laravel'), '_') . '_horizon:'
-    ),
+    'prefix' => env('HORIZON_PREFIX', 'horizon:'),
 
     /*
     |--------------------------------------------------------------------------
@@ -189,8 +183,33 @@ return [
         ],
 
         'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
+            'supervisor-default' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'simple',
+                'processes' => 2,
+                'tries' => 1,
+            ],
+            'supervisor-crons-lentas' => [
+                'connection' => 'redis',
+                'queue' => ['crons-lentas'],
+                'balance' => 'simple',
+                'processes' => 2,
+                'tries' => 1,
+            ],
+            'supervisor-crons-rapidas' => [
+                'connection' => 'redis',
+                'queue' => ['crons-rapidas'],
+                'balance' => 'simple',
+                'processes' => 2,
+                'tries' => 1,
+            ],
+            'supervisor-emails' => [
+                'connection' => 'redis',
+                'queue' => ['emails'],
+                'balance' => 'simple',
+                'processes' => 2,
+                'tries' => 1,
             ],
         ],
     ],
