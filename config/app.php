@@ -184,6 +184,12 @@ return [
          * Application Service Providers Websocket
          */
         \Nuwave\Lighthouse\Subscriptions\SubscriptionServiceProvider::class,
+
+        /*
+         * Application Service Socialite
+         */
+        //\SocialiteProviders\Manager\ServiceProvider::class
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*

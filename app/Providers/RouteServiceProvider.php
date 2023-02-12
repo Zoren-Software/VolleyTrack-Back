@@ -64,6 +64,13 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware([
             'web',
+        ])
+        ->namespace($this->namespace)
+        ->domain('horizon.' . appHost())
+        ->group(base_path('routes/horizon.php'));
+
+        Route::middleware([
+            'web',
             InitializeTenancyByDomain::class,
             PreventAccessFromCentralDomains::class,
             CheckTenantForMaintenanceMode::class,
