@@ -24,6 +24,8 @@ class Kernel extends ConsoleKernel
     {
         $output = storage_path('app/output.txt');
 
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
+
         $tenants = Tenant::where('id', 'NOT LIKE', '%_logs')->pluck('id');
 
         foreach ($tenants as $tenant) {
