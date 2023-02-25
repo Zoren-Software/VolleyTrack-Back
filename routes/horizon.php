@@ -19,10 +19,8 @@ Route::get('/', function () {
     return view('welcome-horizon');
 })->name('welcome-horizon');
 
-Route::group(['middleware' => 'auth'], function () {
-    Horizon::auth(function () {
-        return auth()->check() || env('APP_ENV') === 'local';
-    });
+Horizon::auth(function () {
+    return auth()->check() || env('APP_ENV') === 'local';
 });
 
 Route::get('/logout', [LoginGitHubController::class, 'logout'])->name('logout');
