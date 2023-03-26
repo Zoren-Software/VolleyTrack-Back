@@ -16,7 +16,7 @@ class PositionTest extends TestCase
 
     private $role = 'technician';
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'userId',
@@ -59,8 +59,8 @@ class PositionTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
@@ -83,7 +83,7 @@ class PositionTest extends TestCase
     /**
      * @return array
      */
-    public function listProvider()
+    public static function listProvider()
     {
         return [
             'with permission' => [
@@ -92,9 +92,9 @@ class PositionTest extends TestCase
                 'expected' => [
                     'data' => [
                         'positions' => [
-                            'paginatorInfo' => $this->paginatorInfo,
+                            'paginatorInfo' => self::$paginatorInfo,
                             'data' => [
-                                '*' => $this->data,
+                                '*' => self::$data,
                             ],
                         ],
                     ],
@@ -103,9 +103,9 @@ class PositionTest extends TestCase
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -139,7 +139,7 @@ class PositionTest extends TestCase
             [
                 'id' => $position->id,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         );
@@ -161,7 +161,7 @@ class PositionTest extends TestCase
     /**
      * @return array
      */
-    public function infoProvider()
+    public static function infoProvider()
     {
         return [
             'with permission' => [
@@ -169,16 +169,16 @@ class PositionTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'position' => $this->data,
+                        'position' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -202,13 +202,13 @@ class PositionTest extends TestCase
         $expectedMessage,
         $expected,
         bool $hasPermission
-        ) {
+    ) {
         $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $response = $this->graphQL(
             'positionCreate',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -224,7 +224,7 @@ class PositionTest extends TestCase
     /**
      * @return array
      */
-    public function positionCreateProvider()
+    public static function positionCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
@@ -241,7 +241,7 @@ class PositionTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'positionCreate' => $this->data,
+                        'positionCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -254,7 +254,7 @@ class PositionTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionCreate,
                 ],
                 'hasPermission' => false,
@@ -267,7 +267,7 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionCreate.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionCreate,
                 ],
                 'hasPermission' => true,
@@ -280,7 +280,7 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionCreate.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionCreate,
                 ],
                 'hasPermission' => true,
@@ -293,7 +293,7 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionCreate.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionCreate,
                 ],
                 'hasPermission' => true,
@@ -318,7 +318,7 @@ class PositionTest extends TestCase
         $expectedMessage,
         $expected,
         bool $hasPermission
-        ) {
+    ) {
         $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $positionExist = Position::factory()->make();
@@ -335,7 +335,7 @@ class PositionTest extends TestCase
         $response = $this->graphQL(
             'positionEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -351,7 +351,7 @@ class PositionTest extends TestCase
     /**
      * @return array
      */
-    public function positionEditProvider()
+    public static function positionEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
@@ -364,9 +364,9 @@ class PositionTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionEdit,
                 ],
                 'hasPermission' => false,
@@ -380,7 +380,7 @@ class PositionTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'positionEdit' => $this->data,
+                        'positionEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -392,7 +392,7 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionEdit.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionEdit,
                 ],
                 'hasPermission' => true,
@@ -405,7 +405,7 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionEdit.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionEdit,
                 ],
                 'hasPermission' => true,
@@ -418,7 +418,7 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionEdit.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionEdit,
                 ],
                 'hasPermission' => true,
@@ -460,7 +460,7 @@ class PositionTest extends TestCase
         $response = $this->graphQL(
             'positionDelete',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -483,7 +483,7 @@ class PositionTest extends TestCase
      *
      * @return array
      */
-    public function positionDeleteProvider()
+    public static function positionDeleteProvider()
     {
         $positionDelete = ['positionDelete'];
 
@@ -496,7 +496,7 @@ class PositionTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'positionDelete' => [$this->data],
+                        'positionDelete' => [self::$data],
                     ],
                 ],
                 'hasPermission' => true,
@@ -506,9 +506,9 @@ class PositionTest extends TestCase
                     'error' => null,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionDelete,
                 ],
                 'hasPermission' => false,
@@ -520,7 +520,7 @@ class PositionTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'internal',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionDelete,
                 ],
                 'hasPermission' => true,

@@ -15,7 +15,7 @@ class ConfigTest extends TestCase
 
     private $role = 'technician';
 
-    private $data = [
+    public static $data = [
         'id',
         'userId',
         'nameTenant',
@@ -54,7 +54,7 @@ class ConfigTest extends TestCase
             [
                 'id' => 1,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         );
@@ -76,7 +76,7 @@ class ConfigTest extends TestCase
     /**
      * @return array
      */
-    public function infoProvider()
+    public static function infoProvider()
     {
         return [
             'with permission' => [
@@ -84,16 +84,16 @@ class ConfigTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'config' => $this->data,
+                        'config' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -125,7 +125,7 @@ class ConfigTest extends TestCase
         $response = $this->graphQL(
             'configEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -146,7 +146,7 @@ class ConfigTest extends TestCase
     /**
      * @return array
      */
-    public function configEditProvider()
+    public static function configEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
@@ -160,9 +160,9 @@ class ConfigTest extends TestCase
                     'languageId' => 1,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $configEdit,
                 ],
                 'hasPermission' => false,
@@ -177,7 +177,7 @@ class ConfigTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'configEdit' => $this->data,
+                        'configEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -190,7 +190,7 @@ class ConfigTest extends TestCase
                 'type_message_error' => 'nameTenant',
                 'expected_message' => 'ConfigEdit.name_tenant_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $configEdit,
                 ],
                 'hasPermission' => true,
@@ -203,7 +203,7 @@ class ConfigTest extends TestCase
                 'type_message_error' => 'nameTenant',
                 'expected_message' => 'ConfigEdit.name_tenant_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $configEdit,
                 ],
                 'hasPermission' => true,

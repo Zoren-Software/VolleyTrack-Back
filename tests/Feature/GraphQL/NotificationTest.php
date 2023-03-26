@@ -14,7 +14,7 @@ class NotificationTest extends TestCase
 
     protected $login = true;
 
-    private $data = [
+    public static $data = [
         'id',
         'type',
         'notifiableType',
@@ -44,17 +44,17 @@ class NotificationTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
         )->assertJsonStructure([
             'data' => [
                 'notifications' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+                    'paginatorInfo' => self::$paginatorInfo,
                     'data' => [
-                        '*' => $this->data,
+                        '*' => self::$data,
                     ],
                 ],
             ],
@@ -116,7 +116,7 @@ class NotificationTest extends TestCase
      *
      * @return array
      */
-    public function notificationReadProvider()
+    public static function notificationReadProvider()
     {
         return [
             'read all notifications, success' => [
@@ -141,7 +141,7 @@ class NotificationTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'Unauthenticated.',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasLogin' => false,
             ],

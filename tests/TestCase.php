@@ -32,7 +32,7 @@ abstract class TestCase extends BaseTestCase
 
     protected $otherUser = false;
 
-    protected $paginatorInfo = [
+    public static $paginatorInfo = [
         'count',
         'currentPage',
         'firstItem',
@@ -43,7 +43,7 @@ abstract class TestCase extends BaseTestCase
         'total',
     ];
 
-    protected $errors = [
+    public static $errors = [
         '*' => [
             'message',
             'locations',
@@ -53,9 +53,9 @@ abstract class TestCase extends BaseTestCase
         ],
     ];
 
-    protected $formatDate = 'Y-m-d H:i:s';
+    public static $formatDate = 'Y-m-d H:i:s';
 
-    protected $unauthorized = 'This action is unauthorized.';
+    public static $unauthorized = 'This action is unauthorized.';
 
     public $tenantUrl;
 
