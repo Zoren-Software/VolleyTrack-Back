@@ -11,8 +11,6 @@ class PositionPolicy
 
     /**
      * Create a new position instance.
-     *
-     * @return bool
      */
     public function create(User $user): bool
     {
@@ -21,8 +19,6 @@ class PositionPolicy
 
     /**
      * Edit a position instance.
-     *
-     * @return bool
      */
     public function edit(User $user): bool
     {
@@ -31,8 +27,6 @@ class PositionPolicy
 
     /**
      * Delete a position instance.
-     *
-     * @return bool
      */
     public function delete(User $user): bool
     {
@@ -41,8 +35,6 @@ class PositionPolicy
 
     /**
      * View a position instance.
-     *
-     * @return bool
      */
     public function view(User $user): bool
     {

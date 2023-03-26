@@ -15,7 +15,7 @@ class TrainingConfigTest extends TestCase
 
     private $role = 'technician';
 
-    private $data = [
+    public static $data = [
         'id',
         'userId',
         'daysNotification',
@@ -55,7 +55,7 @@ class TrainingConfigTest extends TestCase
             [
                 'id' => 1,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         );
@@ -76,7 +76,7 @@ class TrainingConfigTest extends TestCase
     /**
      * @return array
      */
-    public function infoProvider()
+    public static function infoProvider()
     {
         return [
             'with permission' => [
@@ -84,16 +84,16 @@ class TrainingConfigTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingConfig' => $this->data,
+                        'trainingConfig' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -125,7 +125,7 @@ class TrainingConfigTest extends TestCase
         $response = $this->graphQL(
             'trainingConfigEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -146,7 +146,7 @@ class TrainingConfigTest extends TestCase
     /**
      * @return array
      */
-    public function ConfigEditProvider()
+    public static function ConfigEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
@@ -161,9 +161,9 @@ class TrainingConfigTest extends TestCase
                     'notificationTechnicianByEmail' => $faker->boolean,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingConfigEdit,
                 ],
                 'hasPermission' => false,
@@ -179,7 +179,7 @@ class TrainingConfigTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingConfigEdit' => $this->data,
+                        'trainingConfigEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,

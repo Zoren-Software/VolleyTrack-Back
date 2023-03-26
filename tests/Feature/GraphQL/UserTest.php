@@ -20,7 +20,7 @@ class UserTest extends TestCase
 
     private $role = 'technician';
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'email',
@@ -66,8 +66,8 @@ class UserTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
@@ -90,7 +90,7 @@ class UserTest extends TestCase
     /**
      * @return array
      */
-    public function listProvider()
+    public static function listProvider()
     {
         return [
             'with permission' => [
@@ -99,9 +99,9 @@ class UserTest extends TestCase
                 'expected' => [
                     'data' => [
                         'users' => [
-                            'paginatorInfo' => $this->paginatorInfo,
+                            'paginatorInfo' => self::$paginatorInfo,
                             'data' => [
-                                '*' => $this->data,
+                                '*' => self::$data,
                             ],
                         ],
                     ],
@@ -110,9 +110,9 @@ class UserTest extends TestCase
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -148,7 +148,7 @@ class UserTest extends TestCase
             [
                 'id' => $user->id,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         );
@@ -169,7 +169,7 @@ class UserTest extends TestCase
     /**
      * @return array
      */
-    public function infoProvider()
+    public static function infoProvider()
     {
         return [
             'with permission' => [
@@ -177,16 +177,16 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'user' => $this->data,
+                        'user' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -211,7 +211,7 @@ class UserTest extends TestCase
         $expected,
         bool $hasTeam,
         bool $hasPermission
-        ) {
+    ) {
         $this->setPermissions($hasPermission);
 
         $faker = Faker::create();
@@ -226,7 +226,7 @@ class UserTest extends TestCase
         $response = $this->graphQL(
             'userCreate',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -242,7 +242,7 @@ class UserTest extends TestCase
     /**
      * @return array
      */
-    public function userCreateProvider()
+    public static function userCreateProvider()
     {
         $faker = Faker::create();
         $emailExistent = $faker->email;
@@ -264,7 +264,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => $this->data,
+                        'userCreate' => self::$data,
                     ],
                 ],
                 'hasTeam' => true,
@@ -282,7 +282,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => $this->data,
+                        'userCreate' => self::$data,
                     ],
                 ],
                 'hasTeam' => false,
@@ -298,7 +298,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'roleId',
                 'expected_message' => 'UserCreate.role_id_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
@@ -315,7 +315,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => $this->data,
+                        'userCreate' => self::$data,
                     ],
                 ],
                 'hasTeam' => false,
@@ -332,7 +332,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => $this->data,
+                        'userCreate' => self::$data,
                     ],
                 ],
                 'hasTeam' => false,
@@ -348,7 +348,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'roleId',
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
@@ -362,9 +362,9 @@ class UserTest extends TestCase
                     'password' => $password,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
@@ -380,7 +380,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_min_6',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
@@ -395,7 +395,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
@@ -412,7 +412,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => $this->data,
+                        'userCreate' => self::$data,
                     ],
                 ],
                 'hasTeam' => false,
@@ -428,7 +428,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
@@ -444,7 +444,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
@@ -460,7 +460,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_is_valid',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
                 'hasTeam' => false,
@@ -487,7 +487,7 @@ class UserTest extends TestCase
         $expected,
         bool $hasTeam,
         bool $hasPermission
-        ) {
+    ) {
         $this->setPermissions($hasPermission);
 
         $userExist = User::factory()
@@ -512,7 +512,7 @@ class UserTest extends TestCase
         $response = $this->graphQL(
             'userEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -528,7 +528,7 @@ class UserTest extends TestCase
     /**
      * @return array
      */
-    public function userEditProvider()
+    public static function userEditProvider()
     {
         $faker = Faker::create();
 
@@ -546,7 +546,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'roleId',
                 'expected_message' => 'UserEdit.role_id_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
@@ -562,7 +562,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'roleId',
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
@@ -576,9 +576,9 @@ class UserTest extends TestCase
                     'roleId' => [2],
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
@@ -596,7 +596,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => $this->data,
+                        'userEdit' => self::$data,
                     ],
                 ],
                 'hasTeam' => true,
@@ -614,7 +614,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => $this->data,
+                        'userEdit' => self::$data,
                     ],
                 ],
                 'hasTeam' => false,
@@ -631,7 +631,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => $this->data,
+                        'userEdit' => self::$data,
                     ],
                 ],
                 'hasTeam' => false,
@@ -648,7 +648,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => $this->data,
+                        'userEdit' => self::$data,
                     ],
                 ],
                 'hasTeam' => false,
@@ -664,7 +664,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_min_6',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
@@ -680,7 +680,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
@@ -697,7 +697,7 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => $this->data,
+                        'userEdit' => self::$data,
                     ],
                 ],
                 'hasTeam' => false,
@@ -713,7 +713,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
@@ -728,7 +728,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
@@ -744,7 +744,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_is_valid',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
                 'hasTeam' => false,
@@ -781,7 +781,7 @@ class UserTest extends TestCase
         $response = $this->graphQL(
             'userDelete',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -797,7 +797,7 @@ class UserTest extends TestCase
     /**
      * @return array
      */
-    public function userDeleteProvider()
+    public static function userDeleteProvider()
     {
         $userDelete = ['userDelete'];
 
@@ -818,9 +818,9 @@ class UserTest extends TestCase
                     'error' => null,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userDelete,
                 ],
                 'hasPermission' => false,
@@ -832,7 +832,7 @@ class UserTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'internal',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userDelete,
                 ],
                 'hasPermission' => true,

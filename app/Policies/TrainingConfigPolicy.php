@@ -11,9 +11,6 @@ class TrainingConfigPolicy
 
     /**
      * Edit a training config instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function edit(User $user): bool
     {
@@ -22,9 +19,6 @@ class TrainingConfigPolicy
 
     /**
      * View a training config instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function view(User $user): bool
     {

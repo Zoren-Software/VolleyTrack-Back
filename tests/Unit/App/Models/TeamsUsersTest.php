@@ -55,7 +55,7 @@ class TeamsUsersTest extends TestCase
         }
     }
 
-    public function updateRoleInRelationshipProvider()
+    public static function updateRoleInRelationshipProvider()
     {
         return [
             'updating role in teams relationship with users having permission' => [

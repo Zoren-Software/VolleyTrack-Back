@@ -17,25 +17,25 @@ class TrainingTest extends TestCase
 
     protected $login = true;
 
-    private $trainingText = ' TRAINING';
+    public static $trainingText = ' TRAINING';
 
     private $role = 'technician';
 
-    private $dateStart = '2022-10-23 13:50:00';
+    public static $dateStart = '2022-10-23 13:50:00';
 
-    private $dateEnd = '2022-10-22 13:45:00';
+    public static $dateEnd = '2022-10-22 13:45:00';
 
-    private $dateStartError = '08/10/2022 13:50:00';
+    public static $dateStartError = '08/10/2022 13:50:00';
 
-    private $dateEndError = '08/10/2022 13:55:00';
+    public static $dateEndError = '08/10/2022 13:55:00';
 
-    private $twoHours = ' +2 hours';
+    public static $twoHours = ' +2 hours';
 
-    private $treeHours = ' +3 hours';
+    public static $treeHours = ' +3 hours';
 
-    private $moreTwoDays = '+2 days';
+    public static $moreTwoDays = '+2 days';
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'userId',
@@ -85,8 +85,8 @@ class TrainingTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
@@ -109,7 +109,7 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function listProvider()
+    public static function listProvider()
     {
         return [
             'with permission' => [
@@ -118,9 +118,9 @@ class TrainingTest extends TestCase
                 'expected' => [
                     'data' => [
                         'trainings' => [
-                            'paginatorInfo' => $this->paginatorInfo,
+                            'paginatorInfo' => self::$paginatorInfo,
                             'data' => [
-                                '*' => $this->data,
+                                '*' => self::$data,
                             ],
                         ],
                     ],
@@ -129,9 +129,9 @@ class TrainingTest extends TestCase
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -167,7 +167,7 @@ class TrainingTest extends TestCase
             [
                 'id' => $training->id,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         );
@@ -188,7 +188,7 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function infoProvider()
+    public static function infoProvider()
     {
         return [
             'with permission' => [
@@ -196,16 +196,16 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'training' => $this->data,
+                        'training' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -252,7 +252,7 @@ class TrainingTest extends TestCase
         $response = $this->graphQL(
             'trainingCreate',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -273,28 +273,28 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function trainingCreateSuccessProvider()
+    public static function trainingCreateSuccessProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->trainingText;
+        $nameExistent = $faker->name . self::$trainingText;
         $trainingCreate = ['trainingCreate'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', $this->moreTwoDays)
-            ->format($this->formatDate);
+            ->dateTimeBetween('now', self::$moreTwoDays)
+            ->format(self::$formatDate);
 
         $today = $faker
             ->dateTimeBetween('now')
-            ->format($this->formatDate);
+            ->format(self::$formatDate);
 
         $todayPlusTwoHours = $faker
             ->dateTimeBetween('now', '+2 hours')
-            ->format($this->formatDate);
+            ->format(self::$formatDate);
 
         $dateEnd = $faker
-            ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
-            ->format($this->formatDate);
+            ->dateTimeBetween($dateStart . self::$twoHours, $dateStart . self::$treeHours)
+            ->format(self::$formatDate);
 
         return [
             'create training without permission, expected error' => [
@@ -307,7 +307,7 @@ class TrainingTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => false,
@@ -324,7 +324,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingCreate' => $this->data,
+                        'trainingCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -341,7 +341,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingCreate' => $this->data,
+                        'trainingCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -359,7 +359,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingCreate' => $this->data,
+                        'trainingCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -378,7 +378,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingCreate' => $this->data,
+                        'trainingCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -397,7 +397,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingCreate' => $this->data,
+                        'trainingCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -408,20 +408,20 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function trainingCreateErrorProvider()
+    public static function trainingCreateErrorProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->trainingText;
+        $nameExistent = $faker->name . self::$trainingText;
         $trainingCreate = ['trainingCreate'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', $this->moreTwoDays)
-            ->format($this->formatDate);
+            ->dateTimeBetween('now', self::$moreTwoDays)
+            ->format(self::$formatDate);
 
         $dateEnd = $faker
-            ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
-            ->format($this->formatDate);
+            ->dateTimeBetween($dateStart . self::$twoHours, $dateStart . self::$treeHours)
+            ->format(self::$formatDate);
 
         return [
             'name field is required, expected error' => [
@@ -434,7 +434,7 @@ class TrainingTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
@@ -449,7 +449,7 @@ class TrainingTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
@@ -458,13 +458,13 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStart,
-                    'dateEnd' => $this->dateEnd,
+                    'dateStart' => self::$dateStart,
+                    'dateEnd' => self::$dateEnd,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingCreate.date_start_before',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
@@ -473,13 +473,13 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStart,
-                    'dateEnd' => $this->dateEnd,
+                    'dateStart' => self::$dateStart,
+                    'dateEnd' => self::$dateEnd,
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingCreate.date_end_after',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
@@ -488,13 +488,13 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStart,
+                    'dateStart' => self::$dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingCreate.date_end_date_format',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
@@ -503,13 +503,13 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStartError,
-                    'dateEnd' => $this->dateEndError,
+                    'dateStart' => self::$dateStartError,
+                    'dateEnd' => self::$dateEndError,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingCreate.date_start_date_format',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
@@ -518,15 +518,15 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStartError,
-                    'dateEnd' => $this->dateEndError,
+                    'dateStart' => self::$dateStartError,
+                    'dateEnd' => self::$dateEndError,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
                 'type_message_error' => 'specificFundamentalId',
                 'expected_message' => 'TrainingCreate.specific_fundamentals_not_relationship',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
@@ -586,7 +586,7 @@ class TrainingTest extends TestCase
         $response = $this->graphQL(
             'trainingEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -607,27 +607,27 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function trainingEditSuccessProvider()
+    public static function trainingEditSuccessProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->trainingText;
+        $nameExistent = $faker->name . self::$trainingText;
 
         $dateStart = $faker
-            ->dateTimeBetween('now', $this->moreTwoDays)
-            ->format($this->formatDate);
+            ->dateTimeBetween('now', self::$moreTwoDays)
+            ->format(self::$formatDate);
 
         $dateEnd = $faker
-            ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
-            ->format($this->formatDate);
+            ->dateTimeBetween($dateStart . self::$twoHours, $dateStart . self::$treeHours)
+            ->format(self::$formatDate);
 
         $today = $faker
             ->dateTimeBetween('now')
-            ->format($this->formatDate);
+            ->format(self::$formatDate);
 
         $todayPlusTwoHours = $faker
             ->dateTimeBetween('now', '+2 hours')
-            ->format($this->formatDate);
+            ->format(self::$formatDate);
 
         return [
             'edit training with minimal parameters, success' => [
@@ -642,7 +642,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingEdit' => $this->data,
+                        'trainingEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -661,7 +661,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingEdit' => $this->data,
+                        'trainingEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -681,7 +681,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingEdit' => $this->data,
+                        'trainingEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -702,7 +702,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingEdit' => $this->data,
+                        'trainingEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -721,7 +721,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingEdit' => $this->data,
+                        'trainingEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -740,7 +740,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingEdit' => $this->data,
+                        'trainingEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -759,7 +759,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingEdit' => $this->data,
+                        'trainingEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -771,20 +771,20 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function trainingEditErrorProvider()
+    public static function trainingEditErrorProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->trainingText;
+        $nameExistent = $faker->name . self::$trainingText;
         $trainingEdit = ['trainingEdit'];
 
         $dateStart = $faker
-            ->dateTimeBetween('now', $this->moreTwoDays)
-            ->format($this->formatDate);
+            ->dateTimeBetween('now', self::$moreTwoDays)
+            ->format(self::$formatDate);
 
         $dateEnd = $faker
-            ->dateTimeBetween($dateStart . $this->twoHours, $dateStart . $this->treeHours)
-            ->format($this->formatDate);
+            ->dateTimeBetween($dateStart . self::$twoHours, $dateStart . self::$treeHours)
+            ->format(self::$formatDate);
 
         return [
             'edit training without permission, expected error' => [
@@ -798,7 +798,7 @@ class TrainingTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => false,
@@ -815,7 +815,7 @@ class TrainingTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
@@ -832,7 +832,7 @@ class TrainingTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TrainingCreate.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
@@ -842,14 +842,14 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStart,
-                    'dateEnd' => $this->dateEnd,
+                    'dateStart' => self::$dateStart,
+                    'dateEnd' => self::$dateEnd,
                     'status' => true,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingEdit.date_start_before',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
@@ -859,14 +859,14 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStart,
-                    'dateEnd' => $this->dateEnd,
+                    'dateStart' => self::$dateStart,
+                    'dateEnd' => self::$dateEnd,
                     'status' => true,
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingEdit.date_end_after',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
@@ -876,14 +876,14 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStart,
+                    'dateStart' => self::$dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
                     'status' => true,
                 ],
                 'type_message_error' => 'dateEnd',
                 'expected_message' => 'TrainingEdit.date_end_date_format',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
@@ -893,14 +893,14 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStartError,
-                    'dateEnd' => $this->dateEndError,
+                    'dateStart' => self::$dateStartError,
+                    'dateEnd' => self::$dateEndError,
                     'status' => true,
                 ],
                 'type_message_error' => 'dateStart',
                 'expected_message' => 'TrainingEdit.date_start_date_format',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
@@ -910,8 +910,8 @@ class TrainingTest extends TestCase
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
-                    'dateStart' => $this->dateStartError,
-                    'dateEnd' => $this->dateEndError,
+                    'dateStart' => self::$dateStartError,
+                    'dateEnd' => self::$dateEndError,
                     'status' => true,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
@@ -919,7 +919,7 @@ class TrainingTest extends TestCase
                 'type_message_error' => 'specificFundamentalId',
                 'expected_message' => 'TrainingEdit.specific_fundamentals_not_relationship',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingEdit,
                 ],
                 'hasPermission' => true,
@@ -958,7 +958,7 @@ class TrainingTest extends TestCase
         $response = $this->graphQL(
             'trainingDelete',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -976,7 +976,7 @@ class TrainingTest extends TestCase
      *
      * @return array
      */
-    public function trainingDeleteProvider()
+    public static function trainingDeleteProvider()
     {
         $trainingDelete = ['trainingDelete'];
 
@@ -989,7 +989,7 @@ class TrainingTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'trainingDelete' => [$this->data],
+                        'trainingDelete' => [self::$data],
                     ],
                 ],
                 'hasPermission' => true,
@@ -999,9 +999,9 @@ class TrainingTest extends TestCase
                     'error' => null,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingDelete,
                 ],
                 'hasPermission' => false,
@@ -1013,7 +1013,7 @@ class TrainingTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'internal',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $trainingDelete,
                 ],
                 'hasPermission' => true,

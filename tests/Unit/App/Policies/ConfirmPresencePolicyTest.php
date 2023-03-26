@@ -7,7 +7,7 @@ use App\Policies\ConfirmationTrainingPolicy;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class ConfirmationTrainingPolicyTest extends TestCase
+class ConfirmPresencePolicyTest extends TestCase
 {
     /**
      * A basic unit test view.
@@ -15,8 +15,6 @@ class ConfirmationTrainingPolicyTest extends TestCase
      * @dataProvider permissionProvider
      *
      * @test
-     *
-     * @return void
      */
     public function permissionView(bool $expected): void
     {
@@ -37,8 +35,6 @@ class ConfirmationTrainingPolicyTest extends TestCase
      * @test
      *
      * @dataProvider permissionProvider
-     *
-     * @return void
      */
     public function permissionConfirmTraining(bool $expected): void
     {
@@ -69,8 +65,6 @@ class ConfirmationTrainingPolicyTest extends TestCase
      * @test
      *
      * @dataProvider permissionProvider
-     *
-     * @return void
      */
     public function permissionConfirmPresence(bool $expected): void
     {

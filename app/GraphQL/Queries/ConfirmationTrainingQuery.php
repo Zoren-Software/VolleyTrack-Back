@@ -22,8 +22,6 @@ class ConfirmationTrainingQuery
 
     /**
      * @codeCoverageIgnore
-     *
-     * @param  Training  $training
      */
     public function metrics(Training $training)
     {

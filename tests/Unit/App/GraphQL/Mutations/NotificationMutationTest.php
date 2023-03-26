@@ -56,7 +56,7 @@ class NotificationMutationTest extends TestCase
         $this->assertEquals(trans('NotificationRead.read_all_notifications'), $notificationMockReturn['message']);
     }
 
-    public function confirmationTrainingProvider()
+    public static function confirmationTrainingProvider()
     {
         return [
             'confirming notification reading , success' => [

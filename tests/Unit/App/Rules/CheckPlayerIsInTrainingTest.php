@@ -60,7 +60,7 @@ class CheckPlayerIsInTrainingTest extends TestCase
         $this->assertEquals($permissionAssignment->passes('player_id', $playerId), $passes);
     }
 
-    public function passesProvider()
+    public static function passesProvider()
     {
         return [
             'when there is player related to training' => [

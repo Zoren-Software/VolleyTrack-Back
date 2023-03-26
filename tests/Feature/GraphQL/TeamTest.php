@@ -14,11 +14,11 @@ class TeamTest extends TestCase
 
     protected $login = true;
 
-    private $teamText = ' TEAM';
+    public static $teamText = ' TEAM';
 
     private $role = 'technician';
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'userId',
@@ -61,8 +61,8 @@ class TeamTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
@@ -85,7 +85,7 @@ class TeamTest extends TestCase
     /**
      * @return array
      */
-    public function listProvider()
+    public static function listProvider()
     {
         return [
             'with permission' => [
@@ -94,9 +94,9 @@ class TeamTest extends TestCase
                 'expected' => [
                     'data' => [
                         'teams' => [
-                            'paginatorInfo' => $this->paginatorInfo,
+                            'paginatorInfo' => self::$paginatorInfo,
                             'data' => [
-                                '*' => $this->data,
+                                '*' => self::$data,
                             ],
                         ],
                     ],
@@ -105,9 +105,9 @@ class TeamTest extends TestCase
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -141,7 +141,7 @@ class TeamTest extends TestCase
             [
                 'id' => $team->id,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         );
@@ -162,7 +162,7 @@ class TeamTest extends TestCase
     /**
      * @return array
      */
-    public function infoProvider()
+    public static function infoProvider()
     {
         return [
             'with permission' => [
@@ -170,16 +170,16 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'team' => $this->data,
+                        'team' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -203,13 +203,13 @@ class TeamTest extends TestCase
         $expectedMessage,
         $expected,
         $hasPermission
-        ) {
+    ) {
         $this->setPermissions($hasPermission);
 
         $response = $this->graphQL(
             'teamCreate',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -225,11 +225,11 @@ class TeamTest extends TestCase
     /**
      * @return array
      */
-    public function teamCreateProvider()
+    public static function teamCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->teamText;
+        $nameExistent = $faker->name . self::$teamText;
         $teamCreate = ['teamCreate'];
 
         return [
@@ -242,7 +242,7 @@ class TeamTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamCreate,
                 ],
                 'hasPermission' => false,
@@ -257,7 +257,7 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamCreate' => $this->data,
+                        'teamCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -272,7 +272,7 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamCreate' => $this->data,
+                        'teamCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -286,7 +286,7 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamCreate,
                 ],
                 'hasPermission' => true,
@@ -300,7 +300,7 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamCreate,
                 ],
                 'hasPermission' => true,
@@ -314,7 +314,7 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamCreate,
                 ],
                 'hasPermission' => true,
@@ -339,7 +339,7 @@ class TeamTest extends TestCase
         $expectedMessage,
         $expected,
         $hasPermission
-        ) {
+    ) {
         $this->setPermissions($hasPermission);
 
         $teamExist = Team::factory()->make();
@@ -356,7 +356,7 @@ class TeamTest extends TestCase
         $response = $this->graphQL(
             'teamEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -372,7 +372,7 @@ class TeamTest extends TestCase
     /**
      * @return array
      */
-    public function teamEditProvider()
+    public static function teamEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
@@ -381,34 +381,34 @@ class TeamTest extends TestCase
         return [
             'edit team without permission, expected error' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name . self::$teamText,
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamEdit,
                 ],
                 'hasPermission' => false,
             ],
             'edit team, success' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name . self::$teamText,
                     'userId' => $userId,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamEdit' => $this->data,
+                        'teamEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
             ],
             'edit team and relating a players, success' => [
                 [
-                    'name' => $faker->name . $this->teamText,
+                    'name' => $faker->name . self::$teamText,
                     'userId' => $userId,
                     'playerId' => [1, 2, 3],
                 ],
@@ -416,7 +416,7 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamEdit' => $this->data,
+                        'teamEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -428,7 +428,7 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamEdit,
                 ],
                 'hasPermission' => true,
@@ -441,7 +441,7 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamEdit,
                 ],
                 'hasPermission' => true,
@@ -454,7 +454,7 @@ class TeamTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamEdit,
                 ],
                 'hasPermission' => true,
@@ -489,7 +489,7 @@ class TeamTest extends TestCase
         $response = $this->graphQL(
             'teamDelete',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -507,7 +507,7 @@ class TeamTest extends TestCase
      *
      * @return array
      */
-    public function teamDeleteProvider()
+    public static function teamDeleteProvider()
     {
         $teamDelete = ['teamDelete'];
 
@@ -520,7 +520,7 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamDelete' => [$this->data],
+                        'teamDelete' => [self::$data],
                     ],
                 ],
                 'hasPermission' => true,
@@ -530,9 +530,9 @@ class TeamTest extends TestCase
                     'error' => null,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamDelete,
                 ],
                 'hasPermission' => false,
@@ -544,7 +544,7 @@ class TeamTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'internal',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamDelete,
                 ],
                 'hasPermission' => true,

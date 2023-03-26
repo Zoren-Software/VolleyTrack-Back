@@ -18,8 +18,6 @@ class ExecCommand implements ShouldQueue
 
     /**
      * O nome do comando console.
-     *
-     * @var string
      */
     public string $command;
 

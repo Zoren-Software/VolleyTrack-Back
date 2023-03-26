@@ -17,8 +17,6 @@ class TrainingNotificationDaily extends ExecCommand
 
     /**
      * O nome do comando console.
-     *
-     * @var string
      */
     public string $command = 'cron:training-notification-daily';
 }
