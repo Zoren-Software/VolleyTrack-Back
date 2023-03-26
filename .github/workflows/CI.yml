@@ -30,7 +30,8 @@ jobs:
             --no-progress
           
         - name: Run tests with phpunit/phpunit
-          run: php artisan test
+          run: vendor/bin/phpunit
+            --coverage-clover=coverage.xml
             --testsuite Unit
           
         - name: Fix code coverage paths
