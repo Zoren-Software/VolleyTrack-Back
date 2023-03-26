@@ -76,7 +76,7 @@ class TrainingMutationTest extends TestCase
         $this->assertEquals($trainingMock, $trainingMockReturn);
     }
 
-    public function trainingProvider()
+    public static function trainingProvider()
     {
         return [
             'send data create with all relationships, success' => [
@@ -178,7 +178,7 @@ class TrainingMutationTest extends TestCase
         );
     }
 
-    public function trainingDeleteProvider()
+    public static function trainingDeleteProvider()
     {
         return [
             'send data delete, success' => [

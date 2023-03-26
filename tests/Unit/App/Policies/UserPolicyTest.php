@@ -28,7 +28,7 @@ class UserPolicyTest extends TestCase
         $userPolicy->create($user);
     }
 
-    public function createProvider(): array
+    public static function createProvider(): array
     {
         return [
             'when permission allows' => [

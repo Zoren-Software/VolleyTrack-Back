@@ -71,7 +71,7 @@ class ConfirmationTrainingMutationTest extends TestCase
         $this->assertEquals($confirmationTrainingMock, $confirmationTrainingMockReturn);
     }
 
-    public function confirmationTrainingProvider()
+    public static function confirmationTrainingProvider()
     {
         return [
             'sending single id parameter as reference, confirm training, success' => [

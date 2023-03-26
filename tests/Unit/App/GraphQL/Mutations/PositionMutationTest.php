@@ -43,7 +43,7 @@ class PositionMutationTest extends TestCase
         $this->assertEquals($positionMock, $positionMockReturn);
     }
 
-    public function positionProvider()
+    public static function positionProvider()
     {
         return [
             'send data create, success' => [
@@ -108,7 +108,7 @@ class PositionMutationTest extends TestCase
         );
     }
 
-    public function positionDeleteProvider()
+    public static function positionDeleteProvider()
     {
         return [
             'send array, success' => [

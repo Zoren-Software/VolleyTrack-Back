@@ -168,7 +168,7 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @return void
      */
-    public function scopeFilterProvider()
+    public static function scopeFilterProvider()
     {
         return [
             'parameter with value' => [
@@ -201,7 +201,7 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @return void
      */
-    public function listProvider()
+    public static function listProvider()
     {
         return [
             'parameter with value' => [

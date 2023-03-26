@@ -67,7 +67,7 @@ class TeamMutationTest extends TestCase
         $this->assertEquals($teamMock, $teamMockReturn);
     }
 
-    public function teamProvider()
+    public static function teamProvider()
     {
         return [
             'send data create with user relation team, success' => [
@@ -164,7 +164,7 @@ class TeamMutationTest extends TestCase
         );
     }
 
-    public function teamDeleteProvider()
+    public static function teamDeleteProvider()
     {
         return [
             'send data delete, success' => [

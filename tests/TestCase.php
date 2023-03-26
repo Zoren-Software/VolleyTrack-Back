@@ -343,7 +343,7 @@ abstract class TestCase extends BaseTestCase
         }
     }
 
-    public function permissionProvider(): array
+    public static function permissionProvider(): array
     {
         return [
             'when permission allows' => [

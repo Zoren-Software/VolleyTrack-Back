@@ -51,7 +51,7 @@ class SpecificFundamentalMutationTest extends TestCase
         $this->assertEquals($specificFundamentalMock, $specificFundamentalMockReturn);
     }
 
-    public function specificFundamentalProvider()
+    public static function specificFundamentalProvider()
     {
         return [
             'send data create, success' => [
@@ -119,7 +119,7 @@ class SpecificFundamentalMutationTest extends TestCase
         );
     }
 
-    public function specificFundamentalDeleteProvider()
+    public static function specificFundamentalDeleteProvider()
     {
         return [
             'send data delete, success' => [
