@@ -25,7 +25,12 @@ services:
             - mariadb
             - redis
     mariadb:
-        command: [ "--max_connections=${DB_MYSQL_MAX_CONNECTIONS}" ]
+        command:
+            - --table_definition_cache=2048
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+            - --innodb-buffer-pool-size=3G
+            - --max_connections=${DB_MYSQL_MAX_CONNECTIONS}
         image: 'mariadb:10'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
