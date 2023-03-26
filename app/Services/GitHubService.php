@@ -30,7 +30,6 @@ final class GitHubService extends Model
      * GitHub API Docs:
      * encurtador.com.br/oLTU0
      *
-     * @param  string  $nickName
      * @return bool
      */
     public function verifyPermissionUser(string $nickName)

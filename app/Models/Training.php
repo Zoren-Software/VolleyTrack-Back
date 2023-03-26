@@ -149,7 +149,6 @@ class Training extends Model
     /**
      * @codeCoverageIgnore
      *
-     * @param  int|null|null  $daysNotification
      * @return void
      */
     public function confirmationsPlayers(int|null $trainingId = null, int|null $daysNotification = null)

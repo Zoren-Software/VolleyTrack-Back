@@ -15,8 +15,6 @@ class UserPolicyTest extends TestCase
      * @dataProvider permissionProvider
      *
      * @test
-     *
-     * @return void
      */
     public function permissionCreate(bool $expected): void
     {
@@ -48,8 +46,6 @@ class UserPolicyTest extends TestCase
      * @dataProvider permissionProvider
      *
      * @test
-     *
-     * @return void
      */
     public function permissionEdit(bool $expected): void
     {
@@ -69,8 +65,6 @@ class UserPolicyTest extends TestCase
      * @dataProvider permissionProvider
      *
      * @test
-     *
-     * @return void
      */
     public function permissionDelete(bool $expected): void
     {
@@ -90,8 +84,6 @@ class UserPolicyTest extends TestCase
      * @dataProvider permissionProvider
      *
      * @test
-     *
-     * @return void
      */
     public function permissionView(bool $expected): void
     {
