@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a88bf50691c2ee59c17b261d9b65ceb4",
+    "content-hash": "a1030d66a77e7649aa1c12b297733978",
     "packages": [
         {
             "name": "beyondcode/laravel-websockets",
@@ -209,16 +209,16 @@
         },
         {
             "name": "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel",
-            "version": "dev-feature/update-package-for-laravel-10",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel.git",
-                "reference": "897d473a45870a8768c901bdb9bf67717275a667"
+                "reference": "96f2e837f925aa587a511d61704d1d8904625fda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/zipball/897d473a45870a8768c901bdb9bf67717275a667",
-                "reference": "897d473a45870a8768c901bdb9bf67717275a667",
+                "url": "https://api.github.com/repos/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/zipball/96f2e837f925aa587a511d61704d1d8904625fda",
+                "reference": "96f2e837f925aa587a511d61704d1d8904625fda",
                 "shasum": ""
             },
             "require": {
@@ -271,19 +271,29 @@
                     "email": "dev.gummibeer@gmail.com",
                     "homepage": "https://gummibeer.de",
                     "role": "Developer"
+                },
+                {
+                    "name": "Maicon Cerutti",
+                    "email": "dev.cerutti.maicon@gmail.com",
+                    "homepage": "https://ceruttimaicon.js.org",
+                    "role": "Developer"
                 }
             ],
-            "description": "A very simple activity logger to monitor the users of your website or application",
-            "homepage": "https://github.com/spatie/activitylog",
+            "description": "A very simple activity logger to monitor users of your website or application by tenant, using laravel-for-tenancy",
+            "homepage": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel",
             "keywords": [
                 "activity",
                 "laravel",
+                "laravel-activitylog-for-tenancy",
+                "laravel-activitylog-for-tenancy-for-laravel",
+                "laravel-for-tenancy",
                 "log",
                 "spatie",
+                "tenancy",
                 "user"
             ],
             "support": {
-                "source": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/tree/feature/update-package-for-laravel-10"
+                "source": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/tree/2.0.0"
             },
             "funding": [
                 {
@@ -295,7 +305,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-26T13:21:00+00:00"
+            "time": "2023-03-26T13:37:04+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -11639,9 +11649,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
