@@ -25,6 +25,7 @@ services:
             - mariadb
             - redis
     mariadb:
+        command: [ "--max_connections=${DB_MYSQL_MAX_CONNECTIONS}" ]
         image: 'mariadb:10'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'

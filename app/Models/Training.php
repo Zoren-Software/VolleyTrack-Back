@@ -30,8 +30,8 @@ class Training extends Model
     ];
 
     protected $casts = [
-        'date_start',
-        'date_end',
+        'date_start' => 'datetime:Y-m-d H:i:s',
+        'date_end' => 'datetime:Y-m-d H:i:s',
     ];
 
     private $format = 'd/m/Y';

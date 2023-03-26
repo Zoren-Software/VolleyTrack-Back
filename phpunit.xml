@@ -53,6 +53,9 @@
         <testsuite name="ConfirmationTrainingTest">
             <file>./tests/Feature/GraphQL/ConfirmationTrainingTest.php</file>
         </testsuite>
+        <testsuite name="PingTest">
+            <file>./tests/Feature/Tenant/PingTest.php</file>
+        </testsuite>
     </testsuites>
     <coverage >
         <include>
