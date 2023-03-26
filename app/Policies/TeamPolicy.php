@@ -11,9 +11,6 @@ class TeamPolicy
 
     /**
      * Create a new team instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function create(User $user): bool
     {
@@ -22,9 +19,6 @@ class TeamPolicy
 
     /**
      * Edit a team instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function edit(User $user): bool
     {
@@ -33,9 +27,6 @@ class TeamPolicy
 
     /**
      * Delete a team instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function delete(User $user): bool
     {
@@ -44,9 +35,6 @@ class TeamPolicy
 
     /**
      * View a team instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function view(User $user): bool
     {

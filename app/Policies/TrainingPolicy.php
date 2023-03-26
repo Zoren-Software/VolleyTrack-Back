@@ -21,9 +21,6 @@ class TrainingPolicy
 
     /**
      * Edit a training instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function edit(User $user): bool
     {
@@ -32,9 +29,6 @@ class TrainingPolicy
 
     /**
      * Delete a training instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function delete(User $user): bool
     {
@@ -43,9 +37,6 @@ class TrainingPolicy
 
     /**
      * View a training instance.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function view(User $user): bool
     {

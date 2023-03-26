@@ -53,8 +53,11 @@
         <testsuite name="ConfirmationTrainingTest">
             <file>./tests/Feature/GraphQL/ConfirmationTrainingTest.php</file>
         </testsuite>
+        <testsuite name="PingTest">
+            <file>./tests/Feature/Tenant/PingTest.php</file>
+        </testsuite>
     </testsuites>
-    <coverage processUncoveredFiles="true">
+    <coverage >
         <include>
             <directory suffix=".php">./app</directory>
         </include>

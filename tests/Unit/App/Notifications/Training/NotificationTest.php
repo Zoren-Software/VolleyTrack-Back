@@ -42,7 +42,7 @@ class NotificationTest extends TestCase
      *
      * @return array
      */
-    public function dataProvider()
+    public static function dataProvider()
     {
         return [
             'notify player or technician by email and database' => [

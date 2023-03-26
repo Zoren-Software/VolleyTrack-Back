@@ -10,7 +10,6 @@ class ResetPasswordController extends Controller
     /**
      * @codeCoverageIgnore
      *
-     * @param  Request  $request
      * @param  null  $token
      * @return [type]
      */
@@ -24,7 +23,6 @@ class ResetPasswordController extends Controller
     /**
      * @codeCoverageIgnore
      *
-     * @param  Request  $request
      * @return [type]
      */
     public function postReset(Request $request)

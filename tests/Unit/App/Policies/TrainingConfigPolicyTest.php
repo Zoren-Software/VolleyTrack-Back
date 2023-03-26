@@ -15,8 +15,6 @@ class TrainingConfigPolicyTest extends TestCase
      * @test
      *
      * @dataProvider permissionProvider
-     *
-     * @return void
      */
     public function permissionEdit(bool $expected): void
     {
@@ -36,8 +34,6 @@ class TrainingConfigPolicyTest extends TestCase
      * @dataProvider permissionProvider
      *
      * @test
-     *
-     * @return void
      */
     public function permissionView(bool $expected): void
     {

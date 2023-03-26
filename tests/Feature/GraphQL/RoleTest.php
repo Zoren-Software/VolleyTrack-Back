@@ -10,7 +10,7 @@ class RoleTest extends TestCase
 
     protected $tenancy = true;
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'createdAt',
@@ -35,12 +35,12 @@ class RoleTest extends TestCase
             [
                 'id' => 2,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         )->assertJsonStructure([
             'data' => [
-                'role' => $this->data,
+                'role' => self::$data,
             ],
         ])->assertStatus(200);
     }
@@ -66,17 +66,17 @@ class RoleTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
         )->assertJsonStructure([
             'data' => [
                 'roles' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+                    'paginatorInfo' => self::$paginatorInfo,
                     'data' => [
-                        '*' => $this->data,
+                        '*' => self::$data,
                     ],
                 ],
             ],

@@ -7,7 +7,7 @@ use App\Rules\CheckTrainingCancelled;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class CheckTrainingTestCancelled extends TestCase
+class CheckTrainingCancelledTest extends TestCase
 {
     /**
      * A basic unit test message.
@@ -56,7 +56,7 @@ class CheckTrainingTestCancelled extends TestCase
         $this->assertEquals($permissionAssignment->passes('player_id', $trainingId), $passes);
     }
 
-    public function passesProvider()
+    public static function passesProvider()
     {
         return [
             'when there is player related to training' => [

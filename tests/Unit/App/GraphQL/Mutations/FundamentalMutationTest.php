@@ -42,7 +42,7 @@ class FundamentalMutationTest extends TestCase
         $this->assertEquals($fundamentalMock, $fundamentalMockReturn);
     }
 
-    public function fundamentalProvider()
+    public static function fundamentalProvider()
     {
         return [
             'send data create, success' => [
@@ -103,7 +103,7 @@ class FundamentalMutationTest extends TestCase
         );
     }
 
-    public function fundamentalDeleteProvider()
+    public static function fundamentalDeleteProvider()
     {
         return [
             'send array, success' => [

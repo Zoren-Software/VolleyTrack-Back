@@ -29,9 +29,9 @@ class Training extends Model
         'date_end',
     ];
 
-    protected $dates = [
-        'date_start',
-        'date_end',
+    protected $casts = [
+        'date_start' => 'datetime:Y-m-d H:i:s',
+        'date_end' => 'datetime:Y-m-d H:i:s',
     ];
 
     private $format = 'd/m/Y';
@@ -149,7 +149,6 @@ class Training extends Model
     /**
      * @codeCoverageIgnore
      *
-     * @param  int|null|null  $daysNotification
      * @return void
      */
     public function confirmationsPlayers(int|null $trainingId = null, int|null $daysNotification = null)

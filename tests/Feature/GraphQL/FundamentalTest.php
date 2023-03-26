@@ -16,7 +16,7 @@ class FundamentalTest extends TestCase
 
     private $role = 'technician';
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'userId',
@@ -59,8 +59,8 @@ class FundamentalTest extends TestCase
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
@@ -83,7 +83,7 @@ class FundamentalTest extends TestCase
     /**
      * @return array
      */
-    public function listProvider()
+    public static function listProvider()
     {
         return [
             'with permission' => [
@@ -92,9 +92,9 @@ class FundamentalTest extends TestCase
                 'expected' => [
                     'data' => [
                         'fundamentals' => [
-                            'paginatorInfo' => $this->paginatorInfo,
+                            'paginatorInfo' => self::$paginatorInfo,
                             'data' => [
-                                '*' => $this->data,
+                                '*' => self::$data,
                             ],
                         ],
                     ],
@@ -103,9 +103,9 @@ class FundamentalTest extends TestCase
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -139,7 +139,7 @@ class FundamentalTest extends TestCase
             [
                 'id' => $fundamental->id,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         );
@@ -160,7 +160,7 @@ class FundamentalTest extends TestCase
     /**
      * @return array
      */
-    public function infoProvider()
+    public static function infoProvider()
     {
         return [
             'with permission' => [
@@ -168,16 +168,16 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'fundamental' => $this->data,
+                        'fundamental' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
             ],
             'without permission' => [
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                 ],
                 'hasPermission' => false,
             ],
@@ -199,13 +199,13 @@ class FundamentalTest extends TestCase
         $expectedMessage,
         $expected,
         $hasPermission
-        ) {
+    ) {
         $this->setPermissions($hasPermission);
 
         $response = $this->graphQL(
             'fundamentalCreate',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -221,7 +221,7 @@ class FundamentalTest extends TestCase
     /**
      * @return array
      */
-    public function fundamentalCreateProvider()
+    public static function fundamentalCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
@@ -238,7 +238,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'fundamentalCreate' => $this->data,
+                        'fundamentalCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -251,7 +251,7 @@ class FundamentalTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalCreate,
                 ],
                 'hasPermission' => false,
@@ -264,7 +264,7 @@ class FundamentalTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'FundamentalCreate.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalCreate,
                 ],
                 'hasPermission' => true,
@@ -277,7 +277,7 @@ class FundamentalTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'FundamentalCreate.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalCreate,
                 ],
                 'hasPermission' => true,
@@ -290,7 +290,7 @@ class FundamentalTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'FundamentalCreate.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalCreate,
                 ],
                 'hasPermission' => true,
@@ -315,7 +315,7 @@ class FundamentalTest extends TestCase
         $expectedMessage,
         $expected,
         $hasPermission
-        ) {
+    ) {
         $this->setPermissions($hasPermission);
 
         $fundamentalExist = Fundamental::factory()->make();
@@ -332,7 +332,7 @@ class FundamentalTest extends TestCase
         $response = $this->graphQL(
             'fundamentalEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -348,7 +348,7 @@ class FundamentalTest extends TestCase
     /**
      * @return array
      */
-    public function fundamentalEditProvider()
+    public static function fundamentalEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
@@ -361,9 +361,9 @@ class FundamentalTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => false,
@@ -377,7 +377,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'fundamentalEdit' => $this->data,
+                        'fundamentalEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
@@ -389,7 +389,7 @@ class FundamentalTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'FundamentalEdit.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
@@ -402,7 +402,7 @@ class FundamentalTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'FundamentalEdit.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
@@ -415,7 +415,7 @@ class FundamentalTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'FundamentalEdit.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
@@ -455,7 +455,7 @@ class FundamentalTest extends TestCase
         $response = $this->graphQL(
             'fundamentalDelete',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
@@ -473,7 +473,7 @@ class FundamentalTest extends TestCase
      *
      * @return array
      */
-    public function fundamentalDeleteProvider()
+    public static function fundamentalDeleteProvider()
     {
         $fundamentalDelete = ['fundamentalDelete'];
 
@@ -486,7 +486,7 @@ class FundamentalTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'fundamentalDelete' => [$this->data],
+                        'fundamentalDelete' => [self::$data],
                     ],
                 ],
                 'hasPermission' => true,
@@ -496,9 +496,9 @@ class FundamentalTest extends TestCase
                     'error' => null,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalDelete,
                 ],
                 'hasPermission' => false,
@@ -510,7 +510,7 @@ class FundamentalTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'internal',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $fundamentalDelete,
                 ],
                 'hasPermission' => true,

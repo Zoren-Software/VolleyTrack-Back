@@ -55,7 +55,7 @@ class UserTest extends TestCase
         $this->assertEquals($expected, $user->hasPermissionsViaRoles($namePermission, $permissions));
     }
 
-    public function hasPermissionsViaRolesDataProvider()
+    public static function hasPermissionsViaRolesDataProvider()
     {
         return [
             'has permission' => [

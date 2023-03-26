@@ -16,8 +16,6 @@ final class DiscordService extends Model
 
     /**
      * @codeCoverageIgnore
-     *
-     * @param  GuzzleClient  $client
      */
     public function __construct(GuzzleClient $client)
     {
@@ -36,8 +34,6 @@ final class DiscordService extends Model
      * @param  string  $message
      *
      * @codeCoverageIgnore
-     *
-     * @return void
      */
     public function sendError(\Throwable $error, string $author): void
     {

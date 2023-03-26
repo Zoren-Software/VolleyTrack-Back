@@ -29,7 +29,7 @@ class HorizonRoutesTest extends TestCase
     /**
      * @return [type]
      */
-    public function routesProvider()
+    public static function routesProvider()
     {
         return [
             'home dashboard horizon redirect' => [

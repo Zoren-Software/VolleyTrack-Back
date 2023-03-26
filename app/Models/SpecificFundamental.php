@@ -37,8 +37,6 @@ class SpecificFundamental extends Model
 
     /**
      * @codeCoverageIgnore
-     *
-     * @return SpecificFundamental
      */
     public function deleteSpecificFundamental(int $id): SpecificFundamental
     {

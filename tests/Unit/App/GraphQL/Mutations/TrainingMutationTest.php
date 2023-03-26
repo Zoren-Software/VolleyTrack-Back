@@ -11,13 +11,13 @@ use Tests\TestCase;
 
 class TrainingMutationTest extends TestCase
 {
-    private $trainingName = 'Training 1';
+    public static $trainingName = 'Training 1';
 
-    private $descriptionText = ' description';
+    public static $descriptionText = ' description';
 
-    private $dateStart = '2022-10-12 20:00:00';
+    public static $dateStart = '2022-10-12 20:00:00';
 
-    private $dateEnd = '2022-10-12 22:00:00';
+    public static $dateEnd = '2022-10-12 22:00:00';
 
     /**
      * A basic unit test create and edit training.
@@ -76,7 +76,7 @@ class TrainingMutationTest extends TestCase
         $this->assertEquals($trainingMock, $trainingMockReturn);
     }
 
-    public function trainingProvider()
+    public static function trainingProvider()
     {
         return [
             'send data create with all relationships, success' => [
@@ -86,10 +86,10 @@ class TrainingMutationTest extends TestCase
                     'user_id' => 1,
                     'fundamental_id' => [1, 2],
                     'specific_fundamental_id' => [1, 2],
-                    'name' => $this->trainingName,
-                    'description' => $this->trainingName . $this->descriptionText,
-                    'date_start' => $this->dateStart,
-                    'date_end' => $this->dateEnd,
+                    'name' => self::$trainingName,
+                    'description' => self::$trainingName . self::$descriptionText,
+                    'date_start' => self::$dateStart,
+                    'date_end' => self::$dateEnd,
                 ],
                 'method' => 'create',
             ],
@@ -98,10 +98,10 @@ class TrainingMutationTest extends TestCase
                     'id' => null,
                     'team_id' => 1,
                     'user_id' => 1,
-                    'name' => $this->trainingName,
-                    'description' => $this->trainingName . $this->descriptionText,
-                    'date_start' => $this->dateStart,
-                    'date_end' => $this->dateEnd,
+                    'name' => self::$trainingName,
+                    'description' => self::$trainingName . self::$descriptionText,
+                    'date_start' => self::$dateStart,
+                    'date_end' => self::$dateEnd,
                 ],
                 'method' => 'create',
             ],
@@ -112,10 +112,10 @@ class TrainingMutationTest extends TestCase
                     'user_id' => 1,
                     'fundamental_id' => [1, 2],
                     'specific_fundamental_id' => [1, 2],
-                    'name' => $this->trainingName,
-                    'description' => $this->trainingName . $this->descriptionText,
-                    'date_start' => $this->dateStart,
-                    'date_end' => $this->dateEnd,
+                    'name' => self::$trainingName,
+                    'description' => self::$trainingName . self::$descriptionText,
+                    'date_start' => self::$dateStart,
+                    'date_end' => self::$dateEnd,
                 ],
                 'method' => 'update',
             ],
@@ -124,10 +124,10 @@ class TrainingMutationTest extends TestCase
                     'id' => 1,
                     'team_id' => 1,
                     'user_id' => 1,
-                    'name' => $this->trainingName,
-                    'description' => $this->trainingName . $this->descriptionText,
-                    'date_start' => $this->dateStart,
-                    'date_end' => $this->dateEnd,
+                    'name' => self::$trainingName,
+                    'description' => self::$trainingName . self::$descriptionText,
+                    'date_start' => self::$dateStart,
+                    'date_end' => self::$dateEnd,
                 ],
                 'method' => 'update',
             ],
@@ -178,7 +178,7 @@ class TrainingMutationTest extends TestCase
         );
     }
 
-    public function trainingDeleteProvider()
+    public static function trainingDeleteProvider()
     {
         return [
             'send data delete, success' => [

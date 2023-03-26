@@ -107,7 +107,7 @@ class TrainingTest extends TestCase
     /**
      * @return array
      */
-    public function rangeDateNotificationProvider()
+    public static function rangeDateNotificationProvider()
     {
         $sameDate = '13/01/2023';
 

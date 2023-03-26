@@ -86,7 +86,7 @@ class UserMutationTest extends TestCase
         $this->assertEquals($userMock, $userReturn);
     }
 
-    public function userProvider()
+    public static function userProvider()
     {
         return [
             'send data create with all options, success' => [
@@ -154,7 +154,7 @@ class UserMutationTest extends TestCase
         );
     }
 
-    public function userDeleteProvider()
+    public static function userDeleteProvider()
     {
         return [
             'send data delete, success' => [
