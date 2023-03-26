@@ -8,7 +8,7 @@
     "require": {
         "php": "^8.0.2",
         "beyondcode/laravel-websockets": "^1.13",
-        "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": "dev-feature/update-package-for-laravel-10",
+        "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/support": "^10.4",
         "laravel/framework": "^10.0",
