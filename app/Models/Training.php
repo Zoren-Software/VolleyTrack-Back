@@ -29,7 +29,7 @@ class Training extends Model
         'date_end',
     ];
 
-    protected $dates = [
+    protected $casts = [
         'date_start',
         'date_end',
     ];

@@ -54,7 +54,7 @@
             <file>./tests/Feature/GraphQL/ConfirmationTrainingTest.php</file>
         </testsuite>
     </testsuites>
-    <coverage processUncoveredFiles="true">
+    <coverage >
         <include>
             <directory suffix=".php">./app</directory>
         </include>
