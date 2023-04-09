@@ -192,8 +192,13 @@ abstract class TestCase extends BaseTestCase
                     $inputClose = ') {';
                 }
             } else {
-                $inputOpen = '(';
-                $inputClose = ') {';
+                if (empty($dadosEntrada)) {
+                    $inputOpen = '';
+                    $inputClose = '{';
+                } else {
+                    $inputOpen = '(';
+                    $inputClose = ') {';
+                }
             }
         }
 

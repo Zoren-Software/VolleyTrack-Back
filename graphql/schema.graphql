@@ -1,3 +1,4 @@
+#import me/*.graphql
 #import config/*.graphql
 #import language/*.graphql
 #import user/*.graphql
