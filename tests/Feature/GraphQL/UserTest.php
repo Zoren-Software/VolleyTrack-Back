@@ -764,7 +764,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testDeleteUser($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    public function deleteUser($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
         $this->setPermissions($hasPermission);
 
@@ -834,6 +834,88 @@ class UserTest extends TestCase
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userDelete,
+                ],
+                'hasPermission' => true,
+            ],
+        ];
+    }
+
+    /**
+     * Listar informações de usuário logado.
+     *
+     * @author Maicon Cerutti
+     *
+     * @test
+     *
+     * @dataProvider meProvider
+     *
+     * @return void
+     */
+    public function me(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
+        User::factory()
+            ->has(Position::factory()->count(3))
+            ->has(Team::factory()->count(3))
+            ->create();
+
+        $response = $this->graphQL(
+            'me',
+            [
+            ],
+            [
+                'id',
+                'name',
+                'email',
+                'positions' => [
+                    'name',
+                ],
+                'teams' => [
+                    'name',
+                ],
+            ],
+            'query',
+            false
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function meProvider()
+    {
+        return [
+            'with auth' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'me' => [
+                            'id',
+                            'name',
+                            'email',
+                            'positions',
+                            'teams',
+                        ],
+                    ],
                 ],
                 'hasPermission' => true,
             ],
