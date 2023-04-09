@@ -61,5 +61,10 @@
         <include>
             <directory suffix=".php">./app</directory>
         </include>
+        <report>
+            
+            <html outputDirectory="reports" lowUpperBound="50" highLowerBound="90"/>
+         
+        </report>
     </coverage>
 </phpunit>
