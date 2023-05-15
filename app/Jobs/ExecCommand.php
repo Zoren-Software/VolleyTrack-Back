@@ -46,4 +46,14 @@ class ExecCommand implements ShouldQueue
     {
         Artisan::call("$this->command --multi_tenants=$this->tenant");
     }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * @return array<int, string>
+     */
+    public function tags(): array
+    {
+        return ['tenant:' . $this->tenant];
+    }
 }
