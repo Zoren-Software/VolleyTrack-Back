@@ -143,7 +143,6 @@ class User extends Authenticatable implements HasApiTokensContract
         return $this->hasMany(ConfirmationTraining::class, 'user_id');
     }
 
-
     /**
      * @codeCoverageIgnore
      */
@@ -153,6 +152,6 @@ class User extends Authenticatable implements HasApiTokensContract
             'positions',
             'teams',
         )
-        ->find(auth()->user()->id);
+            ->find(auth()->user()->id);
     }
 }
