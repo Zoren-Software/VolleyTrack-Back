@@ -30,8 +30,8 @@ final class ConfirmationTrainingMutation
             $this->confirmationTraining = $this->confirmationTraining->find($args['id']);
         } elseif (isset($args['training_id']) && isset($args['player_id'])) {
             $this->confirmationTraining = $this->confirmationTraining
-            ->where('training_id', $args['training_id'])
-            ->where('player_id', $args['player_id'])->first();
+                ->where('training_id', $args['training_id'])
+                ->where('player_id', $args['player_id'])->first();
         }
 
         $this->confirmationTraining->$parameterSave = $args[$parameterSave];

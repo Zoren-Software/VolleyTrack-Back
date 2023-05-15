@@ -32,10 +32,10 @@ class Notification extends Model
             $read === true,
             fn ($query) => $query->whereNotNull('read_at')
         )
-        ->when(
-            $read === false,
-            fn ($query) => $query->whereNull('read_at')
-        );
+            ->when(
+                $read === false,
+                fn ($query) => $query->whereNull('read_at')
+            );
     }
 
     public function userNotifiable()
