@@ -141,8 +141,8 @@ class ConfirmationTrainingTest extends TestCase
         bool $trainingCancelled
     ) {
         $team = Team::factory()
-        ->hasPlayers(10)
-        ->create();
+            ->hasPlayers(10)
+            ->create();
 
         $training = Training::factory()
             ->setTeamId($team->id)

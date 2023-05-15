@@ -62,7 +62,7 @@ class TrainingMutationTest extends TestCase
                     ->andReturn($specificFundamentals);
 
                 $mock->shouldReceive('syncWithoutDetaching')
-                ->with([$specificFundamentals]);
+                    ->with([$specificFundamentals]);
             }
         });
 
