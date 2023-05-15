@@ -18,6 +18,8 @@ class Notification extends IlluminateNotification implements ShouldQueue
 
     public $confirmationTraining;
 
+    public $tenant;
+
     /**
      * Create a new notification instance.
      *
@@ -27,6 +29,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
     {
         $this->training = $training;
         $this->confirmationTraining = $confirmationTraining;
+        $this->tenant = tenant('id');
         $this->afterCommit();
     }
 
@@ -63,5 +66,15 @@ class Notification extends IlluminateNotification implements ShouldQueue
         }
 
         return ['database'];
+    }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * @return array<int, string>
+     */
+    public function tags(): array
+    {
+        return ['tenant:' . $this->tenant];
     }
 }
