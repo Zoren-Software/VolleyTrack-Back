@@ -76,8 +76,8 @@ class UserMutationTest extends TestCase
                 ->with([$team]);
         });
 
-        $specificFundamentalMutation = new UserMutation($userMock);
-        $userReturn = $specificFundamentalMutation->make(
+        $UserMutation = new UserMutation($userMock);
+        $userReturn = $UserMutation->make(
             null,
             $data,
             $graphQLContext
