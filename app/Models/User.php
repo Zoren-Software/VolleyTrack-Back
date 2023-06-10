@@ -154,4 +154,9 @@ class User extends Authenticatable implements HasApiTokensContract
         )
             ->find(auth()->user()->id);
     }
+
+    public function information()
+    {
+        return $this->hasOne(UserInformation::class);
+    }
 }
