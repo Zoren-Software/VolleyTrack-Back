@@ -21,6 +21,8 @@ class CreateUsersInformationsTable extends Migration
             $table->string('rg');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique('user_id');
         });
     }
 
