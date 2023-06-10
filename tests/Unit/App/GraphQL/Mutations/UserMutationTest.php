@@ -56,6 +56,10 @@ class UserMutationTest extends TestCase
                 ->once()
                 ->andReturn($mock);
 
+            $mock->shouldReceive('updateOrNewInformation')
+                ->once()
+                ->andReturn($mock);
+
             $mock->shouldReceive('roles')
                 ->once()
                 ->andReturn($role);
