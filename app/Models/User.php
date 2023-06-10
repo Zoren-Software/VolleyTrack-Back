@@ -160,6 +160,14 @@ class User extends Authenticatable implements HasApiTokensContract
         return $this->hasOne(UserInformation::class);
     }
 
+    /**
+     *
+     * @codeCoverageIgnore
+     *
+     * @param mixed $args
+     *
+     * @return void
+     */
     public function updateOrNewInformation($args)
     {
         $attributes = [];
