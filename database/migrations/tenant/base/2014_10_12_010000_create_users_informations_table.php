@@ -23,6 +23,8 @@ class CreateUsersInformationsTable extends Migration
             $table->softDeletes();
 
             $table->unique('user_id');
+            $table->unique('cpf');
+            $table->unique('rg');
         });
     }
 
