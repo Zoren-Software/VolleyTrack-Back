@@ -5,6 +5,7 @@ namespace Tests\Unit\App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Permission\Models\Permission;
@@ -159,5 +160,18 @@ class UserTest extends TestCase
     {
         $user = new User();
         $this->assertInstanceOf(HasMany::class, $user->userConfirmationsTraining());
+    }
+
+    /**
+     * A basic unit test relation information
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function information()
+    {
+        $user = new User();
+        $this->assertInstanceOf(HasOne::class, $user->information());
     }
 }
