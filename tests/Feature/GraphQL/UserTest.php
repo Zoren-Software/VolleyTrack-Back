@@ -246,6 +246,8 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
         $emailExistent = $faker->email;
+        $cpfExistent = strval($faker->numberBetween(10000000000, 99999999999));
+        $rgExistent = strval($faker->numberBetween(10000000000, 99999999999));
 
         $password = env('PASSWORD_TEST', '123456');
 
@@ -284,6 +286,63 @@ class UserTest extends TestCase
                     'data' => [
                         'userCreate' => self::$data,
                     ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'create user with non-mandatory parameters, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'cpf' => $cpfExistent,
+                    'phone' => $faker->phoneNumber,
+                    'rg' => $rgExistent,
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'password' => $password,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'create user with cpf existent, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'cpf' => $cpfExistent,
+                    'roleId' => [3],
+                    'password' => $password,
+                    'roleId' => [],
+                ],
+                'type_message_error' => 'cpf',
+                'expected_message' => 'UserCreate.cpf_unique',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userCreate,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'create user with rg existent, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'rg' => $rgExistent,
+                    'roleId' => [3],
+                    'password' => $password,
+                    'roleId' => [],
+                ],
+                'type_message_error' => 'rg',
+                'expected_message' => 'UserCreate.rg_unique',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userCreate,
                 ],
                 'hasTeam' => false,
                 'hasPermission' => true,
@@ -532,6 +591,9 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
+        $cpfExistent = strval($faker->numberBetween(10000000000, 99999999999));
+        $rgExistent = strval($faker->numberBetween(10000000000, 99999999999));
+
         $password = env('PASSWORD_TEST', '123456');
         $userEdit = ['userEdit'];
 
@@ -583,6 +645,61 @@ class UserTest extends TestCase
                 ],
                 'hasTeam' => false,
                 'hasPermission' => false,
+            ],
+            'edit user with cpf, rg and phone, success' => [
+                [
+                    'name' => $faker->name,
+                    'cpf' => $cpfExistent,
+                    'rg' => $rgExistent,
+                    'phone' => $faker->phoneNumber,
+                    'email' => $faker->email,
+                    'password' => $password,
+                    'roleId' => [2],
+                    'positionId' => [2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => self::$data,
+                    ],
+                ],
+                'hasTeam' => true,
+                'hasPermission' => true,
+            ],
+            'edit user with cpf not unique, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'cpf' => $cpfExistent,
+                    'password' => $password,
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'cpf',
+                'expected_message' => 'UserEdit.cpf_unique',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userEdit,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'edit user with rg not unique, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'rg' => $rgExistent,
+                    'password' => $password,
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'rg',
+                'expected_message' => 'UserEdit.rg_unique',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userEdit,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'edit user with team, success' => [
                 [
