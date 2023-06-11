@@ -19,4 +19,6 @@ return [
     'password_min_6' => 'A senha precisa ter no mínimo 6 caracteres.',
     'password_required' => 'O campo senha é obrigatório.',
     'role_id_required' => 'O campo roleId é obrigatório.',
+    'cpf_unique' => 'Este CPF já foi registrado.',
+    'rg_unique' => 'Este RG já foi registrado.',
 ];

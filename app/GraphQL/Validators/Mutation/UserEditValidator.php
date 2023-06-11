@@ -29,6 +29,12 @@ final class UserEditValidator extends Validator
                 'exists:roles,id',
                 new PermissionAssignment(),
             ],
+            'cpf' => [
+                'unique:user_information,cpf,' . $this->arg('id'),
+            ],
+            'rg' => [
+                'unique:user_information,rg,' . $this->arg('id'),
+            ],
         ];
     }
 
@@ -44,6 +50,8 @@ final class UserEditValidator extends Validator
             'roleId.required' => trans('UserEdit.role_id_required'),
             'email.email' => trans('UserEdit.email_is_valid'),
             'email.unique' => trans('UserEdit.email_unique'),
+            'cpf.unique' => trans('UserEdit.cpf_unique'),
+            'rg.unique' => trans('UserEdit.rg_unique'),
         ];
     }
 }

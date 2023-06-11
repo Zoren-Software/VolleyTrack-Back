@@ -154,4 +154,46 @@ class User extends Authenticatable implements HasApiTokensContract
         )
             ->find(auth()->user()->id);
     }
+
+    public function information()
+    {
+        return $this->hasOne(UserInformation::class);
+    }
+
+    /**
+     *
+     * @codeCoverageIgnore
+     *
+     * @param mixed $args
+     *
+     * @return void
+     */
+    public function updateOrNewInformation($args)
+    {
+        $attributes = [];
+
+        if (isset($args['cpf'])) {
+            $attributes['cpf'] = $args['cpf'];
+        }
+
+        if (isset($args['phone'])) {
+            $attributes['phone'] = $args['phone'];
+        }
+
+        if (isset($args['rg'])) {
+            $attributes['rg'] = $args['rg'];
+        }
+
+        if (!empty($attributes)) {
+            if (!$this->information) {
+                $this->information = $this->information()->create($attributes);
+            } else {
+                $this->information->fill($attributes);
+
+                if ($this->information->isDirty()) {
+                    $this->information->save();
+                }
+            }
+        }
+    }
 }

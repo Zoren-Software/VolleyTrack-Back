@@ -48,6 +48,8 @@ class ExecCommand implements ShouldQueue
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * Get the tags that should be assigned to the job.
      *
      * @return array<int, string>

@@ -1,0 +1,26 @@
+"Account of a person who utilizes this application."
+type UserInformation {
+    "Unique primary key."
+    id: ID!
+
+    "User ID."
+    user_id: Int!
+
+    "User relation."
+    user: User @belongsTo(relation: "user")
+
+    "CPF."
+    cpf: String!
+
+    "RG."
+    rg: String!
+
+    "Phone number."
+    phone: String!
+
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
