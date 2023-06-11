@@ -80,8 +80,8 @@ class UserMutationTest extends TestCase
                 ->with([$team]);
         });
 
-        $UserMutation = new UserMutation($userMock);
-        $userReturn = $UserMutation->make(
+        $userMutation = new UserMutation($userMock);
+        $userReturn = $userMutation->make(
             null,
             $data,
             $graphQLContext
