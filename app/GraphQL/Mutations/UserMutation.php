@@ -33,6 +33,8 @@ final class UserMutation
 
         $this->user->save();
 
+        $this->user->updateOrNewInformation($args);
+
         $this->user->roles()->syncWithoutDetaching($args['roleId']);
 
         if (isset($args['positionId'])) {

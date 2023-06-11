@@ -19,4 +19,6 @@ return [
     'password_min_6' => 'The password must be at least 6 characters long.',
     'password_required' => 'The password field is required.',
     'role_id_required' => 'The roleId field is required.',
+    'cpf_unique' => 'This CPF has already been registered.',
+    'rg_unique' => 'This RG has already been registered.',
 ];

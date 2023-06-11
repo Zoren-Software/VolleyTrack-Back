@@ -3,6 +3,9 @@ extend type Mutation @guard {
     userCreate(
         name: String!
         email: String! @rules(apply: ["email", "unique:users"])
+        cpf: String
+        rg: String
+        phone: String
         roleId: [Int!]!
         positionId: [Int]
         teamId: [Int]
@@ -16,6 +19,9 @@ extend type Mutation @guard {
         id: ID!
         name: String!
         email: String!
+        cpf: String
+        rg: String
+        phone: String
         roleId: [Int!]!
         positionId: [Int]
         teamId: [Int]

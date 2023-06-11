@@ -56,6 +56,10 @@ class UserMutationTest extends TestCase
                 ->once()
                 ->andReturn($mock);
 
+            $mock->shouldReceive('updateOrNewInformation')
+                ->once()
+                ->andReturn($mock);
+
             $mock->shouldReceive('roles')
                 ->once()
                 ->andReturn($role);
@@ -76,8 +80,8 @@ class UserMutationTest extends TestCase
                 ->with([$team]);
         });
 
-        $specificFundamentalMutation = new UserMutation($userMock);
-        $userReturn = $specificFundamentalMutation->make(
+        $userMutation = new UserMutation($userMock);
+        $userReturn = $userMutation->make(
             null,
             $data,
             $graphQLContext

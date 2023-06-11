@@ -15,6 +15,9 @@ type User {
     "Teams."
     teams: [Team] @belongsToMany(relation: "teams")
 
+    "Information."
+    information: UserInformation @hasOne(relation: "information")
+
     "When the email was verified."
     emailVerifiedAt: DateTime @rename(attribute: "email_verified_at")
 

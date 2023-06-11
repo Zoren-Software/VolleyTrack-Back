@@ -95,4 +95,21 @@ class NotificationTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * A test method tags.
+     *
+     * @test
+     *
+     * @return array
+     */
+    public function tags()
+    {
+        $trainingMock = $this->createMock(Training::class);
+        $notification = new Notification($trainingMock);
+        $tags = $notification->tags();
+
+        $this->assertIsArray($tags);
+        $this->assertEquals(['tenant:'], $tags);
+    }
 }

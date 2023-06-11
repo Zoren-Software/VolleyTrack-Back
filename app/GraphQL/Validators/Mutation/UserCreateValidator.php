@@ -29,6 +29,12 @@ class UserCreateValidator extends Validator
                 'exists:roles,id',
                 new PermissionAssignment(),
             ],
+            'cpf' => [
+                'unique:user_information,cpf',
+            ],
+            'rg' => [
+                'unique:user_information,rg',
+            ],
         ];
     }
 
@@ -44,6 +50,8 @@ class UserCreateValidator extends Validator
             'roleId.required' => trans('UserCreate.role_id_required'),
             'email.email' => trans('UserCreate.email_is_valid'),
             'email.unique' => trans('UserCreate.email_unique'),
+            'cpf.unique' => trans('UserCreate.cpf_unique'),
+            'rg.unique' => trans('UserCreate.rg_unique')
         ];
     }
 }
