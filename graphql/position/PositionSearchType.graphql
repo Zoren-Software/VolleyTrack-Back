@@ -1,0 +1,6 @@
+"PositionSearchType"
+input PositionSearchType {
+
+    "String to search for in position name"
+    search: String
+}
