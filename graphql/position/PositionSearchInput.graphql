@@ -1,5 +1,5 @@
 "PositionSearchType"
-input PositionSearchType {
+input PositionSearchInput {
 
     "String to search for in position name"
     search: String
