@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -63,5 +64,29 @@ class Team extends Model
                 ]
             )
             ->dontSubmitEmptyLogs();
+    }
+
+    public function list(array $args)
+    {
+        return $this
+            ->filterSearch($args);
+    }
+
+    public function scopeFilterSearch(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+            $query->filterName($args['filter']['search']);
+        });
+
+        return $query;
+    }
+
+    public function scopeFilterName(Builder $query, String $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('name', 'like', $search);
+        });
+
+        return $query;
     }
 }
