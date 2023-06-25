@@ -1,6 +1,6 @@
 "PositionSearchType"
 input PositionSearchInput {
 
-    "String to search for in position name"
+    "String to search for in positions name"
     search: String
 }

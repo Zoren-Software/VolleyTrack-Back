@@ -1,7 +1,7 @@
-"TeamSearchType"
+"UserSearchInput"
 input UserSearchInput {
 
-    "String to search for in team name"
+    "String to search for in users name"
     search: String
 
     "Filter by positions ids"
