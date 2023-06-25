@@ -26,21 +26,21 @@ class UserInformation extends Model
     public function scopeFilterCPF(Builder $query, string $cpf)
     {
         $query->when(isset($cpf), function ($query) use ($cpf) {
-            $query->where('cpf', 'like', $cpf);
+            $query->where('user_information.cpf', 'like', $cpf);
         });
     }
 
     public function scopeFilterRG(Builder $query, string $rg)
     {
         $query->when(isset($rg), function ($query) use ($rg) {
-            $query->where('rg', 'like', $rg);
+            $query->where('user_information.rg', 'like', $rg);
         });
     }
 
     public function scopeFilterPhone(Builder $query, string $phone)
     {
         $query->when(isset($phone), function ($query) use ($phone) {
-            $query->where('phone', 'like', $phone);
+            $query->where('user_information.phone', 'like', $phone);
         });
     }
 }

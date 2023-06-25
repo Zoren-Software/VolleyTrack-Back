@@ -3,4 +3,10 @@ input UserSearchInput {
 
     "String to search for in team name"
     search: String
+
+    "Filter by positions ids"
+    positionsIds: [Int]
+
+    "Filter by team ids"
+    teamsIds: [Int]
 }

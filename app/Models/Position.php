@@ -60,16 +60,19 @@ class Position extends Model
         $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
             $query->filterName($args['filter']['search']);
         });
-
-        return $query;
     }
 
     public function scopeFilterName(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
-            $query->where('name', 'like', $search);
+            $query->where('positions.name', 'like', $search);
         });
+    }
 
-        return $query;
+    public function scopeFilterIds(Builder $query, array $ids)
+    {
+        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+            $query->whereIn('positions.id', $ids);
+        });
     }
 }
