@@ -12,6 +12,7 @@ extend type Query @guard {
 
     "List multiple positions."
     positions (
+        "Specific filter search positions."
         filter: PositionSearchInput
     ): [Position!]! 
         @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\PositionQuery@list")

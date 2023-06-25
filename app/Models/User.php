@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -195,5 +196,95 @@ class User extends Authenticatable implements HasApiTokensContract
                 }
             }
         }
+    }
+
+    public function list(array $args)
+    {
+        return $this
+            ->filterSearch($args);
+    }
+
+    public function scopeFilterSearch(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+            $query
+                ->filterName($args['filter']['search'])
+                ->orWhere(function ($query) use ($args) {
+                    $query
+                        ->filterEmail($args['filter']['search'])
+                        ->filterPhone($args['filter']['search'])
+                        ->filterCPF($args['filter']['search'])
+                        ->filterRG($args['filter']['search'])
+                        ->filterPosition($args['filter']['search'])
+                        ->filterTeam($args['filter']['search']);
+                });
+        });
+
+    }
+
+    public function scopeFilterName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('name', 'like', $search);
+        });
+
+    }
+
+    public function scopeFilterEmail(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('email', 'like', $search);
+        });
+
+    }
+
+    public function scopeFilterCPF(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('information', function ($query) use ($search) {
+                $query->filterCPF($search);
+            });
+        });
+
+    }
+
+    public function scopeFilterRG(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('information', function ($query) use ($search) {
+                $query->filterRG($search);
+            });
+        });
+
+    }
+
+    public function scopeFilterPhone(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('information', function ($query) use ($search) {
+                $query->filterPhone($search);
+            });
+        });
+
+    }
+
+    public function scopeFilterPosition(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('positions', function ($query) use ($search) {
+                $query->filterName($search);
+            });
+        });
+
+    }
+
+    public function scopeFilterTeam(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('teams', function ($query) use ($search) {
+                $query->filterName($search);
+            });
+        });
+
     }
 }

@@ -64,7 +64,7 @@ class Position extends Model
         return $query;
     }
 
-    public function scopeFilterName(Builder $query, String $search)
+    public function scopeFilterName(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
             $query->where('name', 'like', $search);

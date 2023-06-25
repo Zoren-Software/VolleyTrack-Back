@@ -10,6 +10,7 @@ extend type Query @guard {
 
     "List multiple teams."
     teams(
+        "Specific filter search teams."
         filter: TeamSearchInput
     ): [Team!]!
         @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\TeamQuery@list")

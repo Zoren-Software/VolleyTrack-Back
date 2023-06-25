@@ -1,0 +1,6 @@
+"TeamSearchType"
+input UserSearchInput {
+
+    "String to search for in team name"
+    search: String
+}
