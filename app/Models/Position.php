@@ -79,12 +79,18 @@ class Position extends Model
 
     public function scopeFilterTeam(Builder $query, array $args)
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['teamsIds']) && !empty($args['filter']['teamsIds']), function ($query) use ($args) {
-            $query->whereHas('users', function ($query) use ($args) {
-                $query->whereHas('teams', function ($query) use ($args) {
-                    $query->filterIds($args['filter']['teamsIds']);
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['teamsIds']) &&
+            !empty($args['filter']['teamsIds']
+            ),
+            function ($query) use ($args) {
+                $query->whereHas('users', function ($query) use ($args) {
+                    $query->whereHas('teams', function ($query) use ($args) {
+                        $query->filterIds($args['filter']['teamsIds']);
+                    });
                 });
-            });
-        });
+            }
+        );
     }
 }
