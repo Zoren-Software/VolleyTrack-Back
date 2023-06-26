@@ -69,7 +69,8 @@ class Team extends Model
     public function list(array $args)
     {
         return $this
-            ->filterSearch($args);
+            ->filterSearch($args)
+            ->filterPosition($args);
     }
 
     public function scopeFilterSearch(Builder $query, array $args)
@@ -90,6 +91,17 @@ class Team extends Model
     {
         $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
             $query->whereIn('teams.id', $ids);
+        });
+    }
+
+    public function scopeFilterPosition(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['positionsIds']) && !empty($args['filter']['positionsIds']), function ($query) use ($args) {
+            $query->whereHas('players', function ($query) use ($args) {
+                $query->whereHas('positions', function ($query) use ($args) {
+                    $query->filterIds($args['filter']['position']);
+                });
+            });
         });
     }
 }
