@@ -99,7 +99,7 @@ class Team extends Model
         $query->when(isset($args['filter']) && isset($args['filter']['positionsIds']) && !empty($args['filter']['positionsIds']), function ($query) use ($args) {
             $query->whereHas('players', function ($query) use ($args) {
                 $query->whereHas('positions', function ($query) use ($args) {
-                    $query->filterIds($args['filter']['position']);
+                    $query->filterIds($args['filter']['positionsIds']);
                 });
             });
         });
