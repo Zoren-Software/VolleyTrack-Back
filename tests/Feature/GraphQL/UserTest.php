@@ -61,7 +61,6 @@ class UserTest extends TestCase
         $response = $this->graphQL(
             'users',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],
