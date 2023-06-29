@@ -80,7 +80,6 @@ class TrainingTest extends TestCase
         $response = $this->graphQL(
             'trainings',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],

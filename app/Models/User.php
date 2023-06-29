@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -195,5 +196,124 @@ class User extends Authenticatable implements HasApiTokensContract
                 }
             }
         }
+    }
+
+    public function list(array $args)
+    {
+        return $this
+            ->filterSearch($args)
+            ->filterPosition($args)
+            ->filterTeam($args);
+    }
+
+    public function scopeFilterSearch(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+            $query
+                ->filterName($args['filter']['search'])
+                ->orWhere(function ($query) use ($args) {
+                    $query
+                        ->filterEmail($args['filter']['search'])
+                        ->filterPhone($args['filter']['search'])
+                        ->filterCPF($args['filter']['search'])
+                        ->filterRG($args['filter']['search'])
+                        ->filterPositionName($args['filter']['search'])
+                        ->filterTeamName($args['filter']['search']);
+                });
+        });
+
+    }
+
+    public function scopeFilterName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('users.name', 'like', $search);
+        });
+
+    }
+
+    public function scopeFilterEmail(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('users.email', 'like', $search);
+        });
+
+    }
+
+    public function scopeFilterCPF(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('information', function ($query) use ($search) {
+                $query->filterCPF($search);
+            });
+        });
+
+    }
+
+    public function scopeFilterRG(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('information', function ($query) use ($search) {
+                $query->filterRG($search);
+            });
+        });
+
+    }
+
+    public function scopeFilterPhone(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('information', function ($query) use ($search) {
+                $query->filterPhone($search);
+            });
+        });
+
+    }
+
+    public function scopeFilterPositionName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('positions', function ($query) use ($search) {
+                $query->filterName($search);
+            });
+        });
+
+    }
+
+    public function scopeFilterTeamName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('teams', function ($query) use ($search) {
+                $query->filterName($search);
+            });
+        });
+    }
+
+    public function scopeFilterPosition(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['positionsIds']) &&
+            !empty($args['filter']['positionsIds']),
+            function ($query) use ($args) {
+                $query->whereHas('positions', function ($query) use ($args) {
+                    $query->filterIds($args['filter']['positionsIds']);
+                });
+            }
+        );
+    }
+
+    public function scopeFilterTeam(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['teamsIds']) &&
+            !empty($args['filter']['teamsIds']),
+            function ($query) use ($args) {
+                $query->whereHas('teams', function ($query) use ($args) {
+                    $query->filterIds($args['filter']['teamsIds']);
+                });
+            }
+        );
     }
 }

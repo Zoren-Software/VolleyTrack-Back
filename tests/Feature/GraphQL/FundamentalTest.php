@@ -54,7 +54,6 @@ class FundamentalTest extends TestCase
         $response = $this->graphQL(
             'fundamentals',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],
