@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -46,5 +47,50 @@ class Position extends Model
                 ]
             )
             ->dontSubmitEmptyLogs();
+    }
+
+    public function list(array $args)
+    {
+        return $this
+            ->filterSearch($args)
+            ->filterTeam($args);
+    }
+
+    public function scopeFilterSearch(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+            $query->filterName($args['filter']['search']);
+        });
+    }
+
+    public function scopeFilterName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('positions.name', 'like', $search);
+        });
+    }
+
+    public function scopeFilterIds(Builder $query, array $ids)
+    {
+        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+            $query->whereIn('positions.id', $ids);
+        });
+    }
+
+    public function scopeFilterTeam(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['teamsIds']) &&
+            !empty($args['filter']['teamsIds']
+            ),
+            function ($query) use ($args) {
+                $query->whereHas('users', function ($query) use ($args) {
+                    $query->whereHas('teams', function ($query) use ($args) {
+                        $query->filterIds($args['filter']['teamsIds']);
+                    });
+                });
+            }
+        );
     }
 }

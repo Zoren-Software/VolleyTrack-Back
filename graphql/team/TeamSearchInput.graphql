@@ -1,0 +1,9 @@
+"TeamSearchType"
+input TeamSearchInput {
+
+    "String to search for in teams name"
+    search: String
+
+    "Filter by position ids"
+    positionsIds: [Int]
+}

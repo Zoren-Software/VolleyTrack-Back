@@ -56,7 +56,6 @@ class TeamTest extends TestCase
         $response = $this->graphQL(
             'teams',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],

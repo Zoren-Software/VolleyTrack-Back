@@ -1,0 +1,12 @@
+"UserSearchInput"
+input UserSearchInput {
+
+    "String to search for in users name"
+    search: String
+
+    "Filter by positions ids"
+    positionsIds: [Int]
+
+    "Filter by team ids"
+    teamsIds: [Int]
+}

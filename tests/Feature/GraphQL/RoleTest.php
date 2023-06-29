@@ -61,7 +61,6 @@ class RoleTest extends TestCase
         $this->graphQL(
             'roles',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],

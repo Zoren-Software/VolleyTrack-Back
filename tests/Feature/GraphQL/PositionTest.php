@@ -54,7 +54,6 @@ class PositionTest extends TestCase
         $response = $this->graphQL(
             'positions',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],

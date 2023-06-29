@@ -15,10 +15,11 @@ extend type Query @guard {
 
     "List multiple users."
     users(
-      "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-      name: String @where(operator: "like")
+        "Specific filter search users."
+        filter: UserSearchInput
+
     ): [User!]! 
+        @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\UserQuery@list")
         @can(ability: "view", resolved: true)
-        @paginate(defaultCount: 10)
 }
 
