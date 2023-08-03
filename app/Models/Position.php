@@ -53,7 +53,15 @@ class Position extends Model
     {
         return $this
             ->filterSearch($args)
+            ->filterIgnores($args)
             ->filterTeam($args);
+    }
+
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('positions.id', $args['filter']['ignoreIds']);
+        });
     }
 
     public function scopeFilterSearch(Builder $query, array $args)
