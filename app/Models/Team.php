@@ -70,7 +70,15 @@ class Team extends Model
     {
         return $this
             ->filterSearch($args)
+            ->filterIgnores($args)
             ->filterPosition($args);
+    }
+
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('teams.id', $args['filter']['ignoreIds']);
+        });
     }
 
     public function scopeFilterSearch(Builder $query, array $args)
