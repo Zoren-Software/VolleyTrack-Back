@@ -1,0 +1,6 @@
+"TeamSearchType"
+input RoleSearchInput {
+
+    "String to search for in roles name"
+    search: String
+}
