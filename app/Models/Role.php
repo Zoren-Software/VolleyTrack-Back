@@ -53,4 +53,24 @@ class Role extends SpatieRole
                 );
         });
     }
+
+    public function list(array $args)
+    {
+        return $this
+            ->filterSearch($args);
+    }
+
+    public function scopeFilterSearch(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+            $query->filterName($args['filter']['search']);
+        });
+    }
+
+    public function scopeFilterName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('roles.name', 'like', $search);
+        });
+    }
 }
