@@ -73,4 +73,9 @@ class Role extends SpatieRole
             $query->where('roles.name', 'like', $search);
         });
     }
+
+    public function getNameAttribute($value)
+    {
+        return trans('RoleRegister.' . $value);
+    }
 }
