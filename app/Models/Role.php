@@ -57,7 +57,15 @@ class Role extends SpatieRole
     public function list(array $args)
     {
         return $this
-            ->filterSearch($args);
+            ->filterSearch($args)
+            ->filterIgnores($args);
+    }
+
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('roles.id', $args['filter']['ignoreIds']);
+        });
     }
 
     public function scopeFilterSearch(Builder $query, array $args)
