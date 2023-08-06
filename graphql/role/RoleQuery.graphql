@@ -7,7 +7,8 @@ extend type Query @guard {
 
     "List multiple roles."
     roles (
-      "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-      name: String @where(operator: "like")
-    ): [Role!]! @paginate(defaultCount: 10)
+      "Specific filter search roles."
+      filter: RoleSearchInput
+    ): [Role!]! 
+        @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\RoleQuery@list")
 }
