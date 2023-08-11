@@ -220,7 +220,9 @@ class UserTest extends TestCase
             $parameters['teamId'] = $team->id;
         }
 
-        $parameters['name'] = $faker->name;
+        if($parameters['name'] == null) {
+            $parameters['name'] = ' ';
+        }
 
         $response = $this->graphQL(
             'userCreate',
@@ -446,6 +448,7 @@ class UserTest extends TestCase
             ],
             'no text password, expected error' => [
                 [
+                    'name' => $faker->name,
                     'password' => ' ',
                     'email' => $faker->email,
                     'roleId' => [2],
@@ -485,6 +488,38 @@ class UserTest extends TestCase
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_required',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userCreate,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'name field is required, expected error' => [
+                [
+                    'name' => null,
+                    'password' => $password,
+                    'roleId' => [2],
+                    'email' => $faker->email,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'UserCreate.name_required',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userCreate,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'name field is min 3 characters, expected error' => [
+                [
+                    'name' => 'Th',
+                    'password' => $password,
+                    'roleId' => [2],
+                    'email' => $faker->email,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'UserCreate.name_min_3',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -828,6 +863,38 @@ class UserTest extends TestCase
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_required',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userEdit,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'name field is required, expected error' => [
+                [
+                    'name' => ' ',
+                    'password' => $password,
+                    'email' => $faker->email,
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'UserEdit.name_required',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userEdit,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'name field is min 3 characters, expected error' => [
+                [
+                    'name' => 'Th',
+                    'password' => $password,
+                    'email' => $faker->email,
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'UserEdit.name_min_3',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
