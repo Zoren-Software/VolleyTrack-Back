@@ -15,6 +15,10 @@ class UserCreateValidator extends Validator
     public function rules(): array
     {
         return [
+            'name' => [
+                'required',
+                'min:3',
+            ],
             'password' => [
                 'required',
                 'min:6',
@@ -44,6 +48,8 @@ class UserCreateValidator extends Validator
     public function messages(): array
     {
         return [
+            'name.required' => trans('UserCreate.name_required'),
+            'name.min' => trans('UserCreate.name_min_3'),
             'password.required' => trans('UserCreate.password_required'),
             'password.min' => trans('UserCreate.password_min_6'),
             'email.required' => trans('UserCreate.email_required'),
