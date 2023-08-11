@@ -213,8 +213,6 @@ class UserTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $faker = Faker::create();
-
         if ($hasTeam) {
             $team = Team::factory()->create();
             $parameters['teamId'] = $team->id;
