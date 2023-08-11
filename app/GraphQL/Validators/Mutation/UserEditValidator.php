@@ -15,6 +15,10 @@ final class UserEditValidator extends Validator
     public function rules(): array
     {
         return [
+            'name' => [
+                'required',
+                'min:3',
+            ],
             'password' => [
                 'required',
                 'min:6',
@@ -44,6 +48,8 @@ final class UserEditValidator extends Validator
     public function messages(): array
     {
         return [
+            'name.required' => trans('UserEdit.name_required'),
+            'name.min' => trans('UserEdit.name_min_3'),
             'password.required' => trans('UserEdit.password_required'),
             'password.min' => trans('UserEdit.password_min_6'),
             'email.required' => trans('UserEdit.email_required'),
