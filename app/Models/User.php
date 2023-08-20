@@ -221,7 +221,6 @@ class User extends Authenticatable implements HasApiTokensContract
                         ->filterTeamName($args['filter']['search']);
                 });
         });
-
     }
 
     public function scopeFilterName(Builder $query, string $search)
@@ -229,7 +228,6 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(isset($search), function ($query) use ($search) {
             $query->where('users.name', 'like', $search);
         });
-
     }
 
     public function scopeFilterEmail(Builder $query, string $search)
@@ -237,7 +235,6 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(isset($search), function ($query) use ($search) {
             $query->where('users.email', 'like', $search);
         });
-
     }
 
     public function scopeFilterCPF(Builder $query, string $search)
@@ -247,7 +244,6 @@ class User extends Authenticatable implements HasApiTokensContract
                 $query->filterCPF($search);
             });
         });
-
     }
 
     public function scopeFilterRG(Builder $query, string $search)
@@ -257,7 +253,6 @@ class User extends Authenticatable implements HasApiTokensContract
                 $query->filterRG($search);
             });
         });
-
     }
 
     public function scopeFilterPhone(Builder $query, string $search)
@@ -267,7 +262,6 @@ class User extends Authenticatable implements HasApiTokensContract
                 $query->filterPhone($search);
             });
         });
-
     }
 
     public function scopeFilterPositionName(Builder $query, string $search)
@@ -277,7 +271,6 @@ class User extends Authenticatable implements HasApiTokensContract
                 $query->filterName($search);
             });
         });
-
     }
 
     public function scopeFilterTeamName(Builder $query, string $search)

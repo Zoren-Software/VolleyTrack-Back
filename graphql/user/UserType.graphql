@@ -15,6 +15,9 @@ type User {
     "Teams."
     teams: [Team] @belongsToMany(relation: "teams")
 
+    "Roles."
+    roles: [Role] @belongsToMany(relation: "roles")
+
     "Information."
     information: UserInformation @hasOne(relation: "information")
 
