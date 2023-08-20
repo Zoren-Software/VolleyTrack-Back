@@ -5,10 +5,7 @@ extend type Query @guard {
     "Find a single user by an identifying attribute."
     user(
       "Search by primary key."
-      id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
-
-      "Search by email address."
-      email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
+      id: ID! @eq @rules(apply: ["prohibits:email", "required_without:email"])
     ): User 
         @can(ability: "view", resolved: true)
         @find
