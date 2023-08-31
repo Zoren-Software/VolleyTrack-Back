@@ -20,37 +20,24 @@ class Role extends SpatieRole
     protected static function booted()
     {
         static::addGlobalScope('permission', function (Builder $builder) {
-            /**
-             * verify if auth()->user() has permission in role for view-role-admin
-             * if not, remove role id 1 from query (admin)
-             */
-            return $builder->when(
-                ! auth()->user()->hasPermissionRole('view-role-admin'),
-                function (Builder $builder) {
-                    $builder->whereNot('id', 1);
-                }
-            )
+            // Se o usuário for um administrador, não fazemos nenhuma restrição
+            if (auth()->user()->hasPermissionTo('view-role-admin')) {
+                return $builder;
+            }
 
-            /**
-             * verify if auth()->user() has permission in role for view-role-technician
-             * if not, remove role id 2 from query (Técnico)
-             */
-                ->when(
-                    ! auth()->user()->hasPermissionRole('view-role-technician'),
-                    function (Builder $builder) {
-                        $builder->whereNot('id', 2);
-                    }
-                )
-            /**
-             * verify if auth()->user() has permission in role for view-role-player
-             * if not, remove role id 3 from query (Jogador)
-             */
-                ->when(
-                    ! auth()->user()->hasPermissionRole('view-role-player'),
-                    function (Builder $builder) {
-                        $builder->whereNot('id', 3);
-                    }
-                );
+            // Se o usuário for um técnico, removemos a permissão de administrador da consulta
+            if (auth()->user()->hasPermissionTo('view-role-technician')) {
+                return $builder->whereNotIn('id', [1]); // Remove admin (id: 1)
+            }
+
+            // Se o usuário for um jogador, removemos as permissões de administrador e técnico da consulta
+            if (auth()->user()->hasPermissionTo('view-role-player')) {
+                return $builder->whereNotIn('id', [1, 2]); // Remove admin (id: 1) and technician (id: 2)
+            }
+
+            // Se chegamos até aqui, significa que o usuário não tem permissão para ver nenhum dos roles
+            // Aqui você pode decidir o que fazer nesse caso, talvez retornar um builder que sempre retorna uma query vazia
+            return $builder->where('id', '<', 0); // Isso retornará uma query vazia
         });
     }
 
