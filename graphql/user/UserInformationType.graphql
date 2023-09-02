@@ -10,13 +10,13 @@ type UserInformation {
     user: User @belongsTo(relation: "user")
 
     "CPF."
-    cpf: String!
+    cpf: String
 
     "RG."
-    rg: String!
+    rg: String
 
     "Phone number."
-    phone: String!
+    phone: String
 
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     createdAt: DateTime! @rename(attribute: "created_at")
