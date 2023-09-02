@@ -16,9 +16,9 @@ class CreateUsersInformationsTable extends Migration
         Schema::create('user_information', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('cpf');
-            $table->string('phone');
-            $table->string('rg');
+            $table->string('cpf')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('rg')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

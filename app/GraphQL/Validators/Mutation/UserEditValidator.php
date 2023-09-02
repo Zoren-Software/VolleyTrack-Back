@@ -34,9 +34,11 @@ final class UserEditValidator extends Validator
                 new PermissionAssignment(),
             ],
             'cpf' => [
+                'nullable',
                 'unique:user_information,cpf,' . $this->arg('id'),
             ],
             'rg' => [
+                'nullable',
                 'unique:user_information,rg,' . $this->arg('id'),
             ],
         ];

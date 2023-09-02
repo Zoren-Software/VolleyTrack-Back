@@ -34,9 +34,11 @@ class UserCreateValidator extends Validator
                 new PermissionAssignment(),
             ],
             'cpf' => [
+                'nullable',
                 'unique:user_information,cpf',
             ],
             'rg' => [
+                'nullable',
                 'unique:user_information,rg',
             ],
         ];
