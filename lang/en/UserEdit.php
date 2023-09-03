@@ -23,4 +23,5 @@ return [
     'role_id_required' => 'The permission field is required.',
     'cpf_unique' => 'This CPF has already been registered.',
     'rg_unique' => 'This RG has already been registered.',
+    'owns_password' => 'You do not have permission to change this user\'s password.',
 ];
