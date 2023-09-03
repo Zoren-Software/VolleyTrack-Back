@@ -453,7 +453,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-            'DateStart must be less than dateEnd, expected error' => [
+            'dateStart must be less than dateEnd, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -468,7 +468,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-            'DateEnd must be greater than dateStart, expected error' => [
+            'dateEnd must be greater than dateStart, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -483,7 +483,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-            'DateEnd without correct formatting, expected error' => [
+            'dateEnd without correct formatting, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -498,7 +498,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-            'DateStart without correct formatting, expected error' => [
+            'dateStart without correct formatting, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -837,7 +837,7 @@ class TrainingTest extends TestCase
                 'hasPermission' => true,
                 'cancellation' => false,
             ],
-            'DateStart must be less than dateEnd, expected error' => [
+            'dateStart must be less than dateEnd, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -854,7 +854,7 @@ class TrainingTest extends TestCase
                 'hasPermission' => true,
                 'cancellation' => false,
             ],
-            'DateEnd must be greater than dateStart, expected error' => [
+            'dateEnd must be greater than dateStart, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -871,7 +871,7 @@ class TrainingTest extends TestCase
                 'hasPermission' => true,
                 'cancellation' => false,
             ],
-            'DateEnd without correct formatting, expected error' => [
+            'dateEnd without correct formatting, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -888,7 +888,7 @@ class TrainingTest extends TestCase
                 'hasPermission' => true,
                 'cancellation' => false,
             ],
-            'DateStart without correct formatting, expected error' => [
+            'dateStart without correct formatting, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
