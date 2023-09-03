@@ -61,9 +61,13 @@ class PermissionTableSeeder extends Seeder
          */
         $role[] = Permission::updateOrCreate(['id' => 11], ['name' => 'edit-role']);
         $role[] = Permission::updateOrCreate(['id' => 12], ['name' => 'view-role']);
-        Permission::updateOrCreate(['id' => 13], ['name' => 'view-role-admin']);
-        $role[] = Permission::updateOrCreate(['id' => 14], ['name' => 'view-role-technician']);
-        $role[] = Permission::updateOrCreate(['id' => 15], ['name' => 'view-role-player']);
+
+        /**
+         * Permissões de Funções Específicas
+         */
+        $roleAdmin[]      = Permission::updateOrCreate(['id' => 13], ['name' => 'view-role-admin']);
+        $roleTechnician[] = Permission::updateOrCreate(['id' => 14], ['name' => 'view-role-technician']);
+        $rolePlayer[]     = Permission::updateOrCreate(['id' => 15], ['name' => 'view-role-player']);
 
         /**
          * Permissões de Treinos
@@ -91,16 +95,6 @@ class PermissionTableSeeder extends Seeder
         /**
          * Relacionando Permissões
          */
-        $this->sync($technician, $user);
-        $this->sync($technician, $team);
-        $this->sync($technician, $role);
-        $this->sync($technician, $fundamental);
-        $this->sync($technician, $position);
-        $this->sync($technician, $training);
-        $this->sync($technician, $config);
-        $this->sync($technician, $trainingConfig);
-        $this->sync($technician, $confirmationTraining);
-
         $this->sync($admin, $user);
         $this->sync($admin, $team);
         $this->sync($admin, $role);
@@ -110,6 +104,18 @@ class PermissionTableSeeder extends Seeder
         $this->sync($admin, $config);
         $this->sync($admin, $trainingConfig);
         $this->sync($admin, $confirmationTraining);
+        $this->sync($admin, $roleAdmin);
+
+        $this->sync($technician, $user);
+        $this->sync($technician, $team);
+        $this->sync($technician, $role);
+        $this->sync($technician, $fundamental);
+        $this->sync($technician, $position);
+        $this->sync($technician, $training);
+        $this->sync($technician, $config);
+        $this->sync($technician, $trainingConfig);
+        $this->sync($technician, $confirmationTraining);
+        $this->sync($technician, $roleTechnician);
 
         $this->sync($player, $user);
         $this->sync($player, $team);
@@ -120,6 +126,7 @@ class PermissionTableSeeder extends Seeder
         $this->sync($player, $config);
         $this->sync($player, $trainingConfig);
         $this->sync($player, $confirmationTraining);
+        $this->sync($player, $rolePlayer);
 
         /**
          * Definir user como perfil de admin
