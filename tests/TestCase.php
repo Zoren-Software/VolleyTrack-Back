@@ -6,6 +6,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
@@ -148,13 +149,15 @@ abstract class TestCase extends BaseTestCase
         if ($this->otherUser) {
             $user = User::factory()->make();
             $user->save();
-            $this->user = $user;
         } else {
             $user = User::where('email', env('MAIL_FROM_TEST_TECHNICIAN'))->first();
         }
 
-        $this->email = $user->email;
+        $user->password = Hash::make('password');
+        $user->save();
 
+        $this->email = $user->email;
+        
         $response = $this->graphQL(
             'login',
             [
