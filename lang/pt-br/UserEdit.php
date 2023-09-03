@@ -23,4 +23,5 @@ return [
     'role_id_required' => 'O campo permissão é obrigatório.',
     'cpf_unique' => 'Este CPF já foi registrado.',
     'rg_unique' => 'Este RG já foi registrado.',
+    'owns_password' => 'Você não tem permissão para alterar a senha deste usuário.',
 ];

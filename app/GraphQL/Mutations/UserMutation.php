@@ -27,7 +27,7 @@ final class UserMutation
         $this->user->name = $args['name'];
         $this->user->email = $args['email'];
 
-        if (isset($args['password'])) {
+        if (isset($args['password']) && $args['password'] !== null && $args['password'] !== '') {
             $this->user->makePassword($args['password']);
         }
 
@@ -35,15 +35,11 @@ final class UserMutation
 
         $this->user->updateOrNewInformation($args);
 
-        $this->user->roles()->syncWithoutDetaching($args['roleId']);
+        $this->user->roles()->sync($args['roleId']);
 
-        if (isset($args['positionId'])) {
-            $this->user->positions()->syncWithoutDetaching($args['positionId']);
-        }
+        $this->user->positions()->sync($args['positionId']);
 
-        if (isset($args['teamId'])) {
-            $this->user->teams()->syncWithoutDetaching($args['teamId']);
-        }
+        $this->user->teams()->sync($args['teamId']);
 
         return $this->user;
     }
