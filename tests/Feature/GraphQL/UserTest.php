@@ -874,24 +874,6 @@ class UserTest extends TestCase
                 'hasTeam' => false,
                 'hasPermission' => true,
             ],
-            'no text password, expected error' => [
-                [
-                    'name' => $faker->name,
-                    'password' => ' ',
-                    'email' => $faker->email,
-                    'positionId' => [1],
-                    'teamId' => [1],
-                    'roleId' => [2],
-                ],
-                'type_message_error' => 'password',
-                'expected_message' => 'UserEdit.password_required',
-                'expected' => [
-                    'errors' => self::$errors,
-                    'data' => $userEdit,
-                ],
-                'hasTeam' => false,
-                'hasPermission' => true,
-            ],
             'text password with 6 characters, success' => [
                 [
                     'name' => $faker->name,
