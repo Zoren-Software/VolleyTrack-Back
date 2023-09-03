@@ -5,6 +5,7 @@ namespace Tests\Feature\GraphQL;
 use App\Models\Position;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\UserInformation;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -615,13 +616,7 @@ class UserTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $userExist = User::factory()
-            ->has(Position::factory()->count(3))
-            ->create();
-
-        $user = User::factory()
-            ->has(Position::factory()->count(3))
-            ->create();
+        $user = User::find($this->user->id);
 
         if ($hasTeam) {
             $team = Team::factory()->create();
@@ -630,7 +625,19 @@ class UserTest extends TestCase
 
         $parameters['id'] = $user->id;
 
+        if($expectedMessage == 'UserEdit.email_is_valid') {
+            $parameters['email'] = 'notemail.com';
+        } elseif($expectedMessage != 'UserEdit.email_required') {
+            $parameters['email'] = $this->email;
+        } else {
+            $parameters['email'] = ' ';
+        }
+
         if ($expectedMessage == 'UserEdit.email_unique') {
+            $userExist = User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
+
             $parameters['email'] = $userExist->email;
         }
 
@@ -657,8 +664,8 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
-        $cpfExistent = strval($faker->numberBetween(10000000000, 99999999999));
-        $rgExistent = strval($faker->numberBetween(10000000000, 99999999999));
+        $cpfExistent = UserInformation::factory()->create()->cpf;
+        $rgExistent = UserInformation::factory()->create()->rg;
 
         $password = env('PASSWORD_TEST', '123456');
         $userEdit = ['userEdit'];
@@ -667,7 +674,7 @@ class UserTest extends TestCase
             'declare roleId is required, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -685,7 +692,7 @@ class UserTest extends TestCase
             'edit user with permission that shouldnt have, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -703,7 +710,7 @@ class UserTest extends TestCase
             'edit user without permission, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -724,7 +731,6 @@ class UserTest extends TestCase
                     'cpf' => $cpfExistent,
                     'rg' => $rgExistent,
                     'phone' => $faker->phoneNumber,
-                    'email' => $faker->email,
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -743,7 +749,6 @@ class UserTest extends TestCase
             'edit user with cpf not unique, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
                     'cpf' => $cpfExistent,
                     'password' => $password,
                     'positionId' => [1],
@@ -762,7 +767,6 @@ class UserTest extends TestCase
             'edit user with rg not unique, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
                     'rg' => $rgExistent,
                     'password' => $password,
                     'positionId' => [1],
@@ -781,7 +785,7 @@ class UserTest extends TestCase
             'edit user with team, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -801,7 +805,7 @@ class UserTest extends TestCase
             'edit user with position, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => $password,
                     'roleId' => [2],
                     'positionId' => [1],
@@ -821,7 +825,7 @@ class UserTest extends TestCase
             'edit user, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -840,7 +844,7 @@ class UserTest extends TestCase
             'edit user with 2 roles, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -859,7 +863,7 @@ class UserTest extends TestCase
             'text password less than 6 characters, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => '12345',
                     'positionId' => [1],
                     'teamId' => [1],
@@ -877,7 +881,7 @@ class UserTest extends TestCase
             'text password with 6 characters, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -899,7 +903,6 @@ class UserTest extends TestCase
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
-                    'email' => ' ',
                     'roleId' => [2],
                 ],
                 'type_message_error' => 'email',
@@ -915,7 +918,7 @@ class UserTest extends TestCase
                 [
                     'name' => ' ',
                     'password' => $password,
-                    'email' => $faker->email,
+                    
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
@@ -933,7 +936,7 @@ class UserTest extends TestCase
                 [
                     'name' => 'Th',
                     'password' => $password,
-                    'email' => $faker->email,
+                    
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
