@@ -3,6 +3,7 @@
 namespace App\GraphQL\Validators\Mutation;
 
 use App\Rules\PermissionAssignment;
+use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Validation\Validator;
 
 final class UserEditValidator extends Validator
@@ -20,7 +21,7 @@ final class UserEditValidator extends Validator
                 'min:3',
             ],
             'password' => [
-                'required',
+                'sometimes',
                 'min:6',
             ],
             'email' => [
@@ -35,11 +36,11 @@ final class UserEditValidator extends Validator
             ],
             'cpf' => [
                 'nullable',
-                'unique:user_information,cpf,' . $this->arg('id'),
+                Rule::unique('user_information', 'cpf')->ignore($this->arg('id'), 'user_id'),
             ],
             'rg' => [
                 'nullable',
-                'unique:user_information,rg,' . $this->arg('id'),
+                Rule::unique('user_information', 'rg')->ignore($this->arg('id'), 'user_id'),
             ],
         ];
     }
