@@ -33,5 +33,6 @@ extend type Mutation @guard {
     
     userDelete(id: [ID!]!): [User]
         @field(resolver: "UserMutation@delete")
+        @validator
         @can(ability: "delete")
 }
