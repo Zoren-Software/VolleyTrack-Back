@@ -65,13 +65,4 @@ final class UserEditValidator extends Validator
             'rg.unique' => trans('UserEdit.rg_unique'),
         ];
     }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if ($this->arg('id') !== auth()->id()) {
-                $validator->errors()->add('password', 'Você não tem permissão para alterar a senha deste usuário.');
-            }
-        });
-    }
 }
