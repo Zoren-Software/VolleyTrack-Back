@@ -69,7 +69,6 @@ final class UserEditValidator extends Validator
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            dd(0);
             if ($this->arg('id') !== auth()->id()) {
                 $validator->errors()->add('password', 'Você não tem permissão para alterar a senha deste usuário.');
             }
