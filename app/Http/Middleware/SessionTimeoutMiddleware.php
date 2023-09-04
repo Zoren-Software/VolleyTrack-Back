@@ -9,7 +9,9 @@ class SessionTimeoutMiddleware
 {
     /**
      * Handle an incoming request.
+     *
      * @codeCoverageIgnore
+     *
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */

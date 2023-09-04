@@ -2,9 +2,9 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
+use App\Rules\OwnsPassword;
 use App\Rules\PermissionAssignment;
 use Illuminate\Validation\Rule;
-use App\Rules\OwnsPassword;
 use Nuwave\Lighthouse\Validation\Validator;
 
 final class UserEditValidator extends Validator

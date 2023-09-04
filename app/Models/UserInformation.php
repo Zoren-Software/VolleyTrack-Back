@@ -15,7 +15,7 @@ class UserInformation extends Model
     protected $fillable = [
         'cpf',
         'phone',
-        'rg'
+        'rg',
     ];
 
     public function user()

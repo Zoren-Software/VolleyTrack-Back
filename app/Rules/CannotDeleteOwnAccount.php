@@ -15,9 +15,8 @@ class CannotDeleteOwnAccount implements Rule
 
     public function passes($attribute, $value)
     {
-        return !in_array(auth()->id(), $this->userIds);
+        return ! in_array(auth()->id(), $this->userIds);
     }
-
 
     public function message()
     {

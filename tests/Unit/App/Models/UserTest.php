@@ -3,15 +3,12 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\User;
-use App\GraphQL\Mutations\UserMutation;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Permission\Models\Permission;
-use Mockery\MockInterface;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 
 class UserTest extends TestCase

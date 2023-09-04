@@ -59,7 +59,7 @@ class UserCreateValidator extends Validator
             'email.email' => trans('UserCreate.email_is_valid'),
             'email.unique' => trans('UserCreate.email_unique'),
             'cpf.unique' => trans('UserCreate.cpf_unique'),
-            'rg.unique' => trans('UserCreate.rg_unique')
+            'rg.unique' => trans('UserCreate.rg_unique'),
         ];
     }
 }

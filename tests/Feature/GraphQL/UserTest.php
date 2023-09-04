@@ -219,7 +219,7 @@ class UserTest extends TestCase
             $parameters['teamId'] = $team->id;
         }
 
-        if($parameters['name'] == null) {
+        if ($parameters['name'] == null) {
             $parameters['name'] = ' ';
         }
 
@@ -625,9 +625,9 @@ class UserTest extends TestCase
 
         $parameters['id'] = $user->id;
 
-        if($expectedMessage == 'UserEdit.email_is_valid') {
+        if ($expectedMessage == 'UserEdit.email_is_valid') {
             $parameters['email'] = 'notemail.com';
-        } elseif($expectedMessage != 'UserEdit.email_required') {
+        } elseif ($expectedMessage != 'UserEdit.email_required') {
             $parameters['email'] = $this->email;
         } else {
             $parameters['email'] = ' ';
@@ -635,8 +635,8 @@ class UserTest extends TestCase
 
         if ($expectedMessage == 'UserEdit.email_unique') {
             $userExist = User::factory()
-            ->has(Position::factory()->count(3))
-            ->create();
+                ->has(Position::factory()->count(3))
+                ->create();
 
             $parameters['email'] = $userExist->email;
         }
@@ -1013,11 +1013,11 @@ class UserTest extends TestCase
             $parameters['id'] = $data['error'];
         }
 
-        if($expectedMessage == 'UserDelete.cannot_delete_own_account') {
+        if ($expectedMessage == 'UserDelete.cannot_delete_own_account') {
             $parameters['id'] = $this->user->id;
         }
 
-        if($expectedMessage == 'UserDelete.ids_exists') {
+        if ($expectedMessage == 'UserDelete.ids_exists') {
             $parameters['id'] = User::max('id') + 1;
         }
 
