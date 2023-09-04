@@ -674,7 +674,7 @@ class UserTest extends TestCase
             'declare roleId is required, expected error' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -692,7 +692,7 @@ class UserTest extends TestCase
             'edit user with permission that shouldnt have, expected error' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -710,7 +710,7 @@ class UserTest extends TestCase
             'edit user without permission, expected error' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -785,7 +785,7 @@ class UserTest extends TestCase
             'edit user with team, success' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -805,7 +805,7 @@ class UserTest extends TestCase
             'edit user with position, success' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => $password,
                     'roleId' => [2],
                     'positionId' => [1],
@@ -825,7 +825,7 @@ class UserTest extends TestCase
             'edit user, success' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -844,7 +844,7 @@ class UserTest extends TestCase
             'edit user with 2 roles, success' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -863,7 +863,7 @@ class UserTest extends TestCase
             'text password less than 6 characters, expected error' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => '12345',
                     'positionId' => [1],
                     'teamId' => [1],
@@ -881,7 +881,7 @@ class UserTest extends TestCase
             'text password with 6 characters, success' => [
                 [
                     'name' => $faker->name,
-                    
+
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -918,7 +918,7 @@ class UserTest extends TestCase
                 [
                     'name' => ' ',
                     'password' => $password,
-                    
+
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
@@ -936,7 +936,7 @@ class UserTest extends TestCase
                 [
                     'name' => 'Th',
                     'password' => $password,
-                    
+
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
@@ -1013,6 +1013,10 @@ class UserTest extends TestCase
             $parameters['id'] = $data['error'];
         }
 
+        if($expectedMessage == 'UserDelete.ids_exists') {
+            $parameters['id'] = User::max('id') + 1;
+        }
+
         $response = $this->graphQL(
             'userDelete',
             $parameters,
@@ -1064,8 +1068,8 @@ class UserTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'type_message_error' => 'id',
+                'expected_message' => 'UserDelete.ids_exists',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userDelete,
