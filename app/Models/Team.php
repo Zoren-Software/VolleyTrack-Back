@@ -97,7 +97,7 @@ class Team extends Model
 
     public function scopeFilterIds(Builder $query, array $ids)
     {
-        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+        $query->when(isset($ids) && ! empty($ids), function ($query) use ($ids) {
             $query->whereIn('teams.id', $ids);
         });
     }
@@ -107,7 +107,7 @@ class Team extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['positionsIds']) &&
-            !empty($args['filter']['positionsIds']),
+            ! empty($args['filter']['positionsIds']),
             function ($query) use ($args) {
                 $query->whereHas('players', function ($query) use ($args) {
                     $query->whereHas('positions', function ($query) use ($args) {

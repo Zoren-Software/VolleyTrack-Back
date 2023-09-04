@@ -9,13 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Role;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\PermissionRegistrar;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasApiTokensContract
 {
@@ -79,7 +78,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
         return $relation->wherePivot(PermissionRegistrar::$teamsKey, getPermissionsTeamId())
             ->where(function ($q) {
-                $teamField = config('permission.table_names.roles').'.'.PermissionRegistrar::$teamsKey;
+                $teamField = config('permission.table_names.roles') . '.' . PermissionRegistrar::$teamsKey;
                 $q->whereNull($teamField)->orWhere($teamField, getPermissionsTeamId());
             });
     }
@@ -186,11 +185,9 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     *
      * @codeCoverageIgnore
      *
-     * @param mixed $args
-     *
+     * @param  mixed  $args
      * @return void
      */
     public function updateOrNewInformation($args)
@@ -209,8 +206,8 @@ class User extends Authenticatable implements HasApiTokensContract
             $attributes['rg'] = $args['rg'];
         }
 
-        if (!empty($attributes)) {
-            if (!$this->information) {
+        if (! empty($attributes)) {
+            if (! $this->information) {
                 $this->information = $this->information()->create($attributes);
             } else {
                 $this->information->fill($attributes);
@@ -311,7 +308,7 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['positionsIds']) &&
-            !empty($args['filter']['positionsIds']),
+            ! empty($args['filter']['positionsIds']),
             function ($query) use ($args) {
                 $query->whereHas('positions', function ($query) use ($args) {
                     $query->filterIds($args['filter']['positionsIds']);
@@ -325,7 +322,7 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['teamsIds']) &&
-            !empty($args['filter']['teamsIds']),
+            ! empty($args['filter']['teamsIds']),
             function ($query) use ($args) {
                 $query->whereHas('teams', function ($query) use ($args) {
                     $query->filterIds($args['filter']['teamsIds']);

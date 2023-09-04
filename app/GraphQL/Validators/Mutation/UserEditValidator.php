@@ -2,9 +2,9 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
+use App\Rules\OwnsPassword;
 use App\Rules\PermissionAssignment;
 use Illuminate\Validation\Rule;
-use App\Rules\OwnsPassword;
 use Nuwave\Lighthouse\Validation\Validator;
 
 final class UserEditValidator extends Validator
@@ -64,15 +64,5 @@ final class UserEditValidator extends Validator
             'cpf.unique' => trans('UserEdit.cpf_unique'),
             'rg.unique' => trans('UserEdit.rg_unique'),
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            dd(0);
-            if ($this->arg('id') !== auth()->id()) {
-                $validator->errors()->add('password', 'Você não tem permissão para alterar a senha deste usuário.');
-            }
-        });
     }
 }

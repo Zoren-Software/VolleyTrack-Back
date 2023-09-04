@@ -157,7 +157,7 @@ abstract class TestCase extends BaseTestCase
         $user->save();
 
         $this->email = $user->email;
-        
+
         $response = $this->graphQL(
             'login',
             [

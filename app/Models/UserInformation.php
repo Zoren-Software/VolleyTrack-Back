@@ -15,7 +15,7 @@ class UserInformation extends Model
     protected $fillable = [
         'cpf',
         'phone',
-        'rg'
+        'rg',
     ];
 
     public function user()
@@ -25,22 +25,25 @@ class UserInformation extends Model
 
     public function scopeFilterCPF(Builder $query, string $cpf)
     {
-        $query->when(isset($cpf), function ($query) use ($cpf) {
-            $query->where('user_information.cpf', 'like', $cpf);
+        $cleanCpf = preg_replace('/\D/', '', $cpf);
+        $query->when(isset($cleanCpf), function ($query) use ($cleanCpf) {
+            $query->where('user_information.cpf', 'like', "%$cleanCpf%");
         });
     }
 
     public function scopeFilterRG(Builder $query, string $rg)
     {
-        $query->when(isset($rg), function ($query) use ($rg) {
-            $query->where('user_information.rg', 'like', $rg);
+        $cleanRg = preg_replace('/\D/', '', $rg);
+        $query->when(isset($cleanRg), function ($query) use ($cleanRg) {
+            $query->where('user_information.rg', 'like', "%$cleanRg%");
         });
     }
 
     public function scopeFilterPhone(Builder $query, string $phone)
     {
-        $query->when(isset($phone), function ($query) use ($phone) {
-            $query->where('user_information.phone', 'like', $phone);
+        $cleanPhone = preg_replace('/\D/', '', $phone);
+        $query->when(isset($cleanPhone), function ($query) use ($cleanPhone) {
+            $query->where('user_information.phone', 'like', "%$cleanPhone%");
         });
     }
 }
