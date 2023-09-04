@@ -45,6 +45,8 @@ class Notification extends IlluminateNotification implements ShouldQueue
         $notificationTechnicianByEmail = false,
         $notificationTeamByEmail = false
     ) {
+        $this->queue = 'emails';
+
         $notificationTechnicianByEmail =
             $mock == 'notMock'
                 // @codeCoverageIgnoreStart
