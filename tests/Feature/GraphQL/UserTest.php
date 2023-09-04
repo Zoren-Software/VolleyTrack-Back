@@ -1013,6 +1013,10 @@ class UserTest extends TestCase
             $parameters['id'] = $data['error'];
         }
 
+        if($expectedMessage == 'UserDelete.cannot_delete_own_account') {
+            $parameters['id'] = $this->user->id;
+        }
+
         if($expectedMessage == 'UserDelete.ids_exists') {
             $parameters['id'] = User::max('id') + 1;
         }
@@ -1070,6 +1074,18 @@ class UserTest extends TestCase
                 ],
                 'type_message_error' => 'id',
                 'expected_message' => 'UserDelete.ids_exists',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userDelete,
+                ],
+                'hasPermission' => true,
+            ],
+            'delete user can not delete own account, expected error' => [
+                [
+                    'error' => 'this',
+                ],
+                'type_message_error' => 'id',
+                'expected_message' => 'UserDelete.cannot_delete_own_account',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userDelete,
