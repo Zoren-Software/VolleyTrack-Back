@@ -618,6 +618,20 @@ class UserTest extends TestCase
 
         $user = User::find($this->user->id);
 
+        if(isset($parameters['cpf']) && $parameters['cpf']) {
+            $parameters['cpf'] = User::factory()->create()->information->cpf;
+        } elseif(isset($parameters['cpf']) && !$parameters['cpf']) {
+            $faker = Faker::create();
+            $parameters['cpf'] = (string) $faker->numberBetween(10000000000, 99999999999);
+        }
+
+        if(isset($parameters['rg']) && $parameters['rg']) {
+            $parameters['rg'] = User::factory()->create()->information->rg;
+        } elseif(isset($parameters['rg']) && !$parameters['rg']) {
+            $faker = Faker::create();
+            $parameters['rg'] = (string)  $faker->numberBetween(100000000, 999999999);
+        }
+
         if ($hasTeam) {
             $team = Team::factory()->create();
             $parameters['teamId'] = $team->id;
@@ -664,8 +678,7 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
-        $cpfExistent = UserInformation::factory()->create()->cpf;
-        $rgExistent = UserInformation::factory()->create()->rg;
+
 
         $password = env('PASSWORD_TEST', '123456');
         $userEdit = ['userEdit'];
@@ -728,8 +741,8 @@ class UserTest extends TestCase
             'edit user with cpf, rg and phone, success' => [
                 [
                     'name' => $faker->name,
-                    'cpf' => $cpfExistent,
-                    'rg' => $rgExistent,
+                    'cpf' => false,
+                    'rg' => false,
                     'phone' => $faker->phoneNumber,
                     'password' => $password,
                     'positionId' => [1],
@@ -749,7 +762,7 @@ class UserTest extends TestCase
             'edit user with cpf not unique, expected error' => [
                 [
                     'name' => $faker->name,
-                    'cpf' => $cpfExistent,
+                    'cpf' => true,
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
@@ -767,7 +780,7 @@ class UserTest extends TestCase
             'edit user with rg not unique, expected error' => [
                 [
                     'name' => $faker->name,
-                    'rg' => $rgExistent,
+                    'rg' => true,
                     'password' => $password,
                     'positionId' => [1],
                     'teamId' => [1],
