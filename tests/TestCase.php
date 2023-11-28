@@ -85,7 +85,7 @@ abstract class TestCase extends BaseTestCase
 
         Artisan::call('migrate --seed');
 
-        if (!Tenant::find($tenantId)) {
+        if (! Tenant::find($tenantId)) {
             $tenant = Tenant::create(['id' => $tenantId]);
             Tenant::create(['id' => $tenantIdLogs]);
             $tenant->domains()->create(['domain' => $tenantId . '.' . env('APP_HOST')]);
@@ -239,8 +239,10 @@ abstract class TestCase extends BaseTestCase
                 $queryPart .= $this->converteDadosSaidaGraphQL($subKey, $subValue);
             }
             $queryPart .= ' }';
+
             return $queryPart;
         }
+
         return " $value ";
     }
 
@@ -331,7 +333,7 @@ abstract class TestCase extends BaseTestCase
     public function assertMessageError($type_message_error, $response, bool $permission, $expected_message)
     {
         if ($type_message_error) {
-            if (!$permission) {
+            if (! $permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
                 if (isset($response->json()['errors'][0]['extensions'])) {
