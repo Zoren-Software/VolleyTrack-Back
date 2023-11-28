@@ -19,6 +19,7 @@ class CreateUsersInformationsTable extends Migration
             $table->string('cpf')->nullable();
             $table->string('phone')->nullable();
             $table->string('rg')->nullable();
+            $table->date('birth_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
