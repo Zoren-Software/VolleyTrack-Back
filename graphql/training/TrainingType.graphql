@@ -27,10 +27,10 @@ type Training {
     status: Boolean
 
     "Training dateStart. Must contain a date greater than dateEnd. Is required. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-    dateStart: String @rename(attribute: "date_start")
+    dateStart: DateTime @rename(attribute: "date_start")
 
     "Training dateEnd. Must contain a date less than dateStart. Is required. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-    dateEnd: String @rename(attribute: "date_end")
+    dateEnd: DateTime @rename(attribute: "date_end")
 
     "Training description."
     description: String

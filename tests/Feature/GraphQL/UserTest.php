@@ -392,6 +392,26 @@ class UserTest extends TestCase
                 'hasTeam' => false,
                 'hasPermission' => true,
             ],
+            'create user with birth date, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [3],
+                    'password' => $password,
+                    'birthDate' => $faker->date(),
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
             'create user with 2 roles, success' => [
                 [
                     'name' => $faker->name,
@@ -840,6 +860,26 @@ class UserTest extends TestCase
                     'name' => $faker->name,
 
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'edit user with birth date, success' => [
+                [
+                    'name' => $faker->name,
+
+                    'password' => $password,
+                    'birthDate' => $faker->date(),
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],

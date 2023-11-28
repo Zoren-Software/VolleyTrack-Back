@@ -6,6 +6,7 @@ extend type Mutation @guard {
         cpf: String
         rg: String
         phone: String
+        birthDate: String
         roleId: [Int!]!
         positionId: [Int]
         teamId: [Int]
@@ -22,6 +23,7 @@ extend type Mutation @guard {
         cpf: String
         rg: String
         phone: String
+        birthDate: String
         roleId: [Int!]!
         positionId: [Int]
         teamId: [Int]

@@ -20,6 +20,7 @@ class UserInformationFactory extends Factory
             'cpf' => $this->faker->numberBetween(10000000000, 99999999999),
             'rg' => $this->faker->numberBetween(100000000, 999999999),
             'phone' => $this->faker->phoneNumber(),
+            'birth_date' => $this->faker->date(),
         ];
     }
 }

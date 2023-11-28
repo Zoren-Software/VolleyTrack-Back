@@ -4,7 +4,7 @@ type UserInformation {
     id: ID!
 
     "User ID."
-    user_id: Int!
+    userId: Int! @rename(attribute: "user_id")
 
     "User relation."
     user: User @belongsTo(relation: "user")
@@ -17,6 +17,9 @@ type UserInformation {
 
     "Phone number."
     phone: String
+
+    "Birth date. A date string with format `Y-m-d`, e.g. `2018-05-23`."
+    birthDate: Date @rename(attribute: "birth_date")
 
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     createdAt: DateTime! @rename(attribute: "created_at")
