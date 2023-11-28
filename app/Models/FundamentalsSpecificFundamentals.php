@@ -9,8 +9,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class FundamentalsSpecificFundamentals extends Pivot
 {
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     /**
      * Indicates if the IDs are auto-incrementing.

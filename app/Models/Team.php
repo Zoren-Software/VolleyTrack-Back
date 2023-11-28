@@ -12,8 +12,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Team extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',

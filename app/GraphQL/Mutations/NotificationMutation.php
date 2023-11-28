@@ -7,9 +7,9 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class NotificationMutation
 {
-    private null|User $user;
+    private ?User $user;
 
-    public function __construct(null|User $user = null)
+    public function __construct(User $user = null)
     {
         $this->user = $user;
     }

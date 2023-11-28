@@ -16,8 +16,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Training extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'team_id',
@@ -122,7 +122,7 @@ class Training extends Model
      * @param  null  $daysNotification
      * @return void
      */
-    public function sendNotificationTechnicians(int|null $daysNotification = null)
+    public function sendNotificationTechnicians(int $daysNotification = null)
     {
         $this->team->technicians()->each(function ($technician) use ($daysNotification) {
             if (
@@ -151,7 +151,7 @@ class Training extends Model
      *
      * @return void
      */
-    public function confirmationsPlayers(int|null $trainingId = null, int|null $daysNotification = null)
+    public function confirmationsPlayers(int $trainingId = null, int $daysNotification = null)
     {
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
         $this->team->players()->each(function ($player) use ($trainingId, $daysNotification) {
