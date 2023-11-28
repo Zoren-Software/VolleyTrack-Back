@@ -16,6 +16,7 @@ class UserInformation extends Model
         'cpf',
         'phone',
         'rg',
+        'birth_date',
     ];
 
     public function user()
