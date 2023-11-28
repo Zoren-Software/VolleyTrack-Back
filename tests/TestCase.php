@@ -223,28 +223,27 @@ abstract class TestCase extends BaseTestCase
         $query .= "{$inputClose}{$closeOpen}";
 
         foreach ($dadosSaida as $key => $value) {
-            if (is_array($value)) {
-                $total = count($value);
-                $count = 0;
-
-                foreach ($value as $newValue) {
-                    if ($count == 0) {
-                        $query .= " $key {";
-                    }
-                    $query .= " $newValue";
-                    $count++;
-                    if ($count == $total) {
-                        $query .= '}';
-                    }
-                }
-            } else {
-                $query .= " $value ";
-            }
+            $query .= $this->converteDadosSaidaGraphQL($key, $value);
         }
 
         $query .= "{$closeExit}";
 
         return $query;
+    }
+
+    private function converteDadosSaidaGraphQL($key, $value): string
+    {
+        if (is_array($value)) {
+            $queryPart = " $key {";
+            foreach ($value as $subKey => $subValue) {
+                $queryPart .= $this->converteDadosSaidaGraphQL($subKey, $subValue);
+            }
+            $queryPart .= ' }';
+
+            return $queryPart;
+        }
+
+        return " $value ";
     }
 
     private function converteDadosArrayEntrada(string $key, array $value): string

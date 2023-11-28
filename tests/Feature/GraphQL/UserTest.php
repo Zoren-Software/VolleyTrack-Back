@@ -5,7 +5,6 @@ namespace Tests\Feature\GraphQL;
 use App\Models\Position;
 use App\Models\Team;
 use App\Models\User;
-use App\Models\UserInformation;
 use Faker\Factory as Faker;
 use Tests\TestCase;
 
@@ -638,18 +637,18 @@ class UserTest extends TestCase
 
         $user = User::find($this->user->id);
 
-        if(isset($parameters['cpf']) && $parameters['cpf']) {
+        if (isset($parameters['cpf']) && $parameters['cpf']) {
             $parameters['cpf'] = User::factory()->create()->information->cpf;
-        } elseif(isset($parameters['cpf']) && !$parameters['cpf']) {
+        } elseif (isset($parameters['cpf']) && ! $parameters['cpf']) {
             $faker = Faker::create();
             $parameters['cpf'] = (string) $faker->numberBetween(10000000000, 99999999999);
         }
 
-        if(isset($parameters['rg']) && $parameters['rg']) {
+        if (isset($parameters['rg']) && $parameters['rg']) {
             $parameters['rg'] = User::factory()->create()->information->rg;
-        } elseif(isset($parameters['rg']) && !$parameters['rg']) {
+        } elseif (isset($parameters['rg']) && ! $parameters['rg']) {
             $faker = Faker::create();
-            $parameters['rg'] = (string)  $faker->numberBetween(100000000, 999999999);
+            $parameters['rg'] = (string) $faker->numberBetween(100000000, 999999999);
         }
 
         if ($hasTeam) {
@@ -697,8 +696,6 @@ class UserTest extends TestCase
     public static function userEditProvider()
     {
         $faker = Faker::create();
-
-
 
         $password = env('PASSWORD_TEST', '123456');
         $userEdit = ['userEdit'];

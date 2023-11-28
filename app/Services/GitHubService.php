@@ -9,8 +9,6 @@ final class GitHubService extends Model
 {
     /**
      * @codeCoverageIgnore
-     *
-     * @param  GuzzleClient  $client
      */
     public function __construct(GuzzleClient $client = null)
     {
