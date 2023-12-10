@@ -1,0 +1,15 @@
+"TrainingSearchInput"
+input TrainingSearchInput {
+
+    "String to search for in users name"
+    search: String
+
+    "Filter by positions ids"
+    usersIds: [Int]
+
+    "Filter by team ids"
+    teamsIds: [Int]
+
+    "Filter by training dateStart"
+    dateStart: String
+}
