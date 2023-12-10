@@ -72,7 +72,7 @@ class User extends Authenticatable implements HasApiTokensContract
             PermissionRegistrar::$pivotRole
         );
 
-        if (!PermissionRegistrar::$teams) {
+        if (! PermissionRegistrar::$teams) {
             return $relation;
         }
 
@@ -214,8 +214,8 @@ class User extends Authenticatable implements HasApiTokensContract
             $attributes['birth_date'] = $args['birth_date'];
         }
 
-        if (!empty($attributes)) {
-            if (!$this->information) {
+        if (! empty($attributes)) {
+            if (! $this->information) {
                 $this->information = $this->information()->create($attributes);
             } else {
                 $this->information->fill($attributes);
@@ -316,7 +316,7 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['positionsIds']) &&
-            !empty($args['filter']['positionsIds']),
+            ! empty($args['filter']['positionsIds']),
             function ($query) use ($args) {
                 $query->whereHas('positions', function ($query) use ($args) {
                     $query->filterIds($args['filter']['positionsIds']);
@@ -330,7 +330,7 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['teamsIds']) &&
-            !empty($args['filter']['teamsIds']),
+            ! empty($args['filter']['teamsIds']),
             function ($query) use ($args) {
                 $query->whereHas('teams', function ($query) use ($args) {
                     $query->filterIds($args['filter']['teamsIds']);
@@ -341,7 +341,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function scopeFilterIds(Builder $query, array $ids)
     {
-        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+        $query->when(isset($ids) && ! empty($ids), function ($query) use ($ids) {
             $query->whereIn('users.id', $ids);
         });
     }

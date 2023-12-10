@@ -281,7 +281,7 @@ class Training extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['teamsIds']) &&
-            !empty($args['filter']['teamsIds']),
+            ! empty($args['filter']['teamsIds']),
             function ($query) use ($args) {
                 $query->whereHas('team', function ($query) use ($args) {
                     $query->filterIds($args['filter']['teamsIds']);
@@ -295,7 +295,7 @@ class Training extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['usersIds']) &&
-            !empty($args['filter']['usersIds']),
+            ! empty($args['filter']['usersIds']),
             function ($query) use ($args) {
                 $query->whereHas('user', function ($query) use ($args) {
                     $query->filterIds($args['filter']['usersIds']);
