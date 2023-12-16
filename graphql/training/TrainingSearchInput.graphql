@@ -10,6 +10,9 @@ input TrainingSearchInput {
     "Filter by team ids"
     teamsIds: [Int]
 
+    "Filter by players ids"
+    playersIds: [Int]
+
     "Filter by training dateStart"
     dateStart: String
 }

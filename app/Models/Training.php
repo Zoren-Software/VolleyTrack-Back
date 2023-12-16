@@ -287,7 +287,17 @@ class Training extends Model
                     $query->filterIds($args['filter']['teamsIds']);
                 });
             }
+        )->when(
+            isset($args['filter']) &&
+            isset($args['filter']['playersIds']) &&
+            ! empty($args['filter']['playersIds']),
+            function ($query) use ($args) {
+                $query->whereHas('team', function ($query) use ($args) {
+                    $query->filterByTeamPlayer($args);
+                });
+            }
         );
+
     }
 
     public function scopeFilterUser(Builder $query, array $args)
