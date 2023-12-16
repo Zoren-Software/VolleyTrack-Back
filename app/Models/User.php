@@ -240,9 +240,9 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
             $query
                 ->filterName($args['filter']['search'])
+                ->filterEmail($args['filter']['search'])
                 ->orWhere(function ($query) use ($args) {
                     $query
-                        ->filterEmail($args['filter']['search'])
                         ->filterPhone($args['filter']['search'])
                         ->filterCPF($args['filter']['search'])
                         ->filterRG($args['filter']['search'])
@@ -262,7 +262,7 @@ class User extends Authenticatable implements HasApiTokensContract
     public function scopeFilterEmail(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
-            $query->where('users.email', 'like', $search);
+            $query->orWhere('users.email', 'like', $search);
         });
     }
 
