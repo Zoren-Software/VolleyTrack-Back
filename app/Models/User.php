@@ -31,6 +31,7 @@ class User extends Authenticatable implements HasApiTokensContract
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'name',
         'email',
         'password',
@@ -60,6 +61,11 @@ class User extends Authenticatable implements HasApiTokensContract
     public function hasPermissionsViaRoles(string $namePermission, array $permissions): bool
     {
         return in_array($namePermission, $permissions);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function rolesCustom(): BelongsToMany
