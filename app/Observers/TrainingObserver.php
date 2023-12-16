@@ -37,4 +37,18 @@ class TrainingObserver
             $training->sendNotificationPlayersTrainingCancelled();
         }
     }
+
+    public function creating(Training $training)
+    {
+        if (!$training->isDirty('user_id')) {
+            $training->user_id = auth()->user()->id ?? null;
+        }
+    }
+
+    public function updating(Training $training)
+    {
+        if (!$training->isDirty('user_id')) {
+            $training->user_id = auth()->user()->id ?? null;
+        }
+    }
 }

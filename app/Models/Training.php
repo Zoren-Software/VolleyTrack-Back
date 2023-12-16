@@ -93,9 +93,6 @@ class Training extends Model
                 'required',
                 'min:3',
             ],
-            'userId' => [
-                'required',
-            ],
             'teamId' => [
                 'required',
             ],
@@ -281,7 +278,7 @@ class Training extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['teamsIds']) &&
-            ! empty($args['filter']['teamsIds']),
+            !empty($args['filter']['teamsIds']),
             function ($query) use ($args) {
                 $query->whereHas('team', function ($query) use ($args) {
                     $query->filterIds($args['filter']['teamsIds']);
@@ -290,7 +287,7 @@ class Training extends Model
         )->when(
             isset($args['filter']) &&
             isset($args['filter']['playersIds']) &&
-            ! empty($args['filter']['playersIds']),
+            !empty($args['filter']['playersIds']),
             function ($query) use ($args) {
                 $query->whereHas('team', function ($query) use ($args) {
                     $query->filterByTeamPlayer($args);
@@ -305,7 +302,7 @@ class Training extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['usersIds']) &&
-            ! empty($args['filter']['usersIds']),
+            !empty($args['filter']['usersIds']),
             function ($query) use ($args) {
                 $query->whereHas('user', function ($query) use ($args) {
                     $query->filterIds($args['filter']['usersIds']);

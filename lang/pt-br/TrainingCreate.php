@@ -16,7 +16,6 @@ return [
     'name_required' => 'O campo nome é obrigatório.',
     'name_min' => 'O campo nome deve conter no mínimo 3 caracteres.',
     'team_id_required' => 'O campo team_id é obrigatório.',
-    'user_id_required' => 'O campo user_id é obrigatório.',
     'date_start_required' => 'O campo data inicial é obrigatório.',
     'date_start_type_date' => 'O campo data inicial deve ser uma data válida.',
     'date_start_date_format' => 'O campo data inicial deve estar no formato Y-m-d H:i:s.',
