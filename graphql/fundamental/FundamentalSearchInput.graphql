@@ -1,0 +1,9 @@
+"FundamentalSearchInput"
+input FundamentalSearchInput {
+
+    "String to search for in users name"
+    search: String
+
+    "Filter by positions ids"
+    usersIds: [Int]
+}

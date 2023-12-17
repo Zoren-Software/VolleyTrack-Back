@@ -10,7 +10,7 @@ extend type Query @guard {
 
     "List multiple trainings."
     trainings(        
-         "Specific filter search trainings."
+        "Specific filter search trainings."
         filter: TrainingSearchInput
 
     ): [Training!]! 
