@@ -61,6 +61,7 @@ class Fundamental extends Model
     {
         return $this
             ->filterSearch($args)
+            ->filterIgnores($args)
             ->filterUser($args);
     }
 
@@ -104,5 +105,12 @@ class Fundamental extends Model
                 });
             }
         );
+    }
+
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('fundamentals.id', $args['filter']['ignoreIds']);
+        });
     }
 }

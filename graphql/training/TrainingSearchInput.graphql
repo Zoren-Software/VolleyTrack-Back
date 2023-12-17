@@ -13,6 +13,9 @@ input TrainingSearchInput {
     "Filter by players ids"
     playersIds: [Int]
 
+    "Ignore ids selected"
+    ignoreIds: [Int]
+
     "Filter by training dateStart"
     dateStart: String
 }

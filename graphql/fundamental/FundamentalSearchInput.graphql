@@ -6,4 +6,7 @@ input FundamentalSearchInput {
 
     "Filter by positions ids"
     usersIds: [Int]
+
+    "Ignore ids selected"
+    ignoreIds: [Int]
 }

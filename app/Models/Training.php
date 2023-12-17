@@ -230,6 +230,7 @@ class Training extends Model
     {
         return $this
             ->filterSearch($args)
+            ->filterIgnores($args)
             ->filterTeam($args)
             ->filterUser($args);
         //->filterDateStart($args);
@@ -309,5 +310,12 @@ class Training extends Model
                 });
             }
         );
+    }
+
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('trainings.id', $args['filter']['ignoreIds']);
+        });
     }
 }
