@@ -68,7 +68,8 @@ class SpecificFundamental extends Model
         return $this
             ->filterSearch($args)
             ->filterIgnores($args)
-            ->filterUser($args);
+            ->filterUser($args)
+            ->filterFundamentals($args);
     }
 
     public function scopeFilterSearch(Builder $query, array $args)
@@ -118,5 +119,19 @@ class SpecificFundamental extends Model
         $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
             $query->whereNotIn('specific_fundamentals.id', $args['filter']['ignoreIds']);
         });
+    }
+
+    public function scopeFilterFundamentals(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['fundamentalsIds']) &&
+            !empty($args['filter']['fundamentalsIds']),
+            function ($query) use ($args) {
+                $query->whereHas('fundamentals', function ($query) use ($args) {
+                    $query->filterIds($args['filter']['fundamentalsIds']);
+                });
+            }
+        );
     }
 }

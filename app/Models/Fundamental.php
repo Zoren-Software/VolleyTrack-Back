@@ -113,4 +113,11 @@ class Fundamental extends Model
             $query->whereNotIn('fundamentals.id', $args['filter']['ignoreIds']);
         });
     }
+
+    public function scopeFilterIds(Builder $query, array $ids)
+    {
+        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+            $query->whereIn('fundamentals.id', $ids);
+        });
+    }
 }

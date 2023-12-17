@@ -9,4 +9,7 @@ input SpecificFundamentalSearchInput {
 
     "Ignore ids selected"
     ignoreIds: [Int]
+
+    "Filter by fundamentals ids"
+    fundamentalsIds: [Int]
 }
