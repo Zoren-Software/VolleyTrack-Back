@@ -351,4 +351,10 @@ class User extends Authenticatable implements HasApiTokensContract
             $query->whereIn('users.id', $ids);
         });
     }
+
+    public function saveLastUserChange()
+    {
+        $this->user_id = auth()->user()->id;
+        $this->save();
+    }
 }
