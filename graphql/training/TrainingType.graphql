@@ -18,6 +18,12 @@ type Training {
     "Team relation."
     team: Team @belongsTo
 
+    "Fundamentals relation."
+    fundamentals: [Fundamental] @belongsToMany
+
+    "Specific Fundamentals relation."
+    specificFundamentals: [SpecificFundamental] @belongsToMany
+
     "Confirmations Training relation."
     confirmationsTraining: [ConfirmationTraining] @hasMany
 
