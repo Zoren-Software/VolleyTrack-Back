@@ -71,7 +71,8 @@ class Team extends Model
         return $this
             ->filterSearch($args)
             ->filterIgnores($args)
-            ->filterPosition($args);
+            ->filterPosition($args)
+            ->filterByTeamPlayer($args);
     }
 
     public function scopeFilterIgnores(Builder $query, array $args)
@@ -113,6 +114,20 @@ class Team extends Model
                     $query->whereHas('positions', function ($query) use ($args) {
                         $query->filterIds($args['filter']['positionsIds']);
                     });
+                });
+            }
+        );
+    }
+
+    public function scopeFilterByTeamPlayer(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['playersIds']) &&
+            ! empty($args['filter']['playersIds']),
+            function ($query) use ($args) {
+                $query->whereHas('players', function ($query) use ($args) {
+                    $query->filterIds($args['filter']['playersIds']);
                 });
             }
         );

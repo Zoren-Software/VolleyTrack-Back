@@ -7,6 +7,7 @@ use App\Notifications\Training\NotificationConfirmationTrainingNotification;
 use App\Notifications\Training\TrainingNotification;
 use App\Rules\RelationshipSpecificFundamental;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -91,9 +92,6 @@ class Training extends Model
             'name' => [
                 'required',
                 'min:3',
-            ],
-            'userId' => [
-                'required',
             ],
             'teamId' => [
                 'required',
@@ -226,5 +224,98 @@ class Training extends Model
             'pendingPercentage' => $pending > 0 ? ($pending / ($total) * 100) : 0,
             'rejectedPercentage' => $rejected > 0 ? ($rejected / ($total) * 100) : 0,
         ];
+    }
+
+    public function list(array $args)
+    {
+        return $this
+            ->filterSearch($args)
+            ->filterIgnores($args)
+            ->filterTeam($args)
+            ->filterUser($args);
+        //->filterDateStart($args);
+    }
+
+    public function scopeFilterSearch(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+            $query
+                ->filterName($args['filter']['search'])
+                ->orWhere(function ($query) use ($args) {
+                    $query
+                        ->filterUserName($args['filter']['search'])
+                        ->filterTeamName($args['filter']['search']);
+                });
+        });
+    }
+
+    public function scopeFilterName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('trainings.name', 'like', $search);
+        });
+    }
+
+    public function scopeFilterTeamName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('team', function ($query) use ($search) {
+                $query->filterName($search);
+            });
+        });
+    }
+
+    public function scopeFilterUserName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->orWhereHas('user', function ($query) use ($search) {
+                $query->filterName($search);
+            });
+        });
+    }
+
+    public function scopeFilterTeam(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['teamsIds']) &&
+            !empty($args['filter']['teamsIds']),
+            function ($query) use ($args) {
+                $query->whereHas('team', function ($query) use ($args) {
+                    $query->filterIds($args['filter']['teamsIds']);
+                });
+            }
+        )->when(
+            isset($args['filter']) &&
+            isset($args['filter']['playersIds']) &&
+            !empty($args['filter']['playersIds']),
+            function ($query) use ($args) {
+                $query->whereHas('team', function ($query) use ($args) {
+                    $query->filterByTeamPlayer($args);
+                });
+            }
+        );
+
+    }
+
+    public function scopeFilterUser(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['usersIds']) &&
+            !empty($args['filter']['usersIds']),
+            function ($query) use ($args) {
+                $query->whereHas('user', function ($query) use ($args) {
+                    $query->filterIds($args['filter']['usersIds']);
+                });
+            }
+        );
+    }
+
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('trainings.id', $args['filter']['ignoreIds']);
+        });
     }
 }
