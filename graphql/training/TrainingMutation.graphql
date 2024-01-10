@@ -15,7 +15,7 @@ extend type Mutation @guard {
         # @broadcast(subscription: "notification")
 
     trainingEdit(
-        id: Int!
+        id: ID!
         teamId: Int @rename(attribute: "team_id")
         fundamentalId: [Int] @rename(attribute: "fundamental_id")
         specificFundamentalId: [Int] @rename(attribute: "specific_fundamental_id")
