@@ -1,8 +1,7 @@
 
 extend type Mutation @guard {
     trainingCreate(
-        userId: Int! @rename(attribute: "user_id") 
-        teamId: Int! @rename(attribute: "team_id")
+        teamId: Int @rename(attribute: "team_id")
         fundamentalId: [Int] @rename(attribute: "fundamental_id")
         specificFundamentalId: [Int] @rename(attribute: "specific_fundamental_id")
         name: String!
@@ -16,9 +15,8 @@ extend type Mutation @guard {
         # @broadcast(subscription: "notification")
 
     trainingEdit(
-        id: Int!
-        userId: Int! @rename(attribute: "user_id") 
-        teamId: Int! @rename(attribute: "team_id")
+        id: ID!
+        teamId: Int @rename(attribute: "team_id")
         fundamentalId: [Int] @rename(attribute: "fundamental_id")
         specificFundamentalId: [Int] @rename(attribute: "specific_fundamental_id")
         status: Boolean

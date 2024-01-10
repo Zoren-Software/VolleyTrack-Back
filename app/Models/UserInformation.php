@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Observers\Logs\UserInformationObserver;
 
 class UserInformation extends Model
 {
@@ -18,6 +19,12 @@ class UserInformation extends Model
         'rg',
         'birth_date',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        UserInformation::observe(UserInformationObserver::class);
+    }
 
     public function user()
     {

@@ -31,6 +31,7 @@ class User extends Authenticatable implements HasApiTokensContract
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'name',
         'email',
         'password',
@@ -62,6 +63,11 @@ class User extends Authenticatable implements HasApiTokensContract
         return in_array($namePermission, $permissions);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function rolesCustom(): BelongsToMany
     {
         $relation = $this->morphToMany(
@@ -72,7 +78,7 @@ class User extends Authenticatable implements HasApiTokensContract
             PermissionRegistrar::$pivotRole
         );
 
-        if (! PermissionRegistrar::$teams) {
+        if (!PermissionRegistrar::$teams) {
             return $relation;
         }
 
@@ -214,8 +220,8 @@ class User extends Authenticatable implements HasApiTokensContract
             $attributes['birth_date'] = $args['birth_date'];
         }
 
-        if (! empty($attributes)) {
-            if (! $this->information) {
+        if (!empty($attributes)) {
+            if (!$this->information) {
                 $this->information = $this->information()->create($attributes);
             } else {
                 $this->information->fill($attributes);
@@ -239,16 +245,16 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
             $query
-                ->filterName($args['filter']['search'])
-                ->orWhere(function ($query) use ($args) {
-                    $query
-                        ->filterEmail($args['filter']['search'])
-                        ->filterPhone($args['filter']['search'])
-                        ->filterCPF($args['filter']['search'])
-                        ->filterRG($args['filter']['search'])
-                        ->filterPositionName($args['filter']['search'])
-                        ->filterTeamName($args['filter']['search']);
-                });
+            ->where(function ($query) use ($args) {
+                $query
+                    ->filterName($args['filter']['search'])
+                    ->filterEmail($args['filter']['search'])
+                    ->filterPhone($args['filter']['search'])
+                    ->filterCPF($args['filter']['search'])
+                    ->filterRG($args['filter']['search'])
+                    ->filterPositionName($args['filter']['search'])
+                    ->filterTeamName($args['filter']['search']);
+            });
         });
     }
 
@@ -262,14 +268,14 @@ class User extends Authenticatable implements HasApiTokensContract
     public function scopeFilterEmail(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
-            $query->where('users.email', 'like', $search);
+            $query->orWhere('users.email', 'like', $search);
         });
     }
 
     public function scopeFilterCPF(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
-            $query->orWhereHas('information', function ($query) use ($search) {
+            $query->whereHas('information', function ($query) use ($search) {
                 $query->filterCPF($search);
             });
         });
@@ -278,7 +284,7 @@ class User extends Authenticatable implements HasApiTokensContract
     public function scopeFilterRG(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
-            $query->orWhereHas('information', function ($query) use ($search) {
+            $query->whereHas('information', function ($query) use ($search) {
                 $query->filterRG($search);
             });
         });
@@ -287,7 +293,7 @@ class User extends Authenticatable implements HasApiTokensContract
     public function scopeFilterPhone(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
-            $query->orWhereHas('information', function ($query) use ($search) {
+            $query->whereHas('information', function ($query) use ($search) {
                 $query->filterPhone($search);
             });
         });
@@ -316,7 +322,7 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['positionsIds']) &&
-            ! empty($args['filter']['positionsIds']),
+            !empty($args['filter']['positionsIds']),
             function ($query) use ($args) {
                 $query->whereHas('positions', function ($query) use ($args) {
                     $query->filterIds($args['filter']['positionsIds']);
@@ -330,12 +336,25 @@ class User extends Authenticatable implements HasApiTokensContract
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['teamsIds']) &&
-            ! empty($args['filter']['teamsIds']),
+            !empty($args['filter']['teamsIds']),
             function ($query) use ($args) {
                 $query->whereHas('teams', function ($query) use ($args) {
                     $query->filterIds($args['filter']['teamsIds']);
                 });
             }
         );
+    }
+
+    public function scopeFilterIds(Builder $query, array $ids)
+    {
+        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+            $query->whereIn('users.id', $ids);
+        });
+    }
+
+    public function saveLastUserChange()
+    {
+        $this->user_id = auth()->user()->id;
+        $this->save();
     }
 }

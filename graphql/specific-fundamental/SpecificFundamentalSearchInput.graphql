@@ -1,0 +1,15 @@
+"SpecificFundamentalSearchInput"
+input SpecificFundamentalSearchInput {
+
+    "String to search for in users name"
+    search: String
+
+    "Filter by positions ids"
+    usersIds: [Int]
+
+    "Ignore ids selected"
+    ignoreIds: [Int]
+
+    "Filter by fundamentals ids"
+    fundamentalsIds: [Int]
+}

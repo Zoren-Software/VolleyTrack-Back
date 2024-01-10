@@ -28,7 +28,6 @@ class TrainingCreateValidator extends Validator
             'name.required' => trans('TrainingCreate.name_required'),
             'name.min' => trans('TrainingCreate.name_min'),
             'teamId.required' => trans('TrainingCreate.team_id_required'),
-            'userId.required' => trans('TrainingCreate.user_id_required'),
             'dateStart.required' => trans('TrainingCreate.date_start_required'),
             'dateStart.date' => trans('TrainingCreate.date_start_type_date'),
             'dateStart.date_format' => trans('TrainingCreate.date_start_date_format'),

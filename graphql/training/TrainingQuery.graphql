@@ -10,19 +10,10 @@ extend type Query @guard {
 
     "List multiple trainings."
     trainings(        
-        "Filters by the training's user_id."
-        user_id: Int @where(operator: "eq", field: "user_id")
-
-        "Filters by the training's team_id."
-        team_id: Int @where(operator: "eq", field: "team_id")
-
-        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-        name: String @where(operator: "like")
-
-        "Filters by the training's date."
-        dateStart: String @where(operator: "eq", field: "date_start")
+        "Specific filter search trainings."
+        filter: TrainingSearchInput
 
     ): [Training!]! 
+        @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\TrainingQuery@list")
         @can(ability: "view", resolved: true)
-        @paginate(defaultCount: 10, maxCount: 100)
 }
