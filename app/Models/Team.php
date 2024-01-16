@@ -72,7 +72,9 @@ class Team extends Model
             ->filterSearch($args)
             ->filterIgnores($args)
             ->filterPosition($args)
-            ->filterByTeamPlayer($args);
+            ->filterByTeamPlayer($args)
+            ->filterPlayers($args)
+            ->filterUsers($args);
     }
 
     public function scopeFilterIgnores(Builder $query, array $args)
@@ -129,6 +131,32 @@ class Team extends Model
                 $query->whereHas('players', function ($query) use ($args) {
                     $query->filterIds($args['filter']['playersIds']);
                 });
+            }
+        );
+    }
+
+    public function scopeFilterPlayers(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['playersIds']) &&
+            ! empty($args['filter']['playersIds']),
+            function ($query) use ($args) {
+                $query->whereHas('players', function ($query) use ($args) {
+                    $query->filterIds($args['filter']['playersIds']);
+                });
+            }
+        );
+    }
+
+    public function scopeFilterUsers(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['usersIds']) &&
+            ! empty($args['filter']['usersIds']),
+            function ($query) use ($args) {
+                $query->where('teams.user_id', $args['filter']['usersIds']);
             }
         );
     }
