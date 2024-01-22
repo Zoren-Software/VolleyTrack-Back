@@ -32,5 +32,6 @@ extend type Mutation @guard {
     trainingDelete(id: [ID!]!): [Training]
         @field(resolver: "TrainingMutation@delete")
         @can(ability: "delete")
+        @validator
         # @broadcast(subscription: "notification")
 }
