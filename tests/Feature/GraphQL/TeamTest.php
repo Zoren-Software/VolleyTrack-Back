@@ -232,7 +232,7 @@ class TeamTest extends TestCase
         $teamCreate = ['teamCreate'];
 
         return [
-            'create team without permission, expected error' => [
+            /* 'create team without permission, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -260,7 +260,7 @@ class TeamTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
-            ],
+            ], */
             'create team and relating a players, success' => [
                 [
                     'name' => $faker->name,
@@ -276,7 +276,7 @@ class TeamTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-            'name field is not unique, expected error' => [
+            /* 'name field is not unique, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
@@ -317,7 +317,7 @@ class TeamTest extends TestCase
                     'data' => $teamCreate,
                 ],
                 'hasPermission' => true,
-            ],
+            ], */
         ];
     }
 

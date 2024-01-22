@@ -31,20 +31,81 @@ final class TeamMutation
             $this->team = $this->team->create($args);
         }
 
+        $this->team = $this->relationUsers($args, $context);
+
+        return $this->team;
+    }
+
+    private function relationUsers($args, $context)
+    {
         if (isset($args['player_id']) && count($args['player_id']) > 0) {
+
+            $currentUsersIds = $this->team->players()->pluck('users.id')->toArray();
+
             $players = [];
             $technicians = [];
 
             foreach ($args['player_id'] as $playerId) {
-                ! $this->user->find($playerId)->hasRole('Jogador')
-                    ? $technicians[] = $playerId
-                    : $players[] = $playerId;
+                $user = $this->user->findOrFail($playerId);
+            
+                if ($this->user->findOrFail($playerId) && $this->user->findOrFail($playerId)->hasRole('technician')) {
+                    $technicians[] = $playerId;
+                } else {
+                    $players[] = $playerId;
+                }
             }
-            $this->team->players()->syncWithPivotValues($technicians, ['role' => 'technician']);
-            $this->team->players()->syncWithPivotValues($players, ['role' => 'player']);
+            dump($args['player_id']);
+            dump($players, $technicians);
+
+            //TODO - Debugar aqui este trecho para ver por que alguns usuários não estão sendo adicionados
+            $changes = $this->team->technicians()->syncWithPivotValues(
+                $args['player_id'], 
+                [
+                    'role' => 'technician',
+                ]
+            );
+
+            $this->alteracoesModificacao($args, $currentUsersIds, $changes, $context);
+
+            $changes = $this->team->players()->syncWithPivotValues(
+                $args['player_id'], 
+                [
+                    'role' => 'player',
+                ]
+            );
+            $this->alteracoesModificacao($args, $currentUsersIds, $changes, $context);
         }
 
         return $this->team;
+    }
+
+    private function alteracoesModificacao($args, $currentUsersIds, $changes, $context)
+    {
+        // NOTE - IDs dos times que foram removidos
+        $removedUsersIds = array_diff($currentUsersIds, $args['player_id']);
+
+        // NOTE - IDs dos times que foram adicionados
+        $addedUsersIds = $changes['attached'];
+
+        // NOTE - Atualiza o 'updated_at' dos usuários removidos
+        foreach ($removedUsersIds as $userId) {
+            $user = User::find($userId);
+            if ($user) {
+                $user->touch();
+                $user->user_id = $context->user()->id;
+                $user->save();
+            }
+        }
+
+        // NOTE - Atualiza o 'updated_at' dos times adicionados
+        foreach ($addedUsersIds as $userId) {
+            $user = User::find($userId);
+            if ($user) {
+                $user->touch();
+                $user->user_id = $context->user()->id;
+                $user->save();
+            }
+        }
     }
 
     /**
