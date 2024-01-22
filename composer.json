@@ -26,6 +26,7 @@
         "stancl/tenancy": "^3.7"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.9",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.8",
         "laravel/pint": "^1.1",
