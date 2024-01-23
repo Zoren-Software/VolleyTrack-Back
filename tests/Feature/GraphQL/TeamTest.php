@@ -216,6 +216,16 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
+        if(!empty($parameters['playerId']) ) {
+            foreach ($parameters['playerId'] as $playerId) {
+                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
+                $this->assertDatabaseHas('teams_users', [
+                    'team_id' => $response->json('data.teamCreate.id'),
+                    'user_id' => $playerId,
+                ]);
+            }
+        }
+
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
@@ -232,7 +242,7 @@ class TeamTest extends TestCase
         $teamCreate = ['teamCreate'];
 
         return [
-            /* 'create team without permission, expected error' => [
+            'create team without permission, expected error' => [
                 [
                     'name' => $nameExistent,
                     'playerId' => [],
@@ -258,7 +268,7 @@ class TeamTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
-            ], */
+            ],
             'create team and relating a players, success' => [
                 [
                     'name' => $faker->name,
@@ -273,7 +283,7 @@ class TeamTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-            /* 'name field is not unique, expected error' => [
+            'name field is not unique, expected error' => [
                 [
                     'name' => $nameExistent,
                     'playerId' => [],
@@ -311,7 +321,7 @@ class TeamTest extends TestCase
                     'data' => $teamCreate,
                 ],
                 'hasPermission' => true,
-            ], */
+            ],
         ];
     }
 
@@ -356,6 +366,16 @@ class TeamTest extends TestCase
         );
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
+
+        if(!empty($parameters['playerId']) ) {
+            foreach ($parameters['playerId'] as $playerId) {
+                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
+                $this->assertDatabaseHas('teams_users', [
+                    'team_id' => $response->json('data.teamEdit.id'),
+                    'user_id' => $playerId,
+                ]);
+            }
+        }
 
         $response
             ->assertJsonStructure($expected)
