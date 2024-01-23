@@ -24,6 +24,8 @@ final class TeamMutation
      */
     public function make($rootValue, array $args, GraphQLContext $context)
     {
+        $args['user_id'] = $context->user()->id;
+
         if (isset($args['id'])) {
             $this->team = $this->team->find($args['id']);
             $this->team->update($args);
@@ -47,32 +49,29 @@ final class TeamMutation
 
             foreach ($args['player_id'] as $playerId) {
                 $user = $this->user->findOrFail($playerId);
-            
+
                 if ($this->user->findOrFail($playerId) && $this->user->findOrFail($playerId)->hasRole('technician')) {
                     $technicians[] = $playerId;
                 } else {
                     $players[] = $playerId;
                 }
             }
-            dump($args['player_id']);
-            dump($players, $technicians);
 
-            //TODO - Debugar aqui este trecho para ver por que alguns usuários não estão sendo adicionados
             $changes = $this->team->technicians()->syncWithPivotValues(
-                $args['player_id'], 
+                $technicians,
                 [
                     'role' => 'technician',
-                ]
-            );
-
+                    ]
+                );
             $this->alteracoesModificacao($args, $currentUsersIds, $changes, $context);
-
+            
             $changes = $this->team->players()->syncWithPivotValues(
-                $args['player_id'], 
+                $players,
                 [
                     'role' => 'player',
                 ]
             );
+
             $this->alteracoesModificacao($args, $currentUsersIds, $changes, $context);
         }
 

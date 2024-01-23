@@ -35,9 +35,9 @@ class Team extends Model
         return $this->belongsToMany(User::class, 'teams_users')
             ->using(TeamsUsers::class)
             ->as('technicians')
-            ->where('teams_users.role', 'technician')
+            ->wherePivot('role', 'technician')
             ->withTimestamps()
-            ->withPivot('created_at', 'updated_at');
+            ->withPivot('created_at', 'updated_at', 'role');
     }
 
     public function players()
@@ -45,9 +45,9 @@ class Team extends Model
         return $this->belongsToMany(User::class, 'teams_users')
             ->using(TeamsUsers::class)
             ->as('players')
-            ->where('teams_users.role', 'player')
+            ->wherePivot('role', 'player')
             ->withTimestamps()
-            ->withPivot('created_at', 'updated_at');
+            ->withPivot('created_at', 'updated_at', 'role');
     }
 
     public function getActivitylogOptions(): LogOptions
