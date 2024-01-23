@@ -19,9 +19,6 @@ final class TeamEditValidator extends Validator
                 'required',
                 'min:3',
             ],
-            'userId' => [
-                'required',
-            ],
         ];
     }
 
