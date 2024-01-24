@@ -221,14 +221,10 @@ class User extends Authenticatable implements HasApiTokensContract
         }
 
         if (!empty($attributes)) {
-            if (!$this->information) {
-                $this->information = $this->information()->create($attributes);
+            if (!$this->information()->exists()) {
+                $this->information()->create($attributes);
             } else {
-                $this->information->fill($attributes);
-
-                if ($this->information->isDirty()) {
-                    $this->information->save();
-                }
+                $this->information->update($attributes);
             }
         }
     }
