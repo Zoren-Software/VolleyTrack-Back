@@ -232,6 +232,7 @@ class User extends Authenticatable implements HasApiTokensContract
     public function list(array $args)
     {
         return $this
+            ->filterIgnores($args)
             ->filterSearch($args)
             ->filterPosition($args)
             ->filterTeam($args);
@@ -345,6 +346,13 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
             $query->whereIn('users.id', $ids);
+        });
+    }
+
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('users.id', $args['filter']['ignoreIds']);
         });
     }
 

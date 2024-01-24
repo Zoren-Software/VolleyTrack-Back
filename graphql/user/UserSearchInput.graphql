@@ -9,4 +9,7 @@ input UserSearchInput {
 
     "Filter by team ids"
     teamsIds: [Int]
+
+    "Ignore ids selected"
+    ignoreIds: [Int]
 }
