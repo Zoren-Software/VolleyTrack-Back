@@ -232,8 +232,8 @@ class User extends Authenticatable implements HasApiTokensContract
     public function list(array $args)
     {
         return $this
-            ->filterIgnores($args)
             ->filterSearch($args)
+            ->filterIgnores($args)
             ->filterPosition($args)
             ->filterTeam($args);
     }
@@ -246,9 +246,7 @@ class User extends Authenticatable implements HasApiTokensContract
                 $query
                     ->filterName($args['filter']['search'])
                     ->filterEmail($args['filter']['search'])
-                    ->filterPhone($args['filter']['search'])
-                    ->filterCPF($args['filter']['search'])
-                    ->filterRG($args['filter']['search'])
+                    ->filterUserInformation($args['filter']['search'])
                     ->filterPositionName($args['filter']['search'])
                     ->filterTeamName($args['filter']['search']);
             });
@@ -269,29 +267,11 @@ class User extends Authenticatable implements HasApiTokensContract
         });
     }
 
-    public function scopeFilterCPF(Builder $query, string $search)
+    public function scopeFilterUserInformation(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
-            $query->whereHas('information', function ($query) use ($search) {
-                $query->filterCPF($search);
-            });
-        });
-    }
-
-    public function scopeFilterRG(Builder $query, string $search)
-    {
-        $query->when(isset($search), function ($query) use ($search) {
-            $query->whereHas('information', function ($query) use ($search) {
-                $query->filterRG($search);
-            });
-        });
-    }
-
-    public function scopeFilterPhone(Builder $query, string $search)
-    {
-        $query->when(isset($search), function ($query) use ($search) {
-            $query->whereHas('information', function ($query) use ($search) {
-                $query->filterPhone($search);
+            $query->orWhereHas('information', function ($query) use ($search) {
+                $query->filter($search);
             });
         });
     }
