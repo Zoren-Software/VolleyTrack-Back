@@ -62,9 +62,9 @@ final class TeamMutation
                 [
                     'role' => 'technician',
                     ]
-                );
+            );
             $this->alteracoesModificacao($args, $currentUsersIds, $changes, $context);
-            
+
             $changes = $this->team->players()->syncWithPivotValues(
                 $players,
                 [
