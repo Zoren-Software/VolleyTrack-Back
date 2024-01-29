@@ -31,11 +31,22 @@ class UserInformation extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeFilter(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where(function ($subQuery) use ($search) {
+                $subQuery->filterCPF($search)
+                         ->filterRG($search)
+                         ->filterPhone($search);
+            });
+        });
+    }
+
     public function scopeFilterCPF(Builder $query, string $cpf)
     {
         $cleanCpf = preg_replace('/\D/', '', $cpf);
         $query->when(isset($cleanCpf), function ($query) use ($cleanCpf) {
-            $query->where('user_information.cpf', 'like', "%$cleanCpf%");
+            $query->where('cpf', 'like', "%$cleanCpf%");
         });
     }
 
@@ -43,7 +54,7 @@ class UserInformation extends Model
     {
         $cleanRg = preg_replace('/\D/', '', $rg);
         $query->when(isset($cleanRg), function ($query) use ($cleanRg) {
-            $query->where('user_information.rg', 'like', "%$cleanRg%");
+            $query->orWhere('user_information.rg', 'like', "%$cleanRg%");
         });
     }
 
@@ -51,7 +62,7 @@ class UserInformation extends Model
     {
         $cleanPhone = preg_replace('/\D/', '', $phone);
         $query->when(isset($cleanPhone), function ($query) use ($cleanPhone) {
-            $query->where('user_information.phone', 'like', "%$cleanPhone%");
+            $query->orWhere('user_information.phone', 'like', "%$cleanPhone%");
         });
     }
 }

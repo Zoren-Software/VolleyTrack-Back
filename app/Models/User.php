@@ -221,14 +221,10 @@ class User extends Authenticatable implements HasApiTokensContract
         }
 
         if (!empty($attributes)) {
-            if (!$this->information) {
-                $this->information = $this->information()->create($attributes);
+            if (!$this->information()->exists()) {
+                $this->information()->create($attributes);
             } else {
-                $this->information->fill($attributes);
-
-                if ($this->information->isDirty()) {
-                    $this->information->save();
-                }
+                $this->information->update($attributes);
             }
         }
     }
@@ -237,6 +233,7 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         return $this
             ->filterSearch($args)
+            ->filterIgnores($args)
             ->filterPosition($args)
             ->filterTeam($args);
     }
@@ -249,9 +246,7 @@ class User extends Authenticatable implements HasApiTokensContract
                 $query
                     ->filterName($args['filter']['search'])
                     ->filterEmail($args['filter']['search'])
-                    ->filterPhone($args['filter']['search'])
-                    ->filterCPF($args['filter']['search'])
-                    ->filterRG($args['filter']['search'])
+                    ->filterUserInformation($args['filter']['search'])
                     ->filterPositionName($args['filter']['search'])
                     ->filterTeamName($args['filter']['search']);
             });
@@ -272,29 +267,11 @@ class User extends Authenticatable implements HasApiTokensContract
         });
     }
 
-    public function scopeFilterCPF(Builder $query, string $search)
+    public function scopeFilterUserInformation(Builder $query, string $search)
     {
         $query->when(isset($search), function ($query) use ($search) {
-            $query->whereHas('information', function ($query) use ($search) {
-                $query->filterCPF($search);
-            });
-        });
-    }
-
-    public function scopeFilterRG(Builder $query, string $search)
-    {
-        $query->when(isset($search), function ($query) use ($search) {
-            $query->whereHas('information', function ($query) use ($search) {
-                $query->filterRG($search);
-            });
-        });
-    }
-
-    public function scopeFilterPhone(Builder $query, string $search)
-    {
-        $query->when(isset($search), function ($query) use ($search) {
-            $query->whereHas('information', function ($query) use ($search) {
-                $query->filterPhone($search);
+            $query->orWhereHas('information', function ($query) use ($search) {
+                $query->filter($search);
             });
         });
     }
@@ -352,9 +329,16 @@ class User extends Authenticatable implements HasApiTokensContract
         });
     }
 
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('users.id', $args['filter']['ignoreIds']);
+        });
+    }
+
     public function saveLastUserChange()
     {
-        $this->user_id = auth()->user()->id;
+        $this->user_id = auth()->user()->id ?? null;
         $this->save();
     }
 }

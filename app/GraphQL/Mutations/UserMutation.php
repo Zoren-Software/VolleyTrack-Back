@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\User;
+use App\Models\Team;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class UserMutation
@@ -39,9 +40,48 @@ final class UserMutation
 
         $this->user->positions()->sync($args['positionId']);
 
-        $this->user->teams()->sync($args['teamId']);
+        $this->relationTeams($this->user, $args, $context);
+
+        $this->user->user_id = $context->user()->id;
+
+        $this->user->touch();
 
         return $this->user;
+    }
+
+    private function relationTeams($user, $args, $context)
+    {
+        // NOTE - Obtém os IDs dos times atualmente associados ao usuário
+        $currentTeamsIds = $user->teams()->pluck('teams.id')->toArray();
+
+        // NOTE - Sincroniza e obtém os detalhes das alterações
+        $changes = $user->teams()->sync($args['teamId']);
+
+        // NOTE - IDs dos times que foram removidos
+        $removedTeamsIds = array_diff($currentTeamsIds, $args['teamId']);
+
+        // NOTE - IDs dos times que foram adicionados
+        $addedTeamsIds = $changes['attached'];
+
+        // NOTE - Atualiza o 'updated_at' dos times removidos
+        foreach ($removedTeamsIds as $teamId) {
+            $team = Team::find($teamId);
+            if ($team) {
+                $team->touch();
+                $team->user_id = $context->user()->id;
+                $team->save();
+            }
+        }
+
+        // NOTE - Atualiza o 'updated_at' dos times adicionados
+        foreach ($addedTeamsIds as $teamId) {
+            $team = Team::find($teamId);
+            if ($team) {
+                $team->touch();
+                $team->user_id = $context->user()->id;
+                $team->save();
+            }
+        }
     }
 
     /**
