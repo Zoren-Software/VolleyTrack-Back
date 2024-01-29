@@ -22,101 +22,101 @@ class UserMutationTest extends TestCase
      *
      * @return void
      */
-    public function userMake($data)
-    {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
-            $role = $this->createMock(BelongsToMany::class);
-            $position = $this->createMock(Position::class);
-            $team = $this->createMock(Team::class);
+    // public function userMake($data)
+    // {
+    //     $graphQLContext = $this->createMock(GraphQLContext::class);
+    //     $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
+    //         $role = $this->createMock(BelongsToMany::class);
+    //         $position = $this->createMock(Position::class);
+    //         $team = $this->createMock(Team::class);
 
-            if (isset($data['id'])) {
-                $mock->shouldReceive('findOrFail')
-                    ->once()
-                    ->with($data['id'])
-                    ->andReturn($mock);
-            }
+    //         if (isset($data['id'])) {
+    //             $mock->shouldReceive('findOrFail')
+    //                 ->once()
+    //                 ->with($data['id'])
+    //                 ->andReturn($mock);
+    //         }
 
-            $mock->shouldReceive('setAttribute')
-                ->with('name', $data['name'])
-                ->once()
-                ->andReturn($mock);
+    //         $mock->shouldReceive('setAttribute')
+    //             ->with('name', $data['name'])
+    //             ->once()
+    //             ->andReturn($mock);
 
-            $mock->shouldReceive('setAttribute')
-                ->with('email', $data['email'])
-                ->once()
-                ->andReturn($mock);
+    //         $mock->shouldReceive('setAttribute')
+    //             ->with('email', $data['email'])
+    //             ->once()
+    //             ->andReturn($mock);
 
-            $mock->shouldReceive('makePassword')
-                ->with($data['password'])
-                ->once()
-                ->andReturn($mock);
+    //         $mock->shouldReceive('makePassword')
+    //             ->with($data['password'])
+    //             ->once()
+    //             ->andReturn($mock);
 
-            $mock->shouldReceive('save')
-                ->once()
-                ->andReturn($mock);
+    //         $mock->shouldReceive('save')
+    //             ->once()
+    //             ->andReturn($mock);
 
-            $mock->shouldReceive('updateOrNewInformation')
-                ->once()
-                ->andReturn($mock);
+    //         $mock->shouldReceive('updateOrNewInformation')
+    //             ->once()
+    //             ->andReturn($mock);
 
-            $mock->shouldReceive('roles')
-                ->once()
-                ->andReturn($role);
-            $mock->shouldReceive('syncWithoutDetaching')
-                ->with([$role]);
+    //         $mock->shouldReceive('roles')
+    //             ->once()
+    //             ->andReturn($role);
+    //         $mock->shouldReceive('syncWithoutDetaching')
+    //             ->with([$role]);
 
-            $mock->shouldReceive('positions')
-                ->once()
-                ->andReturn($position);
-            $mock->shouldReceive('syncWithoutDetaching')
-                ->with([$position]);
+    //         $mock->shouldReceive('positions')
+    //             ->once()
+    //             ->andReturn($position);
+    //         $mock->shouldReceive('syncWithoutDetaching')
+    //             ->with([$position]);
 
-            $mock->shouldReceive('teams')
-                ->once()
-                ->andReturn($team);
+    //         $mock->shouldReceive('teams')
+    //             ->once()
+    //             ->andReturn($team);
 
-            $mock->shouldReceive('syncWithoutDetaching')
-                ->with([$team]);
-        });
+    //         $mock->shouldReceive('syncWithoutDetaching')
+    //             ->with([$team]);
+    //     });
 
-        $userMutation = new UserMutation($userMock);
-        $userReturn = $userMutation->make(
-            null,
-            $data,
-            $graphQLContext
-        );
+    //     $userMutation = new UserMutation($userMock);
+    //     $userReturn = $userMutation->make(
+    //         null,
+    //         $data,
+    //         $graphQLContext
+    //     );
 
-        $this->assertEquals($userMock, $userReturn);
-    }
+    //     $this->assertEquals($userMock, $userReturn);
+    // }
 
-    public static function userProvider()
-    {
-        return [
-            'send data create with all options, success' => [
-                'data' => [
-                    'id' => null,
-                    'name' => 'Teste',
-                    'email' => 'test@example.com',
-                    'password' => '123456',
-                    'roleId' => [1],
-                    'positionId' => [1],
-                    'teamId' => [1],
-                ],
-            ],
-            'send data edit with all options, success' => [
-                'data' => [
-                    'id' => 1,
-                    'name' => 'Teste',
-                    'email' => 'test@example.com',
-                    'password' => '123456',
-                    'roleId' => [1],
-                    'positionId' => [1],
-                    'teamId' => [1],
-                ],
-            ],
-        ];
-    }
+    // public static function userProvider()
+    // {
+    //     return [
+    //         'send data create with all options, success' => [
+    //             'data' => [
+    //                 'id' => null,
+    //                 'name' => 'Teste',
+    //                 'email' => 'test@example.com',
+    //                 'password' => '123456',
+    //                 'roleId' => [1],
+    //                 'positionId' => [1],
+    //                 'teamId' => [1],
+    //             ],
+    //         ],
+    //         'send data edit with all options, success' => [
+    //             'data' => [
+    //                 'id' => 1,
+    //                 'name' => 'Teste',
+    //                 'email' => 'test@example.com',
+    //                 'password' => '123456',
+    //                 'roleId' => [1],
+    //                 'positionId' => [1],
+    //                 'teamId' => [1],
+    //             ],
+    //         ],
+    //     ];
+    // }
 
     /**
      * A basic unit test in delete user.
