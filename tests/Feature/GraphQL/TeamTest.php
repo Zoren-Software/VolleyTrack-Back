@@ -216,6 +216,16 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
+        if(!empty($parameters['playerId']) ) {
+            foreach ($parameters['playerId'] as $playerId) {
+                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
+                $this->assertDatabaseHas('teams_users', [
+                    'team_id' => $response->json('data.teamCreate.id'),
+                    'user_id' => $playerId,
+                ]);
+            }
+        }
+
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
@@ -235,7 +245,6 @@ class TeamTest extends TestCase
             'create team without permission, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'playerId' => [],
                 ],
                 'type_message_error' => false,
@@ -249,7 +258,6 @@ class TeamTest extends TestCase
             'create team, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'playerId' => [],
                 ],
                 'type_message_error' => false,
@@ -264,7 +272,6 @@ class TeamTest extends TestCase
             'create team and relating a players, success' => [
                 [
                     'name' => $faker->name,
-                    'userId' => $userId,
                     'playerId' => [1, 2, 3, 4, 5],
                 ],
                 'type_message_error' => false,
@@ -279,7 +286,6 @@ class TeamTest extends TestCase
             'name field is not unique, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'playerId' => [],
                 ],
                 'type_message_error' => 'name',
@@ -293,7 +299,6 @@ class TeamTest extends TestCase
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
-                    'userId' => $userId,
                     'playerId' => [],
                 ],
                 'type_message_error' => 'name',
@@ -307,7 +312,6 @@ class TeamTest extends TestCase
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
-                    'userId' => $userId,
                     'playerId' => [],
                 ],
                 'type_message_error' => 'name',
@@ -363,6 +367,16 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
+        if(!empty($parameters['playerId']) ) {
+            foreach ($parameters['playerId'] as $playerId) {
+                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
+                $this->assertDatabaseHas('teams_users', [
+                    'team_id' => $response->json('data.teamEdit.id'),
+                    'user_id' => $playerId,
+                ]);
+            }
+        }
+
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
@@ -381,7 +395,6 @@ class TeamTest extends TestCase
             'edit team without permission, expected error' => [
                 [
                     'name' => $faker->name . self::$teamText,
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => self::$unauthorized,
@@ -394,7 +407,6 @@ class TeamTest extends TestCase
             'edit team, success' => [
                 [
                     'name' => $faker->name . self::$teamText,
-                    'userId' => $userId,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -408,7 +420,6 @@ class TeamTest extends TestCase
             'edit team and relating a players, success' => [
                 [
                     'name' => $faker->name . self::$teamText,
-                    'userId' => $userId,
                     'playerId' => [1, 2, 3],
                 ],
                 'type_message_error' => false,
@@ -422,7 +433,6 @@ class TeamTest extends TestCase
             ],
             'name field is not unique, expected error' => [
                 [
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_unique',
@@ -435,7 +445,6 @@ class TeamTest extends TestCase
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_required',
@@ -448,7 +457,6 @@ class TeamTest extends TestCase
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_min',

@@ -299,7 +299,6 @@ class TrainingTest extends TestCase
             'create training without permission, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
@@ -314,7 +313,6 @@ class TrainingTest extends TestCase
             'create training with minimal parameters, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => null,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
@@ -331,7 +329,6 @@ class TrainingTest extends TestCase
             'create training with full parameters, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
@@ -348,7 +345,6 @@ class TrainingTest extends TestCase
             'create training with relationship fundamentals, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
@@ -366,7 +362,6 @@ class TrainingTest extends TestCase
             'create training with relationship specific fundamental, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
@@ -385,7 +380,6 @@ class TrainingTest extends TestCase
             'create training with notification if training date is current day, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'dateStart' => $today,
                     'dateEnd' => $todayPlusTwoHours,
@@ -426,7 +420,6 @@ class TrainingTest extends TestCase
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
-                    'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
@@ -441,7 +434,6 @@ class TrainingTest extends TestCase
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
-                    'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
@@ -456,7 +448,6 @@ class TrainingTest extends TestCase
             'dateStart must be less than dateEnd, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
                 ],
@@ -471,7 +462,6 @@ class TrainingTest extends TestCase
             'dateEnd must be greater than dateStart, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
                 ],
@@ -486,7 +476,6 @@ class TrainingTest extends TestCase
             'dateEnd without correct formatting, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
                 ],
@@ -501,7 +490,6 @@ class TrainingTest extends TestCase
             'dateStart without correct formatting, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
                 ],
@@ -516,7 +504,6 @@ class TrainingTest extends TestCase
             'specific fundamentals unrelated to fundamentals on record, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
                     'fundamentalId' => [1],
@@ -632,7 +619,6 @@ class TrainingTest extends TestCase
             'edit training with minimal parameters, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                     'status' => true,
@@ -650,7 +636,6 @@ class TrainingTest extends TestCase
             'edit training with full parameters, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
@@ -669,7 +654,6 @@ class TrainingTest extends TestCase
             'edit training with relationship fundamentals, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
@@ -689,7 +673,6 @@ class TrainingTest extends TestCase
             'edit training with relationship specific fundamental, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
@@ -710,7 +693,6 @@ class TrainingTest extends TestCase
             'edit training cancel, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'status' => true,
                     'dateStart' => $dateStart,
@@ -729,7 +711,6 @@ class TrainingTest extends TestCase
             'edit training reactivate, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'status' => true,
                     'dateStart' => $dateStart,
@@ -748,7 +729,6 @@ class TrainingTest extends TestCase
             'edit training with notification if training date is current day, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'description' => $faker->text,
                     'status' => true,
                     'dateStart' => $today,
@@ -789,7 +769,6 @@ class TrainingTest extends TestCase
             'edit training without permission, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                     'status' => true,
@@ -806,7 +785,6 @@ class TrainingTest extends TestCase
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
-                    'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                     'status' => true,
@@ -823,7 +801,6 @@ class TrainingTest extends TestCase
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
-                    'userId' => $userId,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                     'status' => true,
@@ -840,7 +817,6 @@ class TrainingTest extends TestCase
             'dateStart must be less than dateEnd, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
                     'status' => true,
@@ -857,7 +833,6 @@ class TrainingTest extends TestCase
             'dateEnd must be greater than dateStart, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
                     'status' => true,
@@ -874,7 +849,6 @@ class TrainingTest extends TestCase
             'dateEnd without correct formatting, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
                     'status' => true,
@@ -891,7 +865,6 @@ class TrainingTest extends TestCase
             'dateStart without correct formatting, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
                     'status' => true,
@@ -908,7 +881,6 @@ class TrainingTest extends TestCase
             'specific fundamentals unrelated to fundamentals on record, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
                     'status' => true,

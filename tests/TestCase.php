@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -98,8 +99,24 @@ abstract class TestCase extends BaseTestCase
             } catch (\Exception $e) {
                 throw new \Exception($e->getMessage());
             }
-        }
+        } else {
+            tenancy()->initialize($tenantId);
 
+            try {
+                // NOTE - Se o ambiente não tiver sido inicializado, o comando abaixo irá falhar
+                //        e o catch irá inicializar o ambiente, apenas fazendo este processo para o primeiro teste
+                DB::table('migrations')->get();
+            } catch (\Exception $e) {
+                try {
+                    Artisan::call("multi_tenants:migrate --tenants {$tenantId} --path base");
+                    Artisan::call("multi_tenants:migrate --tenants {$tenantId}");
+                    Artisan::call("multi_tenants_logs:migrate --tenants {$tenantIdLogs}");
+                    Artisan::call("multi_tenants:seed --tenants {$tenantId}");
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+            }
+        }
         tenancy()->initialize($tenantId);
     }
 

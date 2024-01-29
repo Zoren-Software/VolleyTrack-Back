@@ -2,9 +2,11 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
+use App\Models\Training;
+use App\Rules\ValidTrainingDeletion;
 use Nuwave\Lighthouse\Validation\Validator;
 
-final class TeamEditValidator extends Validator
+final class TrainingDeleteValidator extends Validator
 {
     /**
      * Return the validation rules.
@@ -13,11 +15,14 @@ final class TeamEditValidator extends Validator
      */
     public function rules(): array
     {
+        $ids = $this->arg('id') ?? null;
+
         return [
-            'name' => [
-                'unique:teams,name,' . $this->arg('id'),
+            'id' => [
                 'required',
-                'min:3',
+                'array',
+                'exists:trainings,id',
+                new ValidTrainingDeletion($ids),
             ],
         ];
     }
@@ -28,10 +33,7 @@ final class TeamEditValidator extends Validator
     public function messages(): array
     {
         return [
-            'name.unique' => trans('TeamEdit.name_unique'),
-            'name.required' => trans('TeamEdit.name_required'),
-            'name.min' => trans('TeamEdit.name_min'),
-            'user_id.required' => trans('TeamEdit.user_id_required'),
+            'id.required' => trans('TrainingEdit.id_required'),
         ];
     }
 }

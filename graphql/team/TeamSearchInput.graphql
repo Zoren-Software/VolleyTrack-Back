@@ -7,6 +7,12 @@ input TeamSearchInput {
     "Filter by position ids"
     positionsIds: [Int]
 
+    "Filter by players ids"
+    playersIds: [Int]
+
+    "Filter by users ids"
+    usersIds: [Int]
+
     "Ignore ids selected"
     ignoreIds: [Int]
 }

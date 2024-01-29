@@ -19,9 +19,6 @@ final class TeamCreateValidator extends Validator
                 'required',
                 'min:3',
             ],
-            'userId' => [
-                'required',
-            ],
         ];
     }
 
@@ -34,7 +31,6 @@ final class TeamCreateValidator extends Validator
             'name.unique' => trans('TeamCreate.name_unique'),
             'name.required' => trans('TeamCreate.name_required'),
             'name.min' => trans('TeamCreate.name_min'),
-            'user_id.required' => trans('TeamCreate.user_id_required'),
         ];
     }
 }
