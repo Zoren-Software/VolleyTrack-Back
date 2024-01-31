@@ -16,7 +16,7 @@ type Config {
     "Language of the configs."
     language: Language @belongsTo
 
-    "Name Tenant of the configs."
+    "Name Tenant of the configs. Does not influence the tenant's domain. Displayed in the principal panel."
     nameTenant: String @rename(attribute: "name_tenant")
 
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
