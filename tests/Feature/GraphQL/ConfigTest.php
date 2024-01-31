@@ -155,7 +155,7 @@ class ConfigTest extends TestCase
         return [
             'edit config without permission, expected error' => [
                 [
-                    'nameTenant' => $faker->name,
+                    'nameTenant' => 'Test',
                     'userId' => $userId,
                     'languageId' => 1,
                 ],
@@ -169,7 +169,7 @@ class ConfigTest extends TestCase
             ],
             'edit config, success' => [
                 [
-                    'nameTenant' => $faker->name,
+                    'nameTenant' => 'Test',
                     'userId' => $userId,
                     'languageId' => 1,
                 ],
