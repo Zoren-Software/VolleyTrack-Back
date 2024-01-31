@@ -17,7 +17,6 @@ class ConfigTest extends TestCase
 
     public static $data = [
         'id',
-        'userId',
         'nameTenant',
         'languageId',
         'createdAt',
@@ -156,7 +155,6 @@ class ConfigTest extends TestCase
             'edit config without permission, expected error' => [
                 [
                     'nameTenant' => 'Test',
-                    'userId' => $userId,
                     'languageId' => 1,
                 ],
                 'type_message_error' => 'message',
@@ -170,7 +168,6 @@ class ConfigTest extends TestCase
             'edit config, success' => [
                 [
                     'nameTenant' => 'Test',
-                    'userId' => $userId,
                     'languageId' => 1,
                 ],
                 'type_message_error' => false,
@@ -185,7 +182,6 @@ class ConfigTest extends TestCase
             'nameTenant field is required, expected error' => [
                 [
                     'nameTenant' => ' ',
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'nameTenant',
                 'expected_message' => 'ConfigEdit.name_tenant_required',
@@ -198,7 +194,6 @@ class ConfigTest extends TestCase
             'nameTenant field is min 3 characteres, expected error' => [
                 [
                     'nameTenant' => 'AB',
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'nameTenant',
                 'expected_message' => 'ConfigEdit.name_tenant_min',
