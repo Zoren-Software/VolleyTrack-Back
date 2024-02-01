@@ -17,6 +17,7 @@ class Notification extends Model
     public function list(array $args)
     {
         return $this->userLogged()
+            ->whereNot('data', 'like', '%[]%')
             ->filterRead($args['read'] ?? false)
             ->orderBy('created_at', 'desc');
     }
@@ -30,11 +31,11 @@ class Notification extends Model
     {
         return $query->when(
             $read === true,
-            fn ($query) => $query->whereNotNull('read_at')
+            fn($query) => $query->whereNotNull('read_at')
         )
             ->when(
                 $read === false,
-                fn ($query) => $query->whereNull('read_at')
+                fn($query) => $query->whereNull('read_at')
             );
     }
 
