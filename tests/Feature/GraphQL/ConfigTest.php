@@ -119,8 +119,6 @@ class ConfigTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $parameters['id'] = 1;
-
         $response = $this->graphQL(
             'configEdit',
             $parameters,
