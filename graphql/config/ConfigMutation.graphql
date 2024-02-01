@@ -1,7 +1,6 @@
 
 extend type Mutation @guard {
     configEdit(
-        id: ID
         nameTenant: String @rename(attribute: "name_tenant")
         languageId: Int @rename(attribute: "language_id")
     ): Config
