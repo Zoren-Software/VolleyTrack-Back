@@ -21,6 +21,9 @@ final class ConfigMutation
     public function make($rootValue, array $args, GraphQLContext $context)
     {
         $this->config = $this->config->find(1);
+
+        $args['user_id'] = $context->user()->id;
+
         $this->config->update($args);
 
         return $this->config;

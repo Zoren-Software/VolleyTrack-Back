@@ -17,7 +17,6 @@ class ConfigTest extends TestCase
 
     public static $data = [
         'id',
-        'userId',
         'nameTenant',
         'languageId',
         'createdAt',
@@ -120,8 +119,6 @@ class ConfigTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $parameters['id'] = 1;
-
         $response = $this->graphQL(
             'configEdit',
             $parameters,
@@ -155,8 +152,7 @@ class ConfigTest extends TestCase
         return [
             'edit config without permission, expected error' => [
                 [
-                    'nameTenant' => $faker->name,
-                    'userId' => $userId,
+                    'nameTenant' => 'Test',
                     'languageId' => 1,
                 ],
                 'type_message_error' => 'message',
@@ -169,8 +165,7 @@ class ConfigTest extends TestCase
             ],
             'edit config, success' => [
                 [
-                    'nameTenant' => $faker->name,
-                    'userId' => $userId,
+                    'nameTenant' => 'Test',
                     'languageId' => 1,
                 ],
                 'type_message_error' => false,
@@ -185,7 +180,6 @@ class ConfigTest extends TestCase
             'nameTenant field is required, expected error' => [
                 [
                     'nameTenant' => ' ',
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'nameTenant',
                 'expected_message' => 'ConfigEdit.name_tenant_required',
@@ -198,7 +192,6 @@ class ConfigTest extends TestCase
             'nameTenant field is min 3 characteres, expected error' => [
                 [
                     'nameTenant' => 'AB',
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'nameTenant',
                 'expected_message' => 'ConfigEdit.name_tenant_min',
