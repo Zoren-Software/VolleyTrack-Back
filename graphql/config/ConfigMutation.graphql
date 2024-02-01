@@ -2,7 +2,7 @@
 extend type Mutation @guard {
     configEdit(
         nameTenant: String @rename(attribute: "name_tenant")
-        languageId: Int @rename(attribute: "language_id")
+        languageId: ID @rename(attribute: "language_id")
     ): Config
         @field(resolver: "ConfigMutation@make")
         @validator
