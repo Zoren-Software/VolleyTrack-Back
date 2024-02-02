@@ -74,6 +74,7 @@ class NotificationTest extends TestCase
      */
     public function notificationsRead(
         $data,
+        $parameters,
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -93,18 +94,23 @@ class NotificationTest extends TestCase
 
         $response = $this->graphQL(
             'notificationsRead',
-            [],
+            $parameters,
             [
                 'message',
             ],
             'mutation',
             false,
-            false
+            true
         );
 
         $this->assertMessageError($typeMessageError, $response, $hasLogin, $expectedMessage);
-
+        
         if ($data['error'] === null) {
+            $this->assertEquals(
+                $data['message_expected'], 
+                $response->json('data.notificationsRead.message')
+            );
+
             $response
                 ->assertJsonStructure($expected)
                 ->assertStatus(200);
@@ -122,6 +128,31 @@ class NotificationTest extends TestCase
             'read all notifications, success' => [
                 [
                     'error' => null,
+                    'message_expected' => 'Todas as notificações foram lidas com sucesso!',
+                ],
+                'parameters' => [
+                    'markAllAsRead' => true,
+                    'recentToDeleteCount' => 1,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationsRead' => [
+                            'message',
+                        ],
+                    ],
+                ],
+                'hasLogin' => true,
+            ],
+            'read the last 10 notifications, success' => [
+                [
+                    'error' => null,
+                    'message_expected' => '10 notificações recentes foram lidas.',
+                ],
+                'parameters' => [
+                    'markAllAsRead' => false,
+                    'recentToDeleteCount' => 10,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -137,6 +168,10 @@ class NotificationTest extends TestCase
             'read all notifications, error' => [
                 [
                     'error' => 'error',
+                ],
+                'parameters' => [
+                    'markAllAsRead' => true,
+                    'recentToDeleteCount' => 1,
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => 'Unauthenticated.',

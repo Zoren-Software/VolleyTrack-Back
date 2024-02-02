@@ -16,6 +16,10 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $unreadNotifications
+ */
 class User extends Authenticatable implements HasApiTokensContract
 {
     use HasApiTokens;
