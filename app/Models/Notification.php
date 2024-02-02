@@ -24,7 +24,9 @@ class Notification extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope('permission', function (Builder $builder) {
+        parent::boot();
+
+        static::addGlobalScope('filterData', function (Builder $builder) {
             $builder->whereNot('data', 'like', '%[]%');
         });
     }
