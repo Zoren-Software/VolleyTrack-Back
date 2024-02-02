@@ -34,6 +34,7 @@ final class NotificationMutation
 
         $notificationsToRead = $user->notifications()
             ->whereNull('read_at')
+            ->whereNot('data', 'like', '%[]%')
             ->latest()
             ->take($readCount)
             ->get();
