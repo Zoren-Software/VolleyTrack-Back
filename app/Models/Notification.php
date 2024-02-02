@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Notification extends Model
 {
@@ -14,10 +15,23 @@ class Notification extends Model
         'read_at',
     ];
 
+        /**
+     * The "booted" method of the model.
+     *
+     * @codeCoverageIgnore
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope('permission', function (Builder $builder) {
+            $builder->whereNot('data', 'like', '%[]%');
+        });
+    }
+
     public function list(array $args)
     {
         return $this->userLogged()
-            ->whereNot('data', 'like', '%[]%')
             ->filterRead($args['read'] ?? false)
             ->orderBy('created_at', 'desc');
     }
