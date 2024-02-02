@@ -34,6 +34,7 @@ class NotificationConfirmationTrainingNotification extends Notification
         $this->training->team->players;
 
         return [
+            'userAction' => $notifiable,
             'training' => $this->training,
             'message' => trans('TrainingNotification.title_mail_confirmation'),
         ];
