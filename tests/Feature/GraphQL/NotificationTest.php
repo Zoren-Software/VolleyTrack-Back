@@ -92,6 +92,11 @@ class NotificationTest extends TestCase
             $this->login = false;
         }
 
+        if($parameters['id'] && $hasLogin) {
+            $notification = $user->notifications()->first();
+            $parameters['id'] = $notification->id;
+        }
+
         $response = $this->graphQL(
             'notificationsRead',
             $parameters,
@@ -125,14 +130,15 @@ class NotificationTest extends TestCase
     public static function notificationReadProvider()
     {
         return [
-            'read all notifications, success' => [
+            'read the last 10 notifications, success' => [
                 [
                     'error' => null,
-                    'message_expected' => 'Todas as notificações foram lidas com sucesso!',
+                    'message_expected' => '10 notificações recentes foram lidas.',
                 ],
                 'parameters' => [
-                    'markAllAsRead' => true,
-                    'recentToDeleteCount' => 1,
+                    'markAllAsRead' => false,
+                    'recentToDeleteCount' => 10,
+                    'id' => false,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -145,14 +151,36 @@ class NotificationTest extends TestCase
                 ],
                 'hasLogin' => true,
             ],
-            'read the last 10 notifications, success' => [
+            'read all notifications, success' => [
                 [
                     'error' => null,
-                    'message_expected' => '10 notificações recentes foram lidas.',
+                    'message_expected' => 'Todas as notificações foram lidas com sucesso!',
                 ],
                 'parameters' => [
-                    'markAllAsRead' => false,
-                    'recentToDeleteCount' => 10,
+                    'markAllAsRead' => true,
+                    'recentToDeleteCount' => 1,
+                    'id' => false,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationsRead' => [
+                            'message',
+                        ],
+                    ],
+                ],
+                'hasLogin' => true,
+            ],
+            'read one notification, success' => [
+                [
+                    'error' => null,
+                    'message_expected' => 'Notificação lida com sucesso!',
+                ],
+                'parameters' => [
+                    'markAllAsRead' => true,
+                    'recentToDeleteCount' => 1,
+                    'id' => true,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
@@ -172,6 +200,7 @@ class NotificationTest extends TestCase
                 'parameters' => [
                     'markAllAsRead' => true,
                     'recentToDeleteCount' => 1,
+                    'id' => false,
                 ],
                 'type_message_error' => 'message',
                 'expected_message' => 'Unauthenticated.',
