@@ -31,8 +31,6 @@ class NotificationConfirmationTrainingNotification extends Notification
      */
     public function toArray(User $notifiable)
     {
-        $this->training->team->players;
-
         return [
             'userAction' => $notifiable,
             'training' => $this->training,
