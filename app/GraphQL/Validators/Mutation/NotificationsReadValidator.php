@@ -15,6 +15,10 @@ class NotificationsReadValidator extends Validator
     public function rules(): array
     {
         return [
+            'id' => [
+                'sometimes',
+                'string',
+            ],
             'mark_all_as_read' => [
                 'sometimes',
                 'boolean',

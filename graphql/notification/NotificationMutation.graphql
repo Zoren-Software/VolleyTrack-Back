@@ -1,6 +1,9 @@
 
 extend type Mutation @guard {
     notificationsRead(
+        "Notification ID to be deleted."
+        id: ID
+
         "Number of notifications to be deleted."
         recentToDeleteCount: Int @rename(attribute: "recent_to_delete_count")
 

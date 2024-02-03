@@ -16,5 +16,6 @@ return [
     'id_required' => 'O campo id é obrigatório',
     'id_string' => 'O campo id deve ser uma string',
     'read_all_notifications' => 'Todas as notificações foram lidas com sucesso!',
-    'recent_notifications_read' => ':count notificações recentes foram lidas.'
+    'recent_notifications_read' => ':count notificações recentes foram lidas.',
+    'read_notification' => 'Notificação lida com sucesso!',
 ];

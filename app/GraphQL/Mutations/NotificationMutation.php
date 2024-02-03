@@ -22,9 +22,22 @@ final class NotificationMutation
     {
         $user = $context->user();
 
-        // Checa se deve marcar todas as notificações como lidas
+        // NOTE - Checa se deve marcar apenas uma notificação como lida
+        if (isset($args['id']) && $args['id']) {
+            $user->notifications()
+                ->whereNull('read_at')
+                ->where('id', $args['id'])
+                ->update(['read_at' => now()]);
+            return [
+                'message' => trans('NotificationRead.read_notification'),
+            ];
+        }
+
+        // NOTE - Checa se deve marcar todas as notificações como lidas
         if (isset($args['mark_all_as_read']) && $args['mark_all_as_read']) {
-            $user->notifications()->whereNull('read_at')->update(['read_at' => now()]);
+            $user->notifications()
+                ->whereNull('read_at')
+                ->update(['read_at' => now()]);
             return [
                 'message' => trans('NotificationRead.read_all_notifications'),
             ];
