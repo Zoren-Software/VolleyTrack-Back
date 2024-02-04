@@ -1,5 +1,15 @@
 
 extend type Mutation @guard {
-    notificationsRead: NotificationsRead
+    notificationsRead(
+        "Notification ID to be deleted."
+        id: String
+
+        "Number of notifications to be deleted."
+        recentToDeleteCount: Int @rename(attribute: "recent_to_delete_count")
+
+        "Delete all notifications"
+        markAllAsRead: Boolean @rename(attribute: "mark_all_as_read")
+    ): NotificationsRead
+        @validator
         @field(resolver: "NotificationMutation@notificationsRead") 
 }

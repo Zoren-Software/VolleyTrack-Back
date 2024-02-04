@@ -39,7 +39,7 @@ class CancellationNotificationTrainingMail extends Mail
     {
         return new Envelope(
             subject: env('APP_NAME') .
-            ' - ' . trans('TrainingNotification.title_mail_confirmation') .
+            ' - ' . trans('TrainingNotification.title_mail_cancel') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
             ' ' . trans('TrainingNotification.preposition_hours_to') . ' ' .
             $this->training->date_end->format('H:m') . ' - ' . trans('TrainingNotification.cancel')
