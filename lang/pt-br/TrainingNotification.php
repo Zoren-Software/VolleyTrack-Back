@@ -14,8 +14,8 @@ return [
     */
 
     'title_mail' => 'Notificação de Treino',
-    'title_mail_confirmation' => 'Confirmação de Notificações de Treino',
-    'title_mail_cancel' => 'Training Cancellation Notification',
+    'title_mail_confirmation' => 'Notificação Confirmação de Treino',
+    'title_mail_cancel' => 'Notificação de Cancelamento de Treino',
     'preposition_hours_from' => 'até',
     'preposition_hours_to' => 'ás',
     'cancel' => 'CANCELADO',

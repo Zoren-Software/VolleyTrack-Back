@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Notification extends Model
 {
     use HasFactory;
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 
     protected $fillable = [
         /* 'id', */
@@ -30,11 +35,11 @@ class Notification extends Model
     {
         return $query->when(
             $read === true,
-            fn ($query) => $query->whereNotNull('read_at')
+            fn($query) => $query->whereNotNull('read_at')
         )
             ->when(
                 $read === false,
-                fn ($query) => $query->whereNull('read_at')
+                fn($query) => $query->whereNull('read_at')
             );
     }
 
