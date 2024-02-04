@@ -109,10 +109,10 @@ class NotificationTest extends TestCase
         );
 
         $this->assertMessageError($typeMessageError, $response, $hasLogin, $expectedMessage);
-        
+
         if ($data['error'] === null) {
             $this->assertEquals(
-                $data['message_expected'], 
+                $data['message_expected'],
                 $response->json('data.notificationsRead.message')
             );
 
