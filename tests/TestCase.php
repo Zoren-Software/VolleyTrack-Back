@@ -245,6 +245,9 @@ abstract class TestCase extends BaseTestCase
 
         $query .= "{$closeExit}";
 
+        // NOTE - Para Debug das queries
+        //dump($query);
+
         return $query;
     }
 
@@ -274,7 +277,13 @@ abstract class TestCase extends BaseTestCase
         foreach ($value as $value2) {
             $count++;
             $virgula = $count < $total ? ', ' : '';
-            $stringValue .= "{$value2}{$virgula}";
+    
+            // Checa se o valor é uma string e adiciona aspas duplas
+            if (is_string($value2)) {
+                $stringValue .= '"' . $value2 . '"' . $virgula;
+            } else {
+                $stringValue .= $value2 . $virgula;
+            }
         }
 
         $stringValue .= '] ';
