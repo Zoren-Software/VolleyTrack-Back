@@ -83,8 +83,19 @@ class NotificationTest extends TestCase
         if ($hasLogin) {
             $user = User::factory()->create();
 
-            Notification::factory(10)
+            Notification::factory(5)
                 ->setNotifiableId($user->id)
+                ->setTypeNotification('TrainingNotification')
+                ->create();
+
+            Notification::factory(5)
+                ->setNotifiableId($user->id)
+                ->setTypeNotification('CancelTrainingNotification')
+                ->create();
+            
+            Notification::factory(5)
+                ->setNotifiableId($user->id)
+                ->setTypeNotification('ConfirmationTrainingNotification')
                 ->create();
 
             $this->be($user);
