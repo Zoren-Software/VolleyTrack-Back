@@ -17,7 +17,7 @@ class NotificationsReadValidator extends Validator
         return [
             'id' => [
                 'sometimes',
-                'string',
+                'array',
             ],
             'mark_all_as_read' => [
                 'sometimes',
