@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Notifications\Training\NotificationCancelTrainingNotification;
-use App\Notifications\Training\NotificationConfirmationTrainingNotification;
+use App\Notifications\Training\CancelTrainingNotification;
+use App\Notifications\Training\ConfirmationTrainingNotification;
 use App\Notifications\Training\TrainingNotification;
 use App\Rules\RelationshipSpecificFundamental;
 use Carbon\Carbon;
@@ -130,7 +130,7 @@ class Training extends Model
                     now()->addDays($daysNotification)->format($this->format)
                 )
             ) {
-                $technician->notify(new NotificationConfirmationTrainingNotification($this, null));
+                $technician->notify(new ConfirmationTrainingNotification($this, null));
             }
         });
     }
@@ -199,7 +199,7 @@ class Training extends Model
     public function sendNotificationPlayersTrainingCancelled()
     {
         $this->team->players()->each(function ($player) {
-            $player->notify(new NotificationCancelTrainingNotification($this, null));
+            $player->notify(new CancelTrainingNotification($this, null));
         });
     }
 
