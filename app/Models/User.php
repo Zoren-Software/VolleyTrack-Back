@@ -246,14 +246,14 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
             $query
-            ->where(function ($query) use ($args) {
-                $query
-                    ->filterName($args['filter']['search'])
-                    ->filterEmail($args['filter']['search'])
-                    ->filterUserInformation($args['filter']['search'])
-                    ->filterPositionName($args['filter']['search'])
-                    ->filterTeamName($args['filter']['search']);
-            });
+                ->where(function ($query) use ($args) {
+                    $query
+                        ->filterName($args['filter']['search'])
+                        ->filterEmail($args['filter']['search'])
+                        ->filterUserInformation($args['filter']['search'])
+                        ->filterPositionName($args['filter']['search'])
+                        ->filterTeamName($args['filter']['search']);
+                });
         });
     }
 

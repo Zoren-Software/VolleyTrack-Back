@@ -9,7 +9,6 @@ class UserInformationObserver
     /**
      * Handle the UserInformation "updated" event.
      *
-     * @param \App\Models\UserInformation $userInformation
      * @return void
      */
     public function updated(UserInformation $userInformation)
@@ -21,7 +20,6 @@ class UserInformationObserver
     /**
      * Handle the UserInformation "created" event.
      *
-     * @param \App\Models\UserInformation $userInformation
      * @return void
      */
     public function created(UserInformation $userInformation)

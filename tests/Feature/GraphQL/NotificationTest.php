@@ -83,8 +83,19 @@ class NotificationTest extends TestCase
         if ($hasLogin) {
             $user = User::factory()->create();
 
-            Notification::factory(10)
+            Notification::factory(5)
                 ->setNotifiableId($user->id)
+                ->setTypeNotification('TrainingNotification')
+                ->create();
+
+            Notification::factory(5)
+                ->setNotifiableId($user->id)
+                ->setTypeNotification('CancelTrainingNotification')
+                ->create();
+
+            Notification::factory(5)
+                ->setNotifiableId($user->id)
+                ->setTypeNotification('ConfirmationTrainingNotification')
                 ->create();
 
             $this->be($user);
@@ -92,9 +103,9 @@ class NotificationTest extends TestCase
             $this->login = false;
         }
 
-        if($parameters['id'] && $hasLogin) {
+        if ($parameters['id'] && $hasLogin) {
             $notification = $user->notifications()->first();
-            $parameters['id'] = $notification->id;
+            $parameters['id'] = [$notification->id];
         }
 
         $response = $this->graphQL(

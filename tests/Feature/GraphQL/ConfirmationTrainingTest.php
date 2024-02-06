@@ -146,7 +146,7 @@ class ConfirmationTrainingTest extends TestCase
 
         $training = Training::factory()
             ->setTeamId($team->id)
-            ->setStatus(! $trainingCancelled)
+            ->setStatus(!$trainingCancelled)
             ->create();
 
         $confirmationTraining = $training->confirmationsTraining->first();
@@ -327,7 +327,7 @@ class ConfirmationTrainingTest extends TestCase
 
         $training = Training::factory()
             ->setTeamId($team->id)
-            ->setStatus(! $trainingCancelled)
+            ->setStatus(!$trainingCancelled)
             ->create();
 
         $confirmationTraining = $training->confirmationsTraining->first();
