@@ -2,10 +2,10 @@
 
 namespace App\Notifications\Training;
 
-use App\Mail\Training\CancellationNotificationTrainingMail;
+use App\Mail\Training\ConfirmationNotificationTrainingMail;
 use App\Models\User;
 
-class NotificationCancelTrainingNotification extends Notification
+class ConfirmationTrainingNotification extends Notification
 {
     /**
      * Get the mail representation of the notification.
@@ -13,11 +13,11 @@ class NotificationCancelTrainingNotification extends Notification
      * @codeCoverageIgnore
      *
      * @param  mixed  $notifiable
-     * @return \App\Mail\Training\CancellationNotificationTrainingMail
+     * @return \App\Mail\Training\ConfirmationNotificationTrainingMail
      */
     public function toMail(User $notifiable)
     {
-        return (new CancellationNotificationTrainingMail($this->training, $notifiable))
+        return (new ConfirmationNotificationTrainingMail($this->training, $notifiable))
             ->to($notifiable->email);
     }
 
@@ -34,7 +34,7 @@ class NotificationCancelTrainingNotification extends Notification
         return [
             'userAction' => $notifiable,
             'training' => $this->training,
-            'message' => trans('TrainingNotification.title_mail_cancel'),
+            'message' => trans('TrainingNotification.title_mail_confirmation'),
         ];
     }
 }

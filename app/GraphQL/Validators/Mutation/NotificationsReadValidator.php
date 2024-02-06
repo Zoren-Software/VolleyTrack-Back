@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
-use App\Models\Training;
 use Nuwave\Lighthouse\Validation\Validator;
 
 class NotificationsReadValidator extends Validator
@@ -17,7 +16,7 @@ class NotificationsReadValidator extends Validator
         return [
             'id' => [
                 'sometimes',
-                'string',
+                'array',
             ],
             'mark_all_as_read' => [
                 'sometimes',

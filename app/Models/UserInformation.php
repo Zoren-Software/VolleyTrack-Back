@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Observers\Logs\UserInformationObserver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Observers\Logs\UserInformationObserver;
 
 class UserInformation extends Model
 {
@@ -36,8 +36,8 @@ class UserInformation extends Model
         $query->when(isset($search), function ($query) use ($search) {
             $query->where(function ($subQuery) use ($search) {
                 $subQuery->filterCPF($search)
-                         ->filterRG($search)
-                         ->filterPhone($search);
+                    ->filterRG($search)
+                    ->filterPhone($search);
             });
         });
     }

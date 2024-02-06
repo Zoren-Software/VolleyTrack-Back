@@ -16,7 +16,7 @@ final class GitHubService extends Model
 
         $this->accessToken = config('services.github.access_token');
 
-        if (! $this->accessToken) {
+        if (!$this->accessToken) {
             throw new \Throwable('Variáveis de conexão do GitHub não declaradas');
         }
     }

@@ -61,7 +61,7 @@ final class TeamMutation
                 $technicians,
                 [
                     'role' => 'technician',
-                    ]
+                ]
             );
             $this->alteracoesModificacao($args, $currentUsersIds, $changes, $context);
 

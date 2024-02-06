@@ -5,7 +5,6 @@ namespace Tests\Unit\App\GraphQL\Mutations;
 use App\GraphQL\Mutations\TeamMutation;
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
