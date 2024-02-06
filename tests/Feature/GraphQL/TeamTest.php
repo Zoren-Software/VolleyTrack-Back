@@ -216,7 +216,7 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
-        if(!empty($parameters['playerId']) ) {
+        if (!empty($parameters['playerId'])) {
             foreach ($parameters['playerId'] as $playerId) {
                 // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
                 $this->assertDatabaseHas('teams_users', [
@@ -367,7 +367,7 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
-        if(!empty($parameters['playerId']) ) {
+        if (!empty($parameters['playerId'])) {
             foreach ($parameters['playerId'] as $playerId) {
                 // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
                 $this->assertDatabaseHas('teams_users', [

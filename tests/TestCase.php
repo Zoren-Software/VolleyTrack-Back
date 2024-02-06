@@ -6,11 +6,11 @@ use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\DB;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -86,7 +86,7 @@ abstract class TestCase extends BaseTestCase
 
         Artisan::call('migrate --seed');
 
-        if (! Tenant::find($tenantId)) {
+        if (!Tenant::find($tenantId)) {
             $tenant = Tenant::create(['id' => $tenantId]);
             Tenant::create(['id' => $tenantIdLogs]);
             $tenant->domains()->create(['domain' => $tenantId . '.' . env('APP_HOST')]);
@@ -277,7 +277,7 @@ abstract class TestCase extends BaseTestCase
         foreach ($value as $value2) {
             $count++;
             $virgula = $count < $total ? ', ' : '';
-    
+
             // Checa se o valor é uma string e adiciona aspas duplas
             if (is_string($value2)) {
                 $stringValue .= '"' . $value2 . '"' . $virgula;
@@ -359,7 +359,7 @@ abstract class TestCase extends BaseTestCase
     public function assertMessageError($type_message_error, $response, bool $permission, $expected_message)
     {
         if ($type_message_error) {
-            if (! $permission) {
+            if (!$permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
                 if (isset($response->json()['errors'][0]['extensions'])) {

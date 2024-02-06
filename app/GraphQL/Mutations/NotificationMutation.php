@@ -28,6 +28,7 @@ final class NotificationMutation
                 ->whereNull('read_at')
                 ->whereIn('id', $args['id'])
                 ->update(['read_at' => now()]);
+
             return [
                 'message' => trans('NotificationRead.read_notification'),
             ];
@@ -38,6 +39,7 @@ final class NotificationMutation
             $user->notifications()
                 ->whereNull('read_at')
                 ->update(['read_at' => now()]);
+
             return [
                 'message' => trans('NotificationRead.read_all_notifications'),
             ];

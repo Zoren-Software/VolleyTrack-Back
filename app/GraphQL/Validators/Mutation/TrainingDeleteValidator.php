@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
-use App\Models\Training;
 use App\Rules\ValidTrainingDeletion;
 use Nuwave\Lighthouse\Validation\Validator;
 

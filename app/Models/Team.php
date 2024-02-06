@@ -100,7 +100,7 @@ class Team extends Model
 
     public function scopeFilterIds(Builder $query, array $ids)
     {
-        $query->when(isset($ids) && ! empty($ids), function ($query) use ($ids) {
+        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
             $query->whereIn('teams.id', $ids);
         });
     }
@@ -110,7 +110,7 @@ class Team extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['positionsIds']) &&
-            ! empty($args['filter']['positionsIds']),
+            !empty($args['filter']['positionsIds']),
             function ($query) use ($args) {
                 $query->whereHas('players', function ($query) use ($args) {
                     $query->whereHas('positions', function ($query) use ($args) {
@@ -126,7 +126,7 @@ class Team extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['playersIds']) &&
-            ! empty($args['filter']['playersIds']),
+            !empty($args['filter']['playersIds']),
             function ($query) use ($args) {
                 $query->whereHas('players', function ($query) use ($args) {
                     $query->filterIds($args['filter']['playersIds']);
@@ -140,7 +140,7 @@ class Team extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['playersIds']) &&
-            ! empty($args['filter']['playersIds']),
+            !empty($args['filter']['playersIds']),
             function ($query) use ($args) {
                 $query->whereHas('players', function ($query) use ($args) {
                     $query->filterIds($args['filter']['playersIds']);
@@ -154,7 +154,7 @@ class Team extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['usersIds']) &&
-            ! empty($args['filter']['usersIds']),
+            !empty($args['filter']['usersIds']),
             function ($query) use ($args) {
                 $query->where('teams.user_id', $args['filter']['usersIds']);
             }

@@ -80,7 +80,7 @@ class Position extends Model
 
     public function scopeFilterIds(Builder $query, array $ids)
     {
-        $query->when(isset($ids) && ! empty($ids), function ($query) use ($ids) {
+        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
             $query->whereIn('positions.id', $ids);
         });
     }
@@ -90,7 +90,7 @@ class Position extends Model
         $query->when(
             isset($args['filter']) &&
             isset($args['filter']['teamsIds']) &&
-            ! empty($args['filter']['teamsIds']
+            !empty($args['filter']['teamsIds']
             ),
             function ($query) use ($args) {
                 $query->whereHas('users', function ($query) use ($args) {

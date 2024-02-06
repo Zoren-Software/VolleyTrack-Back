@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
-use App\Models\Training;
 use Nuwave\Lighthouse\Validation\Validator;
 
 class NotificationsReadValidator extends Validator

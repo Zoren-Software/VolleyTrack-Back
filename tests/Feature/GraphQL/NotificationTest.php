@@ -92,7 +92,7 @@ class NotificationTest extends TestCase
                 ->setNotifiableId($user->id)
                 ->setTypeNotification('CancelTrainingNotification')
                 ->create();
-            
+
             Notification::factory(5)
                 ->setNotifiableId($user->id)
                 ->setTypeNotification('ConfirmationTrainingNotification')
@@ -103,7 +103,7 @@ class NotificationTest extends TestCase
             $this->login = false;
         }
 
-        if($parameters['id'] && $hasLogin) {
+        if ($parameters['id'] && $hasLogin) {
             $notification = $user->notifications()->first();
             $parameters['id'] = [$notification->id];
         }
