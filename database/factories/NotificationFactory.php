@@ -96,7 +96,7 @@ class NotificationFactory extends Factory
                             "team_id":55,
                             "user_id":3,
                             "name":"Miss Nakia Hagenes V TRAINING",
-                            "description":"Quos minus dolores voluptas. Et dolores atque harum. Dignissimos placeat 
+                            "description":"Quos minus dolores voluptas. Et dolores atque harum. Dignissimos placeat
                                 ipsum expedita rerum et itaque quo.",
                             "status":1,
                             "date_start":"2024-02-05 19:58:32",
@@ -137,7 +137,7 @@ class NotificationFactory extends Factory
                             "team_id":55,
                             "user_id":3,
                             "name":"Miss Nakia Hagenes V TRAINING",
-                            "description":"Quos minus dolores voluptas. Et dolores atque harum. Dignissimos placeat 
+                            "description":"Quos minus dolores voluptas. Et dolores atque harum. Dignissimos placeat
                                 ipsum expedita rerum et itaque quo.",
                             "status":1,
                             "date_start":"2024-02-05 19:58:32",
