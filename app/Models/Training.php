@@ -232,8 +232,8 @@ class Training extends Model
             ->filterSearch($args)
             ->filterIgnores($args)
             ->filterTeam($args)
-            ->filterUser($args);
-        //->filterDateStart($args);
+            ->filterUser($args)
+            ->filterDate($args);
     }
 
     public function scopeFilterSearch(Builder $query, array $args)
@@ -316,6 +316,14 @@ class Training extends Model
     {
         $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
             $query->whereNotIn('trainings.id', $args['filter']['ignoreIds']);
+        });
+    }
+
+    public function scopeFilterDate(Builder $query, array $args) {
+        $query->when(isset($args['filter']) && isset($args['filter']['dateStart']), function ($query) use ($args) {
+            $query->whereDate('trainings.date_start', '>=', $args['filter']['dateStart']);
+        })->when(isset($args['filter']) && isset($args['filter']['dateEnd']), function ($query) use ($args) {
+            $query->whereDate('trainings.date_end', '<=', $args['filter']['dateEnd']);
         });
     }
 }
