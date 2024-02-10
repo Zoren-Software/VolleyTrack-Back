@@ -163,6 +163,8 @@ abstract class TestCase extends BaseTestCase
 
     public function loginGraphQL(): void
     {
+        $this->tenant = 'api';
+
         if ($this->otherUser) {
             $user = User::factory()->make();
             $user->save();

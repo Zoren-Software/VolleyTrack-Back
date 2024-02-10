@@ -34,7 +34,12 @@ class NotificationTest extends TestCase
      */
     public function notificationList()
     {
-        Notification::factory()->make()->save();
+        $user = User::factory()->create();
+
+        Notification::factory(5)
+            ->setNotifiableId($user->id)
+            ->setTypeNotification('TrainingNotification')
+            ->create();
 
         $this->graphQL(
             'notifications',
