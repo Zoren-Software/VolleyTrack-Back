@@ -23,6 +23,7 @@ return [
 
         // Rotas API
         'api.' . appHost(),
+
         // Rotas Horizon
         'horizon.' . appHost(),
     ],
