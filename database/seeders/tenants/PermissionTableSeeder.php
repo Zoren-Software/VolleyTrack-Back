@@ -137,7 +137,7 @@ class PermissionTableSeeder extends Seeder
         /**
          * Definir user como perfil de técnico
          */
-        if (env('APP_DEBUG')) {
+        if (env('APP_DEBUG') && env('APP_ENV') === 'local') {
             User::whereEmail(env('MAIL_FROM_TEST_TECHNICIAN'))->first()->assignRole('technician');
             User::whereEmail(env('MAIL_FROM_TEST_PLAYER'))->first()->assignRole('player');
         }
