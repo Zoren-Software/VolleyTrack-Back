@@ -35,7 +35,7 @@ class UserTableSeeder extends Seeder
         /*
          * Criando e-mails para testes
          */
-        if (env('APP_DEBUG')) {
+        if (env('APP_DEBUG') && env('APP_ENV') === 'local') {
             $usersDefault[] = [
                 'id' => 3,
                 'name' => 'Usuário Teste Técnico',
