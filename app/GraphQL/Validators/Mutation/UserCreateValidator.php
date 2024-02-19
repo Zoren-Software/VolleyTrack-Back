@@ -20,7 +20,7 @@ class UserCreateValidator extends Validator
                 'min:3',
             ],
             'password' => [
-                'required',
+                'sometimes',
                 'min:6',
             ],
             'email' => [

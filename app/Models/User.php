@@ -236,6 +236,9 @@ class User extends Authenticatable implements HasApiTokensContract
     public function list(array $args)
     {
         return $this
+            ->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'admin');
+            })
             ->filterSearch($args)
             ->filterIgnores($args)
             ->filterPosition($args)
