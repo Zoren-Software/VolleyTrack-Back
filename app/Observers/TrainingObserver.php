@@ -31,6 +31,11 @@ class TrainingObserver
      */
     public function updated(Training $training)
     {
+        if ($training->isDirty('team_id')) {
+            $originalTeamId = $training->getOriginal('team_id');
+            $training->deleteConfirmationsPlayersOld($originalTeamId);
+        }
+
         $training->confirmationsPlayers($training->id);
 
         if ($training->getOriginal('status') && $training->status == 0) {

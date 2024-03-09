@@ -191,6 +191,14 @@ class Training extends Model
         $this->sendNotificationTechnicians($daysNotification);
     }
 
+    public function deleteConfirmationsPlayersOld(int $teamId)
+    {
+        $this->confirmationsTraining()
+            ->where('team_id', $teamId)
+            ->where('training_id', $this->id)
+            ->delete();
+    }
+
     /**
      * @codeCoverageIgnore
      *
