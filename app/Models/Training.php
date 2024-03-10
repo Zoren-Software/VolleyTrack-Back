@@ -221,6 +221,8 @@ class Training extends Model
         $confirmed = $this->confirmationsTraining()->status('confirmed')->count() ?? 0;
         $pending = $this->confirmationsTraining()->status('pending')->count() ?? 0;
         $rejected = $this->confirmationsTraining()->status('rejected')->count() ?? 0;
+        $presence = $this->confirmationsTraining()->presence(true)->count() ?? 0;
+        $absence = $this->confirmationsTraining()->presence(false)->count() ?? 0;
         $total = $confirmed + $pending + $rejected;
 
         return [
@@ -231,6 +233,10 @@ class Training extends Model
             'confirmedPercentage' => $confirmed > 0 ? ($confirmed / ($total) * 100) : 0,
             'pendingPercentage' => $pending > 0 ? ($pending / ($total) * 100) : 0,
             'rejectedPercentage' => $rejected > 0 ? ($rejected / ($total) * 100) : 0,
+            'presence' => $presence,
+            'absence' => $absence,
+            'presencePercentage' => $presence > 0 ? ($presence / ($total) * 100) : 0,
+            'absencePercentage' => $absence > 0 ? ($absence / ($total) * 100) : 0,
         ];
     }
 
