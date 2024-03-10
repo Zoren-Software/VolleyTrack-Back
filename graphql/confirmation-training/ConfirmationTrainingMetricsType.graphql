@@ -18,4 +18,10 @@ type ConfirmationTrainingMetrics {
     presence: Int!
     "The number of absences"
     absence: Int!
+
+    "The number of presences in percentage"
+    presencePercentage: Float!
+
+    "The number of absences in percentage"
+    absencePercentage: Float!
 }

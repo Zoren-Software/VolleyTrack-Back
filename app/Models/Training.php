@@ -235,6 +235,8 @@ class Training extends Model
             'rejectedPercentage' => $rejected > 0 ? ($rejected / ($total) * 100) : 0,
             'presence' => $presence,
             'absence' => $absence,
+            'presencePercentage' => $presence > 0 ? ($presence / ($total) * 100) : 0,
+            'absencePercentage' => $absence > 0 ? ($absence / ($total) * 100) : 0,
         ];
     }
 
