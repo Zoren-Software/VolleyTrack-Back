@@ -6,11 +6,16 @@ type ConfirmationTrainingMetrics {
     pending: Int!
     "The number of trainings that were rejected"
     rejected: Int!
-
+    "Total number of players"
+    total: Int!
     "The number of trainings that were confirmed in percentage"
     confirmedPercentage: Float!
     "The number of trainings that were pending in percentage"
     pendingPercentage: Float!
     "The number of trainings that were rejected in percentage"
     rejectedPercentage: Float!
+    "The number of presences"
+    presence: Int!
+    "The number of absences"
+    absence: Int!
 }
