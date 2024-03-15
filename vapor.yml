@@ -14,5 +14,6 @@ environments:
             - 'php artisan migrate --force'
             - 'php artisan multi_tenants:migrate --path base'
             - 'php artisan multi_tenants:migrate'
+            - 'php artisan multi_tenants_logs:migrate'
             - 'php artisan multi_tenants:seed'
             - 'php artisan config:cache'
