@@ -18,6 +18,8 @@
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.7",
+        "laravel/vapor-cli": "^1.64",
+        "laravel/vapor-core": "^2.37",
         "mll-lab/graphql-php-scalars": "^5.4",
         "nuwave/lighthouse": "^5.71",
         "opcodesio/log-viewer": "^1.4",
@@ -71,7 +73,8 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "vapor": "php vendor/bin/vapor"
     },
     "extra": {
         "laravel": {
