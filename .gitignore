@@ -4,6 +4,8 @@
 /storage/*.key
 /vendor
 .env
+.env.production
+.env.staging
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
