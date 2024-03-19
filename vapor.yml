@@ -2,6 +2,7 @@ id: 58960
 name: VolleyTrackMultiTenancy
 environments:
     production:
+        cache: volleytrack-cache
         database: volleytrack
         memory: 1024
         cli-memory: 512

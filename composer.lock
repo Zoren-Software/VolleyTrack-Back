@@ -357,16 +357,16 @@
         },
         {
             "name": "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel",
-            "version": "2.0.0",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel.git",
-                "reference": "96f2e837f925aa587a511d61704d1d8904625fda"
+                "reference": "f9799cb446faa3e73c1b91814f8d94ebe5f1ab42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/zipball/96f2e837f925aa587a511d61704d1d8904625fda",
-                "reference": "96f2e837f925aa587a511d61704d1d8904625fda",
+                "url": "https://api.github.com/repos/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/zipball/f9799cb446faa3e73c1b91814f8d94ebe5f1ab42",
+                "reference": "f9799cb446faa3e73c1b91814f8d94ebe5f1ab42",
                 "shasum": ""
             },
             "require": {
@@ -441,7 +441,7 @@
                 "user"
             ],
             "support": {
-                "source": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/tree/2.0.0"
+                "source": "https://github.com/CeruttiMaicon/laravel-activitylog-for-tenancy-for-laravel/tree/v2.0.2"
             },
             "funding": [
                 {
@@ -453,7 +453,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-26T13:37:04+00:00"
+            "time": "2024-03-19T02:25:41+00:00"
         },
         {
             "name": "daniel-de-wit/lighthouse-sanctum",
