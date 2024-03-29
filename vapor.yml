@@ -2,6 +2,7 @@ id: 58960
 name: VolleyTrackMultiTenancy
 environments:
     production:
+        domain: graphql.volleytrack.com
         cache: volleytrack-cache
         database: volleytrack
         memory: 1024
