@@ -1,0 +1,5 @@
+"NotificationsReadType"
+type NotificationsRead {
+    "Message of the notifications read by the user"
+    message: String!
+}

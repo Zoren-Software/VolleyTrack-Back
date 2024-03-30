@@ -9,11 +9,15 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      *
+     * @codeCoverageIgnore
+     *
      * @return void
      */
     public function register()
     {
-        //
+        $this->app->singleton('websockets.router', function () {
+            return new \App\WebSockets\Server\Router();
+        });
     }
 
     /**

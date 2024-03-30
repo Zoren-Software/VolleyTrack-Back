@@ -20,28 +20,57 @@ class Role extends SpatieRole
     protected static function booted()
     {
         static::addGlobalScope('permission', function (Builder $builder) {
-            /**
-             * verify if auth()->user() has permission in role for list-role-administrador
-             * if not, remove role id 1 from query (Administrador)
-             */
-            return $builder->when(! auth()->user()->hasPermissionRole('list-role-administrador'), function (Builder $builder) {
-                $builder->whereNot('id', 1);
-            })
+            // Se o usuário for um administrador, não fazemos nenhuma restrição
+            if (auth()->user()->hasPermissionTo('view-role-admin')) {
+                return $builder;
+            }
 
-            /**
-             * verify if auth()->user() has permission in role for list-role-technician
-             * if not, remove role id 2 from query (Técnico)
-             */
-            ->when(! auth()->user()->hasPermissionRole('list-role-technician'), function (Builder $builder) {
-                $builder->whereNot('id', 2);
-            })
-            /**
-             * verify if auth()->user() has permission in role for list-role-player
-             * if not, remove role id 3 from query (Jogador)
-             */
-            ->when(! auth()->user()->hasPermissionRole('list-role-player'), function (Builder $builder) {
-                $builder->whereNot('id', 3);
-            });
+            // Se o usuário for um técnico, removemos a permissão de administrador da consulta
+            if (auth()->user()->hasPermissionTo('view-role-technician')) {
+                return $builder->whereNotIn('id', [1]); // Remove admin (id: 1)
+            }
+
+            // Se o usuário for um jogador, removemos as permissões de administrador e técnico da consulta
+            if (auth()->user()->hasPermissionTo('view-role-player')) {
+                return $builder->whereNotIn('id', [1, 2]); // Remove admin (id: 1) and technician (id: 2)
+            }
+
+            // Se chegamos até aqui, significa que o usuário não tem permissão para ver nenhum dos roles
+            // Aqui você pode decidir o que fazer nesse caso, talvez retornar um builder que sempre retorna uma query vazia
+            return $builder->where('id', '<', 0); // Isso retornará uma query vazia
         });
+    }
+
+    public function list(array $args)
+    {
+        return $this
+            ->filterSearch($args)
+            ->filterIgnores($args);
+    }
+
+    public function scopeFilterIgnores(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+            $query->whereNotIn('roles.id', $args['filter']['ignoreIds']);
+        });
+    }
+
+    public function scopeFilterSearch(Builder $query, array $args)
+    {
+        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+            $query->filterName($args['filter']['search']);
+        });
+    }
+
+    public function scopeFilterName(Builder $query, string $search)
+    {
+        $query->when(isset($search), function ($query) use ($search) {
+            $query->where('roles.name', 'like', $search);
+        });
+    }
+
+    public function getNameAttribute($value)
+    {
+        return trans('RoleRegister.' . $value);
     }
 }

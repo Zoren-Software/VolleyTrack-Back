@@ -3,11 +3,16 @@ extend type Mutation @guard {
     userCreate(
         name: String!
         email: String! @rules(apply: ["email", "unique:users"])
+        cpf: String
+        rg: String
+        phone: String
+        birthDate: String
         roleId: [Int!]!
         positionId: [Int]
-        password: String! @rules(apply: ["min:6"])
+        teamId: [Int]
+        password: String @rules(apply: ["min:6"])
     ): User
-        @field(resolver: "UserMutation@create")
+        @field(resolver: "UserMutation@make")
         @validator
         @can(ability: "create")
 
@@ -15,15 +20,21 @@ extend type Mutation @guard {
         id: ID!
         name: String!
         email: String!
+        cpf: String
+        rg: String
+        phone: String
+        birthDate: String
         roleId: [Int!]!
         positionId: [Int]
-        password: String! @rules(apply: ["min:6"])
+        teamId: [Int]
+        password: String @rules(apply: ["min:6"])
     ): User
-        @field(resolver: "UserMutation@edit")
+        @field(resolver: "UserMutation@make")
         @validator
         @can(ability: "edit")
     
     userDelete(id: [ID!]!): [User]
         @field(resolver: "UserMutation@delete")
+        @validator
         @can(ability: "delete")
 }

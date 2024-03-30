@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Models\Position;
+use App\Models\Team;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
@@ -14,9 +16,11 @@ class UserTest extends TestCase
 
     protected $otherUser = false;
 
-    private $permission = 'Técnico';
+    protected $login = true;
 
-    private $data = [
+    private $role = 'technician';
+
+    public static $data = [
         'id',
         'name',
         'email',
@@ -25,42 +29,93 @@ class UserTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-user');
+        $this->checkPermission($hasPermission, $this->role, 'view-user');
+    }
+
     /**
      * Listagem de todos os usuários.
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
+     * @dataProvider listProvider
+     *
      * @return void
      */
-    public function test_users_list()
-    {
-        $this->login = true;
+    public function usersList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
 
-        User::factory()->make()->save();
+        User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'users',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'users' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'users' => [
+                            'paginatorInfo' => self::$paginatorInfo,
+                            'data' => [
+                                '*' => self::$data,
+                            ],
+                        ],
                     ],
                 ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => self::$unauthorized,
+                'expected' => [
+                    'errors' => self::$errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -68,28 +123,73 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function test_user_info()
-    {
-        $this->login = true;
+    public function userInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
 
-        $user = User::factory()->make();
+        $user = User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
         $user->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'user',
             [
                 'id' => $user->id,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'user' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'user' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => self::$unauthorized,
+                'expected' => [
+                    'errors' => self::$errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -99,28 +199,39 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user_create($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
-        $this->login = true;
+    public function userCreate(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasTeam,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
 
-        $faker = Faker::create();
+        if ($hasTeam) {
+            $team = Team::factory()->create();
+            $parameters['teamId'] = $team->id;
+        }
 
-        $this->checkPermission($permission, $this->permission, 'create-user');
-
-        $parameters['name'] = $faker->name;
+        if ($parameters['name'] == null) {
+            $parameters['name'] = ' ';
+        }
 
         $response = $this->graphQL(
             'userCreate',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -130,126 +241,255 @@ class UserTest extends TestCase
     /**
      * @return array
      */
-    public function userCreateProvider()
+    public static function userCreateProvider()
     {
         $faker = Faker::create();
         $emailExistent = $faker->email;
+        $cpfExistent = strval($faker->numberBetween(10000000000, 99999999999));
+        $rgExistent = strval($faker->numberBetween(10000000000, 99999999999));
 
         $password = env('PASSWORD_TEST', '123456');
 
         $userCreate = ['userCreate'];
 
         return [
+            'create user with teams, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'positionId' => [1],
+                    'password' => $password,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => self::$data,
+                    ],
+                ],
+                'hasTeam' => true,
+                'hasPermission' => true,
+            ],
+            'create user with position, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $emailExistent,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'password' => $password,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'create user with non-mandatory parameters, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'cpf' => $cpfExistent,
+                    'phone' => $faker->phoneNumber,
+                    'rg' => $rgExistent,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'password' => $password,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'create user with cpf existent, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'cpf' => $cpfExistent,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [3],
+                    'password' => $password,
+                ],
+                'type_message_error' => 'cpf',
+                'expected_message' => 'UserCreate.cpf_unique',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userCreate,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'create user with rg existent, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'rg' => $rgExistent,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [3],
+                    'password' => $password,
+                ],
+                'type_message_error' => 'rg',
+                'expected_message' => 'UserCreate.rg_unique',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userCreate,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
             'declare roleId is required, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [],
                 ],
                 'type_message_error' => 'roleId',
                 'expected_message' => 'UserCreate.role_id_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'create user, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $emailExistent,
-                    'roleId' => [2],
+                    'email' => $faker->email,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [3],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => $this->data,
+                        'userCreate' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'create user with birth date, success' => [
+                [
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [3],
+                    'password' => $password,
+                    'birthDate' => $faker->date(),
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'create user with 2 roles, success' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'roleId' => [2, 3],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [3],
                     'password' => $password,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => $this->data,
+                        'userCreate' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'create user with permission that shouldnt have, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
-                    'roleId' => [1, 2],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [1],
                     'password' => $password,
                 ],
                 'type_message_error' => 'roleId',
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'create user without permission, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                     'password' => $password,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
-                'permission' => false,
+                'hasTeam' => false,
+                'hasPermission' => false,
             ],
             'text password less than 6 characters, expected error' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                     'password' => '12345',
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserCreate.password_min_6',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
-                'permission' => true,
-            ],
-            'no text password, expected error' => [
-                [
-                    'password' => ' ',
-                    'email' => $faker->email,
-                    'roleId' => [2],
-                ],
-                'type_message_error' => 'password',
-                'expected_message' => 'UserCreate.password_required',
-                'expected' => [
-                    'errors' => $this->errors,
-                    'data' => $userCreate,
-                ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'text password with 6 characters, success' => [
                 [
                     'name' => $faker->name,
                     'email' => $faker->email,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                     'password' => $password,
                 ],
@@ -257,55 +497,101 @@ class UserTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userCreate' => $this->data,
+                        'userCreate' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'email field is required, expected error' => [
                 [
                     'name' => $faker->name,
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                     'email' => ' ',
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'name field is required, expected error' => [
+                [
+                    'name' => null,
+                    'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                    'email' => $faker->email,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'UserCreate.name_required',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userCreate,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'name field is min 3 characters, expected error' => [
+                [
+                    'name' => 'Th',
+                    'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                    'email' => $faker->email,
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'UserCreate.name_min_3',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userCreate,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'email field is not unique, expected error' => [
                 [
                     'name' => $faker->name,
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                     'email' => $emailExistent,
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'email field is not email valid, expected error' => [
                 [
                     'name' => $faker->name,
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                     'email' => 'notemail.com',
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserCreate.email_is_valid',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userCreate,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -317,43 +603,69 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
-        $this->login = true;
+    public function userEdit(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasTeam,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
 
-        $this->checkPermission($permission, $this->permission, 'edit-user');
+        $user = User::find($this->user->id);
 
-        $userExist = User::factory()->make();
-        $userExist->save();
-        $user = User::factory()->make();
-        $user->save();
+        if (isset($parameters['cpf']) && $parameters['cpf']) {
+            $parameters['cpf'] = User::factory()->create()->information->cpf;
+        } elseif (isset($parameters['cpf']) && !$parameters['cpf']) {
+            $faker = Faker::create();
+            $parameters['cpf'] = (string) $faker->numberBetween(10000000000, 99999999999);
+        }
+
+        if (isset($parameters['rg']) && $parameters['rg']) {
+            $parameters['rg'] = User::factory()->create()->information->rg;
+        } elseif (isset($parameters['rg']) && !$parameters['rg']) {
+            $faker = Faker::create();
+            $parameters['rg'] = (string) $faker->numberBetween(100000000, 999999999);
+        }
+
+        if ($hasTeam) {
+            $team = Team::factory()->create();
+            $parameters['teamId'] = $team->id;
+        }
 
         $parameters['id'] = $user->id;
 
-        if ($expected_message == 'UserEdit.email_unique') {
+        if ($expectedMessage == 'UserEdit.email_is_valid') {
+            $parameters['email'] = 'notemail.com';
+        } elseif ($expectedMessage != 'UserEdit.email_required') {
+            $parameters['email'] = $this->email;
+        } else {
+            $parameters['email'] = ' ';
+        }
+
+        if ($expectedMessage == 'UserEdit.email_unique') {
+            $userExist = User::factory()
+                ->has(Position::factory()->count(3))
+                ->create();
+
             $parameters['email'] = $userExist->email;
         }
 
         $response = $this->graphQL(
             'userEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
-
-        if ($type_message_error) {
-            if (! $permission) {
-                $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
-            } else {
-                $this->assertSame($response->json()['errors'][0]['extensions']['validation'][$type_message_error][0], trans($expected_message));
-            }
-        }
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -363,7 +675,7 @@ class UserTest extends TestCase
     /**
      * @return array
      */
-    public function userEditProvider()
+    public static function userEditProvider()
     {
         $faker = Faker::create();
 
@@ -374,169 +686,336 @@ class UserTest extends TestCase
             'declare roleId is required, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [],
                 ],
                 'type_message_error' => 'roleId',
                 'expected_message' => 'UserEdit.role_id_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'edit user with permission that shouldnt have, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+
                     'password' => $password,
-                    'roleId' => [1, 2],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [1],
                 ],
                 'type_message_error' => 'roleId',
                 'expected_message' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'edit user without permission, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
-                'permission' => false,
+                'hasTeam' => false,
+                'hasPermission' => false,
             ],
-            'edit user, success' => [
+            'edit user with cpf, rg and phone, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+                    'cpf' => false,
+                    'rg' => false,
+                    'phone' => $faker->phoneNumber,
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => $this->data,
+                        'userEdit' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasTeam' => true,
+                'hasPermission' => true,
+            ],
+            'edit user with cpf not unique, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'cpf' => true,
+                    'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'cpf',
+                'expected_message' => 'UserEdit.cpf_unique',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userEdit,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'edit user with rg not unique, expected error' => [
+                [
+                    'name' => $faker->name,
+                    'rg' => true,
+                    'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'rg',
+                'expected_message' => 'UserEdit.rg_unique',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userEdit,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'edit user with team, success' => [
+                [
+                    'name' => $faker->name,
+
+                    'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                    'positionId' => [2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => self::$data,
+                    ],
+                ],
+                'hasTeam' => true,
+                'hasPermission' => true,
+            ],
+            'edit user with position, success' => [
+                [
+                    'name' => $faker->name,
+
+                    'password' => $password,
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'positionId' => [2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'edit user, success' => [
+                [
+                    'name' => $faker->name,
+
+                    'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'edit user with birth date, success' => [
+                [
+                    'name' => $faker->name,
+
+                    'password' => $password,
+                    'birthDate' => $faker->date(),
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'userEdit' => self::$data,
+                    ],
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'edit user with 2 roles, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2, 3],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => $this->data,
+                        'userEdit' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'text password less than 6 characters, expected error' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+
                     'password' => '12345',
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                 ],
                 'type_message_error' => 'password',
                 'expected_message' => 'UserEdit.password_min_6',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
-                'permission' => true,
-            ],
-            'no text password, expected error' => [
-                [
-                    'name' => $faker->name,
-                    'password' => ' ',
-                    'email' => $faker->email,
-                    'roleId' => [2],
-                ],
-                'type_message_error' => 'password',
-                'expected_message' => 'UserEdit.password_required',
-                'expected' => [
-                    'errors' => $this->errors,
-                    'data' => $userEdit,
-                ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'text password with 6 characters, success' => [
                 [
                     'name' => $faker->name,
-                    'email' => $faker->email,
+
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'userEdit' => $this->data,
+                        'userEdit' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'email field is required, expected error' => [
                 [
                     'name' => $faker->name,
                     'password' => $password,
-                    'email' => ' ',
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'name field is required, expected error' => [
+                [
+                    'name' => ' ',
+                    'password' => $password,
+
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'UserEdit.name_required',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userEdit,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
+            ],
+            'name field is min 3 characters, expected error' => [
+                [
+                    'name' => 'Th',
+                    'password' => $password,
+
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'roleId' => [2],
+                ],
+                'type_message_error' => 'name',
+                'expected_message' => 'UserEdit.name_min_3',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userEdit,
+                ],
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'email field is not unique, expected error' => [
                 [
                     'name' => $faker->name,
                     'password' => $password,
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
             'email field is not email valid, expected error' => [
                 [
                     'name' => $faker->name,
                     'password' => $password,
                     'email' => 'notemail.com',
+                    'positionId' => [1],
+                    'teamId' => [1],
                     'roleId' => [2],
                 ],
                 'type_message_error' => 'email',
                 'expected_message' => 'UserEdit.email_is_valid',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
-                'permission' => true,
+                'hasTeam' => false,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -548,16 +1027,17 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function testDeleteUser($data, $type_message_error, $expected_message, $expected, $permission)
+    public function deleteUser($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
-        $this->login = true;
+        $this->setPermissions($hasPermission);
 
-        $this->checkPermission($permission, $this->permission, 'delete-user');
-
-        $user = User::factory()->make();
-        $user->save();
+        $user = User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
 
         $parameters['id'] = $user->id;
 
@@ -565,16 +1045,24 @@ class UserTest extends TestCase
             $parameters['id'] = $data['error'];
         }
 
+        if ($expectedMessage == 'UserDelete.cannot_delete_own_account') {
+            $parameters['id'] = $this->user->id;
+        }
+
+        if ($expectedMessage == 'UserDelete.ids_exists') {
+            $parameters['id'] = User::max('id') + 1;
+        }
+
         $response = $this->graphQL(
             'userDelete',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -584,7 +1072,7 @@ class UserTest extends TestCase
     /**
      * @return array
      */
-    public function userDeleteProvider()
+    public static function userDeleteProvider()
     {
         $userDelete = ['userDelete'];
 
@@ -598,31 +1086,125 @@ class UserTest extends TestCase
                 'expected' => [
                     'data' => $userDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete user without permission, expected error' => [
                 [
                     'error' => null,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete user that does not exist, expected error' => [
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'type_message_error' => 'id',
+                'expected_message' => 'UserDelete.ids_exists',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $userDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
+            ],
+            'delete user can not delete own account, expected error' => [
+                [
+                    'error' => 'this',
+                ],
+                'type_message_error' => 'id',
+                'expected_message' => 'UserDelete.cannot_delete_own_account',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $userDelete,
+                ],
+                'hasPermission' => true,
+            ],
+        ];
+    }
+
+    /**
+     * Listar informações de usuário logado.
+     *
+     * @author Maicon Cerutti
+     *
+     * @test
+     *
+     * @dataProvider meProvider
+     *
+     * @return void
+     */
+    public function me(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
+        User::factory()
+            ->has(Position::factory()->count(3))
+            ->has(Team::factory()->count(3))
+            ->create();
+
+        $response = $this->graphQL(
+            'me',
+            [
+            ],
+            [
+                'id',
+                'name',
+                'email',
+                'positions' => [
+                    'name',
+                ],
+                'teams' => [
+                    'name',
+                ],
+            ],
+            'query',
+            false
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function meProvider()
+    {
+        return [
+            'with auth' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'me' => [
+                            'id',
+                            'name',
+                            'email',
+                            'positions',
+                            'teams',
+                        ],
+                    ],
+                ],
+                'hasPermission' => true,
             ],
         ];
     }

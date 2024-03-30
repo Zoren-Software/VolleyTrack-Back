@@ -26,9 +26,11 @@ class SanctumTest extends TestCase
     /**
      * Teste da rota de login.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_login()
+    public function login()
     {
         $user = User::factory()->make();
         $user->save();
@@ -54,9 +56,11 @@ class SanctumTest extends TestCase
     /**
      * Teste da rota de logout.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_logout()
+    public function logout()
     {
         $this->login = true;
 
@@ -82,9 +86,11 @@ class SanctumTest extends TestCase
     /**
      * Teste da rota de registro de usuários.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_register()
+    public function register()
     {
         $faker = Faker::create();
 
@@ -112,9 +118,11 @@ class SanctumTest extends TestCase
     /**
      * Teste de reenvio de email de verificação.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_resend_email_verification()
+    public function resendEmailVerification()
     {
         $this->graphQL(
             'resendEmailVerification',
@@ -136,9 +144,11 @@ class SanctumTest extends TestCase
     /**
      * Teste de reenvio de email para recuperar senha.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_forgot_password()
+    public function forgotPassword()
     {
         $this->login = true;
 
@@ -163,9 +173,11 @@ class SanctumTest extends TestCase
     /**
      * Teste de reenvio de email para atualizar senha.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_update_password()
+    public function updatePassword()
     {
         $this->login = true;
 

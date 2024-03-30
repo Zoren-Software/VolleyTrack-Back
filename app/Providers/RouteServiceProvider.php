@@ -64,12 +64,19 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware([
             'web',
+        ])
+            ->namespace($this->namespace)
+            ->domain('horizon.' . appHost())
+            ->group(base_path('routes/horizon.php'));
+
+        Route::middleware([
+            'web',
             InitializeTenancyByDomain::class,
             PreventAccessFromCentralDomains::class,
             CheckTenantForMaintenanceMode::class,
         ])
-        ->namespace($this->namespace)
-        ->group(base_path('routes/web.php'));
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
 
         foreach ($this->rotasWeb() as $arquivoDeRota) {
             Route::middleware([
@@ -78,9 +85,9 @@ class RouteServiceProvider extends ServiceProvider
                 PreventAccessFromCentralDomains::class,
                 CheckTenantForMaintenanceMode::class,
             ])
-            ->prefix('/')->name('app.')
-            ->namespace("{$this->namespace}\App")
-            ->group(base_path("routes/v1/web/$arquivoDeRota"));
+                ->prefix('/')->name('app.')
+                ->namespace("{$this->namespace}\App")
+                ->group(base_path("routes/v1/web/$arquivoDeRota"));
         }
     }
 

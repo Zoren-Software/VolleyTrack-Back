@@ -4,6 +4,7 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\FundamentalPolicy;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class FundamentalPolicyTest extends TestCase
@@ -11,16 +12,16 @@ class FundamentalPolicyTest extends TestCase
     /**
      * A basic unit test create.
      *
-     * @dataProvider permissionProvider
+     * @test
      *
-     * @return void
+     * @dataProvider permissionProvider
      */
-    public function test_create(bool $expected): void
+    public function create(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('create-fundamental')
+            ->with('edit-fundamental')
             ->willReturn($expected);
 
         $fundamentalPolicy = new FundamentalPolicy();
@@ -30,11 +31,11 @@ class FundamentalPolicyTest extends TestCase
     /**
      * A basic unit test edit.
      *
-     * @dataProvider permissionProvider
+     * @test
      *
-     * @return void
+     * @dataProvider permissionProvider
      */
-    public function test_edit(bool $expected): void
+    public function permissionEdit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -51,17 +52,42 @@ class FundamentalPolicyTest extends TestCase
      *
      * @dataProvider permissionProvider
      *
-     * @return void
+     * @test
      */
-    public function test_delete(bool $expected): void
+    public function permissionDelete(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('delete-fundamental')
+            ->with('edit-fundamental')
             ->willReturn($expected);
 
         $fundamentalPolicy = new FundamentalPolicy();
         $fundamentalPolicy->delete($user);
+    }
+
+    /**
+     * A basic unit test view.
+     *
+     * @dataProvider permissionProvider
+     *
+     * @test
+     */
+    public function permissionView(bool $expected): void
+    {
+        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
+            $mock->shouldReceive('hasPermissionTo')
+                ->with('edit-fundamental')
+                ->andReturn($expected);
+
+            $mock->shouldReceive('hasPermissionTo')
+                ->with('view-fundamental')
+                ->andReturn($expected);
+        });
+
+        $fundamentalPolicy = new FundamentalPolicy();
+        $return = $fundamentalPolicy->view($userMock);
+
+        $this->assertEquals($expected, $return);
     }
 }

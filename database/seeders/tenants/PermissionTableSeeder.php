@@ -20,87 +20,126 @@ class PermissionTableSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         /**
-         *Já estará como perfil de super administrador, e não precisará relacionar permissões neste perfil
+         *Já estará como perfil de super admin, e não precisará relacionar permissões neste perfil
          */
-        Role::updateOrCreate(['id' => 1], ['name' => 'Administrador', 'guard_name' => 'sanctum']);
-
-        $technician = Role::updateOrCreate(['id' => 2], ['name' => 'Técnico', 'guard_name' => 'sanctum']);
-        Role::updateOrCreate(['id' => 3], ['name' => 'Jogador', 'guard_name' => 'sanctum']);
+        $admin = Role::updateOrCreate(['id' => 1], ['name' => 'admin', 'guard_name' => 'sanctum']);
+        $technician = Role::updateOrCreate(['id' => 2], ['name' => 'technician', 'guard_name' => 'sanctum']);
+        $player = Role::updateOrCreate(['id' => 3], ['name' => 'player', 'guard_name' => 'sanctum']);
 
         /**
          * Permissões Usuário
          */
-        $user[] = Permission::updateOrCreate(['id' => 1], ['name' => 'create-user']);
-        $user[] = Permission::updateOrCreate(['id' => 2], ['name' => 'edit-user']);
-        $user[] = Permission::updateOrCreate(['id' => 3], ['name' => 'list-user']);
-        $user[] = Permission::updateOrCreate(['id' => 4], ['name' => 'list-users']);
-        $user[] = Permission::updateOrCreate(['id' => 5], ['name' => 'delete-user']);
-
-        $this->sync($technician, $user);
+        $user[] = Permission::updateOrCreate(['id' => 1], ['name' => 'edit-user']);
+        $user[] = Permission::updateOrCreate(['id' => 2], ['name' => 'view-user']);
 
         /**
          * Permissões Time
          */
-        $team[] = Permission::updateOrCreate(['id' => 6], ['name' => 'create-team']);
-        $team[] = Permission::updateOrCreate(['id' => 7], ['name' => 'edit-team']);
-        $team[] = Permission::updateOrCreate(['id' => 8], ['name' => 'list-team']);
-        $team[] = Permission::updateOrCreate(['id' => 9], ['name' => 'list-teams']);
-        $team[] = Permission::updateOrCreate(['id' => 10], ['name' => 'delete-team']);
+        $team[] = Permission::updateOrCreate(['id' => 3], ['name' => 'edit-team']);
+        $team[] = Permission::updateOrCreate(['id' => 4], ['name' => 'view-team']);
 
         /**
          * Permissões de Fundamentos
          */
-        $fundamental[] = Permission::updateOrCreate(['id' => 11], ['name' => 'create-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 12], ['name' => 'edit-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 13], ['name' => 'list-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 14], ['name' => 'list-fundamentals']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 15], ['name' => 'delete-fundamental']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 5], ['name' => 'edit-fundamental']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 6], ['name' => 'view-fundamental']);
 
         /**
-         * Permissões de Fundamentos Especificos
+         * Permissões de Fundamentos Específicos
          */
-        $fundamental[] = Permission::updateOrCreate(['id' => 16], ['name' => 'create-specific-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 17], ['name' => 'edit-specific-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 18], ['name' => 'list-specific-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 19], ['name' => 'list-specifics-fundamental']);
-        $fundamental[] = Permission::updateOrCreate(['id' => 20], ['name' => 'delete-specific-fundamental']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 7], ['name' => 'edit-specific-fundamental']);
+        $fundamental[] = Permission::updateOrCreate(['id' => 8], ['name' => 'view-specific-fundamental']);
 
         /**
-         * Permissões de Fundamentos Especificos
+         * Permissões de Posições
          */
-        $position[] = Permission::updateOrCreate(['id' => 21], ['name' => 'create-position']);
-        $position[] = Permission::updateOrCreate(['id' => 22], ['name' => 'edit-position']);
-        $position[] = Permission::updateOrCreate(['id' => 23], ['name' => 'list-position']);
-        $position[] = Permission::updateOrCreate(['id' => 24], ['name' => 'list-positions']);
-        $position[] = Permission::updateOrCreate(['id' => 25], ['name' => 'delete-position']);
+        $position[] = Permission::updateOrCreate(['id' => 9], ['name' => 'edit-position']);
+        $position[] = Permission::updateOrCreate(['id' => 10], ['name' => 'view-position']);
+
+        /**
+         * Permissões de Funções
+         */
+        $role[] = Permission::updateOrCreate(['id' => 11], ['name' => 'edit-role']);
+        $role[] = Permission::updateOrCreate(['id' => 12], ['name' => 'view-role']);
+
+        /**
+         * Permissões de Funções Específicas
+         */
+        $roleAdmin[] = Permission::updateOrCreate(['id' => 13], ['name' => 'view-role-admin']);
+        $roleTechnician[] = Permission::updateOrCreate(['id' => 14], ['name' => 'view-role-technician']);
+        $rolePlayer[] = Permission::updateOrCreate(['id' => 15], ['name' => 'view-role-player']);
+
+        /**
+         * Permissões de Treinos
+         */
+        $training[] = Permission::updateOrCreate(['id' => 16], ['name' => 'edit-training']);
+        $training[] = Permission::updateOrCreate(['id' => 17], ['name' => 'view-training']);
 
         /**
          * Permissões de Configurações
          */
-        Permission::updateOrCreate(['id' => 26], ['name' => 'list-role-administrador']);
-        $config[] = Permission::updateOrCreate(['id' => 27], ['name' => 'list-role-technician']);
-        $config[] = Permission::updateOrCreate(['id' => 28], ['name' => 'list-role-player']);
+        $config[] = Permission::updateOrCreate(['id' => 18], ['name' => 'edit-config']);
+        $config[] = Permission::updateOrCreate(['id' => 19], ['name' => 'view-config']);
+
+        /**
+         * Permissões de Configurações de Treino
+         */
+        $trainingConfig[] = Permission::updateOrCreate(['id' => 20], ['name' => 'edit-training-config']);
+        $trainingConfig[] = Permission::updateOrCreate(['id' => 21], ['name' => 'view-training-config']);
+
+        /**
+         * Permissões de Confirmação de Treino
+         */
+        $confirmationTraining[] = Permission::updateOrCreate(['id' => 22], ['name' => 'view-confirmation-training']);
 
         /**
          * Relacionando Permissões
          */
+        $this->sync($admin, $user);
+        $this->sync($admin, $team);
+        $this->sync($admin, $role);
+        $this->sync($admin, $fundamental);
+        $this->sync($admin, $position);
+        $this->sync($admin, $training);
+        $this->sync($admin, $config);
+        $this->sync($admin, $trainingConfig);
+        $this->sync($admin, $confirmationTraining);
+        $this->sync($admin, $roleAdmin);
+
+        $this->sync($technician, $user);
         $this->sync($technician, $team);
-        $this->sync($technician, $config);
+        $this->sync($technician, $role);
         $this->sync($technician, $fundamental);
         $this->sync($technician, $position);
+        $this->sync($technician, $training);
+        $this->sync($technician, $config);
+        $this->sync($technician, $trainingConfig);
+        $this->sync($technician, $confirmationTraining);
+        $this->sync($technician, $roleTechnician);
+
+        $this->sync($player, $user);
+        $this->sync($player, $team);
+        $this->sync($player, $role);
+        $this->sync($player, $fundamental);
+        $this->sync($player, $position);
+        $this->sync($player, $training);
+        $this->sync($player, $config);
+        $this->sync($player, $trainingConfig);
+        $this->sync($player, $confirmationTraining);
+        $this->sync($player, $rolePlayer);
 
         /**
-         * Definir user como perfil de administrador
+         * Definir user como perfil de admin
          */
-        User::whereEmail(env('MAIL_FROM_ADDRESS'))->first()->assignRole('Administrador');
-        User::whereEmail(env('MAIL_FROM_ADMIN'))->first()->assignRole('Administrador');
+        User::whereEmail(env('MAIL_FROM_ADDRESS'))->first()->assignRole('admin');
+        User::whereEmail(env('MAIL_FROM_ADMIN'))->first()->assignRole('admin');
 
         /**
          * Definir user como perfil de técnico
          */
-        if (env('APP_DEBUG')) {
-            User::whereEmail(env('MAIL_FROM_TEST_TECHNICIAN'))->first()->assignRole('Técnico');
-            User::whereEmail(env('MAIL_FROM_TEST_PLAYER'))->first()->assignRole('Jogador');
+        if (env('APP_DEBUG') && env('APP_ENV') === 'local') {
+            User::whereEmail(env('MAIL_FROM_TEST_TECHNICIAN'))->first()->assignRole('technician');
+            User::whereEmail(env('MAIL_FROM_TEST_PLAYER'))->first()->assignRole('player');
         }
     }
 

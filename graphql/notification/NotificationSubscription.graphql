@@ -1,0 +1,3 @@
+type Subscription {
+  notification(id: String!): Notification
+}

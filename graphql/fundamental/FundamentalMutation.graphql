@@ -4,7 +4,7 @@ extend type Mutation @guard {
         name: String!
         userId: Int! @rename(attribute: "user_id") 
     ): Fundamental
-        @field(resolver: "FundamentalMutation@create") 
+        @field(resolver: "FundamentalMutation@make") 
         @validator
         @can(ability: "create")
 
@@ -13,7 +13,7 @@ extend type Mutation @guard {
         name: String!
         userId: Int! @rename(attribute: "user_id") 
     ): Fundamental
-        @field(resolver: "FundamentalMutation@edit") 
+        @field(resolver: "FundamentalMutation@make") 
         @validator
         @can(ability: "edit")
 

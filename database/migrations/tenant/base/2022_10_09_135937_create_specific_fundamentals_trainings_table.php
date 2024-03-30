@@ -13,15 +13,13 @@ return new class() extends Migration
      */
     public function up()
     {
-        Schema::create('positions_users', function (Blueprint $table) {
+        Schema::create('specific_fundamentals_trainings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('position_id');
-            $table->unsignedBigInteger('user_id');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->foreignId('specific_fundamental_id')->constrained('specific_fundamentals');
+            $table->foreignId('training_id')->constrained('trainings');
 
-            $table->foreign('position_id')->references('id')->on('positions');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -32,6 +30,6 @@ return new class() extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('specific_fundamentals_trainings');
     }
 };

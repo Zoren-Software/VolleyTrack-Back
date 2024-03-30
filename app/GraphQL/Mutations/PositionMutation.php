@@ -7,7 +7,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class PositionMutation
 {
-    private $position;
+    private Position $position;
 
     public function __construct(Position $position)
     {
@@ -18,25 +18,14 @@ final class PositionMutation
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function create($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context)
     {
-        $this->position->name = $args['name'];
-        $this->position->user_id = $args['user_id'];
-        $this->position->save();
-
-        return $this->position;
-    }
-
-    /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
-     */
-    public function edit($rootValue, array $args, GraphQLContext $context)
-    {
-        $this->position->find($args['id']);
-        $this->position->name = $args['name'];
-        $this->position->user_id = $args['user_id'];
-        $this->position->save();
+        if (isset($args['id'])) {
+            $this->position = $this->position->find($args['id']);
+            $this->position->update($args);
+        } else {
+            $this->position = $this->position->create($args);
+        }
 
         return $this->position;
     }
@@ -49,8 +38,9 @@ final class PositionMutation
     {
         $positions = [];
         foreach ($args['id'] as $id) {
-            $this->position = $this->position->deletePosition($id);
+            $this->position = $this->position->findOrFail($id);
             $positions[] = $this->position;
+            $this->position->delete();
         }
 
         return $positions;

@@ -21,8 +21,13 @@ return [
         // Rotas centrais
         appHost(),
 
-        // Rotas API
         'api.' . appHost(),
+
+        // Rotas API
+        'graphql.' . appHost(),
+
+        // Rotas Horizon
+        'horizon.' . appHost(),
     ],
 
     /**

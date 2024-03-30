@@ -1,0 +1,27 @@
+"ConfirmationsTrainingMetrics"
+type ConfirmationTrainingMetrics {
+    "The number of trainings that were confirmed"
+    confirmed: Int!
+    "The number of trainings that were pending"
+    pending: Int!
+    "The number of trainings that were rejected"
+    rejected: Int!
+    "Total number of players"
+    total: Int!
+    "The number of trainings that were confirmed in percentage"
+    confirmedPercentage: Float!
+    "The number of trainings that were pending in percentage"
+    pendingPercentage: Float!
+    "The number of trainings that were rejected in percentage"
+    rejectedPercentage: Float!
+    "The number of presences"
+    presence: Int!
+    "The number of absences"
+    absence: Int!
+
+    "The number of presences in percentage"
+    presencePercentage: Float!
+
+    "The number of absences in percentage"
+    absencePercentage: Float!
+}

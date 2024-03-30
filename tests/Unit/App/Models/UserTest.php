@@ -4,19 +4,23 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
-use Spatie\Activitylog\LogOptions;
 
 class UserTest extends TestCase
 {
     /**
      * A basic unit test make password.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_make_password()
+    public function makePassword()
     {
         $password = 'password';
         $user = new User();
@@ -27,9 +31,11 @@ class UserTest extends TestCase
     /**
      * A basic unit test relation positions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_positions()
+    public function positions()
     {
         $user = new User();
         $this->assertInstanceOf(BelongsToMany::class, $user->positions());
@@ -40,39 +46,41 @@ class UserTest extends TestCase
      *
      * @dataProvider hasPermissionsViaRolesDataProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_has_permissions_via_roles($namePermission, $permissions, $expected)
+    public function hasPermissionsViaRoles($namePermission, $permissions, $expected)
     {
         $user = new User();
         $this->assertEquals($expected, $user->hasPermissionsViaRoles($namePermission, $permissions));
     }
 
-    public function hasPermissionsViaRolesDataProvider()
+    public static function hasPermissionsViaRolesDataProvider()
     {
         return [
             'has permission' => [
-                'namePermission' => 'list-role-administrador',
-                'permissions' => ['list-role-administrador'],
+                'namePermission' => 'view-role-admin',
+                'permissions' => ['view-role-admin'],
                 'expected' => true,
             ],
             'has permission and with more than one permissions' => [
-                'namePermission' => 'list-role-administrador',
-                'permissions' => ['list-role-administrador', 'list-role-technician', 'list-role-player'],
+                'namePermission' => 'view-role-admin',
+                'permissions' => ['view-role-admin', 'list-role-technician', 'list-role-player'],
                 'expected' => true,
             ],
             'not has permission' => [
-                'namePermission' => 'list-role-administrador',
+                'namePermission' => 'view-role-admin',
                 'permissions' => ['list-role-player'],
                 'expected' => false,
             ],
             'not has permission and no permission' => [
-                'namePermission' => 'list-role-administrador',
+                'namePermission' => 'view-role-admin',
                 'permissions' => [],
                 'expected' => false,
             ],
             'not has permission and with more than one permissions' => [
-                'namePermission' => 'list-role-administrador',
+                'namePermission' => 'view-role-admin',
                 'permissions' => ['list-role-technician', 'list-role-player', 'list-role-player'],
                 'expected' => false,
             ],
@@ -82,9 +90,11 @@ class UserTest extends TestCase
     /**
      * A basic unit test hasPermissionRole.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_has_permission_role()
+    public function hasPermissionRole()
     {
         $userMock = $this->createMock(User::class);
         $permissionMock = $this->createMock(Permission::class);
@@ -97,17 +107,71 @@ class UserTest extends TestCase
         $this->be($userMock);
 
         $user = new User();
-        $user->hasPermissionRole('list-role-administrador');
+        $user->hasPermissionRole('view-role-admin');
     }
 
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
         $user = new User();
         $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+    }
+
+    /**
+     * A basic unit test relation teams.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function teams()
+    {
+        $user = new User();
+        $this->assertInstanceOf(BelongsToMany::class, $user->teams());
+    }
+
+    /**
+     * A basic unit test relation playerConfirmationsTraining
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function playerConfirmationsTraining()
+    {
+        $user = new User();
+        $this->assertInstanceOf(HasMany::class, $user->playerConfirmationsTraining());
+    }
+
+    /**
+     * A basic unit test relation userConfirmationsTraining
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function userConfirmationsTraining()
+    {
+        $user = new User();
+        $this->assertInstanceOf(HasMany::class, $user->userConfirmationsTraining());
+    }
+
+    /**
+     * A basic unit test relation information
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function information()
+    {
+        $user = new User();
+        $this->assertInstanceOf(HasOne::class, $user->information());
     }
 }

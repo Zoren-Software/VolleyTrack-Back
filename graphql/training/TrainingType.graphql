@@ -1,0 +1,50 @@
+"Training"
+type Training {
+    "Unique primary key."
+    id: ID!
+
+    "Unique name. Is required."
+    name: String!
+
+    "UserId editing the training. Is required."
+    userId: Int @rename(attribute: "user_id")
+    
+    "User editing the training."
+    user: User @belongsTo
+
+    "TeamId editing the training. Is required."
+    teamId: Int @rename(attribute: "team_id")
+
+    "Team relation."
+    team: Team @belongsTo
+
+    "Fundamentals relation."
+    fundamentals: [Fundamental] @belongsToMany
+
+    "Specific Fundamentals relation."
+    specificFundamentals: [SpecificFundamental] @belongsToMany
+
+    "Confirmations Training relation."
+    confirmationsTraining: [ConfirmationTraining] @hasMany
+
+    "Metrics to confirm the intention to attend training and attendance metrics."
+    confirmationTrainingMetrics: ConfirmationTrainingMetrics @field(resolver: "App\\GraphQL\\Queries\\ConfirmationTrainingQuery@metrics")
+
+    "Training status. Active(true) or Canceled(false)."
+    status: Boolean
+
+    "Training dateStart. Must contain a date greater than dateEnd. Is required. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    dateStart: DateTime @rename(attribute: "date_start")
+
+    "Training dateEnd. Must contain a date less than dateStart. Is required. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    dateEnd: DateTime @rename(attribute: "date_end")
+
+    "Training description."
+    description: String
+
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}

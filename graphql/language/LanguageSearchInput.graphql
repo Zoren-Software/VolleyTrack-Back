@@ -1,0 +1,9 @@
+"LanguageSearchInput"
+input LanguageSearchInput {
+
+    "String to search for in users name"
+    search: String
+
+    "Ignore ids selected"
+    ignoreIds: [Int]
+}

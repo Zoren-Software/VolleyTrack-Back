@@ -1,0 +1,30 @@
+extend type Query {
+    
+    "List of training confirmations"
+    confirmationsTraining(
+        "Filters by the training's user_id."
+        userId: Int @rename(attribute: "user_id")
+
+        "Filters by the training's player_id."
+        playerId: Int @rename(attribute: "player_id")
+
+        "Filters by the training's training_id."
+        trainingId: Int! @rename(attribute: "training_id")
+
+        "Filters by the training's team_id."
+        teamId: Int @rename(attribute: "team_id")
+
+        "Filters by the training's status. One of `PENDING`, `CONFIRMED`, `REJECTED`."
+        status: ConfirmationTrainingStatus
+
+        "Filters by the training's presence."
+        presence: Boolean
+
+    ): [ConfirmationTraining!]!
+        @paginate(
+            builder: "App\\GraphQL\\Queries\\ConfirmationTrainingQuery@list"
+            defaultCount: 10, 
+            maxCount: 100
+        )
+        @can(ability: "view", resolved: true)
+}

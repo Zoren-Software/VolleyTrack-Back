@@ -10,7 +10,7 @@ class RoleTest extends TestCase
 
     protected $tenancy = true;
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'createdAt',
@@ -22,9 +22,11 @@ class RoleTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_role_info()
+    public function roleInfo()
     {
         $this->login = true;
 
@@ -33,12 +35,12 @@ class RoleTest extends TestCase
             [
                 'id' => 2,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
         )->assertJsonStructure([
             'data' => [
-                'role' => $this->data,
+                'role' => self::$data,
             ],
         ])->assertStatus(200);
     }
@@ -48,31 +50,32 @@ class RoleTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_roles_list()
+    public function rolesList()
     {
         $this->login = true;
 
         $this->graphQL(
             'roles',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
         )->assertJsonStructure([
             'data' => [
                 'roles' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+                    'paginatorInfo' => self::$paginatorInfo,
                     'data' => [
-                        '*' => $this->data,
+                        '*' => self::$data,
                     ],
                 ],
             ],

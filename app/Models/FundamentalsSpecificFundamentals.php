@@ -9,8 +9,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class FundamentalsSpecificFundamentals extends Pivot
 {
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -25,7 +25,13 @@ class FundamentalsSpecificFundamentals extends Pivot
             ->useLogName($this->table)
             ->logOnly(['*'])
             ->logOnlyDirty()
-            ->dontLogIfAttributesChangedOnly(['updated_at', 'created_at', 'deleted_at'])
+            ->dontLogIfAttributesChangedOnly(
+                [
+                    'updated_at',
+                    'created_at',
+                    'deleted_at',
+                ]
+            )
             ->dontSubmitEmptyLogs();
     }
 }

@@ -89,7 +89,7 @@ return [
         /*
          * Setting to true enables schema caching.
          */
-        'enable' => env('LIGHTHOUSE_CACHE_ENABLE', 'local' !== env('APP_ENV')),
+        'enable' => env('LIGHTHOUSE_CACHE_ENABLE', env('APP_ENV') !== 'local'),
 
         /*
          * Allowed values:
@@ -464,7 +464,7 @@ return [
          * Controls the format of the extensions response.
          * Allowed values: 1, 2
          */
-        'version' => env('LIGHTHOUSE_SUBSCRIPTION_VERSION', 1),
+        'version' => env('LIGHTHOUSE_SUBSCRIPTION_VERSION', 2),
 
         /*
          * Should the subscriptions extension be excluded when the response has no subscription channel?

@@ -1,0 +1,41 @@
+"ConfirmationTrainings"
+type ConfirmationTraining {
+    "Unique primary key."
+    id: ID!
+
+    "UserId editing the confirmation training."
+    userId: Int @rename(attribute: "user_id")
+    
+    "User editing the fundamental."
+    user: User @belongsTo
+
+    "Player Id confirming training."
+    playerId: Int @rename(attribute: "player_id")
+
+    "Player confirming training."
+    player: User @belongsTo
+
+    "Training Id confirming training."
+    trainingId: Int @rename(attribute: "training_id")
+
+    "Training confirming training."
+    training: Training @belongsTo
+
+    "Confirmation status. One of `PENDING`, `CONFIRMED`, `REJECTED`."
+    status: ConfirmationTrainingStatus! @rename(attribute: "status")
+
+    "Confirmation presence."
+    presence: Boolean
+
+    "Team Id confirming training."
+    teamId: Int @rename(attribute: "team_id")
+
+    "Training confirming training."
+    team: Team @belongsTo
+
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}

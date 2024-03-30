@@ -5,17 +5,19 @@ namespace Tests\Unit\App\Models;
 use App\Models\Position;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Tests\TestCase;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class PositionTest extends TestCase
 {
     /**
      * A basic unit test relation users.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_users()
+    public function users()
     {
         $position = new Position();
         $this->assertInstanceOf(BelongsToMany::class, $position->users());
@@ -24,9 +26,11 @@ class PositionTest extends TestCase
     /**
      * A basic unit test relation user.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user()
+    public function user()
     {
         $position = new Position();
         $this->assertInstanceOf(BelongsTo::class, $position->user());
@@ -35,11 +39,13 @@ class PositionTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
-        $user = new Position();
-        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+        $position = new Position();
+        $this->assertInstanceOf(LogOptions::class, $position->getActivitylogOptions());
     }
 }

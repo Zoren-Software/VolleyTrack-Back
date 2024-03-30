@@ -4,7 +4,7 @@ extend type Mutation @guard {
         name: String!
         userId: Int! @rename(attribute: "user_id")
     ): Position
-        @field(resolver: "PositionMutation@create") 
+        @field(resolver: "PositionMutation@make") 
         @validator
         @can(ability: "create")
 
@@ -13,7 +13,7 @@ extend type Mutation @guard {
         name: String!
         userId: Int! @rename(attribute: "user_id") 
     ): Position
-        @field(resolver: "PositionMutation@edit")
+        @field(resolver: "PositionMutation@make")
         @validator
         @can(ability: "edit")
 

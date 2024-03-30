@@ -4,50 +4,65 @@ namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\PositionMutation;
 use App\Models\Position;
+use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class PositionMutationTest extends TestCase
 {
     /**
-     * A basic unit position create.
+     * A basic unit test create and edit position.
+     *
+     * @dataProvider positionProvider
+     *
+     * @test
      *
      * @return void
      */
-    public function test_position_create()
+    public function positionMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $position = $this->createMock(Position::class);
+        $positionMock = $this->mock(Position::class, function (MockInterface $mock) use ($data, $method) {
+            if ($data['id']) {
+                $mock->shouldReceive('find')
+                    ->once()
+                    ->with($data['id'])
+                    ->andReturn($mock);
+            }
 
-        $position->expects($this->once())
-        ->method('save');
+            $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
+        });
 
-        $positionMutation = new PositionMutation($position);
-        $positionMutation->create(null, [
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
+        $specificFundamentalMutation = new PositionMutation($positionMock);
+        $positionMockReturn = $specificFundamentalMutation->make(
+            null,
+            $data,
+            $graphQLContext
+        );
+
+        $this->assertEquals($positionMock, $positionMockReturn);
     }
 
-    /**
-     * A basic unit position edit.
-     *
-     * @return void
-     */
-    public function test_position_edit()
+    public static function positionProvider()
     {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $position = $this->createMock(Position::class);
-
-        $position->expects($this->once())
-        ->method('save');
-
-        $positionMutation = new PositionMutation($position);
-        $positionMutation->edit(null, [
-            'id' => 1,
-            'name' => 'Teste',
-            'user_id' => 1,
-        ], $graphQLContext);
+        return [
+            'send data create, success' => [
+                'data' => [
+                    'id' => null,
+                    'name' => 'Teste',
+                    'user_id' => 1,
+                ],
+                'method' => 'create',
+            ],
+            'send data edit, success' => [
+                'data' => [
+                    'id' => 1,
+                    'name' => 'Teste',
+                    'user_id' => 1,
+                ],
+                'method' => 'update',
+            ],
+        ];
     }
 
     /**
@@ -55,16 +70,33 @@ class PositionMutationTest extends TestCase
      *
      * @dataProvider positionDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_position_delete($data, $number)
+    public function positionDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $position = $this->createMock(Position::class);
+        $position = $this->mock(
+            Position::class,
+            function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(1)
+                    ->andReturn($mock);
 
-        $position->expects($this->exactly($number))
-            ->method('deletePosition')
-            ->willReturn($position);
+                if (count($data) > 1) {
+                    $mock->shouldReceive('findOrFail')
+                        ->times($numberFind)
+                        ->with(2)
+                        ->andReturn($mock);
+                }
+
+                $mock->shouldReceive('delete')
+                    ->times($numberDelete)
+                    ->andReturn(true);
+            }
+        );
 
         $positionMutation = new PositionMutation($position);
         $positionMutation->delete(
@@ -76,20 +108,23 @@ class PositionMutationTest extends TestCase
         );
     }
 
-    public function positionDeleteProvider()
+    public static function positionDeleteProvider()
     {
         return [
             'send array, success' => [
-                [1],
-                1,
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiples positions, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }
