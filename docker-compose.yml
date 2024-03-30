@@ -72,6 +72,8 @@ services:
           MYSQL_USERNAME: "${DB_USERNAME}"
           MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
           PMA_HOST: mariadb
+        volumes:
+          - ./config.inc.php:/etc/phpmyadmin/config.inc.php
         networks:
           - sail
     
