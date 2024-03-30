@@ -4,30 +4,75 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Tests\TestCase;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class TeamTest extends TestCase
 {
     /**
      * A basic unit test relation user.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user()
+    public function user()
     {
-        $position = new Team();
-        $this->assertInstanceOf(BelongsTo::class, $position->user());
+        $team = new Team();
+        $this->assertInstanceOf(BelongsTo::class, $team->user());
+    }
+
+    /**
+     * A basic unit test relation confirmationsTraining.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function confirmationsTraining()
+    {
+        $team = new Team();
+        $this->assertInstanceOf(HasMany::class, $team->confirmationsTraining());
+    }
+
+    /**
+     * A basic unit test relation technicians.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function technicians()
+    {
+        $team = new Team();
+        $this->assertInstanceOf(BelongsToMany::class, $team->technicians());
+    }
+
+    /**
+     * A basic unit test relation players.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function players()
+    {
+        $team = new Team();
+        $this->assertInstanceOf(BelongsToMany::class, $team->players());
     }
 
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
-        $user = new Team();
-        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+        $team = new Team();
+        $this->assertInstanceOf(LogOptions::class, $team->getActivitylogOptions());
     }
 }

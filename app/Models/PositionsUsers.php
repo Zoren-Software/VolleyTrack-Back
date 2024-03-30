@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class PositionsUsers extends Pivot
 {
-    use SoftDeletes;
     use LogsActivity;
 
     /**
@@ -25,7 +23,13 @@ class PositionsUsers extends Pivot
             ->useLogName($this->table)
             ->logOnly(['*'])
             ->logOnlyDirty()
-            ->dontLogIfAttributesChangedOnly(['updated_at', 'created_at', 'deleted_at'])
+            ->dontLogIfAttributesChangedOnly(
+                [
+                    'updated_at',
+                    'created_at',
+                    'deleted_at',
+                ]
+            )
             ->dontSubmitEmptyLogs();
     }
 }

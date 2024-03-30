@@ -2,32 +2,41 @@
     "name": "zoren-software/volei-club",
     "type": "project",
     "description": "API for VoleiClub project",
-    "version": "0.2.0",
+    "version": "1.0.0",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": "^1.0",
-        "daniel-de-wit/lighthouse-sanctum": "^2.0",
+        "beyondcode/laravel-websockets": "^1.13",
+        "cerutti-maicon/laravel-activitylog-for-tenancy-for-laravel": "^2.0",
+        "daniel-de-wit/lighthouse-sanctum": "^2.3",
+        "doctrine/dbal": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^9.2",
-        "laravel/sanctum": "^2.15",
+        "illuminate/support": "^10.4",
+        "laravel/framework": "^10.0",
+        "laravel/horizon": "^5.11",
+        "laravel/sanctum": "^3.2",
+        "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.7",
+        "laravel/vapor-cli": "^1.64",
+        "laravel/vapor-core": "^2.37",
         "mll-lab/graphql-php-scalars": "^5.4",
-        "mll-lab/laravel-graphql-playground": "^2.6",
-        "nuwave/lighthouse": "^5.44",
+        "nuwave/lighthouse": "^5.71",
+        "opcodesio/log-viewer": "^1.4",
+        "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-permission": "^5.5",
-        "stancl/tenancy": "^3.5"
+        "stancl/tenancy": "^3.7"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.9",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.8",
         "laravel/pint": "^1.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "nunomaduro/collision": "^7.0",
+        "phpunit/phpunit": "^10.0",
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -64,7 +73,8 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "vapor": "php vendor/bin/vapor"
     },
     "extra": {
         "laravel": {

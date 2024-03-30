@@ -9,8 +9,23 @@ type User {
     "Unique email address."
     email: String!
 
+    "UserId editing the training. Is required."
+    userId: Int @rename(attribute: "user_id")
+    
+    "User editing the training."
+    user: User @belongsTo
+
     "Positions."
     positions: [Position] @belongsToMany(relation: "positions")
+
+    "Teams."
+    teams: [Team] @belongsToMany(relation: "teams")
+
+    "Roles."
+    roles: [Role] @belongsToMany(relation: "rolesCustom")
+
+    "Information."
+    information: UserInformation @hasOne(relation: "information")
 
     "When the email was verified."
     emailVerifiedAt: DateTime @rename(attribute: "email_verified_at")

@@ -1,7 +1,14 @@
+#import me/*.graphql
+#import config/*.graphql
+#import language/*.graphql
 #import user/*.graphql
 #import team/*.graphql
+#import training/*.graphql
+#import training-config/*.graphql
 #import sanctum/*.graphql
 #import role/*.graphql
 #import fundamental/*.graphql
 #import specific-fundamental/*.graphql
 #import position/*.graphql
+#import notification/*.graphql
+#import confirmation-training/*.graphql

@@ -5,17 +5,19 @@ namespace Tests\Unit\App\Models;
 use App\Models\SpecificFundamental;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Tests\TestCase;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class SpecificFundamentalTest extends TestCase
 {
     /**
      * A basic unit test relation users.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user()
+    public function user()
     {
         $specificFundamental = new SpecificFundamental();
         $this->assertInstanceOf(BelongsTo::class, $specificFundamental->user());
@@ -24,9 +26,11 @@ class SpecificFundamentalTest extends TestCase
     /**
      * A basic unit test relation users.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_fundamentals()
+    public function fundamentals()
     {
         $specificFundamental = new SpecificFundamental();
         $this->assertInstanceOf(BelongsToMany::class, $specificFundamental->fundamentals());
@@ -35,11 +39,13 @@ class SpecificFundamentalTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function get_activitylog_options()
     {
-        $user = new SpecificFundamental();
-        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+        $specificFundamental = new SpecificFundamental();
+        $this->assertInstanceOf(LogOptions::class, $specificFundamental->getActivitylogOptions());
     }
 }

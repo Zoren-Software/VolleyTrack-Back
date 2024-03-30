@@ -56,4 +56,14 @@ return [
      * The connection must be the same as the one used in the primary tenant
      */
     'database_connection' => null,
+
+    /*
+     * Defining which Tenant Model is used in the implementation of Laravel for Tenancy
+     */
+    'tenant_model' => \App\Models\Tenant::class,
+
+    /*
+     * Defining which model to run all the tenant seeds of the tenant
+     */
+    'tenant_seeder_model' => \Database\Seeders\Tenants\DatabaseTenantSeeder::class,
 ];

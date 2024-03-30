@@ -1,18 +1,20 @@
-extend type Query {
+extend type Query @guard {
     
     "Find a single position by an identifying attribute"
     position(
         id: ID!
         @eq
-    ): Position @find
+        
+    ): Position 
+        @can(ability: "view", resolved: true)
+        @find
+        @softDeletes
 
     "List multiple positions."
     positions (
-        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-        name: String @where(operator: "like")
-        
-        "Filters by the position's user_id."
-        user_id: Int @where(operator: "eq", field: "user_id")
-
-    ): [Position!]! @paginate(defaultCount: 10, maxCount: 100)
+        "Specific filter search positions."
+        filter: PositionSearchInput
+    ): [Position!]! 
+        @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\PositionQuery@list")
+        @can(ability: "view", resolved: true)
 }

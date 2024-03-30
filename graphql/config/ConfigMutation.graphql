@@ -1,0 +1,10 @@
+
+extend type Mutation @guard {
+    configEdit(
+        nameTenant: String @rename(attribute: "name_tenant")
+        languageId: ID @rename(attribute: "language_id")
+    ): Config
+        @field(resolver: "ConfigMutation@make")
+        @validator
+        @can(ability: "edit")
+}

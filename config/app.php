@@ -173,11 +173,23 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TenancyServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+
+        /*
+         * Application Service Providers Websocket
+         */
+        \Nuwave\Lighthouse\Subscriptions\SubscriptionServiceProvider::class,
+
+        /*
+         * Application Service Socialite
+         */
+        //\SocialiteProviders\Manager\ServiceProvider::class
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*

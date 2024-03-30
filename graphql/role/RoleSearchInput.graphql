@@ -1,0 +1,9 @@
+"TeamSearchType"
+input RoleSearchInput {
+
+    "String to search for in roles name"
+    search: String
+
+    "Ignore ids selected"
+    ignoreIds: [Int]
+}

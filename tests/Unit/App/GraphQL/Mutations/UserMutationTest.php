@@ -3,117 +3,150 @@
 namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\UserMutation;
+use App\Models\Position;
+use App\Models\Team;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 
 class UserMutationTest extends TestCase
 {
     /**
-     * A basic unit test in create user.
+     * A basic unit test create and edit user.
      *
-     * @dataProvider createUserProvider
+     * @dataProvider userProvider
      *
-     * @return void
-     */
-    public function test_user_create($method)
-    {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $user = $this->createMock(User::class);
-
-        $user->expects($this->once())
-            ->method($method);
-
-        $userMutation = new UserMutation($user);
-
-        $userMutation->create(
-            null,
-            [
-                'name' => 'Teste',
-                'email' => 'teste@gmail.com',
-                'password' => '123456',
-                'roleId' => 1,
-            ],
-            $graphQLContext
-        );
-    }
-
-    public function createUserProvider()
-    {
-        return [
-            'using method save' => [
-                'method' => 'save',
-            ],
-            'using method makePassword' => [
-                'method' => 'makePassword',
-            ],
-            'using method roles' => [
-                'method' => 'roles',
-            ],
-        ];
-    }
-
-    /**
-     * A basic unit test in edit user.
-     *
-     * @dataProvider editUserProvider
+     * @test
      *
      * @return void
      */
-    public function test_user_edit($method)
-    {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $user = $this->createMock(User::class);
+    // public function userMake($data)
+    // {
+    //     $graphQLContext = $this->createMock(GraphQLContext::class);
+    //     $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
+    //         $role = $this->createMock(BelongsToMany::class);
+    //         $position = $this->createMock(Position::class);
+    //         $team = $this->createMock(Team::class);
 
-        $user->expects($this->once())
-            ->method($method);
+    //         if (isset($data['id'])) {
+    //             $mock->shouldReceive('findOrFail')
+    //                 ->once()
+    //                 ->with($data['id'])
+    //                 ->andReturn($mock);
+    //         }
 
-        $userMutation = new UserMutation($user);
+    //         $mock->shouldReceive('setAttribute')
+    //             ->with('name', $data['name'])
+    //             ->once()
+    //             ->andReturn($mock);
 
-        $userMutation->edit(
-            null,
-            [
-                'id' => 1,
-                'name' => 'Teste',
-                'email' => 'teste@gmail.com',
-                'password' => '123456',
-                'roleId' => 1,
-            ],
-            $graphQLContext
-        );
-    }
+    //         $mock->shouldReceive('setAttribute')
+    //             ->with('email', $data['email'])
+    //             ->once()
+    //             ->andReturn($mock);
 
-    public function editUserProvider()
-    {
-        return [
-            'using method makePassword' => [
-                'method' => 'makePassword',
-            ],
-            'using method save' => [
-                'method' => 'save',
-            ],
-            'using method roles' => [
-                'method' => 'roles',
-            ],
-        ];
-    }
+    //         $mock->shouldReceive('makePassword')
+    //             ->with($data['password'])
+    //             ->once()
+    //             ->andReturn($mock);
+
+    //         $mock->shouldReceive('save')
+    //             ->once()
+    //             ->andReturn($mock);
+
+    //         $mock->shouldReceive('updateOrNewInformation')
+    //             ->once()
+    //             ->andReturn($mock);
+
+    //         $mock->shouldReceive('roles')
+    //             ->once()
+    //             ->andReturn($role);
+    //         $mock->shouldReceive('syncWithoutDetaching')
+    //             ->with([$role]);
+
+    //         $mock->shouldReceive('positions')
+    //             ->once()
+    //             ->andReturn($position);
+    //         $mock->shouldReceive('syncWithoutDetaching')
+    //             ->with([$position]);
+
+    //         $mock->shouldReceive('teams')
+    //             ->once()
+    //             ->andReturn($team);
+
+    //         $mock->shouldReceive('syncWithoutDetaching')
+    //             ->with([$team]);
+    //     });
+
+    //     $userMutation = new UserMutation($userMock);
+    //     $userReturn = $userMutation->make(
+    //         null,
+    //         $data,
+    //         $graphQLContext
+    //     );
+
+    //     $this->assertEquals($userMock, $userReturn);
+    // }
+
+    // public static function userProvider()
+    // {
+    //     return [
+    //         'send data create with all options, success' => [
+    //             'data' => [
+    //                 'id' => null,
+    //                 'name' => 'Teste',
+    //                 'email' => 'test@example.com',
+    //                 'password' => '123456',
+    //                 'roleId' => [1],
+    //                 'positionId' => [1],
+    //                 'teamId' => [1],
+    //             ],
+    //         ],
+    //         'send data edit with all options, success' => [
+    //             'data' => [
+    //                 'id' => 1,
+    //                 'name' => 'Teste',
+    //                 'email' => 'test@example.com',
+    //                 'password' => '123456',
+    //                 'roleId' => [1],
+    //                 'positionId' => [1],
+    //                 'teamId' => [1],
+    //             ],
+    //         ],
+    //     ];
+    // }
 
     /**
      * A basic unit test in delete user.
      *
      * @dataProvider userDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_user_delete($data, $number)
+    public function userDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $user = $this->createMock(User::class);
+        $user = $this->mock(User::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
+            $mock->shouldReceive('findOrFail')
+                ->times($numberFind)
+                ->with(1)
+                ->andReturn($mock);
 
-        $user
-            ->expects($this->exactly($number))
-            ->method('deleteUser')
-            ->willReturn($user);
+            if (count($data) > 1) {
+                $mock->shouldReceive('findOrFail')
+                    ->times(1)
+                    ->with(2)
+                    ->andReturn($mock);
+            }
+
+            $mock->shouldReceive('delete')
+                ->times($numberDelete)
+                ->andReturn(true);
+        });
 
         $userMutation = new UserMutation($user);
         $userMutation->delete(
@@ -125,20 +158,23 @@ class UserMutationTest extends TestCase
         );
     }
 
-    public function userDeleteProvider()
+    public static function userDeleteProvider()
     {
         return [
-            'send array, success' => [
-                [1],
-                1,
+            'send data delete, success' => [
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiple users, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }

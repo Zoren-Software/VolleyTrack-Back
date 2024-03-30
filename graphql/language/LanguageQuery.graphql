@@ -1,0 +1,9 @@
+extend type Query {
+
+    "List multiple languages."
+    languages (
+        "Specific filter search languages."
+        filter: LanguageSearchInput
+
+    ): [Language!]! @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\LanguageQuery@list")
+}

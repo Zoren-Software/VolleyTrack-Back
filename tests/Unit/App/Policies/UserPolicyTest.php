@@ -4,6 +4,7 @@ namespace Tests\Unit\App\Policies;
 
 use App\Models\User;
 use App\Policies\UserPolicy;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class UserPolicyTest extends TestCase
@@ -13,21 +14,21 @@ class UserPolicyTest extends TestCase
      *
      * @dataProvider permissionProvider
      *
-     * @return void
+     * @test
      */
-    public function test_create(bool $expected): void
+    public function permissionCreate(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('create-user')
+            ->with('edit-user')
             ->willReturn($expected);
 
         $userPolicy = new UserPolicy();
         $userPolicy->create($user);
     }
 
-    public function createProvider(): array
+    public static function createProvider(): array
     {
         return [
             'when permission allows' => [
@@ -44,9 +45,9 @@ class UserPolicyTest extends TestCase
      *
      * @dataProvider permissionProvider
      *
-     * @return void
+     * @test
      */
-    public function test_edit(bool $expected): void
+    public function permissionEdit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -63,17 +64,41 @@ class UserPolicyTest extends TestCase
      *
      * @dataProvider permissionProvider
      *
-     * @return void
+     * @test
      */
-    public function test_delete(bool $expected): void
+    public function permissionDelete(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
             ->method('hasPermissionTo')
-            ->with('delete-user')
+            ->with('edit-user')
             ->willReturn($expected);
 
         $userPolicy = new UserPolicy();
         $userPolicy->delete($user);
+    }
+
+    /**
+     * A basic unit test view.
+     *
+     * @dataProvider permissionProvider
+     *
+     * @test
+     */
+    public function permissionView(bool $expected): void
+    {
+        $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
+            $mock->shouldReceive('hasPermissionTo')
+                ->with('edit-user')
+                ->andReturn($expected);
+
+            $mock->shouldReceive('hasPermissionTo')
+                ->with('view-user')
+                ->andReturn($expected);
+        });
+
+        $userPolicy = new UserPolicy();
+
+        $this->assertEquals($expected, $userPolicy->view($userMock));
     }
 }

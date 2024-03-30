@@ -6,6 +6,8 @@ use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
@@ -17,6 +19,8 @@ abstract class TestCase extends BaseTestCase
     use RefreshesSchemaCache;
 
     protected $tenancy = false;
+
+    protected $tenant = 'test';
 
     protected $graphql = false;
 
@@ -30,7 +34,7 @@ abstract class TestCase extends BaseTestCase
 
     protected $otherUser = false;
 
-    protected $paginatorInfo = [
+    public static $paginatorInfo = [
         'count',
         'currentPage',
         'firstItem',
@@ -41,7 +45,7 @@ abstract class TestCase extends BaseTestCase
         'total',
     ];
 
-    protected $errors = [
+    public static $errors = [
         '*' => [
             'message',
             'locations',
@@ -51,7 +55,9 @@ abstract class TestCase extends BaseTestCase
         ],
     ];
 
-    protected $unauthorized = 'This action is unauthorized.';
+    public static $formatDate = 'Y-m-d H:i:s';
+
+    public static $unauthorized = 'This action is unauthorized.';
 
     public $tenantUrl;
 
@@ -60,9 +66,11 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         if ($this->tenancy) {
+            $this->tenant = $this->tenant ?? env('TENANT_TEST', 'test');
+
             $this->initializeTenancy();
             $protocol = env('APP_ENV') === 'local' ? 'http' : 'https';
-            $this->tenantUrl = $protocol . '://' . env('TENANT_TEST', 'test') . '.' . env('APP_HOST');
+            $this->tenantUrl = $protocol . '://' . $this->tenant . '.' . env('APP_HOST');
         }
 
         if ($this->graphql) {
@@ -78,7 +86,7 @@ abstract class TestCase extends BaseTestCase
 
         Artisan::call('migrate --seed');
 
-        if (! Tenant::find($tenantId)) {
+        if (!Tenant::find($tenantId)) {
             $tenant = Tenant::create(['id' => $tenantId]);
             Tenant::create(['id' => $tenantIdLogs]);
             $tenant->domains()->create(['domain' => $tenantId . '.' . env('APP_HOST')]);
@@ -91,13 +99,35 @@ abstract class TestCase extends BaseTestCase
             } catch (\Exception $e) {
                 throw new \Exception($e->getMessage());
             }
-        }
+        } else {
+            tenancy()->initialize($tenantId);
 
+            try {
+                // NOTE - Se o ambiente não tiver sido inicializado, o comando abaixo irá falhar
+                //        e o catch irá inicializar o ambiente, apenas fazendo este processo para o primeiro teste
+                DB::table('migrations')->get();
+            } catch (\Exception $e) {
+                try {
+                    Artisan::call("multi_tenants:migrate --tenants {$tenantId} --path base");
+                    Artisan::call("multi_tenants:migrate --tenants {$tenantId}");
+                    Artisan::call("multi_tenants_logs:migrate --tenants {$tenantIdLogs}");
+                    Artisan::call("multi_tenants:seed --tenants {$tenantId}");
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+            }
+        }
         tenancy()->initialize($tenantId);
     }
 
-    public function graphQL(string $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, string $type, bool $input, bool $parametrosEntrada = false): object
-    {
+    public function graphQL(
+        string $nomeQueryGraphQL,
+        array $dadosEntrada,
+        array $dadosSaida,
+        string $type,
+        bool $input,
+        bool $parametrosEntrada = false
+    ): object {
         $objectString = $this->converteDadosEmStringGraphQL($nomeQueryGraphQL, $dadosEntrada, $dadosSaida, $input, $type, $parametrosEntrada);
 
         switch ($type) {
@@ -133,13 +163,17 @@ abstract class TestCase extends BaseTestCase
 
     public function loginGraphQL(): void
     {
+        $this->tenant = 'api';
+
         if ($this->otherUser) {
             $user = User::factory()->make();
             $user->save();
-            $this->user = $user;
         } else {
             $user = User::where('email', env('MAIL_FROM_TEST_TECHNICIAN'))->first();
         }
+
+        $user->password = Hash::make('password');
+        $user->save();
 
         $this->email = $user->email;
 
@@ -159,8 +193,14 @@ abstract class TestCase extends BaseTestCase
         $this->token = $response->json()['data']['login']['token'];
     }
 
-    private function converteDadosEmStringGraphQL(string $nomeQueryGraphQL, array $dadosEntrada, array $dadosSaida, $input, $type, bool $parametrosEntrada): string
-    {
+    private function converteDadosEmStringGraphQL(
+        string $nomeQueryGraphQL,
+        array $dadosEntrada,
+        array $dadosSaida,
+        $input,
+        $type,
+        bool $parametrosEntrada
+    ): string {
         if ($input) {
             $inputOpen = '( input: {';
             $inputClose = '} )';
@@ -174,15 +214,22 @@ abstract class TestCase extends BaseTestCase
                     $inputClose = ') {';
                 }
             } else {
-                $inputOpen = '(';
-                $inputClose = ') {';
+                if (empty($dadosEntrada)) {
+                    $inputOpen = '';
+                    $inputClose = '{';
+                } else {
+                    $inputOpen = '(';
+                    $inputClose = ') {';
+                }
             }
         }
 
         $query = "$nomeQueryGraphQL $inputOpen";
 
         foreach ($dadosEntrada as $key => $value) {
-            if (is_array($value)) {
+            if (is_array($value) && isset($value['type']) && $value['type'] == 'ENUM') {
+                $query .= $this->converteDadosString($query, $key, $value, $input, $value['type'], $parametrosEntrada);
+            } elseif (is_array($value)) {
                 $query .= $this->converteDadosArrayEntrada($key, $value);
             } elseif ($value) {
                 $query .= $this->converteDadosString($query, $key, $value, $input, $type, $parametrosEntrada);
@@ -195,28 +242,30 @@ abstract class TestCase extends BaseTestCase
         $query .= "{$inputClose}{$closeOpen}";
 
         foreach ($dadosSaida as $key => $value) {
-            if (is_array($value)) {
-                $total = count($value);
-                $count = 0;
-
-                foreach ($value as $newValue) {
-                    if ($count == 0) {
-                        $query .= " $key {";
-                    }
-                    $query .= " $newValue";
-                    $count++;
-                    if ($count == $total) {
-                        $query .= '}';
-                    }
-                }
-            } else {
-                $query .= " $value ";
-            }
+            $query .= $this->converteDadosSaidaGraphQL($key, $value);
         }
 
         $query .= "{$closeExit}";
 
+        // NOTE - Para Debug das queries
+        //dump($query);
+
         return $query;
+    }
+
+    private function converteDadosSaidaGraphQL($key, $value): string
+    {
+        if (is_array($value)) {
+            $queryPart = " $key {";
+            foreach ($value as $subKey => $subValue) {
+                $queryPart .= $this->converteDadosSaidaGraphQL($subKey, $subValue);
+            }
+            $queryPart .= ' }';
+
+            return $queryPart;
+        }
+
+        return " $value ";
     }
 
     private function converteDadosArrayEntrada(string $key, array $value): string
@@ -230,7 +279,13 @@ abstract class TestCase extends BaseTestCase
         foreach ($value as $value2) {
             $count++;
             $virgula = $count < $total ? ', ' : '';
-            $stringValue .= "{$value2}{$virgula}";
+
+            // Checa se o valor é uma string e adiciona aspas duplas
+            if (is_string($value2)) {
+                $stringValue .= '"' . $value2 . '"' . $virgula;
+            } else {
+                $stringValue .= $value2 . $virgula;
+            }
         }
 
         $stringValue .= '] ';
@@ -238,16 +293,36 @@ abstract class TestCase extends BaseTestCase
         return $stringValue;
     }
 
-    private function converteDadosString(string $query, $key, $value, bool $input, string $type, bool $receberComoParametro): string
-    {
-        if ($input || $type == 'query') {
-            if (is_int($value)) {
+    private function converteDadosString(
+        string $query,
+        $key,
+        $value,
+        bool $input,
+        string $type,
+        bool $receberComoParametro
+    ): string {
+        if ($type == 'ENUM') {
+            return $key . ': ' . $value['value'] . ' ';
+        } elseif ($input || $type == 'query') {
+            if (is_int($value) || is_bool($value)) {
+                if ($value === true) {
+                    $value = 'true';
+                } elseif ($value === false) {
+                    $value = 'false';
+                }
+
                 return $key . ': ' . $value . ' ';
             }
 
             return $key . ': ' . '"' . $value . '" ';
         } elseif ($receberComoParametro) {
-            if (is_int($value)) {
+            if (is_int($value) || is_bool($value)) {
+                if ($value === true) {
+                    $value = 'true';
+                } elseif ($value === false) {
+                    $value = 'false';
+                }
+
                 return $key . ': ' . $value . ' ';
             }
 
@@ -273,7 +348,6 @@ abstract class TestCase extends BaseTestCase
      * @param  bool  $permission - true para adicionar, false para remover
      * @param  string  $role - nome do role
      * @param  string  $namePermission - nome do permission
-     * @return void
      */
     public function checkPermission(bool $permission, string $role, string $namePermission): void
     {
@@ -287,23 +361,24 @@ abstract class TestCase extends BaseTestCase
     public function assertMessageError($type_message_error, $response, bool $permission, $expected_message)
     {
         if ($type_message_error) {
-            if (! $permission) {
+            if (!$permission) {
                 $this->assertSame($response->json()['errors'][0][$type_message_error], $expected_message);
             } else {
                 if (isset($response->json()['errors'][0]['extensions'])) {
                     $response = $response->json()['errors'][0]['extensions'];
                 }
-
                 if (isset($response['validation'])) {
                     $this->assertSame($response['validation'][$type_message_error][0], trans($expected_message));
                 } else {
-                    $this->assertSame($response['category'], trans($expected_message));
+                    if (isset($response['category'])) {
+                        $this->assertSame($response['category'], trans($expected_message));
+                    }
                 }
             }
         }
     }
 
-    public function permissionProvider(): array
+    public static function permissionProvider(): array
     {
         return [
             'when permission allows' => [

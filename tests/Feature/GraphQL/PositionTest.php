@@ -14,9 +14,9 @@ class PositionTest extends TestCase
 
     protected $login = true;
 
-    private $permission = 'Técnico';
+    private $role = 'technician';
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'userId',
@@ -24,40 +24,91 @@ class PositionTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-position');
+        $this->checkPermission($hasPermission, $this->role, 'view-position');
+    }
+
     /**
      * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
+     * @dataProvider listProvider
+     *
      * @return void
      */
-    public function test_positions_list()
-    {
+    public function positionsList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
         Position::factory()->make()->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'positions',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'positions' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'positions' => [
+                            'paginatorInfo' => self::$paginatorInfo,
+                            'data' => [
+                                '*' => self::$data,
+                            ],
+                        ],
                     ],
                 ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => self::$unauthorized,
+                'expected' => [
+                    'errors' => self::$errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -65,26 +116,72 @@ class PositionTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function test_position_info()
-    {
+    public function positionInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
         $position = Position::factory()->make();
         $position->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'position',
             [
                 'id' => $position->id,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'position' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'position' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => self::$unauthorized,
+                'expected' => [
+                    'errors' => self::$errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -94,22 +191,29 @@ class PositionTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @return void
      */
-    public function test_position_create($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
-        $this->checkPermission($permission, $this->permission, 'create-position');
+    public function positionCreate(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $response = $this->graphQL(
             'positionCreate',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -119,7 +223,7 @@ class PositionTest extends TestCase
     /**
      * @return array
      */
-    public function positionCreateProvider()
+    public static function positionCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
@@ -136,10 +240,10 @@ class PositionTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'positionCreate' => $this->data,
+                        'positionCreate' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'create position without permission, expected error' => [
                 [
@@ -149,10 +253,10 @@ class PositionTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -162,10 +266,10 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionCreate.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
@@ -175,10 +279,10 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionCreate.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -188,10 +292,10 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionCreate.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -201,13 +305,20 @@ class PositionTest extends TestCase
      *
      * @dataProvider positionEditProvider
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_position_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
-        $this->checkPermission($permission, $this->permission, 'edit-position');
+    public function positionEdit(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $positionExist = Position::factory()->make();
         $positionExist->save();
@@ -216,20 +327,20 @@ class PositionTest extends TestCase
 
         $parameters['id'] = $position->id;
 
-        if ($expected_message == 'PositionEdit.name_unique') {
+        if ($expectedMessage == 'PositionEdit.name_unique') {
             $parameters['name'] = $positionExist->name;
         }
 
         $response = $this->graphQL(
             'positionEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -239,7 +350,7 @@ class PositionTest extends TestCase
     /**
      * @return array
      */
-    public function positionEditProvider()
+    public static function positionEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
@@ -252,12 +363,12 @@ class PositionTest extends TestCase
                     'userId' => $userId,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit position, success' => [
                 [
@@ -268,10 +379,10 @@ class PositionTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'positionEdit' => $this->data,
+                        'positionEdit' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is not unique, expected error' => [
                 [
@@ -280,10 +391,10 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionEdit.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
@@ -293,10 +404,10 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionEdit.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -306,10 +417,10 @@ class PositionTest extends TestCase
                 'type_message_error' => 'name',
                 'expected_message' => 'PositionEdit.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -319,15 +430,22 @@ class PositionTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
      * @dataProvider positionDeleteProvider
      *
      * @return void
      */
-    public function test_position_delete($data, $type_message_error, $expected_message, $expected, $permission)
-    {
+    public function positionDelete(
+        $data,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
         $this->login = true;
 
-        $this->checkPermission($permission, $this->permission, 'delete-position');
+        $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
         $position = Position::factory()->make();
         $position->save();
@@ -341,13 +459,18 @@ class PositionTest extends TestCase
         $response = $this->graphQL(
             'positionDelete',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
 
         $response
             ->assertJsonStructure($expected)
@@ -357,9 +480,9 @@ class PositionTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return void
+     * @return array
      */
-    public function positionDeleteProvider()
+    public static function positionDeleteProvider()
     {
         $positionDelete = ['positionDelete'];
 
@@ -372,22 +495,22 @@ class PositionTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'positionDelete' => [$this->data],
+                        'positionDelete' => [self::$data],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete position without permission, expected error' => [
                 [
                     'error' => null,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete position that does not exist, expected error' => [
                 [
@@ -396,10 +519,10 @@ class PositionTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'internal',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $positionDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

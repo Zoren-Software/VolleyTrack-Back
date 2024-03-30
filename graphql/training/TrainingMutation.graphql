@@ -1,0 +1,37 @@
+
+extend type Mutation @guard {
+    trainingCreate(
+        teamId: Int @rename(attribute: "team_id")
+        fundamentalId: [Int] @rename(attribute: "fundamental_id")
+        specificFundamentalId: [Int] @rename(attribute: "specific_fundamental_id")
+        name: String!
+        description: String
+        dateStart: String! @rename(attribute: "date_start")
+        dateEnd: String! @rename(attribute: "date_end")
+    ): Training
+        @field(resolver: "TrainingMutation@make") 
+        @validator
+        @can(ability: "create")
+        # @broadcast(subscription: "notification")
+
+    trainingEdit(
+        id: ID!
+        teamId: Int @rename(attribute: "team_id")
+        fundamentalId: [Int] @rename(attribute: "fundamental_id")
+        specificFundamentalId: [Int] @rename(attribute: "specific_fundamental_id")
+        status: Boolean
+        name: String!
+        description: String
+        dateStart: String! @rename(attribute: "date_start")
+        dateEnd: String! @rename(attribute: "date_end")
+    ): Training
+        @field(resolver: "TrainingMutation@make") 
+        @validator
+        @can(ability: "edit")
+
+    trainingDelete(id: [ID!]!): [Training]
+        @field(resolver: "TrainingMutation@delete")
+        @can(ability: "delete")
+        @validator
+        # @broadcast(subscription: "notification")
+}

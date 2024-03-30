@@ -11,9 +11,11 @@ class PingTest extends TestCase
     /**
      * A basic feature test example.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_ping()
+    public function ping()
     {
         $response = $this->get($this->tenantUrl . '/ping');
 

@@ -1,0 +1,19 @@
+extend type Query @guard {
+    
+    "Find a single team by an identifying attribute"
+    training(
+        id: ID!
+        @eq
+    ): Training
+        @can(ability: "view", resolved: true)
+        @find
+
+    "List multiple trainings."
+    trainings(        
+        "Specific filter search trainings."
+        filter: TrainingSearchInput
+
+    ): [Training!]! 
+        @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\TrainingQuery@list")
+        @can(ability: "view", resolved: true)
+}

@@ -14,11 +14,11 @@ class TeamTest extends TestCase
 
     protected $login = true;
 
-    private $teamText = ' TEAM';
+    public static $teamText = ' TEAM';
 
-    private $permission = 'Técnico';
+    private $role = 'technician';
 
-    private $data = [
+    public static $data = [
         'id',
         'name',
         'userId',
@@ -26,40 +26,91 @@ class TeamTest extends TestCase
         'updatedAt',
     ];
 
+    private function setPermissions(bool $hasPermission)
+    {
+        $this->checkPermission($hasPermission, $this->role, 'edit-team');
+        $this->checkPermission($hasPermission, $this->role, 'view-team');
+    }
+
     /**
      * Listagem de todos os times.
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
+     * @dataProvider listProvider
+     *
      * @return void
      */
-    public function test_teams_list()
-    {
+    public function teamsList(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
         Team::factory()->make()->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'teams',
             [
-                'name' => '%%',
                 'first' => 10,
                 'page' => 1,
             ],
             [
-                'paginatorInfo' => $this->paginatorInfo,
-                'data' => $this->data,
+                'paginatorInfo' => self::$paginatorInfo,
+                'data' => self::$data,
             ],
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'teams' => [
-                    'paginatorInfo' => $this->paginatorInfo,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function listProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
                     'data' => [
-                        '*' => $this->data,
+                        'teams' => [
+                            'paginatorInfo' => self::$paginatorInfo,
+                            'data' => [
+                                '*' => self::$data,
+                            ],
+                        ],
                     ],
                 ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => self::$unauthorized,
+                'expected' => [
+                    'errors' => self::$errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -67,26 +118,71 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     *
+     * @dataProvider infoProvider
+     *
      * @return void
      */
-    public function test_team_info()
-    {
+    public function teamInfo(
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        bool $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
+
         $team = Team::factory()->make();
         $team->save();
 
-        $this->graphQL(
+        $response = $this->graphQL(
             'team',
             [
                 'id' => $team->id,
             ],
-            $this->data,
+            self::$data,
             'query',
             false
-        )->assertJsonStructure([
-            'data' => [
-                'team' => $this->data,
+        );
+
+        $this->assertMessageError(
+            $typeMessageError,
+            $response,
+            $hasPermission,
+            $expectedMessage
+        );
+
+        if ($hasPermission) {
+            $response->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function infoProvider()
+    {
+        return [
+            'with permission' => [
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'team' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
-        ])->assertStatus(200);
+            'without permission' => [
+                'type_message_error' => 'message',
+                'expected_message' => self::$unauthorized,
+                'expected' => [
+                    'errors' => self::$errors,
+                ],
+                'hasPermission' => false,
+            ],
+        ];
     }
 
     /**
@@ -94,24 +190,41 @@ class TeamTest extends TestCase
      *
      * @dataProvider teamCreateProvider
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_create($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
-        $this->checkPermission($permission, $this->permission, 'create-team');
+    public function teamCreate(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
 
         $response = $this->graphQL(
             'teamCreate',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
+
+        if (!empty($parameters['playerId'])) {
+            foreach ($parameters['playerId'] as $playerId) {
+                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
+                $this->assertDatabaseHas('teams_users', [
+                    'team_id' => $response->json('data.teamCreate.id'),
+                    'user_id' => $playerId,
+                ]);
+            }
+        }
 
         $response
             ->assertJsonStructure($expected)
@@ -121,79 +234,93 @@ class TeamTest extends TestCase
     /**
      * @return array
      */
-    public function teamCreateProvider()
+    public static function teamCreateProvider()
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name . $this->teamText;
+        $nameExistent = $faker->name . self::$teamText;
         $teamCreate = ['teamCreate'];
 
         return [
             'create team without permission, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamCreate,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'create team, success' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamCreate' => $this->data,
+                        'teamCreate' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
+            ],
+            'create team and relating a players, success' => [
+                [
+                    'name' => $faker->name,
+                    'playerId' => [1, 2, 3, 4, 5],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'teamCreate' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
             'name field is not unique, expected error' => [
                 [
                     'name' => $nameExistent,
-                    'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
-                    'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
-                    'userId' => $userId,
+                    'playerId' => [],
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamCreate.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamCreate,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -203,13 +330,20 @@ class TeamTest extends TestCase
      *
      * @dataProvider teamEditProvider
      *
+     * @test
+     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function test_team_edit($parameters, $type_message_error, $expected_message, $expected, $permission)
-    {
-        $this->checkPermission($permission, $this->permission, 'edit-team');
+    public function teamEdit(
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+        $hasPermission
+    ) {
+        $this->setPermissions($hasPermission);
 
         $teamExist = Team::factory()->make();
         $teamExist->save();
@@ -218,20 +352,30 @@ class TeamTest extends TestCase
 
         $parameters['id'] = $team->id;
 
-        if ($expected_message == 'TeamEdit.name_unique') {
+        if ($expectedMessage == 'TeamEdit.name_unique') {
             $parameters['name'] = $teamExist->name;
         }
 
         $response = $this->graphQL(
             'teamEdit',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
+
+        if (!empty($parameters['playerId'])) {
+            foreach ($parameters['playerId'] as $playerId) {
+                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
+                $this->assertDatabaseHas('teams_users', [
+                    'team_id' => $response->json('data.teamEdit.id'),
+                    'user_id' => $playerId,
+                ]);
+            }
+        }
 
         $response
             ->assertJsonStructure($expected)
@@ -241,7 +385,7 @@ class TeamTest extends TestCase
     /**
      * @return array
      */
-    public function teamEditProvider()
+    public static function teamEditProvider()
     {
         $faker = Faker::create();
         $userId = 2;
@@ -250,68 +394,77 @@ class TeamTest extends TestCase
         return [
             'edit team without permission, expected error' => [
                 [
-                    'name' => $faker->name . $this->teamText,
-                    'userId' => $userId,
+                    'name' => $faker->name . self::$teamText,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamEdit,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'edit team, success' => [
                 [
-                    'name' => $faker->name . $this->teamText,
-                    'userId' => $userId,
+                    'name' => $faker->name . self::$teamText,
                 ],
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamEdit' => $this->data,
+                        'teamEdit' => self::$data,
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
+            ],
+            'edit team and relating a players, success' => [
+                [
+                    'name' => $faker->name . self::$teamText,
+                    'playerId' => [1, 2, 3],
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => [
+                        'teamEdit' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
             'name field is not unique, expected error' => [
                 [
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_unique',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_required',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
-                    'userId' => $userId,
                 ],
                 'type_message_error' => 'name',
                 'expected_message' => 'TeamEdit.name_min',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamEdit,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }
@@ -323,13 +476,13 @@ class TeamTest extends TestCase
      *
      * @dataProvider teamDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_team_delete($data, $type_message_error, $expected_message, $expected, $permission)
+    public function teamDelete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
-        $this->login = true;
-
-        $this->checkPermission($permission, $this->permission, 'delete-team');
+        $this->setPermissions($hasPermission);
 
         $team = Team::factory()->make();
         $team->save();
@@ -343,13 +496,13 @@ class TeamTest extends TestCase
         $response = $this->graphQL(
             'teamDelete',
             $parameters,
-            $this->data,
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($type_message_error, $response, $permission, $expected_message);
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -359,9 +512,9 @@ class TeamTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return void
+     * @return array
      */
-    public function teamDeleteProvider()
+    public static function teamDeleteProvider()
     {
         $teamDelete = ['teamDelete'];
 
@@ -374,22 +527,22 @@ class TeamTest extends TestCase
                 'expected_message' => false,
                 'expected' => [
                     'data' => [
-                        'teamDelete' => [$this->data],
+                        'teamDelete' => [self::$data],
                     ],
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
             'delete team without permission, expected error' => [
                 [
                     'error' => null,
                 ],
                 'type_message_error' => 'message',
-                'expected_message' => $this->unauthorized,
+                'expected_message' => self::$unauthorized,
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamDelete,
                 ],
-                'permission' => false,
+                'hasPermission' => false,
             ],
             'delete team that does not exist, expected error' => [
                 [
@@ -398,10 +551,10 @@ class TeamTest extends TestCase
                 'type_message_error' => 'message',
                 'expected_message' => 'internal',
                 'expected' => [
-                    'errors' => $this->errors,
+                    'errors' => self::$errors,
                     'data' => $teamDelete,
                 ],
-                'permission' => true,
+                'hasPermission' => true,
             ],
         ];
     }

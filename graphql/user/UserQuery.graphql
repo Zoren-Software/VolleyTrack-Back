@@ -1,20 +1,23 @@
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
-extend type Query {
+extend type Query @guard {
     "Find a single user by an identifying attribute."
     user(
       "Search by primary key."
-      id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
-
-      "Search by email address."
-      email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
-    ): User @find
+      id: ID! @eq @rules(apply: ["prohibits:email", "required_without:email"])
+    ): User 
+        @can(ability: "view", resolved: true)
+        @find
 
     "List multiple users."
     users(
-      "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-      name: String @where(operator: "like")
-    ): [User!]! @paginate(defaultCount: 10)
+        "Specific filter search users."
+        filter: UserSearchInput
+
+    ): [User!]! 
+        @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\UserQuery@list")
+        @can(ability: "view", resolved: true)
 }
 

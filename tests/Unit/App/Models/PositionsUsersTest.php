@@ -3,19 +3,21 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\PositionsUsers;
-use Tests\TestCase;
 use Spatie\Activitylog\LogOptions;
+use Tests\TestCase;
 
 class PositionsUsersTest extends TestCase
 {
     /**
      * A basic unit test relation getActivitylogOptions.
      *
+     * @test
+     *
      * @return void
      */
-    public function test_get_activitylog_options()
+    public function getActivitylogOptions()
     {
-        $user = new PositionsUsers();
-        $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
+        $positionsUsers = new PositionsUsers();
+        $this->assertInstanceOf(LogOptions::class, $positionsUsers->getActivitylogOptions());
     }
 }

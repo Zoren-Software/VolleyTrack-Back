@@ -3,95 +3,74 @@
 namespace Tests\Unit\App\GraphQL\Mutations;
 
 use App\GraphQL\Mutations\SpecificFundamentalMutation;
-use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\TestCase;
 
 class SpecificFundamentalMutationTest extends TestCase
 {
     /**
-     * A basic unit test create specific fundamental.
+     * A basic unit test create and edit fundamental.
      *
-     * @dataProvider createSpecificFundamentalProvider
+     * @dataProvider specificFundamentalProvider
      *
-     * @return void
-     */
-    public function test_create_specific_fundamental(array $data, $fundamental): void
-    {
-        $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamental = $this->createMock(SpecificFundamental::class);
-
-        $specificFundamental->method('fundamentals')->willReturn($fundamental);
-
-        $specificFundamental->expects($this->once())
-            ->method('save');
-
-        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
-        $specificFundamentalMutation->create(null, $data, $graphQLContext);
-    }
-
-    public function createSpecificFundamentalProvider(): array
-    {
-        return [
-            'create using fundamental_id' => [
-                'data' => [
-                    'name' => 'Teste',
-                    'user_id' => 1,
-                    'fundamental_id' => [1],
-                ],
-                'fundamental' => $this->createMock(Fundamental::class),
-            ],
-            'create not using fundamental_id' => [
-                'data' => [
-                    'name' => 'Teste',
-                    'user_id' => 1,
-                ],
-                'fundamental' => null,
-            ],
-        ];
-    }
-
-    /**
-     * A basic unit test edit specific fundamental.
-     *
-     * @dataProvider editSpecificFundamentalProvider
+     * @test
      *
      * @return void
      */
-    public function test_edit_specific_fundamental(array $data, $fundamental): void
+    public function specificFundamentalMake($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamental = $this->createMock(SpecificFundamental::class);
+        $specificFundamentalMock = $this->mock(
+            SpecificFundamental::class,
+            function (MockInterface $mock) use ($data, $method) {
+                $fundamental = $this->createMock(BelongsToMany::class);
 
-        $specificFundamental->method('fundamentals')->willReturn($fundamental);
+                if ($data['id']) {
+                    $mock->shouldReceive('find')
+                        ->once()
+                        ->with($data['id'])
+                        ->andReturn($mock);
+                }
 
-        $specificFundamental->expects($this->once())
-            ->method('save');
+                $mock->shouldReceive($method)->with($data)->once()->andReturn($mock);
+                $mock->shouldReceive('fundamentals')->once()->andReturn($fundamental);
+                $mock->shouldReceive('syncWithoutDetaching')->with([$fundamental]);
+            }
+        );
 
-        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
-        $specificFundamentalMutation->edit(null, $data, $graphQLContext);
+        $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamentalMock);
+        $specificFundamentalMockReturn = $specificFundamentalMutation->make(
+            null,
+            $data,
+            $graphQLContext
+        );
+
+        $this->assertEquals($specificFundamentalMock, $specificFundamentalMockReturn);
     }
 
-    public function editSpecificFundamentalProvider(): array
+    public static function specificFundamentalProvider()
     {
         return [
-            'edit using fundamental_id' => [
+            'send data create, success' => [
                 'data' => [
-                    'id' => 1,
+                    'id' => null,
                     'name' => 'Teste',
-                    'user_id' => 1,
                     'fundamental_id' => [1],
+                    'user_id' => 1,
                 ],
-                'fundamental' => $this->createMock(Fundamental::class),
+                'method' => 'create',
             ],
-            'edit not using fundamental_id' => [
+            'send data edit, success' => [
                 'data' => [
                     'id' => 1,
                     'name' => 'Teste',
+                    'fundamental_id' => [1],
                     'user_id' => 1,
                 ],
-                'fundamental' => null,
+                'method' => 'update',
             ],
         ];
     }
@@ -101,16 +80,34 @@ class SpecificFundamentalMutationTest extends TestCase
      *
      * @dataProvider specificFundamentalDeleteProvider
      *
+     * @test
+     *
      * @return void
      */
-    public function test_specific_fundamental_delete($data, $number)
+    public function specificFundamentalDelete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
-        $specificFundamental = $this->createMock(SpecificFundamental::class);
 
-        $specificFundamental->expects($this->exactly($number))
-            ->method('deleteSpecificFundamental')
-            ->willReturn($specificFundamental);
+        $specificFundamental = $this->mock(
+            SpecificFundamental::class,
+            function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {
+                $mock->shouldReceive('findOrFail')
+                    ->times($numberFind)
+                    ->with(1)
+                    ->andReturn($mock);
+
+                if (count($data) > 1) {
+                    $mock->shouldReceive('findOrFail')
+                        ->times($numberFind)
+                        ->with(2)
+                        ->andReturn($mock);
+                }
+
+                $mock->shouldReceive('delete')
+                    ->times($numberDelete)
+                    ->andReturn(true);
+            }
+        );
 
         $specificFundamentalMutation = new SpecificFundamentalMutation($specificFundamental);
         $specificFundamentalMutation->delete(
@@ -122,20 +119,23 @@ class SpecificFundamentalMutationTest extends TestCase
         );
     }
 
-    public function specificFundamentalDeleteProvider()
+    public static function specificFundamentalDeleteProvider()
     {
         return [
-            'send array, success' => [
-                [1],
-                1,
+            'send data delete, success' => [
+                'data' => [1],
+                'numberFind' => 1,
+                'numberDelete' => 1,
             ],
-            'send multiple itens in array, success' => [
-                [1, 2, 3],
-                3,
+            'send data delete multiple specific fundamentals, success' => [
+                'data' => [1, 2],
+                'numberFind' => 1,
+                'numberDelete' => 2,
             ],
-            'send empty array, success' => [
-                [],
-                0,
+            'send data delete no items, success' => [
+                'data' => [],
+                'numberFind' => 0,
+                'numberDelete' => 0,
             ],
         ];
     }

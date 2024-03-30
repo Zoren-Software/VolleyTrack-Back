@@ -1,0 +1,21 @@
+id: 58960
+name: VolleyTrackMultiTenancy
+environments:
+    production:
+        domain: graphql.volleytrack.com
+        cache: volleytrack-cache
+        database: volleytrack
+        memory: 1024
+        cli-memory: 512
+        runtime: 'php-8.3:al2'
+        build:
+            - 'composer install --no-dev'
+            - 'php artisan event:cache'
+          # - 'npm ci && npm run build && rm -rf node_modules'
+        deploy:
+            - 'php artisan migrate --force'
+            - 'php artisan multi_tenants:migrate --path base'
+            - 'php artisan multi_tenants:migrate'
+            - 'php artisan multi_tenants_logs:migrate'
+            - 'php artisan multi_tenants:seed'
+            - 'php artisan config:cache'

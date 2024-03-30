@@ -2,11 +2,14 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\Team;
 use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class UserMutation
 {
+    private User $user;
+
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -16,33 +19,69 @@ final class UserMutation
      * @param  null  $_
      * @param  array<string, mixed>  $args
      */
-    public function create($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context)
     {
+        if (isset($args['id'])) {
+            $this->user = $this->user->findOrFail($args['id']);
+        }
+
         $this->user->name = $args['name'];
         $this->user->email = $args['email'];
-        $this->user->makePassword($args['password']);
+
+        if (isset($args['password']) && $args['password'] !== null && $args['password'] !== '') {
+            $this->user->makePassword($args['password']);
+        }
+
         $this->user->save();
 
-        $this->user->roles()->syncWithoutDetaching($args['roleId']);
+        $this->user->updateOrNewInformation($args);
+
+        $this->user->roles()->sync($args['roleId']);
+
+        $this->user->positions()->sync($args['positionId']);
+
+        $this->relationTeams($this->user, $args, $context);
+
+        $this->user->user_id = $context->user()->id;
+
+        $this->user->touch();
 
         return $this->user;
     }
 
-    /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
-     */
-    public function edit($rootValue, array $args, GraphQLContext $context)
+    private function relationTeams($user, $args, $context)
     {
-        $this->user->findOrFail($args['id']);
-        $this->user->name = $args['name'];
-        $this->user->email = $args['email'];
-        $this->user->makePassword($args['password']);
-        $this->user->save();
+        // NOTE - Obtém os IDs dos times atualmente associados ao usuário
+        $currentTeamsIds = $user->teams()->pluck('teams.id')->toArray();
 
-        $this->user->roles()->syncWithoutDetaching($args['roleId']);
+        // NOTE - Sincroniza e obtém os detalhes das alterações
+        $changes = $user->teams()->sync($args['teamId']);
 
-        return $this->user;
+        // NOTE - IDs dos times que foram removidos
+        $removedTeamsIds = array_diff($currentTeamsIds, $args['teamId']);
+
+        // NOTE - IDs dos times que foram adicionados
+        $addedTeamsIds = $changes['attached'];
+
+        // NOTE - Atualiza o 'updated_at' dos times removidos
+        foreach ($removedTeamsIds as $teamId) {
+            $team = Team::find($teamId);
+            if ($team) {
+                $team->touch();
+                $team->user_id = $context->user()->id;
+                $team->save();
+            }
+        }
+
+        // NOTE - Atualiza o 'updated_at' dos times adicionados
+        foreach ($addedTeamsIds as $teamId) {
+            $team = Team::find($teamId);
+            if ($team) {
+                $team->touch();
+                $team->user_id = $context->user()->id;
+                $team->save();
+            }
+        }
     }
 
     /**
@@ -53,8 +92,9 @@ final class UserMutation
     {
         $users = [];
         foreach ($args['id'] as $id) {
-            $this->user = $this->user->deleteUser($id);
+            $this->user = $this->user->findOrFail($id);
             $users[] = $this->user;
+            $this->user->delete();
         }
 
         return $users;

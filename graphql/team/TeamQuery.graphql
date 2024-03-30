@@ -4,15 +4,15 @@ extend type Query @guard {
     team(
         id: ID!
         @eq
-    ): Team @find
+    ): Team
+        @can(ability: "view", resolved: true)
+        @find
 
     "List multiple teams."
     teams(
-        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-        name: String @where(operator: "like")
-        
-        "Filters by the team's user_id."
-        user_id: Int @where(operator: "eq", field: "user_id")
-
-    ): [Team!]! @paginate(defaultCount: 10, maxCount: 100)
+        "Specific filter search teams."
+        filter: TeamSearchInput
+    ): [Team!]!
+        @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\TeamQuery@list")
+        @can(ability: "view", resolved: true)
 }
