@@ -71,9 +71,6 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::middleware([
             'web',
-            InitializeTenancyByDomain::class,
-            PreventAccessFromCentralDomains::class,
-            CheckTenantForMaintenanceMode::class,
         ])
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
@@ -81,9 +78,6 @@ class RouteServiceProvider extends ServiceProvider
         foreach ($this->rotasWeb() as $arquivoDeRota) {
             Route::middleware([
                 'web',
-                InitializeTenancyByDomain::class,
-                PreventAccessFromCentralDomains::class,
-                CheckTenantForMaintenanceMode::class,
             ])
                 ->prefix('/')->name('app.')
                 ->namespace("{$this->namespace}\App")
