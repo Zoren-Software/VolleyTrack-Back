@@ -15,7 +15,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
-
+use Illuminate\Support\Str;
 /**
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $unreadNotifications
@@ -39,6 +39,7 @@ class User extends Authenticatable implements HasApiTokensContract
         'name',
         'email',
         'password',
+        'remember_token',
     ];
 
     /**
@@ -48,7 +49,6 @@ class User extends Authenticatable implements HasApiTokensContract
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -346,6 +346,12 @@ class User extends Authenticatable implements HasApiTokensContract
     public function saveLastUserChange()
     {
         $this->user_id = auth()->user()->id ?? null;
+        $this->save();
+    }
+
+    public function generateEmailVerificationToken()
+    {
+        $this->remember_token = Str::random(60);
         $this->save();
     }
 }

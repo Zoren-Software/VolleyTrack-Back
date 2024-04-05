@@ -5,6 +5,8 @@ namespace App\GraphQL\Mutations;
 use App\Models\Team;
 use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
 
 final class UserMutation
 {
@@ -33,6 +35,12 @@ final class UserMutation
         }
 
         $this->user->save();
+
+        // TODO - Fazer aqui uma verificação para ver se o e-mail já foi confirmado
+
+        $this->user->generateEmailVerificationToken();
+
+        Mail::to($this->user->email)->send(new ConfirmEmailAndCreatePasswordMail($this->user, tenant('id')));
 
         $this->user->updateOrNewInformation($args);
 
