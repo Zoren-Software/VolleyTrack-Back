@@ -17,7 +17,7 @@ class PasswordResetController extends Controller
             return response()->json(['message' => 'Token inválido ou expirado.'], 403);
         }
 
-        return view('auth.set-password', compact('token', 'tenant'));
+        return view('auth.set-password', compact('token', 'tenant', 'user'));
     }
 
     public function setPassword(Request $request, string $tenant, string $token)
