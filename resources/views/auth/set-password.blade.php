@@ -52,11 +52,11 @@
         opacity: 0.85;
     }
     .login-panel {
-            border: 1px solid #ccc; /* Borda geral - ajuste conforme sua preferência */
-            border-top: 4px solid #FF4E1B; /* Borda superior */
-            margin: auto;
-            border-radius: 4px; /* Arredondamento das bordas */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra opcional */
-        }
+        border: 1px solid #ccc; /* Borda geral - ajuste conforme sua preferência */
+        border-top: 4px solid #FF4E1B; /* Borda superior */
+        margin: auto;
+        border-radius: 4px; /* Arredondamento das bordas */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra opcional */
+    }
 </style>
 </html>
