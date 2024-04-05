@@ -55,6 +55,9 @@ Route::get('/test-cancellation-notification-training-mail', function () {
 });
 
 Route::get('/test-confirm-email-and-create-password', function () {
+
+    tenancy()->initialize('test');
+
     $user = App\Models\User::find(3);
 
     return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, tenant('id'));

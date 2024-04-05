@@ -72,9 +72,9 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware([
             'web',
             // NOTE - Deixar sempre comentado, descomentar apenas para testar rotas de e-mail
-            InitializeTenancyByDomain::class,
-            PreventAccessFromCentralDomains::class,
-            CheckTenantForMaintenanceMode::class,
+            //InitializeTenancyByDomain::class,
+            //PreventAccessFromCentralDomains::class,
+            //CheckTenantForMaintenanceMode::class,
         ])
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
