@@ -41,6 +41,8 @@ Route::get('/test-notification-training-mail', function () {
 });
 
 Route::get('/test-confirmation-notification-training-mail', function () {
+    tenancy()->initialize('test');
+
     $training = App\Models\Training::find(1);
     $user = App\Models\User::find(3);
 
@@ -48,6 +50,8 @@ Route::get('/test-confirmation-notification-training-mail', function () {
 });
 
 Route::get('/test-cancellation-notification-training-mail', function () {
+    tenancy()->initialize('test');
+
     $training = App\Models\Training::find(1);
     $user = App\Models\User::find(3);
 
