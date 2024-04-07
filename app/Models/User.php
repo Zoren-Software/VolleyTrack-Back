@@ -350,10 +350,4 @@ class User extends Authenticatable implements HasApiTokensContract
         $this->user_id = auth()->user()->id ?? null;
         $this->save();
     }
-
-    public function generateEmailVerificationToken()
-    {
-        $this->remember_token = Str::random(60);
-        $this->save();
-    }
 }
