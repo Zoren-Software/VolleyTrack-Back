@@ -7,10 +7,12 @@ use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 final class UserMutation
 {
-    private User $user;
+    private User|null $user;
 
     public function __construct(User $user)
     {
@@ -18,8 +20,11 @@ final class UserMutation
     }
 
     /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
+     * @param mixed $rootValue
+     * @param array $args
+     * @param GraphQLContext $context
+     * 
+     * @return [type]
      */
     public function make($rootValue, array $args, GraphQLContext $context)
     {
@@ -57,6 +62,13 @@ final class UserMutation
         return $this->user;
     }
 
+    /**
+     * @param mixed $user
+     * @param mixed $args
+     * @param mixed $context
+     * 
+     * @return [type]
+     */
     private function relationTeams($user, $args, $context)
     {
         // NOTE - Obtém os IDs dos times atualmente associados ao usuário
@@ -92,9 +104,13 @@ final class UserMutation
         }
     }
 
+  
     /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
+     * @param mixed $rootValue
+     * @param array $args
+     * @param GraphQLContext $context
+     * 
+     * @return [type]
      */
     public function delete($rootValue, array $args, GraphQLContext $context)
     {
@@ -106,5 +122,24 @@ final class UserMutation
         }
 
         return $users;
+    }
+
+    /**
+     * @param mixed $rootValue
+     * @param array $args
+     * @param GraphQLContext $context
+     * 
+     * @return [type]
+     */
+    public function setPassword($rootValue, array $args, GraphQLContext $context)
+    {
+        $this->user = User::where('set_password_token', $args['token'])->first();
+
+        $this->user->password = Hash::make($args['password']);
+        $this->user->user_id = $this->user->id;
+        $this->user->set_password_token = null;
+        $this->user->save();
+
+        return $this->user;
     }
 }
