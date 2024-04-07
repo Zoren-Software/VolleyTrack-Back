@@ -24,7 +24,7 @@ class VerificationController extends Controller
 
         tenancy()->initialize($tenant->id);
 
-        $user = User::where('remember_token', $token)->first();
+        $user = User::where('set_password_token', $token)->first();
 
         if (!$user) {
             throw new \Exception('Token inválido ou usuário não encontrado');

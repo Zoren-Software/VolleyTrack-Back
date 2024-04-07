@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+
 class UserTableSeeder extends Seeder
 {
     /**
@@ -62,7 +63,8 @@ class UserTableSeeder extends Seeder
                     'name' => $user['name'],
                     'email' => $user['email'],
                     'password' => Hash::make('password'),
-                    'remember_token' => Str::random(10),
+                    'remember_token' => Hash::make(Str::random(10)),
+                    'set_password_token' => Hash::make(Str::random(10)),
                 ]
             );
 

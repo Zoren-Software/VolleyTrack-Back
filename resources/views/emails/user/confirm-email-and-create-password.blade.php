@@ -9,7 +9,7 @@
 {{ trans('NotificationMail.confirm_email_and_password') }}:
 
 <x-mail::button :url="route('verify.email', [
-    'token' => $user->remember_token,
+    'token' => $user->set_password_token,
     'tenant' => $tenant,
     'email' => $user->email
 ])">
