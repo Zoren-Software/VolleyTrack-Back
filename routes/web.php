@@ -30,8 +30,6 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'postReset'])->name('password.reset');
 
 Route::get('verify-email/{tenant}/{token}', [VerificationController::class, 'verify'])->name('verify.email');
-// FIXME - Apagar rota abaixo
-Route::get('set-password/{tenant}/{token}', [PasswordResetController::class, 'showSetPasswordForm'])->name('password.reset');
 
 // TODO - Rotas de teste de template de email, deixar em comentário,
 // ou adicionar opção para apenas funcionar no modo local
