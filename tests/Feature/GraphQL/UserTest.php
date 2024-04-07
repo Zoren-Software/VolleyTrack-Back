@@ -1208,4 +1208,212 @@ class UserTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * Método de criar senha para um usuário.
+     *
+     * @dataProvider setPasswordProvider
+     *
+     * @author Maicon Cerutti
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function setPassword($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    {
+        $this->setPermissions($hasPermission);
+
+        $user = User::factory()
+            ->has(Position::factory()->count(3))
+            ->create();
+
+        if($data['email']) {
+            $parameters['email'] = $user->email;
+        }
+        if($data['email'] == 'not_valid') {
+            $parameters['email'] = 'notemail.com';
+        }
+        if ($data['token']) {
+            $parameters['token'] = $user->set_password_token;
+        }
+        if ($data['token'] == 'not_find_user_invalid_token') {
+            $parameters['token'] = 'not_find_user_invalid_token';
+        }
+        if ($data['password']) {
+            $parameters['password'] = env('PASSWORD_TEST', '1234');
+        }
+        if ($data['password'] == 'min_6') {
+            $parameters['password'] = '1234';
+        }
+        if ($data['passwordConfirmation']) {
+            $parameters['passwordConfirmation'] = env('PASSWORD_TEST', '1234');
+        }
+        if ($data['passwordConfirmation'] == 'not_match') {
+            $parameters['passwordConfirmation'] = '12345678';
+        }
+
+        $response = $this->graphQL(
+            'userSetPassword',
+            $parameters,
+            self::$data,
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+
+    /**
+     * @return array
+     */
+    public static function setPasswordProvider()
+    {
+        $userSetPassword = ['userSetPassword'];
+
+        return [
+            'set password a user, success' => [
+                [
+                    'error' => null,
+                    'email' => true,
+                    'token' => true,
+                    'password' => true,
+                    'passwordConfirmation' => true,
+                ],
+                'type_message_error' => false,
+                'expected_message' => false,
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+            'set password a user, not send email, error' => [
+                [
+                    'error' => true,
+                    'email' => false,
+                    'token' => true,
+                    'password' => true,
+                    'passwordConfirmation' => true,
+                ],
+                'type_message_error' => 'email',
+                'expected_message' => 'UserSetPassword.email_required',
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+            'set password a user, not valid email, error' => [
+                [
+                    'error' => true,
+                    'email' => 'not_valid',
+                    'token' => true,
+                    'password' => true,
+                    'passwordConfirmation' => true,
+                ],
+                'type_message_error' => 'email',
+                'expected_message' => 'UserSetPassword.email_is_valid',
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+            'set password a user, not send token, error' => [
+                [
+                    'error' => true,
+                    'email' => true,
+                    'token' => false,
+                    'password' => true,
+                    'passwordConfirmation' => true,
+                ],
+                'type_message_error' => 'token',
+                'expected_message' => 'UserSetPassword.token_required',
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+            'set password a user, not token string, error' => [
+                [
+                    'error' => true,
+                    'email' => true,
+                    'token' => 'not_find_user_invalid_token',
+                    'password' => true,
+                    'passwordConfirmation' => true,
+                ],
+                'type_message_error' => 'token',
+                'expected_message' => 'UserSetPassword.token_exists',
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+            'set password a user, not send password, error' => [
+                [
+                    'error' => true,
+                    'email' => true,
+                    'token' => true,
+                    'password' => false,
+                    'passwordConfirmation' => true,
+                ],
+                'type_message_error' => 'password',
+                'expected_message' => 'UserSetPassword.password_required',
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+            'set password a user, send password min 6 characters, error' => [
+                [
+                    'error' => true,
+                    'email' => true,
+                    'token' => true,
+                    'password' => 'min_6',
+                    'passwordConfirmation' => true,
+                ],
+                'type_message_error' => 'password',
+                'expected_message' => 'UserSetPassword.password_min_6',
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+            'set password a user, send password does not match, error' => [
+                [
+                    'error' => true,
+                    'email' => true,
+                    'token' => true,
+                    'password' => true,
+                    'passwordConfirmation' => 'not_match',
+                ],
+                'type_message_error' => 'passwordConfirmation',
+                'expected_message' => 'UserSetPassword.password_confirmation_same',
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+            'set password a user, not send passwordConfirmation, error' => [
+                [
+                    'error' => true,
+                    'email' => true,
+                    'token' => true,
+                    'password' => true,
+                    'passwordConfirmation' => false,
+                ],
+                'type_message_error' => 'passwordConfirmation',
+                'expected_message' => 'UserSetPassword.password_confirmation_required',
+                'expected' => [
+                    'data' => $userSetPassword,
+                ],
+                'hasPermission' => true,
+            ],
+        ];
+    }
+
 }

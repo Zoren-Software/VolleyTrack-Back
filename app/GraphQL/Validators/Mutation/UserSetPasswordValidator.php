@@ -43,10 +43,10 @@ final class UserSetPasswordValidator extends Validator
         return [
             'password.required' => trans('UserSetPassword.password_required'),
             'password.min' => trans('UserSetPassword.password_min_6'),
-            'passwordConfirmation.required' => trans('UserSetPassword.passwordConfirmation_required'),
-            'passwordConfirmation.same' => trans('UserSetPassword.passwordConfirmation_same'),
+            'passwordConfirmation.required' => trans('UserSetPassword.password_confirmation_required'),
+            'passwordConfirmation.same' => trans('UserSetPassword.password_confirmation_same'),
             'email.required' => trans('UserSetPassword.email_required'),
-            'email.email' => trans('UserSetPassword.email_email'),
+            'email.email' => trans('UserSetPassword.email_is_valid'),
             'token.required' => trans('UserSetPassword.token_required'),
             'token.string' => trans('UserSetPassword.token_string'),
             'token.exists' => trans('UserSetPassword.token_exists'),
