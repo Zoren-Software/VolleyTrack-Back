@@ -19,7 +19,7 @@ return [
     'title_cancel' => 'Training Cancellation Notification',
     'title_confirmation' => 'Training Notification Confirmations',
     'title_create_account' => 'Confirm your email and create your password',
-    'confirm_email_and_password' => 'Confirm your email and create your password on the link below:',
+    'confirm_email_and_password' => 'Confirm your email and create your password on the link below',
     'hello' => 'Hello',
     'button_confirm_email_and_create_password' => 'Confirm and create password',
     'good_training' => 'Good training',

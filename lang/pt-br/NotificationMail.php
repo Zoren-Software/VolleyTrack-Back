@@ -19,7 +19,7 @@ return [
     'title_cancel' => 'Notificação de Cancelamento de Treino',
     'title_confirmation' => 'Confirmações de Notificações de Treino',
     'title_create_account' => 'Confirme seu e-mail e crie sua senha',
-    'confirm_email_and_password' => 'Confirme seu e-mail e crie sua senha no link abaixo:',
+    'confirm_email_and_password' => 'Confirme seu e-mail e crie sua senha no link abaixo',
     'hello' => 'Olá',
     'button_confirm_email_and_create_password' => 'Confirmar e criar senha',
     'good_training' => 'Bom treino',
