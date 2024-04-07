@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
@@ -349,5 +351,13 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         $this->user_id = auth()->user()->id ?? null;
         $this->save();
+    }
+
+    public function sendConfirmEmailAndCreatePasswordNotification()
+    {
+        $this->user->set_password_token = Str::random(60);
+        $this->user->save();
+        
+        Mail::to($this->user->email)->send(new ConfirmEmailAndCreatePasswordMail($this->user, tenant('id')));
     }
 }

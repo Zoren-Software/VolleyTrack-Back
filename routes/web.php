@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +63,7 @@ if (app()->environment('local') && config('app.debug')) {
         tenancy()->initialize('test');
 
         $user = App\Models\User::find(3);
+
         return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, tenant('id'));
     });
 }
