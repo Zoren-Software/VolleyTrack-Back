@@ -3,7 +3,6 @@
 namespace App\GraphQL\Validators\Mutation;
 
 use Illuminate\Validation\Rule;
-
 use Nuwave\Lighthouse\Validation\Validator;
 
 final class UserSetPasswordValidator extends Validator
@@ -42,15 +41,15 @@ final class UserSetPasswordValidator extends Validator
     public function messages(): array
     {
         return [
-            'password.required' =>             trans('UserSetPassword.password_required'),
-            'password.min' =>                  trans('UserSetPassword.password_min_6'),
+            'password.required' => trans('UserSetPassword.password_required'),
+            'password.min' => trans('UserSetPassword.password_min_6'),
             'passwordConfirmation.required' => trans('UserSetPassword.passwordConfirmation_required'),
-            'passwordConfirmation.same' =>     trans('UserSetPassword.passwordConfirmation_same'),
-            'email.required' =>                trans('UserSetPassword.email_required'),
-            'email.email' =>                   trans('UserSetPassword.email_email'),
-            'token.required' =>                trans('UserSetPassword.token_required'),
-            'token.string' =>                  trans('UserSetPassword.token_string'),
-            'token.exists' =>                  trans('UserSetPassword.token_exists'),
+            'passwordConfirmation.same' => trans('UserSetPassword.passwordConfirmation_same'),
+            'email.required' => trans('UserSetPassword.email_required'),
+            'email.email' => trans('UserSetPassword.email_email'),
+            'token.required' => trans('UserSetPassword.token_required'),
+            'token.string' => trans('UserSetPassword.token_string'),
+            'token.exists' => trans('UserSetPassword.token_exists'),
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Mail\User;
 
-use App\Models\Training;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -22,7 +21,7 @@ class Mail extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user, String $tenant)
+    public function __construct(User $user, string $tenant)
     {
         $this->user = $user;
         $this->tenant = $tenant;

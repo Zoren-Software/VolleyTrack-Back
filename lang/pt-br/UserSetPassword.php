@@ -23,5 +23,5 @@ return [
     'token_required' => 'O campo de token é obrigatório.',
     'token_string' => 'O token deve ser uma string.',
     'token_exists' => 'O token é inválido, ou o usuário não foi encontrado.',
-    
+
 ];

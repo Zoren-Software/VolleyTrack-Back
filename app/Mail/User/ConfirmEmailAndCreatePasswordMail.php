@@ -20,10 +20,10 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
      *
      * @return void
      */
-    public function __construct(User $user, String $tenant)
+    public function __construct(User $user, string $tenant)
     {
         parent::__construct($user, $tenant);
-        $this->title = "Confirme seu e-mail e crie sua senha";
+        $this->title = 'Confirme seu e-mail e crie sua senha';
     }
 
     /**

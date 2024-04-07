@@ -2,17 +2,16 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
 use App\Models\Team;
 use App\Models\User;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class UserMutation
 {
-    private User|null $user;
+    private ?User $user;
 
     public function __construct(User $user)
     {
@@ -20,10 +19,7 @@ final class UserMutation
     }
 
     /**
-     * @param mixed $rootValue
-     * @param array $args
-     * @param GraphQLContext $context
-     *
+     * @param  mixed  $rootValue
      * @return [type]
      */
     public function make($rootValue, array $args, GraphQLContext $context)
@@ -63,10 +59,9 @@ final class UserMutation
     }
 
     /**
-     * @param mixed $user
-     * @param mixed $args
-     * @param mixed $context
-     *
+     * @param  mixed  $user
+     * @param  mixed  $args
+     * @param  mixed  $context
      * @return [type]
      */
     private function relationTeams($user, $args, $context)
@@ -105,10 +100,7 @@ final class UserMutation
     }
 
     /**
-     * @param mixed $rootValue
-     * @param array $args
-     * @param GraphQLContext $context
-     *
+     * @param  mixed  $rootValue
      * @return [type]
      */
     public function delete($rootValue, array $args, GraphQLContext $context)
@@ -124,10 +116,7 @@ final class UserMutation
     }
 
     /**
-     * @param mixed $rootValue
-     * @param array $args
-     * @param GraphQLContext $context
-     *
+     * @param  mixed  $rootValue
      * @return [type]
      */
     public function setPassword($rootValue, array $args, GraphQLContext $context)
