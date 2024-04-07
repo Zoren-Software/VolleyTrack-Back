@@ -12,10 +12,9 @@ return new class () extends Migration {
      */
     public function up()
     {
-        // verificar se a tabela e a coluna já existem
         if (Schema::hasTable('users') && !Schema::hasColumn('users', 'set_password_token')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->string('set_password_token')->nullable()->default(null);
+                $table->string('set_password_token')->nullable()->default(null)->after('remember_token');
             });
         }
     }
@@ -27,7 +26,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        // verificar se a tabela e a coluna existem
         if (Schema::hasTable('users') && Schema::hasColumn('users', 'set_password_token')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->dropColumn('set_password_token');
