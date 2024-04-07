@@ -33,12 +33,17 @@ Route::get('verify-email/{tenant}/{token}', [VerificationController::class, 'ver
 Route::get('set-password/{tenant}/{token}', [PasswordResetController::class, 'showSetPasswordForm'])->name('password.reset');
 Route::post('set-password/{tenant}/{token}', [PasswordResetController::class, 'setPassword'])->name('password.set');
 
+// TODO - Rotas de teste de template de email, deixar em comentário
+
 Route::get('/test-notification-training-mail', function () {
+    tenancy()->initialize('test');
+
     $training = App\Models\Training::find(1);
     $user = App\Models\User::find(1);
 
     return new App\Mail\Training\NotificationTrainingMail($training, $user);
 });
+
 
 Route::get('/test-confirmation-notification-training-mail', function () {
     tenancy()->initialize('test');
