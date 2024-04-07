@@ -10,7 +10,8 @@
 
 <x-mail::button :url="route('verify.email', [
     'token' => $user->remember_token,
-    'tenant' => $tenant
+    'tenant' => $tenant,
+    'email' => $user->email
 ])">
     {{ trans('NotificationMail.button_confirm_email_and_create_password') }}
 </x-mail::button>

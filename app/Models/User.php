@@ -39,9 +39,9 @@ class User extends Authenticatable implements HasApiTokensContract
         'name',
         'email',
         'password',
-        'remember_token',
+        'set_password_token'
     ];
-
+    
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -49,6 +49,7 @@ class User extends Authenticatable implements HasApiTokensContract
      */
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 
     /**
