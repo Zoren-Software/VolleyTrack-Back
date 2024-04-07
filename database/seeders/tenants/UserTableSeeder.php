@@ -63,7 +63,7 @@ class UserTableSeeder extends Seeder
                     'email' => $user['email'],
                     'password' => Hash::make('password'),
                     'remember_token' => Hash::make(Str::random(10)),
-                    'set_password_token' => Hash::make(Str::random(10)),
+                    'set_password_token' => Str::random(60),
                 ]
             );
 
