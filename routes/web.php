@@ -30,10 +30,11 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'postReset'])->name('password.reset');
 
 Route::get('verify-email/{tenant}/{token}', [VerificationController::class, 'verify'])->name('verify.email');
+// FIXME - Apagar rota abaixo
 Route::get('set-password/{tenant}/{token}', [PasswordResetController::class, 'showSetPasswordForm'])->name('password.reset');
-Route::post('set-password/{tenant}/{token}', [PasswordResetController::class, 'setPassword'])->name('password.set');
 
-// TODO - Rotas de teste de template de email, deixar em comentário
+// TODO - Rotas de teste de template de email, deixar em comentário, 
+// ou adicionar opção para apenas funcionar no modo local
 
 Route::get('/test-notification-training-mail', function () {
     tenancy()->initialize('test');
@@ -64,7 +65,6 @@ Route::get('/test-cancellation-notification-training-mail', function () {
 });
 
 Route::get('/test-confirm-email-and-create-password', function () {
-
     tenancy()->initialize('test');
 
     $user = App\Models\User::find(3);
