@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 // Password reset link request routes...
 Route::get('password/email', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.email');
@@ -27,23 +28,42 @@ Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEm
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.request');
 Route::post('password/reset', [ResetPasswordController::class, 'postReset'])->name('password.reset');
 
-Route::get('/test-notification-training-mail', function () {
-    $training = App\Models\Training::find(1);
-    $user = App\Models\User::find(1);
+Route::get('verify-email/{tenant}/{token}', [VerificationController::class, 'verify'])->name('verify.email');
 
-    return new App\Mail\Training\NotificationTrainingMail($training, $user);
-});
+// NOTE - Rotas de teste de template de e-mail
+if (app()->environment('local') && config('app.debug')) {
+    Route::get('/test-notification-training-mail', function () {
+        tenancy()->initialize('test');
 
-Route::get('/test-confirmation-notification-training-mail', function () {
-    $training = App\Models\Training::find(1);
-    $user = App\Models\User::find(3);
+        $training = App\Models\Training::find(1);
+        $user = App\Models\User::find(1);
 
-    return new App\Mail\Training\ConfirmationNotificationTrainingMail($training, $user);
-});
+        return new App\Mail\Training\NotificationTrainingMail($training, $user);
+    });
 
-Route::get('/test-cancellation-notification-training-mail', function () {
-    $training = App\Models\Training::find(1);
-    $user = App\Models\User::find(3);
+    Route::get('/test-confirmation-notification-training-mail', function () {
+        tenancy()->initialize('test');
 
-    return new App\Mail\Training\CancellationNotificationTrainingMail($training, $user);
-});
+        $training = App\Models\Training::find(1);
+        $user = App\Models\User::find(3);
+
+        return new App\Mail\Training\ConfirmationNotificationTrainingMail($training, $user);
+    });
+
+    Route::get('/test-cancellation-notification-training-mail', function () {
+        tenancy()->initialize('test');
+
+        $training = App\Models\Training::find(1);
+        $user = App\Models\User::find(3);
+
+        return new App\Mail\Training\CancellationNotificationTrainingMail($training, $user);
+    });
+
+    Route::get('/test-confirm-email-and-create-password', function () {
+        tenancy()->initialize('test');
+
+        $user = App\Models\User::find(3);
+
+        return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, tenant('id'));
+    });
+}

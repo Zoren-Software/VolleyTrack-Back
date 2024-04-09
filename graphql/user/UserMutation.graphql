@@ -38,3 +38,15 @@ extend type Mutation @guard {
         @validator
         @can(ability: "delete")
 }
+
+
+extend type Mutation {
+    userSetPassword(
+      email: String
+      token: String
+      password: String
+      passwordConfirmation: String
+    ): User
+        @field(resolver: "UserMutation@setPassword")
+        @validator
+}
