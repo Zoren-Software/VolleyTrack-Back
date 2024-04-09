@@ -117,7 +117,6 @@ final class UserMutation
      */
     public function setPassword($rootValue, array $args, GraphQLContext $context)
     {
-        
         $this->user = User::where([
             'set_password_token' => $args['token'],
             'email' => $args['email'],
