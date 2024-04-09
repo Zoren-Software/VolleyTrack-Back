@@ -1231,25 +1231,25 @@ class UserTest extends TestCase
         if($data['email']) {
             $parameters['email'] = $user->email;
         }
-        if($data['email'] == 'not_valid') {
+        if($data['email'] === 'not_valid') {
             $parameters['email'] = 'notemail.com';
         }
         if ($data['token']) {
             $parameters['token'] = $user->set_password_token;
         }
-        if ($data['token'] == 'not_find_user_invalid_token') {
+        if ($data['token'] === 'not_find_user_invalid_token') {
             $parameters['token'] = 'not_find_user_invalid_token';
         }
         if ($data['password']) {
             $parameters['password'] = env('PASSWORD_TEST', '1234');
         }
-        if ($data['password'] == 'min_6') {
+        if ($data['password'] === 'min_6') {
             $parameters['password'] = '1234';
         }
-        if ($data['passwordConfirmation']) {
+        if ($data['passwordConfirmation'] ) {
             $parameters['passwordConfirmation'] = env('PASSWORD_TEST', '1234');
         }
-        if ($data['passwordConfirmation'] == 'not_match') {
+        if ($data['passwordConfirmation'] === 'not_match') {
             $parameters['passwordConfirmation'] = '12345678';
         }
 
@@ -1289,7 +1289,16 @@ class UserTest extends TestCase
                 'type_message_error' => false,
                 'expected_message' => false,
                 'expected' => [
-                    'data' => $userSetPassword,
+                    'data' => [
+                        'userSetPassword' => [
+                            'id',
+                            'name',
+                            'email',
+                            'emailVerifiedAt',
+                            'createdAt',
+                            'updatedAt',
+                        ],
+                    ],
                 ],
                 'hasPermission' => true,
             ],
