@@ -1228,10 +1228,10 @@ class UserTest extends TestCase
             ->has(Position::factory()->count(3))
             ->create();
 
-        if($data['email']) {
+        if ($data['email']) {
             $parameters['email'] = $user->email;
         }
-        if($data['email'] === 'not_valid') {
+        if ($data['email'] === 'not_valid') {
             $parameters['email'] = 'notemail.com';
         }
         if ($data['token']) {
@@ -1246,7 +1246,7 @@ class UserTest extends TestCase
         if ($data['password'] === 'min_6') {
             $parameters['password'] = '1234';
         }
-        if ($data['passwordConfirmation'] ) {
+        if ($data['passwordConfirmation']) {
             $parameters['passwordConfirmation'] = env('PASSWORD_TEST', '1234');
         }
         if ($data['passwordConfirmation'] === 'not_match') {
@@ -1268,7 +1268,6 @@ class UserTest extends TestCase
             ->assertJsonStructure($expected)
             ->assertStatus(200);
     }
-
 
     /**
      * @return array
@@ -1424,5 +1423,4 @@ class UserTest extends TestCase
             ],
         ];
     }
-
 }

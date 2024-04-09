@@ -357,7 +357,7 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         $this->user->set_password_token = Str::random(60);
         $this->user->save();
-        
+
         Mail::to($this->user->email)->send(new ConfirmEmailAndCreatePasswordMail($this->user, tenant('id')));
     }
 }
