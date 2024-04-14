@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
@@ -39,6 +42,7 @@ class User extends Authenticatable implements HasApiTokensContract
         'name',
         'email',
         'password',
+        'set_password_token',
     ];
 
     /**
@@ -242,7 +246,8 @@ class User extends Authenticatable implements HasApiTokensContract
             ->filterSearch($args)
             ->filterIgnores($args)
             ->filterPosition($args)
-            ->filterTeam($args);
+            ->filterTeam($args)
+            ->filterRoles($args);
     }
 
     public function scopeFilterSearch(Builder $query, array $args)
@@ -343,9 +348,31 @@ class User extends Authenticatable implements HasApiTokensContract
         });
     }
 
+    public function scopeFilterRoles(Builder $query, array $args)
+    {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['rolesIds']) &&
+            !empty($args['filter']['rolesIds']),
+            function ($query) use ($args) {
+                $query->whereHas('roles', function ($query) use ($args) {
+                    $query->whereIn('id', $args['filter']['rolesIds']);
+                });
+            }
+        );
+    }
+
     public function saveLastUserChange()
     {
         $this->user_id = auth()->user()->id ?? null;
         $this->save();
+    }
+
+    public function sendConfirmEmailAndCreatePasswordNotification()
+    {
+        $this->set_password_token = Str::random(60);
+        $this->save();
+
+        Mail::to($this->email)->send(new ConfirmEmailAndCreatePasswordMail($this, tenant('id')));
     }
 }
