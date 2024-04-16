@@ -81,10 +81,10 @@ class RouteServiceProvider extends ServiceProvider
 
         foreach ($this->rotasWeb() as $arquivoDeRota) {
             Route::middleware([
-                'web',
-                InitializeTenancyByDomain::class,
-                PreventAccessFromCentralDomains::class,
-                CheckTenantForMaintenanceMode::class,
+                'api',
+                // InitializeTenancyByDomain::class,
+                // PreventAccessFromCentralDomains::class,
+                // CheckTenantForMaintenanceMode::class,
             ])
                 ->prefix('/')->name('app.')
                 ->namespace("{$this->namespace}\App")
