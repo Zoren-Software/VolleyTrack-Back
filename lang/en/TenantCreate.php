@@ -19,4 +19,6 @@ return [
     'email.required' => 'The email field is required.',
     'email.email' => 'The email must be a valid email address.',
     'messageSuccess' => 'Tenant created successfully',
+    'name.required' => 'The name field is required.',
+    'name.string' => 'The name must be a string.',
 ];

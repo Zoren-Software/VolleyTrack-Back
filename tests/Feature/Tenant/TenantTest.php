@@ -45,6 +45,7 @@ class TenantTest extends TestCase
                 'data' => [
                     'tenantId' => 'tenant-test-' . rand(1, 1000),
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
+                    'name' => 'Tenant Test',
                 ],
                 'expected_message' => 'TenantCreate.messageSuccess',
                 'expected_status' => 200,
@@ -52,6 +53,7 @@ class TenantTest extends TestCase
             'create tenant, validation email field is required, error' => [
                 'data' => [
                     'tenantId' => 'tenant-test-' . rand(1, 1000),
+                    'name' => 'Tenant Test',
                 ],
                 'expected_message' => 'TenantCreate.email.required',
                 'expected_status' => 422,
@@ -59,6 +61,7 @@ class TenantTest extends TestCase
             'create tenant, validation tenantId field is required, error' => [
                 'data' => [
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
+                    'name' => 'Tenant Test',
                 ],
                 'expected_message' => 'TenantCreate.tenantId.required',
                 'expected_status' => 422,
@@ -67,6 +70,7 @@ class TenantTest extends TestCase
                 'data' => [
                     'tenantId' => 'test',
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
+                    'name' => 'Tenant Test',
                 ],
                 'expected_message' => 'TenantCreate.tenantId.unique',
                 'expected_status' => 422,
@@ -75,6 +79,7 @@ class TenantTest extends TestCase
                 'data' => [
                     'tenantId' => 'tenant-test-' . rand(1, 1000),
                     'email' => 'tenant-test-' . rand(1, 1000),
+                    'name' => 'Tenant Test',
                 ],
                 'expected_message' => 'TenantCreate.email.email',
                 'expected_status' => 422,
@@ -83,8 +88,26 @@ class TenantTest extends TestCase
                 'data' => [
                     'tenantId' => 1,
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
+                    'name' => 'Tenant Test',
                 ],
                 'expected_message' => 'TenantCreate.tenantId.string',
+                'expected_status' => 422,
+            ],
+            'create tenant, validation name field is required, error' => [
+                'data' => [
+                    'tenantId' => 'tenant-test-' . rand(1, 1000),
+                    'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
+                ],
+                'expected_message' => 'TenantCreate.name.required',
+                'expected_status' => 422,
+            ],
+            'create tenant, validation name must be a string, error' => [
+                'data' => [
+                    'tenantId' => 'tenant-test-' . rand(1, 1000),
+                    'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
+                    'name' => 1,
+                ],
+                'expected_message' => 'TenantCreate.name.string',
                 'expected_status' => 422,
             ],
         ];

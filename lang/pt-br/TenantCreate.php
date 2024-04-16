@@ -18,4 +18,6 @@ return [
     'email.required' => 'O campo email é obrigatório.',
     'email.email' => 'O email deve ser um endereço de e-mail válido.',
     'messageSuccess' => 'Tenant criado com sucesso',
+    'name.required' => 'O campo nome é obrigatório.',
+    'name.string' => 'O nome deve ser uma string.',
 ];

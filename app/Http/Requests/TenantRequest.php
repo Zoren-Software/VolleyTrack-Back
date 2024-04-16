@@ -31,6 +31,10 @@ class TenantRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
+            ],
+            'name' => [
+                'required',
+                'string',
             ]
         ];
     }
@@ -47,7 +51,9 @@ class TenantRequest extends FormRequest
             'tenantId.unique' => trans('TenantCreate.tenantId.unique'),
             'tenantId.string' => trans('TenantCreate.tenantId.string'),
             'email.required' => trans('TenantCreate.email.required'),
-            'email.email' => trans('TenantCreate.email.email')
+            'email.email' => trans('TenantCreate.email.email'),
+            'name.required' => trans('TenantCreate.name.required'),
+            'name.string' => trans('TenantCreate.name.string')
         ];
     }
 }
