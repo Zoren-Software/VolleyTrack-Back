@@ -43,11 +43,11 @@ class TenantRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'tenantId.required' => 'The tenantId field is required.',
-            'tenantId.unique' => 'The tenantId has already been taken.',
-            'tenantId.string' => 'The tenantId must be a string.',
-            'email.required' => 'The email field is required.',
-            'email.email' => 'The email must be a valid email address.',
+            'tenantId.required' => trans('TenantCreate.tenantId.required'),
+            'tenantId.unique' => trans('TenantCreate.tenantId.unique'),
+            'tenantId.string' => trans('TenantCreate.tenantId.string'),
+            'email.required' => trans('TenantCreate.email.required'),
+            'email.email' => trans('TenantCreate.email.email')
         ];
     }
 }

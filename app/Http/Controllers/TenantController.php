@@ -13,7 +13,7 @@ class TenantController extends Controller
     {
         $this->runTenantMigrations($request->tenantId);
 
-        return response()->json(['message' => 'Tenant created successfully'], 200);
+        return response()->json(['message' => trans('TenantCreate.messageSuccess')], 200);
     }
 
     protected function runTenantMigrations(String $tenantId)
