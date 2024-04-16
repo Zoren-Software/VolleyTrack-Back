@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TenantRequest;
 use App\Jobs\RunTenantMigrations;
 
 class TenantController extends Controller
 {
-    public function create(Request $request)
+    public function create(TenantRequest $request)
     {
         $this->runTenantMigrations($request->tenantId);
 
