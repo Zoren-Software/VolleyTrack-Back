@@ -17,7 +17,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Training extends Model
 {
     use HasFactory;
-    // use LogsActivity;
+    use LogsActivity;
     use SoftDeletes;
 
     protected $fillable = [

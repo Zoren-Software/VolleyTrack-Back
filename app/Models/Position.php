@@ -12,7 +12,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Position extends Model
 {
     use HasFactory;
-    // use LogsActivity;
+    use LogsActivity;
     use SoftDeletes;
 
     protected $fillable = [

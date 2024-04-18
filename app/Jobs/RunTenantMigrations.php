@@ -42,12 +42,11 @@ class RunTenantMigrations implements ShouldQueue
                 'id' => $this->tenantId,
             ]);
 
-            $tenantIdLogs = $this->tenantId . '_logs';
-            Tenant::create(['id' => $tenantIdLogs]);
-
             $tenant->domains()->create(['domain' => $this->tenantId . '.' . env('APP_HOST')]);
 
             tenancy()->initialize($this->tenantId);
+            
+            Artisan::call('tenants:seed', ['--tenants' => $this->tenantId]);
 
             $user = new User();
             $user->name = $this->name;
@@ -55,7 +54,9 @@ class RunTenantMigrations implements ShouldQueue
             $user->password = Hash::make('password');
             $user->save();
 
-            Artisan::call('tenants:seed', ['--tenants' => $this->tenantId]);
+
+            $user->assignRole('admin');
+
 
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());

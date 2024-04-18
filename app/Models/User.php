@@ -29,7 +29,7 @@ class User extends Authenticatable implements HasApiTokensContract
     use HasFactory;
     use HasRoles;
     // FIXME - Por enquanto será comentado esse trait
-    //use LogsActivity;
+    use LogsActivity;
     use Notifiable;
     use SoftDeletes;
 

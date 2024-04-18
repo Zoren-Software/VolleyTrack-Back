@@ -9,7 +9,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class FundamentalsTrainings extends Pivot
 {
-    // use LogsActivity;
+    use LogsActivity;
     use SoftDeletes;
 
     /**
