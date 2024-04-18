@@ -8,7 +8,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class TeamsUsers extends Pivot
 {
-    use LogsActivity;
+    // use LogsActivity;
 
     protected $user;
 

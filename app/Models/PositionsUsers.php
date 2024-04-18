@@ -8,7 +8,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class PositionsUsers extends Pivot
 {
-    use LogsActivity;
+    // use LogsActivity;
 
     /**
      * Indicates if the IDs are auto-incrementing.
