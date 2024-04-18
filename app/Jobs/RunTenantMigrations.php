@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Tenant;
-use Dotenv\Util\Str;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 
 class RunTenantMigrations implements ShouldQueue
@@ -54,6 +54,8 @@ class RunTenantMigrations implements ShouldQueue
             $user->email = $this->email;
             $user->password = Hash::make('password');
             $user->save();
+
+            Artisan::call('tenants:seed', ['--tenants' => $this->tenantId]);
 
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
