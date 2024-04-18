@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Interfaces\ScribeInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TenantRequest extends FormRequest
+class TenantRequest extends FormRequest implements ScribeInterface
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -54,6 +55,24 @@ class TenantRequest extends FormRequest
             'email.email' => trans('TenantCreate.email.email'),
             'name.required' => trans('TenantCreate.name.required'),
             'name.string' => trans('TenantCreate.name.string')
+        ];
+    }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'tenantId' => [
+                'description' => 'The tenant ID',
+                'example' => 'tenant-test-1'
+            ],
+            'email' => [
+                'description' => 'The tenant email',
+                'example' => 'email@test.com',
+            ],
+            'name' => [
+                'description' => 'The tenant name',
+                'example' => 'Tenant Test',
+            ],
         ];
     }
 }

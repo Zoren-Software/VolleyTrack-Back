@@ -31,6 +31,7 @@
         "beyondcode/laravel-dump-server": "^1.9",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.8",
+        "knuckleswtf/scribe": "^4.31",
         "laravel/pint": "^1.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",

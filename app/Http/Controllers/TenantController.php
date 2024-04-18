@@ -9,6 +9,20 @@ use App\Jobs\RunTenantMigrations;
 
 class TenantController extends Controller
 {
+    /**
+     * 
+     * Create Tenant
+     * 
+     * @group Tenant
+     * 
+     * @responseFile 200 scenario="sucesso" scribe/success/tenant/create.json
+     * @responseFile 200 scenario="response" scribe/responses/tenant/create.json
+     * @responseFile 422 scenario="erro" scribe/errors/tenant/create.json
+     * 
+     * @param TenantRequest $request
+     * 
+     * @return [type]
+     */
     public function create(TenantRequest $request)
     {
         $this->runTenantMigrations($request->tenantId, $request->email, $request->name);

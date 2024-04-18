@@ -86,7 +86,7 @@ class RouteServiceProvider extends ServiceProvider
                 // PreventAccessFromCentralDomains::class,
                 // CheckTenantForMaintenanceMode::class,
             ])
-                ->prefix('/')->name('app.')
+                ->prefix('/v1')->name('app.')
                 ->namespace("{$this->namespace}\App")
                 ->group(base_path("routes/v1/web/$arquivoDeRota"));
         }

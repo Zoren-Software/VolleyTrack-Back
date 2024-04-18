@@ -27,7 +27,7 @@ class TenantTest extends TestCase
         ]);
 
         $response = $this->postJson(
-            $this->tenantUrl . '/tenant',
+            $this->tenantUrl . '/v1/tenant',
             $data
         );
 
