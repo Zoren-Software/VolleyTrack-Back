@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class RunTenantMigrations implements ShouldQueue
 {
@@ -45,18 +46,19 @@ class RunTenantMigrations implements ShouldQueue
             $tenant->domains()->create(['domain' => $this->tenantId . '.' . env('APP_HOST')]);
 
             tenancy()->initialize($this->tenantId);
-            
+
             Artisan::call('tenants:seed', ['--tenants' => $this->tenantId]);
+
+            $password = Str::random(8) . '@volleyball';
 
             $user = new User();
             $user->name = $this->name;
             $user->email = $this->email;
-            $user->password = Hash::make('password');
+            $user->temporary_password = $password;
+            $user->password = Hash::make($password);
             $user->save();
 
-
             $user->assignRole('admin');
-
 
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());

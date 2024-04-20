@@ -42,6 +42,7 @@ class User extends Authenticatable implements HasApiTokensContract
         'name',
         'email',
         'password',
+        'temporary_password',
         'set_password_token',
     ];
 
