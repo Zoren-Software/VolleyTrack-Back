@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Interfaces\ScribeInterface;
+use App\Rules\ValidToken;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TenantRequest extends FormRequest implements ScribeInterface
@@ -27,6 +28,7 @@ class TenantRequest extends FormRequest implements ScribeInterface
             'token' => [
                 'required',
                 'string',
+                new ValidToken(),
             ],
             'tenantId' => [
                 'required',
@@ -52,6 +54,8 @@ class TenantRequest extends FormRequest implements ScribeInterface
     public function messages(): array
     {
         return [
+            'token.required' => trans('TenantCreate.token.required'),
+            'token.string' => trans('TenantCreate.token.string'),
             'tenantId.required' => trans('TenantCreate.tenantId.required'),
             'tenantId.unique' => trans('TenantCreate.tenantId.unique'),
             'tenantId.string' => trans('TenantCreate.tenantId.string'),
@@ -65,6 +69,10 @@ class TenantRequest extends FormRequest implements ScribeInterface
     public function bodyParameters(): array
     {
         return [
+            'token' => [
+                'description' => 'The token',
+                'example' => 'token-test-1',
+            ],
             'tenantId' => [
                 'description' => 'The tenant ID',
                 'example' => 'tenant-test-1',

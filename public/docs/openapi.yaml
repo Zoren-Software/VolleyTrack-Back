@@ -21,7 +21,7 @@ paths:
               schema:
                 type: object
                 example:
-                  message: 'The route test.volleytrack.local/v1/ping could not be found.'
+                  message: 'The route graphql.volleytrack.local/v1/ping could not be found.'
                   exception: Symfony\Component\HttpKernel\Exception\NotFoundHttpException
                   file: /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/AbstractRouteCollection.php
                   line: 44
@@ -341,7 +341,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: 'The route test.volleytrack.local/v1/ping could not be found.'
+                    example: 'The route graphql.volleytrack.local/v1/ping could not be found.'
                   exception:
                     type: string
                     example: Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -763,6 +763,10 @@ paths:
             schema:
               type: object
               properties:
+                token:
+                  type: string
+                  description: ''
+                  example: doloremque
                 tenantId:
                   type: string
                   description: 'The tenant ID.'
@@ -776,6 +780,7 @@ paths:
                   description: 'The tenant name.'
                   example: 'Tenant Test'
               required:
+                - token
                 - tenantId
                 - email
                 - name
