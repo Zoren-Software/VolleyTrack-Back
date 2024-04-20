@@ -14,6 +14,7 @@ environments:
           # - 'npm ci && npm run build && rm -rf node_modules'
         deploy:
             - 'php artisan migrate --force'
+            - 'php artisan db:seed --force'
             - 'php artisan tenants:migrate --path database/migrations/tenant/base'
             - 'php artisan tenants:migrate --path database/migrations/tenant/releases'
             - 'php artisan tenants:seed'
