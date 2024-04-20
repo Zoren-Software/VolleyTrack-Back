@@ -31,6 +31,7 @@ final class UserMutation
 
         if (isset($args['password']) && $args['password'] !== null && $args['password'] !== '') {
             $this->user->makePassword($args['password']);
+            $this->user->temporary_password = null;
         }
 
         $this->user->save();
