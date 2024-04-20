@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,6 +13,7 @@ use App\Models\Tenant;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class RunTenantMigrations implements ShouldQueue
 {
@@ -49,16 +51,15 @@ class RunTenantMigrations implements ShouldQueue
 
             Artisan::call('tenants:seed', ['--tenants' => $this->tenantId]);
 
-            $password = Str::random(8) . '@volleyball';
-
             $user = new User();
             $user->name = $this->name;
             $user->email = $this->email;
-            $user->temporary_password = $password;
-            $user->password = Hash::make($password);
+            $user->password = Hash::make(Str::random(8) . '@volleyball');
             $user->save();
 
             $user->assignRole('admin');
+
+            $user->sendConfirmEmailAndCreatePasswordNotification($this->tenantId, true);
 
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());

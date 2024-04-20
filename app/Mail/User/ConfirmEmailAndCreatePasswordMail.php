@@ -15,15 +15,24 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
      */
     public $title;
 
+    private $admin;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, string $tenant)
+    public function __construct(User $user, string $tenant, $admin = false)
     {
         parent::__construct($user, $tenant);
-        $this->title = 'Confirme seu e-mail e crie sua senha';
+
+        if($this->admin === false) {
+            $this->title = 'Confirme seu e-mail e crie sua senha';
+        } else if($this->admin === true) {
+            $this->title = 'Dados de acesso inicial ao sistema';
+        }
+
+        $this->admin = $admin;
     }
 
     /**
@@ -46,8 +55,14 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
      */
     public function content()
     {
+        if($this->admin === false) {
+            return new Content(
+                markdown: 'emails.user.confirm-email-and-create-password',
+            );
+        }
+
         return new Content(
-            markdown: 'emails.user.confirm-email-and-create-password',
+            markdown: 'emails.user.tenant-registration-email',
         );
     }
 }

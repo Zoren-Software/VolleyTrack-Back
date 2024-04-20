@@ -42,7 +42,6 @@ class User extends Authenticatable implements HasApiTokensContract
         'name',
         'email',
         'password',
-        'temporary_password',
         'set_password_token',
     ];
 
@@ -369,11 +368,11 @@ class User extends Authenticatable implements HasApiTokensContract
         $this->save();
     }
 
-    public function sendConfirmEmailAndCreatePasswordNotification()
+    public function sendConfirmEmailAndCreatePasswordNotification(String $tenant, $admin = false)
     {
         $this->set_password_token = Str::random(60);
         $this->save();
 
-        Mail::to($this->email)->send(new ConfirmEmailAndCreatePasswordMail($this, tenant('id')));
+        Mail::to($this->email)->send(new ConfirmEmailAndCreatePasswordMail($this, $tenant, $admin));
     }
 }

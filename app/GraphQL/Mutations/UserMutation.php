@@ -31,13 +31,12 @@ final class UserMutation
 
         if (isset($args['password']) && $args['password'] !== null && $args['password'] !== '') {
             $this->user->makePassword($args['password']);
-            $this->user->temporary_password = null;
         }
 
         $this->user->save();
 
         if (!isset($args['id'])) {
-            $this->user->sendConfirmEmailAndCreatePasswordNotification();
+            $this->user->sendConfirmEmailAndCreatePasswordNotification(tenant('id'), false);
         }
 
         $this->user->updateOrNewInformation($args);
