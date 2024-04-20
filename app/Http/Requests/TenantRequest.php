@@ -22,12 +22,12 @@ class TenantRequest extends FormRequest implements ScribeInterface
      */
     public function rules(): array
     {
-        
+
         return [
             'tenantId' => [
                 'required',
                 'string',
-                'unique:mysql.tenants,id'
+                'unique:mysql.tenants,id',
             ],
             'email' => [
                 'required',
@@ -36,7 +36,7 @@ class TenantRequest extends FormRequest implements ScribeInterface
             'name' => [
                 'required',
                 'string',
-            ]
+            ],
         ];
     }
 
@@ -54,7 +54,7 @@ class TenantRequest extends FormRequest implements ScribeInterface
             'email.required' => trans('TenantCreate.email.required'),
             'email.email' => trans('TenantCreate.email.email'),
             'name.required' => trans('TenantCreate.name.required'),
-            'name.string' => trans('TenantCreate.name.string')
+            'name.string' => trans('TenantCreate.name.string'),
         ];
     }
 
@@ -63,7 +63,7 @@ class TenantRequest extends FormRequest implements ScribeInterface
         return [
             'tenantId' => [
                 'description' => 'The tenant ID',
-                'example' => 'tenant-test-1'
+                'example' => 'tenant-test-1',
             ],
             'email' => [
                 'description' => 'The tenant email',

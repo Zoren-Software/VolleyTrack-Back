@@ -21,6 +21,6 @@ return [
     'tenant' => 'Área de acesso',
     'why' => 'Você está recebendo este e-mail porque uma nova conta foi configurada para você no VolleyTrack. ' .
         'Utilize o link abaixo para acessar o sistema pela primeira vez:',
-    'message_support' => 'Por favor, não hesite em nos contatar em caso de dúvidas '. 
+    'message_support' => 'Por favor, não hesite em nos contatar em caso de dúvidas ' .
         'ou necessidade de assistência adicional.',
 ];

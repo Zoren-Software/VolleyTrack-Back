@@ -26,9 +26,9 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
     {
         parent::__construct($user, $tenant);
 
-        if($this->admin === false) {
+        if ($this->admin === false) {
             $this->title = 'Confirme seu e-mail e crie sua senha';
-        } else if($this->admin === true) {
+        } elseif ($this->admin === true) {
             $this->title = 'Dados de acesso inicial ao sistema';
         }
 
@@ -55,7 +55,7 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
      */
     public function content()
     {
-        if($this->admin === false) {
+        if ($this->admin === false) {
             return new Content(
                 markdown: 'emails.user.confirm-email-and-create-password',
             );

@@ -2,18 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Tenant;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
 
 class RunTenantMigrations implements ShouldQueue
 {
@@ -28,7 +26,7 @@ class RunTenantMigrations implements ShouldQueue
 
     protected $name;
 
-    public function __construct(String $tenantId, String $email, String $name)
+    public function __construct(string $tenantId, string $email, string $name)
     {
         $this->tenantId = $tenantId;
         $this->email = $email;

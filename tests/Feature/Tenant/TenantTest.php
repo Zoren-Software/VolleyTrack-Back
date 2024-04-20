@@ -14,7 +14,7 @@ class TenantTest extends TestCase
      * A basic test route horizon for login.
      *
      * @test
-     * 
+     *
      * @dataProvider createTenantDataProvider
      *
      * @return void
@@ -32,9 +32,9 @@ class TenantTest extends TestCase
         );
 
         $response->assertJson([
-            'message' => trans($expectedMessage)
+            'message' => trans($expectedMessage),
         ]);
-        
+
         $response->assertStatus($expected_status);
     }
 
