@@ -1,0 +1,18 @@
+{
+    "message":"O campo tenantId é obrigatório.",
+    "errors":{
+        "email":[
+            "O campo email é obrigatório.",
+            "O email deve ser um endereço de e-mail válido."
+        ],
+        "tenantId":[
+            "O campo tenantId é obrigatório.",
+            "O tenantId já foi utilizado.",
+            "O tenantId deve ser uma string."
+        ],
+        "nome":[
+            "O campo nome é obrigatório.",
+            "O nome deve ser uma string."
+        ]
+    }
+ }
