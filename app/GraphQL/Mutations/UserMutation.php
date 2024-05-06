@@ -36,7 +36,7 @@ final class UserMutation
         $this->user->save();
 
         if (!isset($args['id'])) {
-            $this->user->sendConfirmEmailAndCreatePasswordNotification();
+            $this->user->sendConfirmEmailAndCreatePasswordNotification(tenant('id'), false);
         }
 
         $this->user->updateOrNewInformation($args);

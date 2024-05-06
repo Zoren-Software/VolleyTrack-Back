@@ -1,5 +1,6 @@
 /node_modules
 /public/hot
+/public/docs
 /public/storage
 /storage/*.key
 /vendor
@@ -20,3 +21,4 @@ reports
 .php-cs-fixer.cache
 html
 /portainer-data
+.scribe/

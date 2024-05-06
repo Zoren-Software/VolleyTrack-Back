@@ -92,10 +92,9 @@ abstract class TestCase extends BaseTestCase
             $tenant->domains()->create(['domain' => $tenantId . '.' . env('APP_HOST')]);
 
             try {
-                Artisan::call("multi_tenants:migrate --tenants {$tenantId} --path base");
-                Artisan::call("multi_tenants:migrate --tenants {$tenantId}");
-                Artisan::call("multi_tenants_logs:migrate --tenants {$tenantIdLogs}");
-                Artisan::call("multi_tenants:seed --tenants {$tenantId}");
+                Artisan::call("tenants:migrate --tenants {$tenantId} --path database/migrations/tenant/base");
+                Artisan::call("tenants:migrate --tenants {$tenantId} --path database/migrations/tenant/releases");
+                Artisan::call("tenants:seed --tenants {$tenantId}");
             } catch (\Exception $e) {
                 throw new \Exception($e->getMessage());
             }
@@ -108,10 +107,9 @@ abstract class TestCase extends BaseTestCase
                 DB::table('migrations')->get();
             } catch (\Exception $e) {
                 try {
-                    Artisan::call("multi_tenants:migrate --tenants {$tenantId} --path base");
-                    Artisan::call("multi_tenants:migrate --tenants {$tenantId}");
-                    Artisan::call("multi_tenants_logs:migrate --tenants {$tenantIdLogs}");
-                    Artisan::call("multi_tenants:seed --tenants {$tenantId}");
+                    Artisan::call("tenants:migrate --tenants {$tenantId} --path database/migrations/tenant/base");
+                    Artisan::call("tenants:migrate --tenants {$tenantId} --path database/migrations/tenant/releases");
+                    Artisan::call("tenants:seed --tenants {$tenantId}");
                 } catch (\Exception $e) {
                     throw new \Exception($e->getMessage());
                 }
