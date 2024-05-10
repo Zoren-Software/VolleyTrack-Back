@@ -356,7 +356,7 @@
 
         </div>
         <div class="sl-flex sl-items-center sl-px-4 sl-py-3 sl-border-t">
-            Last updated: April 20, 2024
+            Last updated: May 10, 2024
         </div>
 
         <div class="sl-flex sl-items-center sl-px-4 sl-py-3 sl-border-t">
@@ -1203,11 +1203,14 @@ fetch(url, {
                                     <div class="sl-flex-1 sl-h-px sl-mx-3"></div>
                     <span class="sl-ml-2 sl-text-warning">required</span>
                                     </div>
+                <div class="sl-prose sl-markdown-viewer" style="font-size: 12px;">
+            <p>The token.</p>
+        </div>
                                             <div class="sl-stack sl-stack--horizontal sl-stack--2 sl-flex sl-flex-row sl-items-baseline sl-text-muted">
                 <span>Example:</span> <!-- <span> important for spacing -->
                 <div class="sl-flex sl-flex-1 sl-flex-wrap" style="gap: 4px;">
                     <div class="sl-max-w-full sl-break-all sl-px-1 sl-bg-canvas-tint sl-text-muted sl-rounded sl-border">
-                        doloremque
+                        token-test-1
                     </div>
                 </div>
             </div>
@@ -1382,7 +1385,7 @@ fetch(url, {
                                      id="json-body-POSTv1-tenant"
                                      style="font-family: var(--font-code); font-size: 12px; line-height: var(--lh-code);"
                                 >{
-    "token": "doloremque",
+    "token": "token-test-1",
     "tenantId": "tenant-test-1",
     "email": "email@test.com",
     "name": "Tenant Test"
@@ -1481,7 +1484,7 @@ You can check the Dev Tools console for debugging information.</p>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"token\": \"doloremque\",
+    \"token\": \"token-test-1\",
     \"tenantId\": \"tenant-test-1\",
     \"email\": \"email@test.com\",
     \"name\": \"Tenant Test\"
@@ -1503,7 +1506,7 @@ const headers = {
 };
 
 let body = {
-    "token": "doloremque",
+    "token": "token-test-1",
     "tenantId": "tenant-test-1",
     "email": "email@test.com",
     "name": "Tenant Test"

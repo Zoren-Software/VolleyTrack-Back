@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "VolleyTrack",
-        "_postman_id": "5ef29309-c430-4257-84f3-3a79bf3dba03",
+        "_postman_id": "3027fc5b-0961-452b-ac7c-3071ccb03750",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -95,7 +95,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"token\":\"doloremque\",\"tenantId\":\"tenant-test-1\",\"email\":\"email@test.com\",\"name\":\"Tenant Test\"}"
+                            "raw": "{\"token\":\"token-test-1\",\"tenantId\":\"tenant-test-1\",\"email\":\"email@test.com\",\"name\":\"Tenant Test\"}"
                         },
                         "description": "",
                         "auth": {

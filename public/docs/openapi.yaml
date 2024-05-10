@@ -765,8 +765,8 @@ paths:
               properties:
                 token:
                   type: string
-                  description: ''
-                  example: doloremque
+                  description: 'The token.'
+                  example: token-test-1
                 tenantId:
                   type: string
                   description: 'The tenant ID.'
