@@ -17,7 +17,7 @@ class PingTest extends TestCase
      */
     public function ping()
     {
-        $response = $this->get($this->tenantUrl . '/api/ping');
+        $response = $this->get($this->tenantUrl . '/v1/ping');
 
         $response->assertStatus(200);
     }
