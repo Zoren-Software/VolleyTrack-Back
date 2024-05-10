@@ -77,12 +77,12 @@ final class DiscordService extends Model
                 ],
             ];
 
-            if (auth()->user()) {
-                $data['embeds'][0]['fields'][] = [
-                    'name' => 'User ID:',
-                    'value' => auth()->user()->id,
-                ];
-            }
+            // if (auth()->user()) {
+            //     $data['embeds'][0]['fields'][] = [
+            //         'name' => 'User ID:',
+            //         'value' => auth()->user()->id,
+            //     ];
+            // }
 
             $this->client->post(
                 $this->webhookErrors,
