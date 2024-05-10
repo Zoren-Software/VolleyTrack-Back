@@ -47,7 +47,7 @@ class RunTenantMigrations implements ShouldQueue
 
             tenancy()->initialize($this->tenantId);
 
-            Artisan::call('tenants:seed', ['--tenants' => $this->tenantId]);
+            Artisan::call('tenants:seed', ['--tenants' => $this->tenantId, '--force' => true]);
 
             $user = new User();
             $user->name = $this->name;
