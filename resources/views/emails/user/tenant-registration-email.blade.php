@@ -6,7 +6,7 @@
 
 {{ trans('TenantRegistrationMail.why') }}
 
-{{ tenant('id')}}
+{{ tenant('id') }} . {{ env('APP_HOST')}}
 
 @php
     $link = env('APP_PROTOCOL') . '://' . env('APP_URL') . '/verify-email/' . tenant('id') . '/' . $user->set_password_token;
