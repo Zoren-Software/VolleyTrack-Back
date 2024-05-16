@@ -11,6 +11,13 @@ environments:
         build:
             - 'composer install --no-dev'
             - 'php artisan event:cache'
+            - 'php artisan lighthouse:cache'
+            - 'php artisan lighthouse:clear-cache'
+            - 'php artisan optimize'
+            - 'php artisan config:clear'
+            - 'php artisan route:clear'
+            - 'php artisan view:clear'
+            - 'php artisan cache:clear'
           # - 'npm ci && npm run build && rm -rf node_modules'
         deploy:
             - 'php artisan migrate --force'
@@ -19,3 +26,4 @@ environments:
             - 'php artisan tenants:migrate --path database/migrations/tenant/releases'
             - 'php artisan tenants:seed'
             - 'php artisan config:cache'
+            - 'php artisan lighthouse:clear-cache'

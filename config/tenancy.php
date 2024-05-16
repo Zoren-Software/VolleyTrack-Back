@@ -202,6 +202,6 @@ return [
      */
     'seeder_parameters' => [
         '--class' => DatabaseTenantSeeder::class, // root seeder class
-        // '--force' => true,
+        '--force' => true,
     ],
 ];
