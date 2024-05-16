@@ -5,6 +5,7 @@ namespace App\Services;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 final class DiscordService extends Model
 {
@@ -25,7 +26,7 @@ final class DiscordService extends Model
         $this->webhookPayments = config('services.discord.webhook_payments');
 
         if (!$this->webhookErrors || !$this->webhookPayments) {
-            throw new \Throwable('Variáveis de conexão do Discord não declaradas');
+            Log::error('Discord webhooks not configured');
         }
     }
 
@@ -77,12 +78,12 @@ final class DiscordService extends Model
                 ],
             ];
 
-            if (auth()->user()) {
-                $data['embeds'][0]['fields'][] = [
-                    'name' => 'User ID:',
-                    'value' => auth()->user()->id,
-                ];
-            }
+            // if (auth()->user()) {
+            //     $data['embeds'][0]['fields'][] = [
+            //         'name' => 'User ID:',
+            //         'value' => auth()->user()->id,
+            //     ];
+            // }
 
             $this->client->post(
                 $this->webhookErrors,
@@ -91,7 +92,9 @@ final class DiscordService extends Model
                 ]
             );
         } catch (ClientException $e) {
-            throw new \Throwable('Erro ao enviar mensagem para o Discord: ' . $e->getMessage());
+            
+            // fazer mensagem de erro
+            Log::error('Erro ao enviar mensagem para o Discord: ' . $e->getMessage());
         }
     }
 }
