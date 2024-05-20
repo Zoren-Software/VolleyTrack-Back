@@ -129,4 +129,15 @@ final class UserMutation
 
         return $this->user;
     }
+
+    public function forgotPassword($rootValue, array $args, GraphQLContext $context)
+    {
+        $this->user = User::where('email', $args['email'])->first();
+
+        if ($this->user) {
+            $this->user->sendForgotPasswordNotification();
+        }
+
+        return $this->user;
+    }
 }

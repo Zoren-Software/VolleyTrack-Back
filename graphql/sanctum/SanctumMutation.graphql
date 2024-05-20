@@ -15,8 +15,8 @@ extend type Mutation {
     resendEmailVerification(input: ResendEmailVerificationInput! @spread): ResendEmailVerificationResponse!
         @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\ResendEmailVerification")
 
-    forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse!
-        @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\ForgotPassword")
+    # forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse!
+    #     @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\ForgotPassword")
 
     resetPassword(input: ResetPasswordInput! @spread): ResetPasswordResponse!
         @field(resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\ResetPassword")

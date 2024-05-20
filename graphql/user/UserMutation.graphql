@@ -49,4 +49,8 @@ extend type Mutation {
     ): User
         @field(resolver: "UserMutation@setPassword")
         @validator
+
+    forgotPassword(email: String!): ForgotPasswordResponse
+        @field(resolver: "UserMutation@forgotPassword")
+        @validator
 }
