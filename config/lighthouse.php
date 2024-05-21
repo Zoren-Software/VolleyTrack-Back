@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 return [
     /*
@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'guards' => null,
+    'guards' => ['sanctum'],
 
     /*
     |--------------------------------------------------------------------------
@@ -98,7 +98,7 @@ return [
         /*
          * File path to store the lighthouse schema.
          */
-        'path' => env('LIGHTHOUSE_SCHEMA_CACHE_PATH', base_path('bootstrap/cache/lighthouse-schema.php')),
+        'path' => env('LIGHTHOUSE_SCHEMA_CACHE_PATH', storage_path('framework/cache/lighthouse-schema.php')),
     ],
 
     /*
@@ -124,7 +124,7 @@ return [
         /*
          * Setting to true enables query caching.
          */
-        'enable' => env('LIGHTHOUSE_QUERY_CACHE_ENABLE', true),
+        'enable' => env('LIGHTHOUSE_QUERY_CACHE_ENABLE', false),
 
         /*
          * Allows using a specific cache store, uses the app's default if set to null.
