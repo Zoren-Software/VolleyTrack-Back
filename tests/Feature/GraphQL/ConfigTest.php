@@ -79,8 +79,8 @@ class ConfigTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'config' => self::$data,
@@ -89,8 +89,8 @@ class ConfigTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -155,8 +155,8 @@ class ConfigTest extends TestCase
                     'nameTenant' => 'Test',
                     'languageId' => 1,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $configEdit,
@@ -168,8 +168,8 @@ class ConfigTest extends TestCase
                     'nameTenant' => 'Test',
                     'languageId' => 1,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'configEdit' => self::$data,
@@ -181,8 +181,8 @@ class ConfigTest extends TestCase
                 [
                     'nameTenant' => ' ',
                 ],
-                'type_message_error' => 'nameTenant',
-                'expected_message' => 'ConfigEdit.name_tenant_required',
+                'typeMessageError' => 'nameTenant',
+                'expectedMessage' => 'ConfigEdit.name_tenant_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $configEdit,
@@ -193,8 +193,8 @@ class ConfigTest extends TestCase
                 [
                     'nameTenant' => 'AB',
                 ],
-                'type_message_error' => 'nameTenant',
-                'expected_message' => 'ConfigEdit.name_tenant_min',
+                'typeMessageError' => 'nameTenant',
+                'expectedMessage' => 'ConfigEdit.name_tenant_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $configEdit,

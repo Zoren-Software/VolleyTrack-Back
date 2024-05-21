@@ -20,7 +20,7 @@ class TenantTest extends TestCase
      *
      * @return void
      */
-    public function createTenant(array $data, string $expectedMessage, int $expected_status)
+    public function createTenant(array $data, string $expectedMessage, int $expectedStatus)
     {
         $this->withHeaders([
             'Content-Type' => 'application/json',
@@ -42,7 +42,7 @@ class TenantTest extends TestCase
             'message' => trans($expectedMessage),
         ]);
 
-        $response->assertStatus($expected_status);
+        $response->assertStatus($expectedStatus);
     }
 
     public static function createTenantDataProvider()
@@ -55,8 +55,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.messageSuccess',
-                'expected_status' => 200,
+                'expectedMessage' => 'TenantCreate.messageSuccess',
+                'expectedStatus' => 200,
             ],
             'create tenant, token incorrect, error' => [
                 'data' => [
@@ -65,8 +65,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'validation.token_invalid',
-                'expected_status' => 422,
+                'expectedMessage' => 'validation.token_invalid',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation email field is required, error' => [
                 'data' => [
@@ -74,8 +74,8 @@ class TenantTest extends TestCase
                     'tenantId' => 'tenant-test-' . rand(1, 1000),
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.email.required',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.email.required',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation tenantId field is required, error' => [
                 'data' => [
@@ -83,8 +83,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.tenantId.required',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.tenantId.required',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation tenantId has already been taken, error' => [
                 'data' => [
@@ -93,8 +93,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.tenantId.unique',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.tenantId.unique',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation email must be a valid email address, error' => [
                 'data' => [
@@ -103,8 +103,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000),
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.email.email',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.email.email',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation tenantId must be a string, error' => [
                 'data' => [
@@ -113,8 +113,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.tenantId.string',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.tenantId.string',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation name field is required, error' => [
                 'data' => [
@@ -122,8 +122,8 @@ class TenantTest extends TestCase
                     'tenantId' => 'tenant-test-' . rand(1, 1000),
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                 ],
-                'expected_message' => 'TenantCreate.name.required',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.name.required',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation name must be a string, error' => [
                 'data' => [
@@ -132,8 +132,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 1,
                 ],
-                'expected_message' => 'TenantCreate.name.string',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.name.string',
+                'expectedStatus' => 422,
             ],
         ];
     }

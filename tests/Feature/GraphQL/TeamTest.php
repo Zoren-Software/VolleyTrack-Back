@@ -88,8 +88,8 @@ class TeamTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'teams' => [
@@ -103,8 +103,8 @@ class TeamTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -165,8 +165,8 @@ class TeamTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'team' => self::$data,
@@ -175,8 +175,8 @@ class TeamTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -247,8 +247,8 @@ class TeamTest extends TestCase
                     'name' => $nameExistent,
                     'playerId' => [],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamCreate,
@@ -260,8 +260,8 @@ class TeamTest extends TestCase
                     'name' => $nameExistent,
                     'playerId' => [],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'teamCreate' => self::$data,
@@ -274,8 +274,8 @@ class TeamTest extends TestCase
                     'name' => $faker->name,
                     'playerId' => [1, 2, 3, 4, 5],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'teamCreate' => self::$data,
@@ -288,8 +288,8 @@ class TeamTest extends TestCase
                     'name' => $nameExistent,
                     'playerId' => [],
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TeamCreate.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamCreate,
@@ -301,8 +301,8 @@ class TeamTest extends TestCase
                     'name' => ' ',
                     'playerId' => [],
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TeamCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamCreate,
@@ -314,8 +314,8 @@ class TeamTest extends TestCase
                     'name' => 'AB',
                     'playerId' => [],
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TeamCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TeamCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamCreate,
@@ -396,8 +396,8 @@ class TeamTest extends TestCase
                 [
                     'name' => $faker->name . self::$teamText,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamEdit,
@@ -408,8 +408,8 @@ class TeamTest extends TestCase
                 [
                     'name' => $faker->name . self::$teamText,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'teamEdit' => self::$data,
@@ -422,8 +422,8 @@ class TeamTest extends TestCase
                     'name' => $faker->name . self::$teamText,
                     'playerId' => [1, 2, 3],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'teamEdit' => self::$data,
@@ -434,8 +434,8 @@ class TeamTest extends TestCase
             'name field is not unique, expected error' => [
                 [
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TeamEdit.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamEdit,
@@ -446,8 +446,8 @@ class TeamTest extends TestCase
                 [
                     'name' => ' ',
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TeamEdit.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamEdit,
@@ -458,8 +458,8 @@ class TeamTest extends TestCase
                 [
                     'name' => 'AB',
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TeamEdit.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TeamEdit.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamEdit,
@@ -523,8 +523,8 @@ class TeamTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'teamDelete' => [self::$data],
@@ -536,8 +536,8 @@ class TeamTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamDelete,
@@ -548,8 +548,8 @@ class TeamTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'typeMessageError' => 'message',
+                'expectedMessage' => 'internal',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $teamDelete,
