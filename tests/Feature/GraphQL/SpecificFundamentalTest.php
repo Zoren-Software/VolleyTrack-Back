@@ -87,8 +87,8 @@ class SpecificFundamentalTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentals' => [
@@ -102,8 +102,8 @@ class SpecificFundamentalTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -164,8 +164,8 @@ class SpecificFundamentalTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamental' => self::$data,
@@ -174,8 +174,8 @@ class SpecificFundamentalTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -244,86 +244,86 @@ class SpecificFundamentalTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
-                'add_relationship' => true,
+                'addRelationship' => true,
             ],
             'create specific fundamental, no relationship, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'create specific fundamental without permission, expected error' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalCreate,
                 ],
                 'hasPermission' => false,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is not unique, expected error' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalCreate.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalCreate.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalCreate,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalCreate,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalCreate,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
         ];
     }
@@ -398,85 +398,85 @@ class SpecificFundamentalTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => false,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'edit specific fundamental, no relationship, success' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'edit specific fundamental, with relationship, success' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
-                'add_relationship' => true,
+                'addRelationship' => true,
             ],
             'name field is not unique, expected error' => [
                 [
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalEdit.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalEdit.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalEdit.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalEdit.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalEdit.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalEdit.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
         ];
     }
@@ -535,8 +535,8 @@ class SpecificFundamentalTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalDelete' => [self::$data],
@@ -548,8 +548,8 @@ class SpecificFundamentalTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalDelete,
@@ -560,8 +560,8 @@ class SpecificFundamentalTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'typeMessageError' => 'message',
+                'expectedMessage' => 'internal',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalDelete,

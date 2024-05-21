@@ -93,8 +93,8 @@ class UserTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'users' => [
@@ -108,8 +108,8 @@ class UserTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -172,8 +172,8 @@ class UserTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'user' => self::$data,
@@ -182,8 +182,8 @@ class UserTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -263,8 +263,8 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'password' => $password,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => self::$data,
@@ -283,8 +283,8 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'password' => $password,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => self::$data,
@@ -306,8 +306,8 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'password' => $password,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => self::$data,
@@ -326,8 +326,8 @@ class UserTest extends TestCase
                     'roleId' => [3],
                     'password' => $password,
                 ],
-                'type_message_error' => 'cpf',
-                'expected_message' => 'UserCreate.cpf_unique',
+                'typeMessageError' => 'cpf',
+                'expectedMessage' => 'UserCreate.cpf_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -345,8 +345,8 @@ class UserTest extends TestCase
                     'roleId' => [3],
                     'password' => $password,
                 ],
-                'type_message_error' => 'rg',
-                'expected_message' => 'UserCreate.rg_unique',
+                'typeMessageError' => 'rg',
+                'expectedMessage' => 'UserCreate.rg_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -363,8 +363,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [],
                 ],
-                'type_message_error' => 'roleId',
-                'expected_message' => 'UserCreate.role_id_required',
+                'typeMessageError' => 'roleId',
+                'expectedMessage' => 'UserCreate.role_id_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -381,8 +381,8 @@ class UserTest extends TestCase
                     'roleId' => [3],
                     'password' => $password,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => self::$data,
@@ -401,8 +401,8 @@ class UserTest extends TestCase
                     'password' => $password,
                     'birthDate' => $faker->date(),
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => self::$data,
@@ -420,8 +420,8 @@ class UserTest extends TestCase
                     'roleId' => [3],
                     'password' => $password,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => self::$data,
@@ -439,8 +439,8 @@ class UserTest extends TestCase
                     'roleId' => [1],
                     'password' => $password,
                 ],
-                'type_message_error' => 'roleId',
-                'expected_message' => 'PermissionAssignment.validation_message_error',
+                'typeMessageError' => 'roleId',
+                'expectedMessage' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -457,8 +457,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'password' => $password,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -475,8 +475,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'password' => '12345',
                 ],
-                'type_message_error' => 'password',
-                'expected_message' => 'UserCreate.password_min_6',
+                'typeMessageError' => 'password',
+                'expectedMessage' => 'UserCreate.password_min_6',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -493,8 +493,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'password' => $password,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userCreate' => self::$data,
@@ -512,8 +512,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'email' => ' ',
                 ],
-                'type_message_error' => 'email',
-                'expected_message' => 'UserCreate.email_required',
+                'typeMessageError' => 'email',
+                'expectedMessage' => 'UserCreate.email_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -530,8 +530,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'email' => $faker->email,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'UserCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'UserCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -548,8 +548,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'email' => $faker->email,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'UserCreate.name_min_3',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'UserCreate.name_min_3',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -566,8 +566,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'email' => $emailExistent,
                 ],
-                'type_message_error' => 'email',
-                'expected_message' => 'UserCreate.email_unique',
+                'typeMessageError' => 'email',
+                'expectedMessage' => 'UserCreate.email_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -584,8 +584,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'email' => 'notemail.com',
                 ],
-                'type_message_error' => 'email',
-                'expected_message' => 'UserCreate.email_is_valid',
+                'typeMessageError' => 'email',
+                'expectedMessage' => 'UserCreate.email_is_valid',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userCreate,
@@ -692,8 +692,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [],
                 ],
-                'type_message_error' => 'roleId',
-                'expected_message' => 'UserEdit.role_id_required',
+                'typeMessageError' => 'roleId',
+                'expectedMessage' => 'UserEdit.role_id_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -710,8 +710,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [1],
                 ],
-                'type_message_error' => 'roleId',
-                'expected_message' => 'PermissionAssignment.validation_message_error',
+                'typeMessageError' => 'roleId',
+                'expectedMessage' => 'PermissionAssignment.validation_message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -728,8 +728,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -748,8 +748,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userEdit' => self::$data,
@@ -767,8 +767,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'cpf',
-                'expected_message' => 'UserEdit.cpf_unique',
+                'typeMessageError' => 'cpf',
+                'expectedMessage' => 'UserEdit.cpf_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -785,8 +785,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'rg',
-                'expected_message' => 'UserEdit.rg_unique',
+                'typeMessageError' => 'rg',
+                'expectedMessage' => 'UserEdit.rg_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -804,8 +804,8 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'positionId' => [2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userEdit' => self::$data,
@@ -824,8 +824,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'positionId' => [2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userEdit' => self::$data,
@@ -843,8 +843,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userEdit' => self::$data,
@@ -863,8 +863,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userEdit' => self::$data,
@@ -882,8 +882,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2, 3],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userEdit' => self::$data,
@@ -901,8 +901,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'password',
-                'expected_message' => 'UserEdit.password_min_6',
+                'typeMessageError' => 'password',
+                'expectedMessage' => 'UserEdit.password_min_6',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -919,8 +919,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userEdit' => self::$data,
@@ -937,8 +937,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'email',
-                'expected_message' => 'UserEdit.email_required',
+                'typeMessageError' => 'email',
+                'expectedMessage' => 'UserEdit.email_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -955,8 +955,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'UserEdit.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'UserEdit.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -973,8 +973,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'UserEdit.name_min_3',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'UserEdit.name_min_3',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -990,8 +990,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'email',
-                'expected_message' => 'UserEdit.email_unique',
+                'typeMessageError' => 'email',
+                'expectedMessage' => 'UserEdit.email_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -1008,8 +1008,8 @@ class UserTest extends TestCase
                     'teamId' => [1],
                     'roleId' => [2],
                 ],
-                'type_message_error' => 'email',
-                'expected_message' => 'UserEdit.email_is_valid',
+                'typeMessageError' => 'email',
+                'expectedMessage' => 'UserEdit.email_is_valid',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userEdit,
@@ -1081,8 +1081,8 @@ class UserTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => $userDelete,
                 ],
@@ -1092,8 +1092,8 @@ class UserTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userDelete,
@@ -1104,8 +1104,8 @@ class UserTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'id',
-                'expected_message' => 'UserDelete.ids_exists',
+                'typeMessageError' => 'id',
+                'expectedMessage' => 'UserDelete.ids_exists',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userDelete,
@@ -1116,8 +1116,8 @@ class UserTest extends TestCase
                 [
                     'error' => 'this',
                 ],
-                'type_message_error' => 'id',
-                'expected_message' => 'UserDelete.cannot_delete_own_account',
+                'typeMessageError' => 'id',
+                'expectedMessage' => 'UserDelete.cannot_delete_own_account',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $userDelete,
@@ -1191,8 +1191,8 @@ class UserTest extends TestCase
     {
         return [
             'with auth' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'me' => [
@@ -1285,8 +1285,8 @@ class UserTest extends TestCase
                     'password' => true,
                     'passwordConfirmation' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'userSetPassword' => [
@@ -1309,8 +1309,8 @@ class UserTest extends TestCase
                     'password' => true,
                     'passwordConfirmation' => true,
                 ],
-                'type_message_error' => 'email',
-                'expected_message' => 'UserSetPassword.email_required',
+                'typeMessageError' => 'email',
+                'expectedMessage' => 'UserSetPassword.email_required',
                 'expected' => [
                     'data' => $userSetPassword,
                 ],
@@ -1324,8 +1324,8 @@ class UserTest extends TestCase
                     'password' => true,
                     'passwordConfirmation' => true,
                 ],
-                'type_message_error' => 'email',
-                'expected_message' => 'UserSetPassword.email_is_valid',
+                'typeMessageError' => 'email',
+                'expectedMessage' => 'UserSetPassword.email_is_valid',
                 'expected' => [
                     'data' => $userSetPassword,
                 ],
@@ -1339,8 +1339,8 @@ class UserTest extends TestCase
                     'password' => true,
                     'passwordConfirmation' => true,
                 ],
-                'type_message_error' => 'token',
-                'expected_message' => 'UserSetPassword.token_required',
+                'typeMessageError' => 'token',
+                'expectedMessage' => 'UserSetPassword.token_required',
                 'expected' => [
                     'data' => $userSetPassword,
                 ],
@@ -1354,8 +1354,8 @@ class UserTest extends TestCase
                     'password' => true,
                     'passwordConfirmation' => true,
                 ],
-                'type_message_error' => 'token',
-                'expected_message' => 'UserSetPassword.token_exists',
+                'typeMessageError' => 'token',
+                'expectedMessage' => 'UserSetPassword.token_exists',
                 'expected' => [
                     'data' => $userSetPassword,
                 ],
@@ -1369,8 +1369,8 @@ class UserTest extends TestCase
                     'password' => false,
                     'passwordConfirmation' => true,
                 ],
-                'type_message_error' => 'password',
-                'expected_message' => 'UserSetPassword.password_required',
+                'typeMessageError' => 'password',
+                'expectedMessage' => 'UserSetPassword.password_required',
                 'expected' => [
                     'data' => $userSetPassword,
                 ],
@@ -1384,8 +1384,8 @@ class UserTest extends TestCase
                     'password' => 'min_6',
                     'passwordConfirmation' => true,
                 ],
-                'type_message_error' => 'password',
-                'expected_message' => 'UserSetPassword.password_min_6',
+                'typeMessageError' => 'password',
+                'expectedMessage' => 'UserSetPassword.password_min_6',
                 'expected' => [
                     'data' => $userSetPassword,
                 ],
@@ -1399,8 +1399,8 @@ class UserTest extends TestCase
                     'password' => true,
                     'passwordConfirmation' => 'not_match',
                 ],
-                'type_message_error' => 'passwordConfirmation',
-                'expected_message' => 'UserSetPassword.password_confirmation_same',
+                'typeMessageError' => 'passwordConfirmation',
+                'expectedMessage' => 'UserSetPassword.password_confirmation_same',
                 'expected' => [
                     'data' => $userSetPassword,
                 ],
@@ -1414,8 +1414,8 @@ class UserTest extends TestCase
                     'password' => true,
                     'passwordConfirmation' => false,
                 ],
-                'type_message_error' => 'passwordConfirmation',
-                'expected_message' => 'UserSetPassword.password_confirmation_required',
+                'typeMessageError' => 'passwordConfirmation',
+                'expectedMessage' => 'UserSetPassword.password_confirmation_required',
                 'expected' => [
                     'data' => $userSetPassword,
                 ],
