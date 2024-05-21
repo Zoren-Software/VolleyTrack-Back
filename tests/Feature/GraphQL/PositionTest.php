@@ -86,8 +86,8 @@ class PositionTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'positions' => [
@@ -101,8 +101,8 @@ class PositionTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -164,8 +164,8 @@ class PositionTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'position' => self::$data,
@@ -174,8 +174,8 @@ class PositionTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -236,8 +236,8 @@ class PositionTest extends TestCase
                     'name' => $nameExistent,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'positionCreate' => self::$data,
@@ -250,8 +250,8 @@ class PositionTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionCreate,
@@ -263,8 +263,8 @@ class PositionTest extends TestCase
                     'name' => $nameExistent,
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'PositionCreate.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'PositionCreate.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionCreate,
@@ -276,8 +276,8 @@ class PositionTest extends TestCase
                     'name' => ' ',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'PositionCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'PositionCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionCreate,
@@ -289,8 +289,8 @@ class PositionTest extends TestCase
                     'name' => 'AB',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'PositionCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'PositionCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionCreate,
@@ -362,8 +362,8 @@ class PositionTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionEdit,
@@ -375,8 +375,8 @@ class PositionTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'positionEdit' => self::$data,
@@ -388,8 +388,8 @@ class PositionTest extends TestCase
                 [
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'PositionEdit.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'PositionEdit.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionEdit,
@@ -401,8 +401,8 @@ class PositionTest extends TestCase
                     'name' => ' ',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'PositionEdit.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'PositionEdit.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionEdit,
@@ -414,8 +414,8 @@ class PositionTest extends TestCase
                     'name' => 'AB',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'PositionEdit.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'PositionEdit.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionEdit,
@@ -491,8 +491,8 @@ class PositionTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'positionDelete' => [self::$data],
@@ -504,8 +504,8 @@ class PositionTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionDelete,
@@ -516,8 +516,8 @@ class PositionTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'typeMessageError' => 'message',
+                'expectedMessage' => 'internal',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $positionDelete,
