@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 return [
     /*
@@ -30,39 +30,45 @@ return [
         'middleware' => [
             // Connecta com o tenant específicado pelo header x-tenant
             \Stancl\Tenancy\Middleware\InitializeTenancyByRequestData::class,
-            \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class,
+            
+            // Ensures the request is not vulnerable to cross-site request forgery.
+            // Nuwave\Lighthouse\Http\Middleware\EnsureXHR::class,
+
+            // Always set the `Accept: application/json` header.
+            Nuwave\Lighthouse\Http\Middleware\AcceptJson::class,
 
             // Logs in a user if they are authenticated. In contrast to Laravel's 'auth'
             // middleware, this delegates auth and permission checks to the field level.
-            \Nuwave\Lighthouse\Support\Http\Middleware\AttemptAuthentication::class,
+            Nuwave\Lighthouse\Http\Middleware\AttemptAuthentication::class,
 
             // Logs every incoming GraphQL query.
-            // \Nuwave\Lighthouse\Support\Http\Middleware\LogGraphQLQueries::class,
+            // Nuwave\Lighthouse\Http\Middleware\LogGraphQLQueries::class,
         ],
 
         /*
-         * The `prefix` and `domain` configuration options are optional.
+         * The `prefix`, `domain` and `where` configuration options are optional.
          */
         // 'prefix' => '',
         // 'domain' => '',
+        // 'where' => [],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Guard
+    | Authentication Guards
     |--------------------------------------------------------------------------
     |
-    | The guard to use for authenticating GraphQL requests, if needed.
+    | The guards to use for authenticating GraphQL requests, if needed.
     | Used in directives such as `@guard` or the `AttemptAuthentication` middleware.
-    | Falls back to the Laravel default if the defined guard is either `null` or not found.
+    | Falls back to the Laravel default if `null`.
     |
     */
 
-    'guard' => 'sanctum',
+    'guards' => null,
 
     /*
     |--------------------------------------------------------------------------
-    | Schema Location
+    | Schema Path
     |--------------------------------------------------------------------------
     |
     | Path to your .graphql schema file.
@@ -70,9 +76,7 @@ return [
     |
     */
 
-    'schema' => [
-        'register' => base_path('graphql/schema.graphql'),
-    ],
+    'schema_path' => base_path('graphql/schema.graphql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -85,48 +89,27 @@ return [
     |
     */
 
-    'cache' => [
+    'schema_cache' => [
         /*
          * Setting to true enables schema caching.
          */
-        'enable' => env('LIGHTHOUSE_CACHE_ENABLE', env('APP_ENV') !== 'local'),
-
-        /*
-         * Allowed values:
-         * - 1: uses the store, key and ttl config values to store the schema as a string in the given cache store.
-         * - 2: uses the path config value to store the schema in a PHP file allowing OPcache to pick it up.
-         */
-        'version' => env('LIGHTHOUSE_CACHE_VERSION', 1),
-
-        /*
-         * Allows using a specific cache store, uses the app's default if set to null.
-         * Only relevant if version is set to 1.
-         */
-        'store' => env('LIGHTHOUSE_CACHE_STORE', null),
-
-        /*
-         * The name of the cache item for the schema cache.
-         * Only relevant if version is set to 1.
-         */
-        'key' => env('LIGHTHOUSE_CACHE_KEY', 'lighthouse-schema'),
-
-        /*
-         * Duration in seconds the schema should remain cached, null means forever.
-         * Only relevant if version is set to 1.
-         */
-        'ttl' => env('LIGHTHOUSE_CACHE_TTL', null),
+        'enable' => env('LIGHTHOUSE_SCHEMA_CACHE_ENABLE', env('APP_ENV') !== 'local'),
 
         /*
          * File path to store the lighthouse schema.
-         * Only relevant if version is set to 2.
          */
-        'path' => env('LIGHTHOUSE_CACHE_PATH', base_path('bootstrap/cache/lighthouse-schema.php')),
-
-        /*
-         * Should the `@cache` directive use a tagged cache?
-         */
-        'tags' => false,
+        'path' => env('LIGHTHOUSE_SCHEMA_CACHE_PATH', base_path('bootstrap/cache/lighthouse-schema.php')),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache Directive Tags
+    |--------------------------------------------------------------------------
+    |
+    | Should the `@cache` directive use a tagged cache?
+    |
+    */
+    'cache_directive_tags' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -149,15 +132,23 @@ return [
         'store' => env('LIGHTHOUSE_QUERY_CACHE_STORE', null),
 
         /*
-         * Duration in seconds (minutes for Laravel pre-5.8) the query should remain cached, null means forever.
+         * Duration in seconds the query should remain cached, null means forever.
          */
-        'ttl' => env(
-            'LIGHTHOUSE_QUERY_CACHE_TTL',
-            \Nuwave\Lighthouse\Support\AppVersion::atLeast(5.8)
-                ? 24 * 60 * 60 // 1 day in seconds
-                : 24 * 60 // 1 day in minutes
-        ),
+        'ttl' => env('LIGHTHOUSE_QUERY_CACHE_TTL', 24 * 60 * 60),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Parse source location
+    |--------------------------------------------------------------------------
+    |
+    | Should the source location be included in the AST nodes resulting from query parsing?
+    | Setting this to `false` improves performance, but omits the key `locations` from errors,
+    | see https://spec.graphql.org/October2021/#sec-Errors.Error-result-format.
+    |
+    */
+
+    'parse_source_location' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -175,11 +166,12 @@ return [
         'queries' => 'App\\GraphQL\\Queries',
         'mutations' => 'App\\GraphQL\\Mutations',
         'subscriptions' => 'App\\GraphQL\\Subscriptions',
+        'types' => 'App\\GraphQL\\Types',
         'interfaces' => 'App\\GraphQL\\Interfaces',
         'unions' => 'App\\GraphQL\\Unions',
         'scalars' => 'App\\GraphQL\\Scalars',
-        'directives' => ['App\\GraphQL\\Directives'],
-        'validators' => ['App\\GraphQL\\Validators'],
+        'directives' => 'App\\GraphQL\\Directives',
+        'validators' => 'App\\GraphQL\\Validators',
     ],
 
     /*
@@ -193,9 +185,11 @@ return [
     */
 
     'security' => [
-        'max_query_complexity' => \GraphQL\Validator\Rules\QueryComplexity::DISABLED,
-        'max_query_depth' => \GraphQL\Validator\Rules\QueryDepth::DISABLED,
-        'disable_introspection' => \GraphQL\Validator\Rules\DisableIntrospection::DISABLED,
+        'max_query_complexity' => GraphQL\Validator\Rules\QueryComplexity::DISABLED,
+        'max_query_depth' => GraphQL\Validator\Rules\QueryDepth::DISABLED,
+        'disable_introspection' => (bool) env('LIGHTHOUSE_SECURITY_DISABLE_INTROSPECTION', false)
+            ? GraphQL\Validator\Rules\DisableIntrospection::ENABLED
+            : GraphQL\Validator\Rules\DisableIntrospection::DISABLED,
     ],
 
     /*
@@ -250,7 +244,7 @@ return [
     |
     */
 
-    'debug' => env('LIGHTHOUSE_DEBUG', \GraphQL\Error\DebugFlag::INCLUDE_DEBUG_MESSAGE | \GraphQL\Error\DebugFlag::INCLUDE_TRACE),
+    'debug' => env('LIGHTHOUSE_DEBUG', GraphQL\Error\DebugFlag::INCLUDE_DEBUG_MESSAGE | GraphQL\Error\DebugFlag::INCLUDE_TRACE),
 
     /*
     |--------------------------------------------------------------------------
@@ -264,11 +258,10 @@ return [
     */
 
     'error_handlers' => [
-        \Nuwave\Lighthouse\Execution\AuthenticationErrorHandler::class,
-        \Nuwave\Lighthouse\Execution\AuthorizationErrorHandler::class,
-        \Nuwave\Lighthouse\Execution\ValidationErrorHandler::class,
-        \Nuwave\Lighthouse\Execution\ExtensionErrorHandler::class,
-        \Nuwave\Lighthouse\Execution\ReportingErrorHandler::class,
+        Nuwave\Lighthouse\Execution\AuthenticationErrorHandler::class,
+        Nuwave\Lighthouse\Execution\AuthorizationErrorHandler::class,
+        Nuwave\Lighthouse\Execution\ValidationErrorHandler::class,
+        Nuwave\Lighthouse\Execution\ReportingErrorHandler::class,
     ],
 
     /*
@@ -283,12 +276,14 @@ return [
     */
 
     'field_middleware' => [
-        \Nuwave\Lighthouse\Schema\Directives\TrimDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\SanitizeDirective::class,
-        \Nuwave\Lighthouse\Validation\ValidateDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\TransformArgsDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\SpreadDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\RenameArgsDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\TrimDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\ConvertEmptyStringsToNullDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\SanitizeDirective::class,
+        Nuwave\Lighthouse\Validation\ValidateDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\TransformArgsDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\SpreadDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\RenameArgsDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\DropArgsDirective::class,
     ],
 
     /*
@@ -321,8 +316,10 @@ return [
     | Transactional Mutations
     |--------------------------------------------------------------------------
     |
-    | If set to true, built-in directives that mutate models will be
-    | wrapped in a transaction to ensure atomicity.
+    | If set to true, the execution of built-in directives that mutate models
+    | will be wrapped in a transaction to ensure atomicity.
+    | The transaction is committed after the root field resolves,
+    | thus errors in nested fields do not cause a rollback.
     |
     */
 
@@ -365,39 +362,6 @@ return [
     */
 
     'shortcut_foreign_key_selection' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Non-Null Pagination Results
-    |--------------------------------------------------------------------------
-    |
-    | If set to true, the generated result type of paginated lists will be marked
-    | as non-nullable. This is generally more convenient for clients, but will
-    | cause validation errors to bubble further up in the result.
-    |
-    | This setting will be removed and always behave as if it were true in v6.
-    |
-    */
-
-    'non_null_pagination_results' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Unbox BenSampo\Enum\Enum instances
-    |--------------------------------------------------------------------------
-    |
-    | If set to true, Lighthouse will extract the internal $value from instances of
-    | BenSampo\Enum\Enum before passing it to ArgBuilderDirective::handleBuilder().
-    |
-    | This setting will be removed and always behave as if it were false in v6.
-    |
-    | It is only here to preserve compatibility, e.g. when expecting the internal
-    | value to be passed to a scope when using @scope, but not needed due to Laravel
-    | calling the Enum's __toString() method automagically when used in a query.
-    |
-    */
-
-    'unbox_bensampo_enum_enum_instances' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -450,28 +414,21 @@ return [
             ],
             'pusher' => [
                 'driver' => 'pusher',
-                'routes' => \Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@pusher',
+                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@pusher',
                 'connection' => 'pusher',
             ],
             'echo' => [
                 'driver' => 'echo',
                 'connection' => env('LIGHTHOUSE_SUBSCRIPTION_REDIS_CONNECTION', 'default'),
-                'routes' => \Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@echoRoutes',
+                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@echoRoutes',
             ],
         ],
 
         /*
-         * Controls the format of the extensions response.
-         * Allowed values: 1, 2
-         */
-        'version' => env('LIGHTHOUSE_SUBSCRIPTION_VERSION', 2),
-
-        /*
          * Should the subscriptions extension be excluded when the response has no subscription channel?
          * This optimizes performance by sending less data, but clients must anticipate this appropriately.
-         * Will default to true in v6 and be removed in v7.
          */
-        'exclude_empty' => env('LIGHTHOUSE_SUBSCRIPTION_EXCLUDE_EMPTY', false),
+        'exclude_empty' => env('LIGHTHOUSE_SUBSCRIPTION_EXCLUDE_EMPTY', true),
     ],
 
     /*
@@ -513,5 +470,28 @@ return [
          * Location of resolver classes when resolving the `_entities` field.
          */
         'entities_resolver_namespace' => 'App\\GraphQL\\Entities',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tracing
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for tracing support.
+    |
+    */
+
+    'tracing' => [
+        /*
+         * Driver used for tracing.
+         *
+         * Accepts the fully qualified class name of a class that implements Nuwave\Lighthouse\Tracing\Tracing.
+         * Lighthouse provides:
+         * - Nuwave\Lighthouse\Tracing\ApolloTracing\ApolloTracing::class
+         * - Nuwave\Lighthouse\Tracing\FederatedTracing\FederatedTracing::class
+         *
+         * In Lighthouse v7 the default will be changed to 'Nuwave\Lighthouse\Tracing\FederatedTracing\FederatedTracing::class'.
+         */
+        'driver' => Nuwave\Lighthouse\Tracing\ApolloTracing\ApolloTracing::class,
     ],
 ];

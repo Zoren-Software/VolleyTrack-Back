@@ -156,8 +156,8 @@ class NotificationTest extends TestCase
                     'recentToDeleteCount' => 10,
                     'id' => false,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'notificationsRead' => [
@@ -177,8 +177,8 @@ class NotificationTest extends TestCase
                     'recentToDeleteCount' => 1,
                     'id' => false,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'notificationsRead' => [
@@ -198,8 +198,8 @@ class NotificationTest extends TestCase
                     'recentToDeleteCount' => 1,
                     'id' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'notificationsRead' => [
@@ -218,8 +218,8 @@ class NotificationTest extends TestCase
                     'recentToDeleteCount' => 1,
                     'id' => false,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'Unauthenticated.',
+                'typeMessageError' => 'message',
+                'expectedMessage' => 'Unauthenticated.',
                 'expected' => [
                     'errors' => self::$errors,
                 ],

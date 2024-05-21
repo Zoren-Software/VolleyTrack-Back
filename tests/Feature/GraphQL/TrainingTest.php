@@ -112,8 +112,8 @@ class TrainingTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainings' => [
@@ -127,8 +127,8 @@ class TrainingTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -191,8 +191,8 @@ class TrainingTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'training' => self::$data,
@@ -201,8 +201,8 @@ class TrainingTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -302,8 +302,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -317,8 +317,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -333,8 +333,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -350,8 +350,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'fundamentalId' => [1, 2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -368,8 +368,8 @@ class TrainingTest extends TestCase
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -386,8 +386,8 @@ class TrainingTest extends TestCase
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -423,8 +423,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TrainingCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TrainingCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -437,8 +437,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TrainingCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TrainingCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -451,8 +451,8 @@ class TrainingTest extends TestCase
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
                 ],
-                'type_message_error' => 'dateStart',
-                'expected_message' => 'TrainingCreate.date_start_before',
+                'typeMessageError' => 'dateStart',
+                'expectedMessage' => 'TrainingCreate.date_start_before',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -465,8 +465,8 @@ class TrainingTest extends TestCase
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
                 ],
-                'type_message_error' => 'dateEnd',
-                'expected_message' => 'TrainingCreate.date_end_after',
+                'typeMessageError' => 'dateEnd',
+                'expectedMessage' => 'TrainingCreate.date_end_after',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -479,8 +479,8 @@ class TrainingTest extends TestCase
                     'dateStart' => self::$dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
                 ],
-                'type_message_error' => 'dateEnd',
-                'expected_message' => 'TrainingCreate.date_end_date_format',
+                'typeMessageError' => 'dateEnd',
+                'expectedMessage' => 'TrainingCreate.date_end_date_format',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -493,8 +493,8 @@ class TrainingTest extends TestCase
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
                 ],
-                'type_message_error' => 'dateStart',
-                'expected_message' => 'TrainingCreate.date_start_date_format',
+                'typeMessageError' => 'dateStart',
+                'expectedMessage' => 'TrainingCreate.date_start_date_format',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -509,8 +509,8 @@ class TrainingTest extends TestCase
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
-                'type_message_error' => 'specificFundamentalId',
-                'expected_message' => 'TrainingCreate.specific_fundamentals_not_relationship',
+                'typeMessageError' => 'specificFundamentalId',
+                'expectedMessage' => 'TrainingCreate.specific_fundamentals_not_relationship',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -623,8 +623,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -641,8 +641,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -660,8 +660,8 @@ class TrainingTest extends TestCase
                     'status' => true,
                     'fundamentalId' => [1, 2, 3],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -680,8 +680,8 @@ class TrainingTest extends TestCase
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2, 3],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -698,8 +698,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -716,8 +716,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -734,8 +734,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $today,
                     'dateEnd' => $todayPlusTwoHours,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -773,8 +773,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -789,8 +789,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TrainingCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TrainingCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -805,8 +805,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TrainingCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TrainingCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -821,8 +821,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => self::$dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => 'dateStart',
-                'expected_message' => 'TrainingEdit.date_start_before',
+                'typeMessageError' => 'dateStart',
+                'expectedMessage' => 'TrainingEdit.date_start_before',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -837,8 +837,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => self::$dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => 'dateEnd',
-                'expected_message' => 'TrainingEdit.date_end_after',
+                'typeMessageError' => 'dateEnd',
+                'expectedMessage' => 'TrainingEdit.date_end_after',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -853,8 +853,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => '08/10/2022 13:45:00',
                     'status' => true,
                 ],
-                'type_message_error' => 'dateEnd',
-                'expected_message' => 'TrainingEdit.date_end_date_format',
+                'typeMessageError' => 'dateEnd',
+                'expectedMessage' => 'TrainingEdit.date_end_date_format',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -869,8 +869,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => self::$dateEndError,
                     'status' => true,
                 ],
-                'type_message_error' => 'dateStart',
-                'expected_message' => 'TrainingEdit.date_start_date_format',
+                'typeMessageError' => 'dateStart',
+                'expectedMessage' => 'TrainingEdit.date_start_date_format',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -887,8 +887,8 @@ class TrainingTest extends TestCase
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
-                'type_message_error' => 'specificFundamentalId',
-                'expected_message' => 'TrainingEdit.specific_fundamentals_not_relationship',
+                'typeMessageError' => 'specificFundamentalId',
+                'expectedMessage' => 'TrainingEdit.specific_fundamentals_not_relationship',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -956,8 +956,8 @@ class TrainingTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingDelete' => [self::$data],
@@ -969,8 +969,8 @@ class TrainingTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingDelete,
@@ -981,8 +981,8 @@ class TrainingTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'typeMessageError' => 'message',
+                'expectedMessage' => 'internal',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingDelete,

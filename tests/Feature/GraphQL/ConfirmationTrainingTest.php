@@ -96,8 +96,8 @@ class ConfirmationTrainingTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'confirmationsTraining' => [
@@ -111,8 +111,8 @@ class ConfirmationTrainingTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -200,8 +200,8 @@ class ConfirmationTrainingTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'confirmPresence' => self::$data,
@@ -220,8 +220,8 @@ class ConfirmationTrainingTest extends TestCase
                         'presence' => true,
                     ],
                 ],
-                'type_message_error' => 'playerId',
-                'expected_message' => 'CheckPlayerIsInTraining.message_error',
+                'typeMessageError' => 'playerId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -238,8 +238,8 @@ class ConfirmationTrainingTest extends TestCase
                         'presence' => true,
                     ],
                 ],
-                'type_message_error' => 'playerId',
-                'expected_message' => 'CheckPlayerIsInTraining.playerId_required',
+                'typeMessageError' => 'playerId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.playerId_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -256,8 +256,8 @@ class ConfirmationTrainingTest extends TestCase
                         'presence' => true,
                     ],
                 ],
-                'type_message_error' => 'trainingId',
-                'expected_message' => 'CheckPlayerIsInTraining.trainingId_required',
+                'typeMessageError' => 'trainingId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.trainingId_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -274,8 +274,8 @@ class ConfirmationTrainingTest extends TestCase
                         'trainingId' => 'find',
                     ],
                 ],
-                'type_message_error' => 'presence',
-                'expected_message' => 'ConfirmTraining.presence_required',
+                'typeMessageError' => 'presence',
+                'expectedMessage' => 'ConfirmTraining.presence_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -290,8 +290,8 @@ class ConfirmationTrainingTest extends TestCase
                         'trainingId' => 'find',
                     ],
                 ],
-                'type_message_error' => 'trainingId',
-                'expected_message' => 'CheckTrainingCancelled.message_error',
+                'typeMessageError' => 'trainingId',
+                'expectedMessage' => 'CheckTrainingCancelled.message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -385,8 +385,8 @@ class ConfirmationTrainingTest extends TestCase
                     'error' => null,
                     'data_error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'confirmTraining' => self::$data,
@@ -406,8 +406,8 @@ class ConfirmationTrainingTest extends TestCase
                         ],
                     ],
                 ],
-                'type_message_error' => 'playerId',
-                'expected_message' => 'CheckPlayerIsInTraining.message_error',
+                'typeMessageError' => 'playerId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -427,8 +427,8 @@ class ConfirmationTrainingTest extends TestCase
                         ],
                     ],
                 ],
-                'type_message_error' => 'playerId',
-                'expected_message' => 'CheckPlayerIsInTraining.playerId_required',
+                'typeMessageError' => 'playerId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.playerId_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -448,8 +448,8 @@ class ConfirmationTrainingTest extends TestCase
                         ],
                     ],
                 ],
-                'type_message_error' => 'trainingId',
-                'expected_message' => 'CheckPlayerIsInTraining.trainingId_required',
+                'typeMessageError' => 'trainingId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.trainingId_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -464,8 +464,8 @@ class ConfirmationTrainingTest extends TestCase
                         'trainingId' => 'find',
                     ],
                 ],
-                'type_message_error' => 'status',
-                'expected_message' => 'CheckPlayerIsInTraining.status_required',
+                'typeMessageError' => 'status',
+                'expectedMessage' => 'CheckPlayerIsInTraining.status_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -480,8 +480,8 @@ class ConfirmationTrainingTest extends TestCase
                         'trainingId' => 'find',
                     ],
                 ],
-                'type_message_error' => 'trainingId',
-                'expected_message' => 'CheckTrainingCancelled.message_error',
+                'typeMessageError' => 'trainingId',
+                'expectedMessage' => 'CheckTrainingCancelled.message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
