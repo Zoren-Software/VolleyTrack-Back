@@ -49,9 +49,10 @@ abstract class TestCase extends BaseTestCase
         '*' => [
             'message',
             'locations',
-            'extensions',
+            'extensions' => [
+                'trace',
+            ],
             'path',
-            'trace',
         ],
     ];
 
