@@ -86,10 +86,6 @@ class User extends Authenticatable implements HasApiTokensContract
             'role_id'
         );
 
-        // if (!PermissionRegistrar::$teams) {
-        //     return $relation;
-        // }
-
         return $relation->wherePivot('team_id', getPermissionsTeamId()) // Substitua 'team_id' pela coluna correta, se necessário
             ->where(function ($q) {
                 $teamField = config('permission.table_names.roles') . '.team_id'; // Ajuste conforme a nova configuração
