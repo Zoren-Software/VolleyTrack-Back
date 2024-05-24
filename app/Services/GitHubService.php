@@ -10,7 +10,7 @@ final class GitHubService extends Model
     /**
      * @codeCoverageIgnore
      */
-    public function __construct(GuzzleClient $client = null)
+    public function __construct(?GuzzleClient $client = null)
     {
         $this->client = $client ?? new GuzzleClient();
 

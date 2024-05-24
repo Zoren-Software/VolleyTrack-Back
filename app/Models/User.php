@@ -16,7 +16,6 @@ use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -370,5 +369,13 @@ class User extends Authenticatable implements HasApiTokensContract
         $this->save();
 
         Mail::to($this->email)->send(new ConfirmEmailAndCreatePasswordMail($this, $tenant, $admin));
+    }
+
+    public function sendForgotPasswordNotification(array $args)
+    {
+        $this->set_password_token = Str::random(60);
+        $this->save();
+
+        $this->notify(new \App\Notifications\User\ForgotPasswordNotification($args));
     }
 }

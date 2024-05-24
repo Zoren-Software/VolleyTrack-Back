@@ -2,9 +2,9 @@
 
 namespace App\Rules;
 
+use App\Models\Central\ExternalAccessToken;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Models\Central\ExternalAccessToken;
 
 class ValidToken implements ValidationRule
 {

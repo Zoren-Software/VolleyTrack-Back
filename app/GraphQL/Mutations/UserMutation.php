@@ -132,12 +132,15 @@ final class UserMutation
 
     public function forgotPassword($rootValue, array $args, GraphQLContext $context)
     {
-        $this->user = User::where('email', $args['email'])->first();
+        $this->user = new User();
 
         if ($this->user) {
-            $this->user->sendForgotPasswordNotification();
+            $this->user->sendForgotPasswordNotification($args);
         }
 
-        return $this->user;
+        return response()->json([
+            'status' => 'success',
+            'message' => 'E-mail para redefinição de senha enviado com sucesso!',
+        ]);
     }
 }

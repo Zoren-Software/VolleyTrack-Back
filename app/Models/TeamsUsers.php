@@ -14,7 +14,7 @@ class TeamsUsers extends Pivot
 
     protected $table = 'teams_users';
 
-    public function __construct(User $user = null)
+    public function __construct(?User $user = null)
     {
         $this->user = $user ?? new User();
     }
