@@ -86,8 +86,8 @@ class FundamentalTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'fundamentals' => [
@@ -101,8 +101,8 @@ class FundamentalTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -163,8 +163,8 @@ class FundamentalTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'fundamental' => self::$data,
@@ -173,8 +173,8 @@ class FundamentalTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -233,8 +233,8 @@ class FundamentalTest extends TestCase
                     'name' => $nameExistent,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'fundamentalCreate' => self::$data,
@@ -247,8 +247,8 @@ class FundamentalTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalCreate,
@@ -260,8 +260,8 @@ class FundamentalTest extends TestCase
                     'name' => $nameExistent,
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'FundamentalCreate.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'FundamentalCreate.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalCreate,
@@ -273,8 +273,8 @@ class FundamentalTest extends TestCase
                     'name' => ' ',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'FundamentalCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'FundamentalCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalCreate,
@@ -286,8 +286,8 @@ class FundamentalTest extends TestCase
                     'name' => 'AB',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'FundamentalCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'FundamentalCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalCreate,
@@ -359,8 +359,8 @@ class FundamentalTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
@@ -372,8 +372,8 @@ class FundamentalTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'fundamentalEdit' => self::$data,
@@ -385,8 +385,8 @@ class FundamentalTest extends TestCase
                 [
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'FundamentalEdit.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'FundamentalEdit.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
@@ -398,8 +398,8 @@ class FundamentalTest extends TestCase
                     'name' => ' ',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'FundamentalEdit.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'FundamentalEdit.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
@@ -411,8 +411,8 @@ class FundamentalTest extends TestCase
                     'name' => 'AB',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'FundamentalEdit.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'FundamentalEdit.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
@@ -481,8 +481,8 @@ class FundamentalTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'fundamentalDelete' => [self::$data],
@@ -494,8 +494,8 @@ class FundamentalTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalDelete,
@@ -506,8 +506,8 @@ class FundamentalTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'typeMessageError' => 'message',
+                'expectedMessage' => 'internal',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalDelete,

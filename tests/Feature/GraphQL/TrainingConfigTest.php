@@ -80,8 +80,8 @@ class TrainingConfigTest extends TestCase
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingConfig' => self::$data,
@@ -90,8 +90,8 @@ class TrainingConfigTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -160,8 +160,8 @@ class TrainingConfigTest extends TestCase
                     'notificationTeamByEmail' => $faker->boolean,
                     'notificationTechnicianByEmail' => $faker->boolean,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingConfigEdit,
@@ -175,8 +175,8 @@ class TrainingConfigTest extends TestCase
                     'notificationTeamByEmail' => $faker->boolean,
                     'notificationTechnicianByEmail' => $faker->boolean,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingConfigEdit' => self::$data,

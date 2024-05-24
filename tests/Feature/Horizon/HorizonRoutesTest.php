@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Tenant;
+namespace Tests\Feature\Horizon;
 
 use Tests\TestCase;
 
