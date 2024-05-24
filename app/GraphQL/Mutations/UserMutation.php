@@ -138,9 +138,9 @@ final class UserMutation
             $this->user->sendForgotPasswordNotification($args);
         }
 
-        return response()->json([
+        return [
             'status' => 'success',
             'message' => 'E-mail para redefinição de senha enviado com sucesso!',
-        ]);
+        ];
     }
 }

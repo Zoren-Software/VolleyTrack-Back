@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
+use App\Mail\User\ForgotPasswordMail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -373,9 +374,13 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function sendForgotPasswordNotification(array $args)
     {
-        $this->set_password_token = Str::random(60);
-        $this->save();
+        $user = $this->whereEmail($args['email'])->first();
 
-        $this->notify(new \App\Notifications\User\ForgotPasswordNotification($args));
+        if ($user) {
+            $user->set_password_token = Str::random(60);
+            $user->save();
+
+            Mail::to($user->email)->send(new ForgotPasswordMail($user, tenant('id')));
+        }
     }
 }
