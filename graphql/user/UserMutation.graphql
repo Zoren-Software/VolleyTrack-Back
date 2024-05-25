@@ -50,7 +50,9 @@ extend type Mutation {
         @field(resolver: "UserMutation@setPassword")
         @validator
 
-    forgotPassword(email: String!): ForgotPasswordResponseType
+    forgotPassword(
+      email: String!
+    ): ForgotPasswordResponseType
         @field(resolver: "UserMutation@forgotPassword")
         @validator
 }
