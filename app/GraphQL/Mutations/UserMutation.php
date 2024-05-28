@@ -140,7 +140,7 @@ final class UserMutation
 
         return [
             'status' => 'success',
-            'message' => 'E-mail para redefinição de senha enviado com sucesso!',
+            'message' => trans('UserForgotPassword.message_success_send_email'),
         ];
     }
 }
