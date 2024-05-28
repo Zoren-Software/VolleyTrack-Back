@@ -129,4 +129,18 @@ final class UserMutation
 
         return $this->user;
     }
+
+    public function forgotPassword($rootValue, array $args, GraphQLContext $context)
+    {
+        $this->user = new User();
+
+        if ($this->user) {
+            $this->user->sendForgotPasswordNotification($args);
+        }
+
+        return [
+            'status' => 'success',
+            'message' => trans('UserForgotPassword.message_success_send_email'),
+        ];
+    }
 }

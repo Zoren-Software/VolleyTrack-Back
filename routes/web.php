@@ -66,4 +66,12 @@ if (app()->environment('local') && config('app.debug')) {
 
         return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, tenant('id'), true);
     });
+
+    Route::get('/test-forgot-password', function () {
+        tenancy()->initialize('test');
+
+        $user = App\Models\User::find(3);
+
+        return new App\Mail\User\ForgotPasswordMail($user, tenant('id'));
+    });
 }

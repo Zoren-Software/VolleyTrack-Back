@@ -21,7 +21,7 @@ class CheckPlayerIsInTraining implements Rule
     public function __construct(
         ?int $playerId,
         ?int $trainingId,
-        ConfirmationTraining $confirmationTraining = null
+        ?ConfirmationTraining $confirmationTraining = null
     ) {
         $this->playerId = $playerId;
         $this->trainingId = $trainingId;

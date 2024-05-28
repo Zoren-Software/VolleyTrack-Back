@@ -159,6 +159,7 @@ class SanctumTest extends TestCase
             ],
             ['status', 'message'],
             'mutation',
+            false,
             true
         )->assertJsonStructure([
             'data' => [

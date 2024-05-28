@@ -15,5 +15,4 @@ class ExternalAccessToken extends Model
      * @var string
      */
     protected $connection = 'mysql';  // Substitua 'central' pelo nome da sua conexão central conforme configurado.
-
 }
