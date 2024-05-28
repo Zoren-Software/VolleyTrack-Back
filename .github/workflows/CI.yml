@@ -33,6 +33,7 @@ jobs:
           run: vendor/bin/phpunit
             --coverage-clover=coverage.xml
             --testsuite Unit
+            --testdox
           
         - name: Fix code coverage paths
           run: sed -i 
