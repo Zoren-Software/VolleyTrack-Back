@@ -18,7 +18,7 @@ class CheckTrainingCancelled implements Rule
      */
     public function __construct(
         ?int $trainingId,
-        Training $training = null
+        ?Training $training = null
     ) {
         $this->trainingId = $trainingId;
         $this->training = $training ?? new Training();

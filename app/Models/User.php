@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
+use App\Mail\User\ForgotPasswordMail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,7 +17,6 @@ use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -85,10 +85,6 @@ class User extends Authenticatable implements HasApiTokensContract
             config('permission.column_names.model_morph_key'),
             'role_id'
         );
-
-        // if (!PermissionRegistrar::$teams) {
-        //     return $relation;
-        // }
 
         return $relation->wherePivot('team_id', getPermissionsTeamId()) // Substitua 'team_id' pela coluna correta, se necessário
             ->where(function ($q) {
@@ -374,5 +370,17 @@ class User extends Authenticatable implements HasApiTokensContract
         $this->save();
 
         Mail::to($this->email)->send(new ConfirmEmailAndCreatePasswordMail($this, $tenant, $admin));
+    }
+
+    public function sendForgotPasswordNotification(array $args)
+    {
+        $user = $this->whereEmail($args['email'])->first();
+
+        if ($user) {
+            $user->set_password_token = Str::random(60);
+            $user->save();
+
+            Mail::to($user->email)->send(new ForgotPasswordMail($user, tenant('id')));
+        }
     }
 }
