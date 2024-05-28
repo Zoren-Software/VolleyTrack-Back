@@ -30,7 +30,7 @@ return [
         'middleware' => [
             // Connecta com o tenant específicado pelo header x-tenant
             \Stancl\Tenancy\Middleware\InitializeTenancyByRequestData::class,
-            
+
             // Ensures the request is not vulnerable to cross-site request forgery.
             // Nuwave\Lighthouse\Http\Middleware\EnsureXHR::class,
 

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Tenant;
 
-use Tests\TestCase;
 use App\Models\Central\ExternalAccessToken;
+use Tests\TestCase;
 
 class TenantTest extends TestCase
 {
@@ -27,7 +27,7 @@ class TenantTest extends TestCase
             'Accept' => 'application/json',
         ]);
 
-        if($data['token'] === false) {
+        if ($data['token'] === false) {
             $data['token'] = 'test';
         } else {
             $data['token'] = ExternalAccessToken::first()->token;

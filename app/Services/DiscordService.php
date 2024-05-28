@@ -92,7 +92,7 @@ final class DiscordService extends Model
                 ]
             );
         } catch (ClientException $e) {
-            
+
             // fazer mensagem de erro
             Log::error('Erro ao enviar mensagem para o Discord: ' . $e->getMessage());
         }

@@ -25,7 +25,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Training $training, ConfirmationTraining $confirmationTraining = null)
+    public function __construct(Training $training, ?ConfirmationTraining $confirmationTraining = null)
     {
         $this->training = $training;
         $this->confirmationTraining = $confirmationTraining;
