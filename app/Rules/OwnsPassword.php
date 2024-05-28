@@ -15,7 +15,7 @@ class OwnsPassword implements Rule
 
     public function passes($attribute, $value)
     {
-        return (int) $this->userId === auth()->id();
+        return (int) $this->userId === auth()->id() || $value == null;
     }
 
     public function message()

@@ -86,9 +86,9 @@ class User extends Authenticatable implements HasApiTokensContract
             'role_id'
         );
 
-        return $relation->wherePivot('team_id', getPermissionsTeamId()) // Substitua 'team_id' pela coluna correta, se necessário
+        return $relation->wherePivot('model_id', getPermissionsTeamId()) // Substitua 'model_id' pela coluna correta, se necessário
             ->where(function ($q) {
-                $teamField = config('permission.table_names.roles') . '.team_id'; // Ajuste conforme a nova configuração
+                $teamField = config('permission.table_names.roles') . '.id'; // Ajuste conforme a nova configuração
                 $q->whereNull($teamField)->orWhere($teamField, getPermissionsTeamId());
             });
     }
