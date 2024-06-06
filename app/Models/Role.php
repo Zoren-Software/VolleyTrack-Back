@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Models\Role as SpatieRole;
 
@@ -69,8 +70,10 @@ class Role extends SpatieRole
         });
     }
 
-    public function getNameAttribute($value)
+    protected function name(): Attribute
     {
-        return trans('RoleRegister.' . $value);
+        return Attribute::make(
+            get: fn ($value) => trans('RoleRegister.' . $value)
+        );
     }
 }
