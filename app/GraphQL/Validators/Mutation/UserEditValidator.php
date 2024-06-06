@@ -24,7 +24,7 @@ final class UserEditValidator extends Validator
             'password' => [
                 'sometimes',
                 'min:6' => function (): bool {
-                    return ! empty($this->arg('password')) && $this->arg('password') !== '';
+                    return !empty($this->arg('password')) && $this->arg('password') !== '';
                 },
                 new OwnsPassword($this->arg('id')),
             ],
