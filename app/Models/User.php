@@ -17,6 +17,7 @@ use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -83,14 +84,17 @@ class User extends Authenticatable implements HasApiTokensContract
             'model',
             config('permission.table_names.model_has_roles'),
             config('permission.column_names.model_morph_key'),
-            'role_id'
+            app(PermissionRegistrar::class)->pivotRole
         );
 
-        return $relation->wherePivot('model_id', getPermissionsTeamId()) // Substitua 'model_id' pela coluna correta, se necessário
-            ->where(function ($q) {
-                $teamField = config('permission.table_names.roles') . '.id'; // Ajuste conforme a nova configuração
-                $q->whereNull($teamField)->orWhere($teamField, getPermissionsTeamId());
-            });
+        if (!app(PermissionRegistrar::class)->teams) {
+            return $relation;
+        }
+
+        $teamField = config('permission.table_names.roles') . '.' . app(PermissionRegistrar::class)->teamsKey;
+
+        return $relation->wherePivot(app(PermissionRegistrar::class)->teamsKey, getPermissionsTeamId())
+            ->where(fn ($q) => $q->whereNull($teamField)->orWhere($teamField, getPermissionsTeamId()));
     }
 
     public function positions()
