@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
 use App\Models\Tenant;
+use App\Models\User;
 use Hash;
 
 class ResetPasswordDev extends CommandDev
@@ -41,7 +41,7 @@ class ResetPasswordDev extends CommandDev
             $secret = $this->option('secret')[0];
         }
 
-        $tenants = $this->option('tenants') == [] 
+        $tenants = $this->option('tenants') == []
             ? Tenant::pluck('id')->toArray()
             : $this->option('tenants');
 

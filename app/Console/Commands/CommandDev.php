@@ -32,11 +32,13 @@ class CommandDev extends CommandBase
     {
         if (env('APP_ENV') == 'production') {
             $this->error('It is not possible to run this command in the production environment');
+
             return false;
         }
 
         if (!(env('APP_DEBUG')) || env('APP_ENV') == 'staging') {
             $this->error('It is not possible to run this command in this environment');
+
             return false;
         }
     }

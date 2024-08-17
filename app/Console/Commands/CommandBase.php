@@ -45,10 +45,8 @@ class CommandBase extends Command
     }
 
     /**
-     * @param mixed $nomeComando
-     * @param mixed $mensagem
-     *
-     * @return void
+     * @param  mixed  $nomeComando
+     * @param  mixed  $mensagem
      */
     protected function infoComando($nomeComando, $mensagem): void
     {
@@ -59,11 +57,9 @@ class CommandBase extends Command
     }
 
     /**
-     * @param mixed $nomeComando
-     * @param mixed $tenant
-     * @param mixed $mensagem
-     *
-     * @return void
+     * @param  mixed  $nomeComando
+     * @param  mixed  $tenant
+     * @param  mixed  $mensagem
      */
     protected function processoComando($nomeComando, $tenant, $mensagem): void
     {
@@ -74,11 +70,9 @@ class CommandBase extends Command
     }
 
     /**
-     * @param mixed $nomeComando
-     * @param mixed $tenant
-     * @param mixed $mensagem
-     *
-     * @return void
+     * @param  mixed  $nomeComando
+     * @param  mixed  $tenant
+     * @param  mixed  $mensagem
      */
     protected function processoComandoCancelado($nomeComando, $tenant, $mensagem): void
     {
@@ -89,11 +83,9 @@ class CommandBase extends Command
     }
 
     /**
-     * @param mixed $nomeComando
-     * @param mixed $tenant
-     * @param mixed $seeder
-     *
-     * @return void
+     * @param  mixed  $nomeComando
+     * @param  mixed  $tenant
+     * @param  mixed  $seeder
      */
     protected function execSeederComando($nomeComando, $tenant, $seeder): void
     {

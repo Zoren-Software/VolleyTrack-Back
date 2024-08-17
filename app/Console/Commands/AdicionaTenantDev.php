@@ -2,8 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Tenancy\Affects\Migrates\Database\Events\ConfigureMigrations;
-
 class AdicionaTenantDev extends CommandDev
 {
     /**
@@ -41,7 +39,8 @@ class AdicionaTenantDev extends CommandDev
 
         foreach ($tenants as $tenant) {
             if (\App\Models\Tenant::find($tenant)) {
-                $this->error("Tenant {$tenant} already exists!");    
+                $this->error("Tenant {$tenant} already exists!");
+
                 continue;
             }
 
