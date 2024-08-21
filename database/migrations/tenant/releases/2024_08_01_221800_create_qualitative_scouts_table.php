@@ -17,17 +17,26 @@ return new class extends Migration
             Schema::create('qualitative_scouts', function (Blueprint $table) {
 
                 $table->id();
-                $table->foreignId('user_id')->constrained('users');
-                $table->foreignId('player_id')->constrained('users');
-                $table->foreignId('training_id')->constrained('trainings');
-                $table->foreignId('position_id')->constrained('positions');
-                $table->foreignId('action_type_id')->constrained('action_types');
+                $table->foreignId('user_id')
+                    ->constrained('users');
+                $table->foreignId('player_id')
+                    ->constrained('users');
+                $table->foreignId('training_id')
+                    ->constrained('trainings');
+                $table->foreignId('position_id')
+                    ->constrained('positions');
+                $table->foreignId('action_type_id')
+                    ->constrained('action_types');
 
                 // NOTE - Campos utilizados para marcações de avaliação
-                $table->smallInteger('set_number')->unsigned();
-                $table->smallInteger('number_point')->unsigned();
-                $table->smallInteger('evaluation')->unsigned();
-                $table->smallInteger('time')->unsigned();
+                $table->smallInteger('set_number')
+                    ->unsigned();
+                $table->smallInteger('number_point')
+                    ->unsigned();
+                $table->smallInteger('evaluation')
+                    ->unsigned();
+                $table->smallInteger('time')
+                    ->unsigned();
 
                 $table->timestamps();
                 $table->softDeletes();
