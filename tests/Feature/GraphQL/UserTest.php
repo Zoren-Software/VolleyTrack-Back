@@ -931,8 +931,8 @@ class UserTest extends TestCase
                 'expectedMessage' => false,
                 'expected' => [
                     'data' => [
-                         'userEdit' => self::$data,
-                     ],
+                        'userEdit' => self::$data,
+                    ],
                 ],
                 'hasTeam' => false,
                 'hasPermission' => true,
