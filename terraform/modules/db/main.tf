@@ -11,9 +11,9 @@ terraform {
 resource "aws_db_instance" "rds_mysql" {
     identifier               = var.db_identifier
     allocated_storage        = 20
+    instance_class           = "db.t3.micro"
     engine                   = "mysql"
-    engine_version           = "8.0.28"  # Alterando para uma versão compatível com db.t2.micro
-    instance_class           = var.db_instance_type
+    engine_version           = "8.0.35"  # Alterando para uma versão compatível com db.t2.micro
     username                 = var.db_user
     password                 = var.db_password
     parameter_group_name     = "default.mysql8.0"
