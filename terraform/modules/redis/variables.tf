@@ -1,6 +1,7 @@
 variable "redis_cluster_id" {
   type        = string
   description = "ID único do cluster Redis"
+  default = "volleytrack-cache"
 }
 
 variable "redis_node_type" {

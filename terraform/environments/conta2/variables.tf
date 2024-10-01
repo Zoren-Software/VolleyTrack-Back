@@ -30,7 +30,7 @@ variable "DB_INSTANCE_TYPE" {
 variable "REDIS_CLUSTER_ID" {
   description = "ID do cluster Redis"
   type        = string
-  default     = "volleytrack"
+  default     = "volleytrack-cache"
 }
 
 variable "REDIS_NODE_TYPE" {
