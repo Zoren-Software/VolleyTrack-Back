@@ -19,4 +19,5 @@ resource "aws_db_instance" "rds_mysql" {
     parameter_group_name     = "default.mysql8.0"
     skip_final_snapshot      = true
     publicly_accessible      = false
+    vpc_security_group_ids   = var.vpc_security_group_ids
 }

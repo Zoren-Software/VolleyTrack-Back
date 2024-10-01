@@ -49,14 +49,18 @@ variable "AWS_SECRET_ACCESS_KEY" {
   type        = string
 }
 
-variable "vpc_security_group_ids" {
-  description = "IDs do grupo de segurança do VPC"
-  type        = list(string)
+
+
+variable "vpc_id" {
+  description = "ID da VPC para associar ao recurso"
+  type        = string
+  default     = "vpc-001000340dd5aff43"  # Substitua pelo valor correto da sua VPC
 }
 
 variable "db_subnet_group_name" {
   description = "Nome do grupo de subnets do RDS"
   type        = string
+  default = "default"
 }
 
 # Route53 specific variables
@@ -178,4 +182,10 @@ variable "cname_www_value" {
   description = "Valor do registro CNAME do www"
   type        = string
   default     = "cname.vercel-dns.com"
+}
+
+variable "vpc_security_group_ids" {
+  description = "IDs do grupo de segurança do VPC"
+  type        = list(string)
+  default     = ["sg-0173d4c68a13c394d"]  # O ID de segurança que você já encontrou
 }

@@ -23,3 +23,8 @@ variable "db_instance_type" {
   description = "Tipo de instância para o banco de dados"
   default     = "db.t2.micro"  # Tamanho padrão da instância
 }
+
+variable "vpc_security_group_ids" {
+  description = "IDs do grupo de segurança do VPC"
+  type        = list(string)
+}

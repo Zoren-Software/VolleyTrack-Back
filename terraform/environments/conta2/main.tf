@@ -17,6 +17,7 @@ module "rds_conta2" {
     db_user          = var.DB_USERNAME
     db_password      = var.DB_PASSWORD
     db_instance_type = var.DB_INSTANCE_TYPE
+    vpc_security_group_ids = var.vpc_security_group_ids
 }
 
 # Chamando o módulo de Redis para a conta 2 (destino)
