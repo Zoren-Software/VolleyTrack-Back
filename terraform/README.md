@@ -89,7 +89,7 @@ terraform apply
 Confirme com `yes` quando solicitado.
 
 ```bash
-y
+yes
 ```
 
 Esse comando criará os recursos de banco de dados (RDS), cluster Redis, e registros DNS no Route 53.
