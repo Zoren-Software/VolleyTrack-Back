@@ -189,3 +189,36 @@ variable "vpc_security_group_ids" {
   type        = list(string)
   default     = ["sg-0173d4c68a13c394d"]  # O ID de segurança que você já encontrou
 }
+
+
+variable "source_db_user" {
+  type = string
+}
+
+variable "source_db_password" {
+  type = string
+}
+
+variable "source_db_endpoint" {
+  type = string
+}
+
+variable "source_db_name" {
+  type = string
+}
+
+variable "target_db_user" {
+  type = string
+}
+
+variable "target_db_password" {
+  type = string
+}
+
+variable "target_db_endpoint" {
+  type = string
+}
+
+variable "target_db_name" {
+  type = string
+}

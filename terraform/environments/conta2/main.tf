@@ -87,3 +87,27 @@ module "route53_volleytrack" {
   cname_www_name       = "www.volleytrack.com"
   cname_www_value      = "cname.vercel-dns.com"
 }
+
+module "dms" {
+  source = "../../modules/dms"
+
+  # IDs das subnets que o DMS vai usar
+  subnet_ids = [
+    "subnet-04facdfb9ce541ed6",
+    "subnet-08a73b07dc0ab8228",
+    "subnet-08d634a8f4f002d7a",
+    "subnet-04e1310f356fdacdf",
+    "subnet-051711ff4783181f6",
+    "subnet-0bf265fbd02b19c25"
+  ]  # Substitua com seus IDs reais de subnet
+
+  source_db_user      = var.source_db_user
+  source_db_password  = var.source_db_password
+  source_db_endpoint  = var.source_db_endpoint
+  source_db_name      = var.source_db_name
+
+  target_db_user      = module.rds_conta2.rds_username  # Pega o usuário criado no RDS
+  target_db_password  = var.DB_PASSWORD  # A senha você já sabe, pois está no arquivo .tfvars
+  target_db_endpoint  = module.rds_conta2.db_endpoint  # Pega o endpoint gerado
+  target_db_name      = var.DB_NAME
+}
