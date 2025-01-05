@@ -12,6 +12,7 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
     - [**Arquivos `.env`**](#arquivos-env)
   - [**Como Executar o Projeto**](#como-executar-o-projeto)
     - [**Passos para Provisionar a Infraestrutura**](#passos-para-provisionar-a-infraestrutura)
+      - [0. Selecione o ambiente desejado (`conta1` ou `conta2`).](#0-selecione-o-ambiente-desejado-conta1-ou-conta2)
       - [**1. Inicializar o Terraform**:](#1-inicializar-o-terraform)
       - [**2. Validar o Plano**:](#2-validar-o-plano)
       - [**3. Aplicar o Plano**:](#3-aplicar-o-plano)
@@ -61,6 +62,12 @@ Esses arquivos serão utilizados pelo Terraform para provisionar os recursos em 
 ## **Como Executar o Projeto**
 
 ### **Passos para Provisionar a Infraestrutura**
+
+#### 0. Selecione o ambiente desejado (`conta1` ou `conta2`).
+
+```bash
+export AWS_PROFILE=conta2
+```
 
 #### **1. Inicializar o Terraform**:
 
