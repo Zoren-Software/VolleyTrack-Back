@@ -49,13 +49,36 @@ A estrutura do projeto segue o seguinte formato:
 ### **Arquivos `.env`**
 Dentro da pasta `terraform/environments/conta1/` e `terraform/environments/conta2/`, crie um arquivo `.env` com as seguintes variáveis:
 
-```bash
+**terraform/.env**
+```env
 AWS_ACCESS_KEY_ID_CONTA1=<chave_de_acesso_conta1>
 AWS_SECRET_ACCESS_KEY_CONTA1=<chave_secreta_conta1>
 
 AWS_ACCESS_KEY_ID_CONTA2=<chave_de_acesso_conta2>
 AWS_SECRET_ACCESS_KEY_CONTA2=<chave_secreta_conta2>
 ```
+
+Após isso configurar as variáveis de ambiente do terraform:
+
+**terraform/environments/conta2/terraform.tfvars**
+```terraform
+# AWS credentials
+AWS_ACCESS_KEY_ID     = ""
+AWS_SECRET_ACCESS_KEY = ""
+DB_PASSWORD           = ""
+
+# Target DB (conta 2)
+target_db_endpoint    = ""
+target_db_name        = ""
+target_db_password    = ""
+target_db_user        = "vapor"
+source_db_endpoint    = ""
+source_db_name        = "vapor"
+source_db_password    = ""
+source_db_user        = "vapor"
+```
+
+Preencha os valores das chaves de acesso, e após isso, renomeie o arquivo `terraform/environments/conta2/terraform.tfvars` para `terraform/environments/conta2/terraform.tfvars.secret`.
 
 Esses arquivos serão utilizados pelo Terraform para provisionar os recursos em suas respectivas contas.
 
@@ -82,7 +105,7 @@ terraform init
 Para garantir que o plano de infraestrutura está correto, execute:
 
 ```bash
-terraform plan
+terraform plan -var-file="terraform.tfvars.secret"
 ```
 
 #### **3. Aplicar o Plano**:
@@ -90,7 +113,7 @@ terraform plan
 Para provisionar a infraestrutura, execute:
 
 ```bash
-terraform apply
+terraform apply -var-file="terraform.tfvars.secret"
 ```
 
 Confirme com `yes` quando solicitado.
