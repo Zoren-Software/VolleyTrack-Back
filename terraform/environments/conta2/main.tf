@@ -104,7 +104,7 @@ module "dms" {
   source_db_user      = var.source_db_user
   source_db_password  = var.source_db_password
   source_db_endpoint  = var.source_db_endpoint
-  source_db_name      = var.source_db_name
+  source_db_name      = var.DB_NAME
 
   target_db_user      = module.rds_conta2.rds_username  # Pega o usuário criado no RDS
   target_db_password  = var.DB_PASSWORD  # A senha você já sabe, pois está no arquivo .tfvars
