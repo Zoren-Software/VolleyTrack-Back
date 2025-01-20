@@ -18,6 +18,6 @@ resource "aws_db_instance" "rds_mysql" {
     password                 = var.db_password
     parameter_group_name     = "default.mysql8.0"
     skip_final_snapshot      = true
-    publicly_accessible      = false
+    publicly_accessible      = true
     vpc_security_group_ids   = var.vpc_security_group_ids
 }
