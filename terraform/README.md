@@ -56,6 +56,10 @@ AWS_SECRET_ACCESS_KEY_CONTA1=<chave_secreta_conta1>
 
 AWS_ACCESS_KEY_ID_CONTA2=<chave_de_acesso_conta2>
 AWS_SECRET_ACCESS_KEY_CONTA2=<chave_secreta_conta2>
+
+# Configurações do Redis (Terraform)
+REDIS_CLUSTER_ID=volleytrack-cache
+REDIS_NODE_TYPE=cache.t3.micro
 ```
 
 Após isso configurar as variáveis de ambiente do terraform:
@@ -68,10 +72,12 @@ AWS_SECRET_ACCESS_KEY = ""
 DB_PASSWORD           = ""
 
 # Target DB (conta 2)
+## Endpoint do banco de dados
 target_db_endpoint    = ""
 target_db_name        = ""
 target_db_password    = ""
 target_db_user        = "vapor"
+## Endpoint do banco de dados
 source_db_endpoint    = ""
 source_db_name        = "vapor"
 source_db_password    = ""
