@@ -26,7 +26,7 @@ resource "aws_dms_endpoint" "target_endpoint" {
   engine_name    = "mysql"
   username       = var.target_db_user
   password       = var.target_db_password
-  server_name    = var.target_db_endpoint
+  server_name    = replace(var.target_db_endpoint, ":3306", "")
   port           = 3306
   database_name  = var.target_db_name
 }
@@ -148,4 +148,3 @@ resource "aws_iam_role_policy_attachment" "dms_vpc_role_ec2_access" {
   role       = aws_iam_role.dms_vpc_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
 }
-
