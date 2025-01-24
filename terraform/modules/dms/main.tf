@@ -39,18 +39,17 @@ resource "aws_dms_replication_task" "migration_task" {
   replication_instance_arn   = aws_dms_replication_instance.replication_instance.replication_instance_arn
 
   # Configuração de seleção de tabelas (inclui todas as tabelas e esquemas)
-  table_mappings             = jsonencode({
+  table_mappings = jsonencode({
     "rules": [
       {
-        "rule-id":    "1",
-        "rule-type":  "selection",
-        "rule-name":  "include-all",
+        "rule-type": "selection",
+        "rule-id": "1",
+        "rule-name": "include-all-tables",
         "rule-action": "include",
         "object-locator": {
           "schema-name": "%",
-          "table-name":  "%"
-        },
-        "rule-action": "include"
+          "table-name": "%"
+        }
       }
     ]
   })
@@ -75,7 +74,7 @@ resource "aws_dms_replication_task" "migration_task" {
     }
   })
 
-  start_replication_task = false
+  start_replication_task = true
   tags = {
     Name = "DMS Migration Task"
   }
