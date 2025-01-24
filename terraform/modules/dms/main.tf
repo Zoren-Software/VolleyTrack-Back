@@ -28,7 +28,7 @@ resource "aws_dms_endpoint" "target_endpoint" {
   password       = var.target_db_password
   server_name    = replace(var.target_db_endpoint, ":3306", "")
   port           = 3306
-  database_name  = "" # O banco de dados de destino não deve ser especificado, para que migre todos os tenants.
+  database_name  = "" # Deixe vazio para suportar múltiplos bancos
 }
 
 resource "aws_dms_replication_task" "migration_task" {
@@ -36,6 +36,9 @@ resource "aws_dms_replication_task" "migration_task" {
   source_endpoint_arn        = aws_dms_endpoint.source_endpoint.endpoint_arn
   target_endpoint_arn        = aws_dms_endpoint.target_endpoint.endpoint_arn
   migration_type             = "full-load"
+  replication_instance_arn   = aws_dms_replication_instance.replication_instance.replication_instance_arn
+
+  # Configuração de seleção de tabelas (inclui todas as tabelas e esquemas)
   table_mappings             = jsonencode({
     "rules": [
       {
@@ -51,7 +54,29 @@ resource "aws_dms_replication_task" "migration_task" {
       }
     ]
   })
-  replication_instance_arn   = aws_dms_replication_instance.replication_instance.replication_instance_arn
+
+  # Configurações avançadas de replicação
+  replication_task_settings = jsonencode({
+    "TargetMetadata": {
+      "ParallelApplyThreads": 8,  # Threads para aplicar dados no destino
+      "ParallelLoadThreads": 8    # Threads para carregar dados
+    },
+    "FullLoadSettings": {
+      "CreatePkAfterFullLoad": true,  # Cria chave primária se faltar no destino
+      "TargetTablePrepMode": "DROP_AND_CREATE", # Recria as tabelas no destino
+      "MaxFullLoadSubTasks": 16       # Subtarefas paralelas durante a migração
+    },
+    "ErrorBehavior": {
+      "DataErrorPolicy": "LOG_ERROR",      # Continua no caso de erro de dados
+      "TableErrorPolicy": "SUSPEND_TABLE", # Suspende apenas tabelas problemáticas
+      "FailOnNoTablesCaptured": false     # Não falha se não capturar tabelas
+    }
+  })
+
+  start_replication_task = false
+  tags = {
+    Name = "DMS Migration Task"
+  }
 }
 
 # Security Group para permitir que o DMS se comunique com o banco de dados
