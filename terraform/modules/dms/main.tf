@@ -28,7 +28,7 @@ resource "aws_dms_endpoint" "target_endpoint" {
   password       = var.target_db_password
   server_name    = replace(var.target_db_endpoint, ":3306", "")
   port           = 3306
-  database_name  = var.target_db_name
+  database_name  = "" # O banco de dados de destino não deve ser especificado, para que migre todos os tenants.
 }
 
 resource "aws_dms_replication_task" "migration_task" {
@@ -39,11 +39,12 @@ resource "aws_dms_replication_task" "migration_task" {
   table_mappings             = jsonencode({
     "rules": [
       {
-        "rule-type":  "selection",
         "rule-id":    "1",
-        "rule-name":  "1",
+        "rule-type":  "selection",
+        "rule-name":  "include-all",
+        "rule-action": "include",
         "object-locator": {
-          "schema-name": "mydb",
+          "schema-name": "%",
           "table-name":  "%"
         },
         "rule-action": "include"
