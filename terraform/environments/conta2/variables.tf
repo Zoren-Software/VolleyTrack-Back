@@ -7,7 +7,7 @@ variable "DB_IDENTIFIER" {
 variable "DB_NAME" {
   description = "Nome do banco de dados"
   type        = string
-  default     = "volleytrack"
+  default     = "vapor"
 }
 
 variable "DB_USERNAME" {
