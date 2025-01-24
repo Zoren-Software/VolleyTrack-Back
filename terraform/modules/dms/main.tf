@@ -58,7 +58,6 @@ resource "aws_dms_replication_task" "migration_task" {
   # Configurações avançadas de replicação
   replication_task_settings = jsonencode({
     "TargetMetadata": {
-      "ParallelApplyThreads": 8,  # Threads para aplicar dados no destino
       "ParallelLoadThreads": 8    # Threads para carregar dados
     },
     "FullLoadSettings": {
@@ -70,6 +69,9 @@ resource "aws_dms_replication_task" "migration_task" {
       "DataErrorPolicy": "LOG_ERROR",      # Continua no caso de erro de dados
       "TableErrorPolicy": "SUSPEND_TABLE", # Suspende apenas tabelas problemáticas
       "FailOnNoTablesCaptured": false     # Não falha se não capturar tabelas
+    },
+    "Logging": {
+      "EnableLogging": true,
     }
   })
 
