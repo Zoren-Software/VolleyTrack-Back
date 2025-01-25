@@ -62,9 +62,9 @@ resource "aws_dms_replication_task" "migration_task" {
         "rule-name": "exclude-information-schema",
         "rule-action": "exclude",
         "object-locator": {
-            "schema-name": "information_schema",
-            "table-name": "%"
-      }
+          "schema-name": "information_schema",
+          "table-name": "%"
+        }
       },
       {
         "rule-type": "selection",
@@ -72,8 +72,8 @@ resource "aws_dms_replication_task" "migration_task" {
         "rule-name": "exclude-mysql-schema",
         "rule-action": "exclude",
         "object-locator": {
-            "schema-name": "mysql",
-            "table-name": "%"
+          "schema-name": "mysql",
+          "table-name": "%"
         }
       },
       {
@@ -82,9 +82,9 @@ resource "aws_dms_replication_task" "migration_task" {
         "rule-name": "exclude-performance-schema",
         "rule-action": "exclude",
         "object-locator": {
-            "schema-name": "performance_schema",
-            "table-name": "%"
-      }
+          "schema-name": "performance_schema",
+          "table-name": "%"
+        }
       },
         {
         "rule-type": "selection",
@@ -92,10 +92,10 @@ resource "aws_dms_replication_task" "migration_task" {
         "rule-name": "exclude-sys-schema",
         "rule-action": "exclude",
         "object-locator": {
-            "schema-name": "sys",
-            "table-name": "%"
+          "schema-name": "sys",
+          "table-name": "%"
         }
-      }
+      },
     ]
   })
 
@@ -107,7 +107,7 @@ resource "aws_dms_replication_task" "migration_task" {
     "FullLoadSettings": {
       "CreatePkAfterFullLoad": true,  # Cria chave primária se faltar no destino
       "TargetTablePrepMode": "DROP_AND_CREATE", # Recria as tabelas no destino
-      "MaxFullLoadSubTasks": 16       # Subtarefas paralelas durante a migração
+      "MaxFullLoadSubTasks": 1       # Subtarefas paralelas durante a migração
     },
     "ErrorBehavior": {
       "DataErrorPolicy": "LOG_ERROR",      # Continua no caso de erro de dados
@@ -116,7 +116,10 @@ resource "aws_dms_replication_task" "migration_task" {
     },
     "Logging": {
       "EnableLogging": true,
-    }
+    },
+    "ControlTableSettings": {
+      "EnableHomogenousTables": false
+    },
   })
 
   start_replication_task = true
