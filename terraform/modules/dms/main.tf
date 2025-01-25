@@ -1,12 +1,15 @@
 resource "aws_dms_replication_instance" "replication_instance" {
   replication_instance_class = "dms.t3.micro"  # Classe econômica para testes.
   allocated_storage          = 50
-  engine_version             = "3.5.2"         # Teste uma versão estável.
+  engine_version             = "3.5.4"         # Teste uma versão estável.
   replication_instance_id    = "dms-replication-instance"
   replication_subnet_group_id = aws_dms_replication_subnet_group.dms_subnet_group.id
   vpc_security_group_ids      = [aws_security_group.dms_security_group.id]
   # Configuração adicional
   publicly_accessible = true
+  tags = {
+    Name = "DMS Replication Instance"
+  }
 }
 
 resource "aws_dms_endpoint" "source_endpoint" {
@@ -41,6 +44,7 @@ resource "aws_dms_replication_task" "migration_task" {
   # Configuração de seleção de tabelas (inclui todas as tabelas e esquemas)
   table_mappings = jsonencode({
     "rules": [
+      # Importar todos os tenants
       {
         "rule-type": "selection",
         "rule-id": "1",
@@ -49,6 +53,47 @@ resource "aws_dms_replication_task" "migration_task" {
         "object-locator": {
           "schema-name": "%",
           "table-name": "%"
+        }
+      },
+      # Excluir schemas de sistema
+      {
+        "rule-type": "selection",
+        "rule-id": "2",
+        "rule-name": "exclude-information-schema",
+        "rule-action": "exclude",
+        "object-locator": {
+            "schema-name": "information_schema",
+            "table-name": "%"
+      }
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "3",
+        "rule-name": "exclude-mysql-schema",
+        "rule-action": "exclude",
+        "object-locator": {
+            "schema-name": "mysql",
+            "table-name": "%"
+        }
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "4",
+        "rule-name": "exclude-performance-schema",
+        "rule-action": "exclude",
+        "object-locator": {
+            "schema-name": "performance_schema",
+            "table-name": "%"
+      }
+      },
+        {
+        "rule-type": "selection",
+        "rule-id": "5",
+        "rule-name": "exclude-sys-schema",
+        "rule-action": "exclude",
+        "object-locator": {
+            "schema-name": "sys",
+            "table-name": "%"
         }
       }
     ]
