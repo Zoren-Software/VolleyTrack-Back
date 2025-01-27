@@ -20,6 +20,7 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
       - [**1. Inicializar o Terraform**:](#1-inicializar-o-terraform)
       - [**2. Validar o Plano**:](#2-validar-o-plano)
       - [**3. Aplicar o Plano**:](#3-aplicar-o-plano)
+  - [Migração Route 53 no Laravel Vapor](#migração-route-53-no-laravel-vapor)
     - [**Verificando os Registros DNS**](#verificando-os-registros-dns)
   - [**Rollback ou Destruição da Infraestrutura**](#rollback-ou-destruição-da-infraestrutura)
   - [**Estrutura do Módulo `route53`**](#estrutura-do-módulo-route53)
@@ -27,7 +28,6 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
   - [**Importante**](#importante)
     - [**Registros NS e SOA**](#registros-ns-e-soa)
   - [**Contribuições**](#contribuições)
-  - [**Melhorias Futuras**](#melhorias-futuras)
   - [**Autor**](#autor)
 
 ## **Estrutura do Projeto**
@@ -95,6 +95,10 @@ Após isso, você deve criar um banco de dados pela interface do Laravel Vapor, 
 O banco de dados deve ter o nome `volleytrack` para tudo funcionar corretamente.
 
 Aproveite também e crie o banco redis, de cache, o nome deve ser `volleytrack-cache`.
+
+Crie também o Projeto na interface do Laravel Vapor, isso é importante pois lá ele vai solicitar que o arquivo vapor.yml seja adicionado ao repositório, como ele já esta, basta copiar o endereço do repositório e adicionar no Laravel Vapor, copie com atenção, pois algumas alterações específicas do projeto não precisam ser alteradas. 
+
+> Isso é o que vai vincular o Laravel Vapor com o repositório e permitir que ele faça o deploy automaticamente.
 
 Isso é muito importante para garantir que o banco de dados seja criado corretamente e que as credenciais estejam corretas, para conseguir migrar os dados com o Migration Database Service da AWS.
 
@@ -188,7 +192,14 @@ Confirme com `yes` quando solicitado.
 yes
 ```
 
-Esse comando criará os recursos de banco de dados (RDS), cluster Redis, e registros DNS no Route 53.
+## Migração Route 53 no Laravel Vapor
+
+Para migrar o Route 53 no Laravel Vapor, você deve adicionar o domínio no Laravel Vapor e configurar o DNS na AWS.
+
+Verificar na implementação do dominio o endereço do CloudFront e adicionar o CNAME no Route 53. (Verifique como esta no ambiente de produção e deixe com as novas variáveis para a migração).
+
+Após isso, você deve adicionar o domínio no Laravel Vapor e configurar o DNS na AWS.
+
 
 ### **Verificando os Registros DNS**
 
@@ -229,10 +240,6 @@ Você pode configurar esses registros no arquivo de variáveis do Terraform.
 
 Sinta-se à vontade para contribuir com melhorias ou ajustes necessários. Basta abrir um **Pull Request**.
 
-## **Melhorias Futuras**
-
-- Configurar provisionamento automático de **certificados SSL via ACM**.
-- Implementar automações para monitoramento e alarmes via **CloudWatch**.
 
 ## **Autor**
 
