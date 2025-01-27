@@ -6,30 +6,6 @@ provider "aws" {
 }
 
 # Chamando o módulo de banco de dados para a conta 2 (destino)
-module "rds_conta2" {
-    source = "../../modules/db"  # Referenciando o módulo de DB
-    providers = {
-        aws = aws.conta2
-    }
-
-    db_identifier    = var.DB_IDENTIFIER
-    db_name          = var.DB_NAME
-    db_user          = var.DB_USERNAME
-    db_password      = var.DB_PASSWORD
-    db_instance_type = var.DB_INSTANCE_TYPE
-    vpc_security_group_ids = var.vpc_security_group_ids
-}
-
-# Chamando o módulo de Redis para a conta 2 (destino)
-module "redis_conta2" {
-    source = "../../modules/redis"  # Referenciando o módulo de Redis
-    providers = {
-        aws = aws.conta2
-    }
-
-    redis_cluster_id = var.REDIS_CLUSTER_ID
-    redis_node_type  = var.REDIS_NODE_TYPE
-}
 
 # Módulo de Route 53 para a conta 2
 module "route53_volleytrack" {
@@ -106,8 +82,8 @@ module "dms" {
   source_db_endpoint  = var.source_db_endpoint
   source_db_name      = var.DB_NAME
 
-  target_db_user      = module.rds_conta2.rds_username  # Pega o usuário criado no RDS
-  target_db_password  = var.DB_PASSWORD  # A senha você já sabe, pois está no arquivo .tfvars
-  target_db_endpoint  = module.rds_conta2.db_endpoint  # Pega o endpoint gerado
+  target_db_user      = var.target_db_user
+  target_db_password  = var.target_db_password
+  target_db_endpoint  = var.target_db_endpoint
   target_db_name      = var.DB_NAME
 }

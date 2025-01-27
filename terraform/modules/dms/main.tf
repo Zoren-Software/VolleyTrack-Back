@@ -122,7 +122,7 @@ resource "aws_dms_replication_task" "migration_task" {
     },
   })
 
-  start_replication_task = true
+  start_replication_task = false  # Inicie manualmente após a criação
   tags = {
     Name = "DMS Migration Task"
   }

@@ -9,6 +9,10 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
   - [Índice](#índice)
   - [**Estrutura do Projeto**](#estrutura-do-projeto)
   - [**Pré-requisitos**](#pré-requisitos)
+    - [Conta 1](#conta-1)
+    - [Conta 2](#conta-2)
+  - [Passos para criar as credenciais na conta 2](#passos-para-criar-as-credenciais-na-conta-2)
+    - [Configuração no Laravel Vapor](#configuração-no-laravel-vapor)
     - [**Arquivos `.env`**](#arquivos-env)
   - [**Como Executar o Projeto**](#como-executar-o-projeto)
     - [**Passos para Provisionar a Infraestrutura**](#passos-para-provisionar-a-infraestrutura)
@@ -46,6 +50,60 @@ A estrutura do projeto segue o seguinte formato:
 - **AWS CLI** configurado com perfis das contas (`conta1` e `conta2`).
 - Credenciais da **AWS** devidamente configuradas nos perfis `conta1` e `conta2`.
 
+### Conta 1
+
+Deve ser as credenciais da conta principal atual onde existem os dados e onde é o servidor principal de produção.
+
+### Conta 2
+
+Deve ser as credenciais da conta onde será feito o backup e onde será feito o servidor de produção secundário (migration).
+
+## Passos para criar as credenciais na conta 2
+
+1. Para garantirmos que a conta 2 tenha acesso a conta 1, é necessário criar um usuário na conta 1 e dar permissão de acesso a conta 2.
+
+2. Na conta 1, acesse o console da AWS e vá até o serviço **IAM**.
+
+3. Crie um novo usuário com permissões de acesso programático.
+
+4. Adicione as permissões necessárias para o usuário, como por exemplo, **AdministratorAccess**.
+
+5. Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta).
+
+6. Na conta 2, acesse o console da AWS e vá até o serviço **IAM**.
+
+7. Crie um novo usuário com permissões de acesso programático.
+
+8. Adicione as permissões necessárias para o usuário, como por exemplo, **AdministratorAccess**.
+
+9. Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta).
+
+10. Adicione as credenciais da conta 1 no arquivo `.env` da conta 2.
+
+11. Adicione as credenciais da conta 2 no arquivo `terraform/environments/conta2/terraform.tfvars`.
+
+12. Após a configuração das credenciais, você pode prosseguir com o provisionamento da infraestrutura.
+
+13. **Importante**: Após a conclusão do provisionamento, remova as credenciais do arquivo `.env` e `terraform/environments/conta2/terraform.tfvars` para garantir a segurança das informações.
+
+### Configuração no Laravel Vapor
+
+Para iniciar, crie um usuário na conta 2, e adicione as credenciais de acesso pela própria interface do Laravel Vapor.
+
+Após isso, você deve criar um banco de dados pela interface do Laravel Vapor, e adicionar as credenciais no arquivo .env e no arquivo `terraform/environments/conta2/terraform.tfvars`.
+
+O banco de dados deve ter o nome `volleytrack` para tudo funcionar corretamente.
+
+Aproveite também e crie o banco redis, de cache, o nome deve ser `volleytrack-cache`.
+
+Isso é muito importante para garantir que o banco de dados seja criado corretamente e que as credenciais estejam corretas, para conseguir migrar os dados com o Migration Database Service da AWS.
+
+Algumas variáveis de ambiente como a senha devem ser configuradas no arquivo `.env` e no arquivo `terraform/environments/conta2/terraform.tfvars` para garantir que o banco de dados seja criado corretamente.
+
+> É importante que o banco de dados seja criado antes de rodar o Terraform, para garantir que as credenciais estejam corretas e que o banco de dados seja criado corretamente, pois o Laravel Vapor o gerencia automaticamente.
+
+Não esqueça de copiar todos os Projetos do Laravel Vapor e configurar o GitHub endereco do repositório.
+
 ### **Arquivos `.env`**
 Dentro da pasta `terraform/environments/conta1/` e `terraform/environments/conta2/`, crie um arquivo `.env` com as seguintes variáveis:
 
@@ -57,9 +115,6 @@ AWS_SECRET_ACCESS_KEY_CONTA1=<chave_secreta_conta1>
 AWS_ACCESS_KEY_ID_CONTA2=<chave_de_acesso_conta2>
 AWS_SECRET_ACCESS_KEY_CONTA2=<chave_secreta_conta2>
 
-# Configurações do Redis (Terraform)
-REDIS_CLUSTER_ID=volleytrack-cache
-REDIS_NODE_TYPE=cache.t3.micro
 ```
 
 Após isso configurar as variáveis de ambiente do terraform:
@@ -72,12 +127,14 @@ AWS_SECRET_ACCESS_KEY = ""
 DB_PASSWORD           = ""
 
 # Target DB (conta 2)
-## Endpoint do banco de dados
+
+## Endpoint do banco de dados (Origem)
 target_db_endpoint    = ""
 target_db_name        = ""
 target_db_password    = ""
 target_db_user        = "vapor"
-## Endpoint do banco de dados
+
+## Endpoint do banco de dados (Destino)
 source_db_endpoint    = ""
 source_db_name        = "vapor"
 source_db_password    = ""
@@ -97,6 +154,9 @@ Esses arquivos serão utilizados pelo Terraform para provisionar os recursos em 
 ```bash
 export AWS_PROFILE=conta2
 ```
+
+> Tenha absoluta certeza de que está utilizando o perfil correto antes de prosseguir.
+> Verifique a criação do banco de dados feita no Laravel Vapor se esta tudo ok! E credenciais do banco de dados no arquivo `terraform/environments/conta2/terraform.tfvars` antes de prosseguir.
 
 #### **1. Inicializar o Terraform**:
 
