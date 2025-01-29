@@ -47,8 +47,12 @@ A estrutura do projeto segue o seguinte formato:
 ## **Pré-requisitos**
 
 - **Terraform** versão 1.0.0 ou superior.
+  - Link Tutorial instalação: [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 - **AWS CLI** configurado com perfis das contas (`conta1` e `conta2`).
-- Credenciais da **AWS** devidamente configuradas nos perfis `conta1` e `conta2`.
+  - Comandos para instalação:
+    - `sudo apt update`
+    - `sudo apt install awscli`
+  - Credenciais da **AWS** devidamente configuradas nos perfis `conta1` e `conta2`.
 
 ### Conta 1
 
