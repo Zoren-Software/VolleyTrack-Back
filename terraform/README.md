@@ -9,6 +9,9 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
   - [Índice](#índice)
   - [**Estrutura do Projeto**](#estrutura-do-projeto)
   - [**Pré-requisitos**](#pré-requisitos)
+    - [🏗️ **Terraform**](#️-terraform)
+    - [☁️ **AWS CLI**](#️-aws-cli)
+      - [🔧 **Instalação Ubuntu**](#-instalação-ubuntu)
     - [Conta 1](#conta-1)
     - [Conta 2](#conta-2)
   - [Passos para criar as credenciais na conta 2](#passos-para-criar-as-credenciais-na-conta-2)
@@ -43,16 +46,36 @@ A estrutura do projeto segue o seguinte formato:
         /conta1/       # Ambiente para a Conta 1
         /conta2/       # Ambiente para a Conta 2
 ```
-
 ## **Pré-requisitos**
 
-- **Terraform** versão 1.0.0 ou superior.
-  - Link Tutorial instalação: [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-- **AWS CLI** configurado com perfis das contas (`conta1` e `conta2`).
-  - Comandos para instalação:
-    - `sudo apt update`
-    - `sudo apt install awscli`
-  - Credenciais da **AWS** devidamente configuradas nos perfis `conta1` e `conta2`.
+### 🏗️ **Terraform**
+- Versão **1.0.0 ou superior**.
+- [Tutorial de instalação](https://learn.hashicorp.com/tutorials/terraform/install-cli) 🔗
+
+### ☁️ **AWS CLI**
+- Deve estar configurado com os perfis das contas `conta1` e `conta2`.
+
+#### 🔧 **Instalação Ubuntu**
+
+```bash
+sudo apt update
+sudo apt install awscli
+### Passos para configurar Conta1 e Conta2 AWS CLI
+
+```bash
+aws configure --profile conta1
+```
+
+Preencha as informações quando solicitado:
+
+```bash
+AWS Access Key ID: Chave de acesso da conta 1
+AWS Secret Access Key: Chave secreta da conta 1
+Default region name: us-east-1
+Default output format: json
+```
+
+> Repita o processo para a conta 2, trocando o nome do perfil e as credenciais.
 
 ### Conta 1
 
@@ -68,7 +91,7 @@ Deve ser as credenciais da conta onde será feito o backup e onde será feito o 
 
 2. Na conta 1, acesse o console da AWS e vá até o serviço **IAM**.
 
-3. Crie um novo usuário com permissões de acesso programático.
+3. Crie um novo usuário com permissões de acesso programático. Minha sugestão de nome é `terraform-migration`.
 
 4. Adicione as permissões necessárias para o usuário, como por exemplo, **AdministratorAccess**.
 
