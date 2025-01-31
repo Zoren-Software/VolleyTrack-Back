@@ -16,7 +16,13 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
     - [Conta 2](#conta-2)
     - [Passos para configurar Conta1 e Conta2 AWS CLI](#passos-para-configurar-conta1-e-conta2-aws-cli)
   - [Passos para criar as credenciais na conta 2](#passos-para-criar-as-credenciais-na-conta-2)
-    - [Configuração no Laravel Vapor](#configuração-no-laravel-vapor)
+  - [Configuração no Laravel Vapor](#configuração-no-laravel-vapor)
+    - [Criar Projeto no Laravel Vapor](#criar-projeto-no-laravel-vapor)
+    - [Criar Role no AWS IAM, para o Laravel Vapor](#criar-role-no-aws-iam-para-o-laravel-vapor)
+    - [Criar Banco de Dados no Laravel Vapor](#criar-banco-de-dados-no-laravel-vapor)
+    - [Criar Banco de Cache no Laravel Vapor](#criar-banco-de-cache-no-laravel-vapor)
+    - [Criar Relacionamento entre o Projeto Laravel Vapor e o Repositório](#criar-relacionamento-entre-o-projeto-laravel-vapor-e-o-repositório)
+  - [Variáveis de Ambiente Laravel Vapor](#variáveis-de-ambiente-laravel-vapor)
     - [**Arquivos `.env`**](#arquivos-env)
   - [**Como Executar o Projeto**](#como-executar-o-projeto)
     - [**Passos para Provisionar a Infraestrutura**](#passos-para-provisionar-a-infraestrutura)
@@ -134,9 +140,13 @@ AdministratorAccess
 
 13. **Importante**: Após a conclusão do provisionamento, remova as credenciais do arquivo `.env` e `terraform/environments/conta2/terraform.tfvars` para garantir a segurança das informações.
 
-### Configuração no Laravel Vapor
+## Configuração no Laravel Vapor
+
+### Criar Projeto no Laravel Vapor
 
 Para iniciar, crie um Projeto no Laravel Vapor pode criar com qualquer nome, mas esse projeto provisionará toda a infraestrutura dos nossos projetos Backend, o do Multi Tenancy e o Landing Page. Eu geralmente o crio com o nome `VolleyTrack Production`.
+
+### Criar Role no AWS IAM, para o Laravel Vapor
 
 Após fazer isso você terá que linkar o projeto com a conta da AWS. Lá ele pedirá algumas informações como na imagem abaixo:
 
@@ -154,13 +164,19 @@ No Laravel Vapor faça o link com a conta da AWS e siga os passos para criar a R
 
 ![AWS Role](./.docs/images/vapor-link-aws.png)
 
+### Criar Banco de Dados no Laravel Vapor
+
 Após isso, você deve criar um banco de dados pela interface do Laravel Vapor, e adicionar as credenciais no arquivo .env e no arquivo `terraform/environments/conta2/terraform.tfvars`.
 
 O banco de dados deve ter o nome `volleytrack` para tudo funcionar corretamente.
 
+### Criar Banco de Cache no Laravel Vapor
+
 Aproveite também e crie o banco redis, de cache, o nome deve ser `volleytrack-cache`.
 
-Crie também o Projeto na interface do Laravel Vapor, isso é importante pois lá ele vai solicitar que o arquivo vapor.yml seja adicionado ao repositório, como ele já esta, basta copiar o endereço do repositório e adicionar no Laravel Vapor, copie com atenção, pois algumas alterações específicas do projeto não precisam ser alteradas. 
+### Criar Relacionamento entre o Projeto Laravel Vapor e o Repositório
+
+Crie também o Projeto na interface do Laravel Vapor, isso é importante pois lá ele vai solicitar que o arquivo vapor.yml seja adicionado ao repositório, como ele já esta, basta copiar o endereço do repositório e adicionar no Laravel Vapor, copie com atenção, pois algumas alterações específicas do projeto não precisam ser alteradas.
 
 > Isso é o que vai vincular o Laravel Vapor com o repositório e permitir que ele faça o deploy automaticamente.
 
@@ -171,6 +187,10 @@ Algumas variáveis de ambiente como a senha devem ser configuradas no arquivo `.
 > É importante que o banco de dados seja criado antes de rodar o Terraform, para garantir que as credenciais estejam corretas e que o banco de dados seja criado corretamente, pois o Laravel Vapor o gerencia automaticamente.
 
 Não esqueça de copiar todos os Projetos do Laravel Vapor e configurar o GitHub endereco do repositório.
+
+## Variáveis de Ambiente Laravel Vapor
+
+Agora, na conta do Laravel Vapor que tem as informações de produção, também é necessário que você busque as variáveis de ambiente do Laravel Vapor que são de produção, do .env.production, pois será necessário para configurar o banco de dados de produção quando alterar o ambiente de produção.
 
 ### **Arquivos `.env`**
 Dentro da pasta `terraform/environments/conta1/` e `terraform/environments/conta2/`, crie um arquivo `.env` com as seguintes variáveis:
