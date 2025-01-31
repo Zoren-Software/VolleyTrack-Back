@@ -37,6 +37,7 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
     - [**Exemplo de Uso**:](#exemplo-de-uso)
   - [**Importante**](#importante)
     - [**Registros NS e SOA**](#registros-ns-e-soa)
+    - [**Variáveis de ambiente no novo Ambiente Produção**](#variáveis-de-ambiente-no-novo-ambiente-produção)
   - [**Contribuições**](#contribuições)
   - [**Autor**](#autor)
 
@@ -190,7 +191,28 @@ Não esqueça de copiar todos os Projetos do Laravel Vapor e configurar o GitHub
 
 ## Variáveis de Ambiente Laravel Vapor
 
-Agora, na conta do Laravel Vapor que tem as informações de produção, também é necessário que você busque as variáveis de ambiente do Laravel Vapor que são de produção, do .env.production, pois será necessário para configurar o banco de dados de produção quando alterar o ambiente de produção.
+Agora, na conta do Laravel Vapor que tem as informações de produção, também é necessário que você busque as variáveis de ambiente do Laravel Vapor que são de produção, do .env.production, pois será necessário para recuperar os valores implementados em produção.
+
+Comandos para buscar as variáveis de ambiente do Laravel Vapor:
+
+```bash
+composer vapor env:list
+```
+Deve mostrar algo como na imagem abaixo:
+
+![AWS Role](./.docs/images/vapor-env-list.png)
+
+```bash
+composer vapor env pull production
+```
+
+Deve mostrar algo como na imagem abaixo:
+
+![AWS Role](./.docs/images/vapor-env-pull-production.png)
+
+Após isso, você terá um arquivo `.env.production` com as variáveis de ambiente do Laravel Vapor, copie essas variáveis, faça backup e mantenha o arquivo por segurança.
+
+Logo utilizaremos isso para enviar para produção novamente, mas para o outro ambiente de projeto no Laravel Vapor.
 
 ### **Arquivos `.env`**
 Dentro da pasta `terraform/environments/conta1/` e `terraform/environments/conta2/`, crie um arquivo `.env` com as seguintes variáveis:
@@ -319,6 +341,18 @@ Você pode configurar esses registros no arquivo de variáveis do Terraform.
 ### **Registros NS e SOA**
 
 **Não é necessário recriar os registros NS e SOA manualmente**, pois eles são criados automaticamente pelo **AWS Route 53** ao provisionar a zona hospedada. Esses registros estão comentados no código e servem como referência.
+
+### **Variáveis de ambiente no novo Ambiente Produção**
+
+Após a migração, você deve adicionar as variáveis de ambiente do Laravel Vapor no novo ambiente de produção, para garantir que o ambiente esteja configurado corretamente.
+
+```bash
+composer vapor env:push production
+```
+
+Isso irá enviar as variáveis de ambiente do arquivo `.env.production` para o ambiente de produção no Laravel Vapor.
+
+Utilize os mesmos valores encontrados no ambiente de produção original, para garantir que o novo ambiente esteja configurado corretamente.
 
 ## **Contribuições**
 
