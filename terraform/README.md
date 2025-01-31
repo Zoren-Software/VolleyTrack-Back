@@ -14,6 +14,7 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
       - [🔧 **Instalação Ubuntu**](#-instalação-ubuntu)
     - [Conta 1](#conta-1)
     - [Conta 2](#conta-2)
+    - [Passos para configurar Conta1 e Conta2 AWS CLI](#passos-para-configurar-conta1-e-conta2-aws-cli)
   - [Passos para criar as credenciais na conta 2](#passos-para-criar-as-credenciais-na-conta-2)
     - [Configuração no Laravel Vapor](#configuração-no-laravel-vapor)
     - [**Arquivos `.env`**](#arquivos-env)
@@ -60,6 +61,16 @@ A estrutura do projeto segue o seguinte formato:
 ```bash
 sudo apt update
 sudo apt install awscli
+```
+
+### Conta 1
+
+Deve ser as credenciais da conta principal atual onde existem os dados e onde é o servidor principal de produção.
+
+### Conta 2
+
+Deve ser as credenciais da conta onde será feito o backup e onde será feito o servidor de produção secundário (migration).
+
 ### Passos para configurar Conta1 e Conta2 AWS CLI
 
 ```bash
@@ -77,13 +88,10 @@ Default output format: json
 
 > Repita o processo para a conta 2, trocando o nome do perfil e as credenciais.
 
-### Conta 1
+Deve ficar como na imagem abaixo:
 
-Deve ser as credenciais da conta principal atual onde existem os dados e onde é o servidor principal de produção.
+![AWS CLI](./.docs/images/aws-cli-config-conta1.png)
 
-### Conta 2
-
-Deve ser as credenciais da conta onde será feito o backup e onde será feito o servidor de produção secundário (migration).
 
 ## Passos para criar as credenciais na conta 2
 
@@ -93,29 +101,58 @@ Deve ser as credenciais da conta onde será feito o backup e onde será feito o 
 
 3. Crie um novo usuário com permissões de acesso programático. Minha sugestão de nome é `terraform-migration`.
 
-4. Adicione as permissões necessárias para o usuário, como por exemplo, **AdministratorAccess**.
+4. Adicione as permissões necessárias para o usuário, ter acesso as ações na AWS, utilize essa para conceder acesso total:
 
-5. Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta).
+```text
+AdministratorAccess
+```
 
-6. Na conta 2, acesse o console da AWS e vá até o serviço **IAM**.
+Deve ficar como na imagem abaixo:
 
-7. Crie um novo usuário com permissões de acesso programático.
+![AWS IAM](./.docs/images/usuario-iam-terraform-migration.png)
 
-8. Adicione as permissões necessárias para o usuário, como por exemplo, **AdministratorAccess**.
 
-9. Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta).
+5. Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta). Você vai precisar delas para configurar o Terraform e variáveis de ambiente nos passos seguintes.
 
-10. Adicione as credenciais da conta 1 no arquivo `.env` da conta 2.
+6. Agora, na conta 2, acesse o console da AWS e vá até o serviço **IAM**.
 
-11. Adicione as credenciais da conta 2 no arquivo `terraform/environments/conta2/terraform.tfvars`.
+7. Crie um novo usuário com permissões de acesso programático. Minha sugestão de nome é `terraform-migration`.
 
-12. Após a configuração das credenciais, você pode prosseguir com o provisionamento da infraestrutura.
+8. Adicione as permissões necessárias para o usuário, ter acesso as ações na AWS, utilize essa para conceder acesso total:
+
+```text
+AdministratorAccess
+```
+
+9.  Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta).
+
+10.  Adicione essas credenciais da conta 1 e conta 2 no arquivo `terraform/.env`.
+
+11.  Adicione as credenciais da conta 1 e conta 2 no arquivo `terraform/environments/conta2/terraform.tfvars` também.
+
+12.  Após a configuração das credenciais, você pode prosseguir com o provisionamento da infraestrutura.
 
 13. **Importante**: Após a conclusão do provisionamento, remova as credenciais do arquivo `.env` e `terraform/environments/conta2/terraform.tfvars` para garantir a segurança das informações.
 
 ### Configuração no Laravel Vapor
 
-Para iniciar, crie um usuário na conta 2, e adicione as credenciais de acesso pela própria interface do Laravel Vapor.
+Para iniciar, crie um Projeto no Laravel Vapor pode criar com qualquer nome, mas esse projeto provisionará toda a infraestrutura dos nossos projetos Backend, o do Multi Tenancy e o Landing Page. Eu geralmente o crio com o nome `VolleyTrack Production`.
+
+Após fazer isso você terá que linkar o projeto com a conta da AWS. Lá ele pedirá algumas informações como na imagem abaixo:
+
+![AWS IAM](./.docs/images/laravel-vapor-link-aws.png)
+
+Repare que ali existe um link para a documentação do Laravel Vapor para fazer a Role que ele precisa para fazer o deploy, você pode seguir esse passo a passo para criar a Role. 
+
+[Link para a documentação](https://docs.vapor.build/introduction#linking-with-aws).
+
+A Role deve ser criada da seguinte maneira (apenas para ficar mais visivel):
+
+![AWS Role](./.docs/images/aws-config-role.png)
+
+No Laravel Vapor faça o link com a conta da AWS e siga os passos para criar a Role.
+
+![AWS Role](./.docs/images/vapor-link-aws.png)
 
 Após isso, você deve criar um banco de dados pela interface do Laravel Vapor, e adicionar as credenciais no arquivo .env e no arquivo `terraform/environments/conta2/terraform.tfvars`.
 
