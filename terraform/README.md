@@ -38,6 +38,7 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
   - [**Importante**](#importante)
     - [**Registros NS e SOA**](#registros-ns-e-soa)
     - [**Variáveis de ambiente no novo Ambiente Produção**](#variáveis-de-ambiente-no-novo-ambiente-produção)
+  - [Amazon SES](#amazon-ses)
   - [**Contribuições**](#contribuições)
   - [**Autor**](#autor)
 
