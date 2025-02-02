@@ -27,7 +27,6 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
   - [**Como Executar o Projeto**](#como-executar-o-projeto)
     - [**Passos para Provisionar a Infraestrutura**](#passos-para-provisionar-a-infraestrutura)
       - [0. Selecione o ambiente desejado (`conta1` ou `conta2`).](#0-selecione-o-ambiente-desejado-conta1-ou-conta2)
-      - [**1. Inicializar o Terraform**:](#1-inicializar-o-terraform)
       - [**2. Validar o Plano**:](#2-validar-o-plano)
       - [**3. Aplicar o Plano**:](#3-aplicar-o-plano)
   - [Migração Route 53 no Laravel Vapor](#migração-route-53-no-laravel-vapor)
@@ -269,6 +268,14 @@ export AWS_PROFILE=conta2
 > Tenha absoluta certeza de que está utilizando o perfil correto antes de prosseguir.
 > Verifique a criação do banco de dados feita no Laravel Vapor se esta tudo ok! E credenciais do banco de dados no arquivo `terraform/environments/conta2/terraform.tfvars` antes de prosseguir.
 
+Antes de proceguir, temos que confirmar as subredes que estão sendo utilizadas, para garantir que não haja conflitos com as subredes já existentes.
+
+```bash
+aws ec2 describe-subnets --query "Subnets[*].SubnetId" --region us-east-1 --profile conta2
+´´´
+
+Se houver conflitos, você deve alterar as subredes no arquivo `terraform/environments/conta2/terraform.tfvars` para subredes que não estão sendo utilizadas.
+
 #### **1. Inicializar o Terraform**:
 
 Em cada ambiente (por exemplo, `terraform/environments/conta2/`), rode o comando:
@@ -278,6 +285,8 @@ terraform init
 ```
 
 #### **2. Validar o Plano**:
+
+É importante validar o plano de infraestrutura antes de aplicá-lo. Mas caso já tenha feito isso em outra conta AWS, por favor delete o arquivo `terraform.tfstate` e `terraform.tfstate.backup` para garantir que não haja conflitos.
 
 Para garantir que o plano de infraestrutura está correto, execute:
 
