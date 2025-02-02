@@ -103,6 +103,8 @@ resource "aws_dms_replication_task" "migration_task" {
   replication_task_settings = jsonencode({
     "TargetMetadata": {
       "ParallelLoadThreads": 8    # Threads para carregar dados
+      "SupportLobs": true,
+      "PreserveAutoIncrement": true
     },
     "FullLoadSettings": {
       "CreatePkAfterFullLoad": true,  # Cria chave primária se faltar no destino
