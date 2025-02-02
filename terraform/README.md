@@ -112,6 +112,8 @@ Deve ficar como na imagem abaixo:
 
 ```text
 AdministratorAccess
+&&
+AmazonRoute53FullAccess
 ```
 
 Deve ficar como na imagem abaixo:
