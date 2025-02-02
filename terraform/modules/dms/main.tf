@@ -4,7 +4,7 @@ resource "aws_dms_replication_instance" "replication_instance" {
   engine_version             = "3.5.4"         # Teste uma versão estável.
   replication_instance_id    = "dms-replication-instance"
   replication_subnet_group_id = aws_dms_replication_subnet_group.dms_subnet_group.id
-  vpc_security_group_ids      = [aws_security_group.dms_security_group.id]
+  vpc_security_group_ids      = ["sg-09e9e3daafb99d261"]
   # Configuração adicional
   publicly_accessible = true
   tags = {

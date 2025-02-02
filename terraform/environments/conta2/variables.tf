@@ -187,7 +187,7 @@ variable "cname_www_value" {
 variable "vpc_security_group_ids" {
   description = "IDs do grupo de segurança do VPC"
   type        = list(string)
-  default     = ["sg-0173d4c68a13c394d"]  # O ID de segurança que você já encontrou
+  default     = ["sg-09e9e3daafb99d261"]  # O ID de segurança que você já encontrou
 }
 
 

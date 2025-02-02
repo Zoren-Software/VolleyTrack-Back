@@ -274,7 +274,7 @@ Antes de proceguir, temos que confirmar as subredes que estão sendo utilizadas,
 
 ```bash
 aws ec2 describe-subnets --query "Subnets[*].SubnetId" --region us-east-1 --profile conta2
-´´´
+```
 
 Se houver conflitos, você deve alterar as subredes no arquivo `terraform/environments/conta2/terraform.tfvars` para subredes que não estão sendo utilizadas.
 
