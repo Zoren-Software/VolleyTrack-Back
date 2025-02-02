@@ -352,7 +352,17 @@ composer vapor env:push production
 
 Isso irá enviar as variáveis de ambiente do arquivo `.env.production` para o ambiente de produção no Laravel Vapor.
 
-Utilize os mesmos valores encontrados no ambiente de produção original, para garantir que o novo ambiente esteja configurado corretamente.
+## Amazon SES
+
+Se você utiliza o **Amazon SES** para envio de e-mails, é importante configurar as credenciais e as configurações de e-mail no novo ambiente de produção.
+
+Adicione as credenciais do **Amazon SES** no arquivo `.env.production` e envie para o ambiente de produção no Laravel Vapor.
+
+Isso pode demorar um pouco para ser configurado, então é importante saber que o envio de e-mails pode ser afetado durante a migração.
+
+```bash
+composer vapor env:push production
+```
 
 ## **Contribuições**
 
