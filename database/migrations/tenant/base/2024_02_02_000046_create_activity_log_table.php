@@ -20,6 +20,7 @@ return new class extends Migration
                 $table->string('event')->nullable();
                 $table->nullableMorphs('causer', 'causer_index');
                 $table->json('properties')->nullable();
+                $table->uuid('batch_uuid')->nullable();
                 $table->timestamps();
 
                 // Criação do índice para a coluna log_name, se não existir
