@@ -54,3 +54,18 @@ function hasEventExist($eventName)
 
     return !empty($result);
 }
+
+function hasAutoIncrement($table, $column = 'id')
+{
+    $databaseName = DB::getDatabaseName();
+    $result = DB::select("
+        SELECT EXTRA
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = ?
+            AND TABLE_NAME = ?
+            AND COLUMN_NAME = ?
+            AND EXTRA = 'auto_increment'
+    ", [$databaseName, $table, $column]);
+
+    return !empty($result);
+}
