@@ -13,13 +13,15 @@ return new class() extends Migration
      */
     public function up()
     {
-        Schema::create('languages', function (Blueprint $table) {
-            $table->id();
-            $table->string('slug', 7)->unique();
-            $table->string('name', 20)->unique();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        if (!Schema::hasTable('languages')) {
+            Schema::create('languages', function (Blueprint $table) {
+                $table->id();
+                $table->string('slug', 7)->unique();
+                $table->string('name', 20)->unique();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
