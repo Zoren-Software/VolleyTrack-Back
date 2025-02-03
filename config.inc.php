@@ -23,8 +23,8 @@ $cfg['Servers'][$i]['auth_type'] = 'cookie';
 
 /* Servidor: Servidor Remoto */
 $i++;
-$cfg['Servers'][$i]['verbose'] = 'VolleyTrack Migration 1';
-$cfg['Servers'][$i]['host'] = 'volleytrack.cazg86uu6oqv.us-east-1.rds.amazonaws.com';
+$cfg['Servers'][$i]['verbose'] = 'VolleyTrack Migration 4';
+$cfg['Servers'][$i]['host'] = 'volleytrack.cr48ww8ys8aw.us-east-1.rds.amazonaws.com';
 $cfg['Servers'][$i]['port'] = '3306'; // ou outra porta se necessário
 $cfg['Servers'][$i]['socket'] = '';
 $cfg['Servers'][$i]['connect_type'] = 'tcp';
