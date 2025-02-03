@@ -15,7 +15,7 @@ return new class extends Migration
         }
 
         if (!Schema::hasTable($tableNames['permissions'])) {
-            Schema::create($tableNames['permissions'], function (Blueprint $table) {
+            Schema::create($tableNames['permissions'], function (Blueprint $table) use ($tableNames) {
                 $table->bigIncrements('id');
                 $table->string('name');
                 $table->string('guard_name');
