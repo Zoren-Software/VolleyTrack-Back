@@ -102,14 +102,18 @@ resource "aws_dms_replication_task" "migration_task" {
   # Configurações avançadas de replicação
   replication_task_settings = jsonencode({
     "TargetMetadata": {
-      "ParallelLoadThreads": 8    # Threads para carregar dados
+      "ParallelLoadThreads": 8,
       "SupportLobs": true,
-      "PreserveAutoIncrement": true
+      "PreserveAutoIncrement": true,
+      "PreserveConstraints": true,               # Preserva Constraints (chaves estrangeiras)
+      "IncludeLobColumnsInReplication": true     # Garante que colunas LOB sejam replicadas
+      "EnableForeignKeyConstraints": true        # Habilita Constraints (chaves estrangeiras)
     },
     "FullLoadSettings": {
-      "CreatePkAfterFullLoad": true,  # Cria chave primária se faltar no destino
-      "TargetTablePrepMode": "DROP_AND_CREATE", # Recria as tabelas no destino
-      "MaxFullLoadSubTasks": 1       # Subtarefas paralelas durante a migração
+      "CreatePkAfterFullLoad": false,            # Não cria PKs após o load, pois já existirão
+      "TargetTablePrepMode": "DROP_AND_CREATE",  # Dropa e cria tabelas no target
+      "MaxFullLoadSubTasks": 1,                  # Mais threads para melhorar performance
+      "PreserveIdentity": true                   # Preserva IDs com auto-incremento
     },
     "ErrorBehavior": {
       "DataErrorPolicy": "LOG_ERROR",      # Continua no caso de erro de dados
