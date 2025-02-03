@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
 function appHost()
 {
     return env('APP_HOST', 'volleytrack.com');
@@ -8,49 +11,46 @@ function appHost()
 function appVersion()
 {
     $composerJson = file_get_contents(base_path('composer.json'));
-
-    $composerVersao = json_decode($composerJson, true)['version'] ?? null;
-
-    return trim($composerVersao);
+    return trim(json_decode($composerJson, true)['version'] ?? '');
 }
 
 function hasForeignKeyExist($table, $nameForeignKey)
 {
-    $conn = Schema::getConnection()->getDoctrineSchemaManager();
+    $databaseName = DB::getDatabaseName();
+    $result = DB::select("
+        SELECT CONSTRAINT_NAME
+        FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+        WHERE TABLE_SCHEMA = ?
+          AND TABLE_NAME = ?
+          AND CONSTRAINT_NAME = ?
+    ", [$databaseName, $table, $nameForeignKey]);
 
-    $foreignKeys = array_map(function ($key) {
-        return $key->getName();
-    }, $conn->listTableForeignKeys($table));
-
-    return in_array($nameForeignKey, $foreignKeys);
+    return !empty($result);
 }
 
 function hasIndexExist($table, $nameIndex)
 {
-    $conn = Schema::getConnection()->getDoctrineSchemaManager();
+    $databaseName = DB::getDatabaseName();
+    $result = DB::select("
+        SELECT INDEX_NAME
+        FROM INFORMATION_SCHEMA.STATISTICS
+        WHERE TABLE_SCHEMA = ?
+          AND TABLE_NAME = ?
+          AND INDEX_NAME = ?
+    ", [$databaseName, $table, $nameIndex]);
 
-    $index = array_map(function ($key) {
-        return $key->getName();
-    }, $conn->listTableIndexes($table));
-
-    return in_array($nameIndex, $index);
+    return !empty($result);
 }
 
 function hasEventExist($eventName)
 {
-    // Obter o nome do banco de dados do tenant ativo
     $dbName = DB::connection()->getDatabaseName();
-
-    if (!$dbName) {
-        throw new Exception('Nenhum banco de dados encontrado para o tenant ativo.');
-    }
-
-    $result = DB::connection()->select('
+    $result = DB::select("
         SELECT EVENT_NAME
         FROM INFORMATION_SCHEMA.EVENTS
         WHERE EVENT_SCHEMA = ? 
-            AND EVENT_NAME = ?
-    ', [$dbName, $eventName]);
+          AND EVENT_NAME = ?
+    ", [$dbName, $eventName]);
 
     return !empty($result);
 }
