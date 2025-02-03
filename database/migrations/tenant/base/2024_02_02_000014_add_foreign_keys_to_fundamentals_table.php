@@ -21,10 +21,6 @@ return new class() extends Migration
                         ->on('users')
                         ->onDelete('cascade');
                 }
-
-                if (!hasIndexExist('fundamentals', 'fundamentals_user_id_index')) {
-                    $table->index('user_id', 'fundamentals_user_id_index');
-                }
             });
         }
     }
@@ -40,10 +36,6 @@ return new class() extends Migration
             Schema::table('fundamentals', function (Blueprint $table) {
                 if (hasForeignKeyExist('fundamentals', 'fundamentals_user_id_foreign')) {
                     $table->dropForeign('fundamentals_user_id_foreign');
-                }
-
-                if (hasIndexExist('fundamentals', 'fundamentals_user_id_index')) {
-                    $table->dropIndex('fundamentals_user_id_index');
                 }
             });
         }

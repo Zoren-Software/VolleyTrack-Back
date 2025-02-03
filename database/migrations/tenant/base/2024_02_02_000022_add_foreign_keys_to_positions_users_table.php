@@ -28,14 +28,6 @@ return new class() extends Migration
                         ->on('users')
                         ->onDelete('cascade');
                 }
-
-                if (!hasIndexExist('positions_users', 'positions_users_position_id_index')) {
-                    $table->index('position_id', 'positions_users_position_id_index');
-                }
-
-                if (!hasIndexExist('positions_users', 'positions_users_user_id_index')) {
-                    $table->index('user_id', 'positions_users_user_id_index');
-                }
             });
         }
     }

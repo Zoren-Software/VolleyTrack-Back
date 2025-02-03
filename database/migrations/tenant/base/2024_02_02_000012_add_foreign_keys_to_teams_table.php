@@ -21,10 +21,6 @@ return new class() extends Migration
                         ->on('users')
                         ->onDelete('cascade');
                 }
-
-                if (!hasIndexExist('teams', 'teams_user_id_index')) {
-                    $table->index('user_id', 'teams_user_id_index');
-                }
             });
         }
     }
@@ -40,10 +36,6 @@ return new class() extends Migration
             Schema::table('teams', function (Blueprint $table) {
                 if (hasForeignKeyExist('teams', 'teams_user_id_foreign')) {
                     $table->dropForeign('teams_user_id_foreign');
-                }
-
-                if (hasIndexExist('teams', 'teams_user_id_index')) {
-                    $table->dropIndex('teams_user_id_index');
                 }
             });
         }

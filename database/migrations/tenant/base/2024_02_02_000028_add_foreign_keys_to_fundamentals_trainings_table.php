@@ -28,14 +28,6 @@ return new class() extends Migration
                         ->on('trainings')
                         ->onDelete('cascade');
                 }
-
-                if (!hasIndexExist('fundamentals_trainings', 'fundamentals_trainings_fundamental_id_index')) {
-                    $table->index('fundamental_id', 'fundamentals_trainings_fundamental_id_index');
-                }
-
-                if (!hasIndexExist('fundamentals_trainings', 'fundamentals_trainings_training_id_index')) {
-                    $table->index('training_id', 'fundamentals_trainings_training_id_index');
-                }
             });
         }
     }
@@ -55,14 +47,6 @@ return new class() extends Migration
 
                 if (hasForeignKeyExist('fundamentals_trainings', 'fundamentals_trainings_training_id_foreign')) {
                     $table->dropForeign('fundamentals_trainings_training_id_foreign');
-                }
-
-                if (hasIndexExist('fundamentals_trainings', 'fundamentals_trainings_fundamental_id_index')) {
-                    $table->dropIndex('fundamentals_trainings_fundamental_id_index');
-                }
-
-                if (hasIndexExist('fundamentals_trainings', 'fundamentals_trainings_training_id_index')) {
-                    $table->dropIndex('fundamentals_trainings_training_id_index');
                 }
             });
         }

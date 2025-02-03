@@ -16,8 +16,8 @@ return new class() extends Migration
         if (!Schema::hasTable('training_configs')) {
             Schema::create('training_configs', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('config_id')->index('training_configs_config_id_index');
-                $table->unsignedBigInteger('user_id')->index('training_configs_user_id_index');
+                $table->unsignedBigInteger('config_id');
+                $table->unsignedBigInteger('user_id');
                 $table->smallInteger('days_notification')->default(1);
                 $table->boolean('notification_team_by_email')->default(true);
                 $table->boolean('notification_technician_by_email')->default(true);

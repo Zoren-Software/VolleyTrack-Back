@@ -28,14 +28,6 @@ return new class() extends Migration
                         ->on('trainings')
                         ->onDelete('cascade');
                 }
-
-                if (!hasIndexExist('specific_fundamentals_trainings', 'specific_fundamentals_trainings_specific_fundamental_id_index')) {
-                    $table->index('specific_fundamental_id', 'specific_fundamentals_trainings_specific_fundamental_id_index');
-                }
-
-                if (!hasIndexExist('specific_fundamentals_trainings', 'specific_fundamentals_trainings_training_id_index')) {
-                    $table->index('training_id', 'specific_fundamentals_trainings_training_id_index');
-                }
             });
         }
     }
@@ -55,14 +47,6 @@ return new class() extends Migration
 
                 if (hasForeignKeyExist('specific_fundamentals_trainings', 'specific_fundamentals_trainings_training_id_foreign')) {
                     $table->dropForeign('specific_fundamentals_trainings_training_id_foreign');
-                }
-
-                if (hasIndexExist('specific_fundamentals_trainings', 'specific_fundamentals_trainings_specific_fundamental_id_index')) {
-                    $table->dropIndex('specific_fundamentals_trainings_specific_fundamental_id_index');
-                }
-
-                if (hasIndexExist('specific_fundamentals_trainings', 'specific_fundamentals_trainings_training_id_index')) {
-                    $table->dropIndex('specific_fundamentals_trainings_training_id_index');
                 }
             });
         }

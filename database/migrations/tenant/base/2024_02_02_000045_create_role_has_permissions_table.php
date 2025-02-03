@@ -10,33 +10,15 @@ return new class extends Migration
     {
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
+        $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';
         $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
-        $teams = config('permission.teams');
 
-        if (!Schema::hasTable($tableNames['model_has_roles'])) {
-            Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames, $pivotRole, $columnNames, $teams) {
+        if (!Schema::hasTable($tableNames['role_has_permissions'])) {
+            Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames, $pivotRole, $pivotPermission) {
+                $table->unsignedBigInteger($pivotPermission);
                 $table->unsignedBigInteger($pivotRole);
-                $table->string('model_type');
-                $table->unsignedBigInteger($columnNames['model_morph_key']);
-                $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_roles_model_id_model_type_index');
 
-                if ($teams) {
-                    $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
-                    $table->index($columnNames['team_foreign_key'], 'model_has_roles_team_foreign_key_index');
-
-                    $table->primary([
-                        $columnNames['team_foreign_key'],
-                        $pivotRole,
-                        $columnNames['model_morph_key'],
-                        'model_type'
-                    ], 'model_has_roles_primary');
-                } else {
-                    $table->primary([
-                        $pivotRole,
-                        $columnNames['model_morph_key'],
-                        'model_type'
-                    ], 'model_has_roles_primary');
-                }
+                $table->primary([$pivotPermission, $pivotRole], 'role_has_permissions_primary');
             });
         }
     }
@@ -44,6 +26,6 @@ return new class extends Migration
     public function down(): void
     {
         $tableNames = config('permission.table_names');
-        Schema::dropIfExists($tableNames['model_has_roles']);
+        Schema::dropIfExists($tableNames['role_has_permissions']);
     }
 };

@@ -28,14 +28,6 @@ return new class() extends Migration
                         ->on('users')
                         ->onDelete('cascade');
                 }
-
-                if (!hasIndexExist('trainings', 'trainings_team_id_index')) {
-                    $table->index('team_id', 'trainings_team_id_index');
-                }
-
-                if (!hasIndexExist('trainings', 'trainings_user_id_index')) {
-                    $table->index('user_id', 'trainings_user_id_index');
-                }
             });
         }
     }
@@ -55,14 +47,6 @@ return new class() extends Migration
 
                 if (hasForeignKeyExist('trainings', 'trainings_user_id_foreign')) {
                     $table->dropForeign('trainings_user_id_foreign');
-                }
-
-                if (hasIndexExist('trainings', 'trainings_team_id_index')) {
-                    $table->dropIndex('trainings_team_id_index');
-                }
-
-                if (hasIndexExist('trainings', 'trainings_user_id_index')) {
-                    $table->dropIndex('trainings_user_id_index');
                 }
             });
         }

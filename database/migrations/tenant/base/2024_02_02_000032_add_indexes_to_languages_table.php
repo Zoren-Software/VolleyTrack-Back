@@ -15,6 +15,13 @@ return new class() extends Migration
     {
         if (Schema::hasTable('languages')) {
             Schema::table('languages', function (Blueprint $table) {
+
+                if (!hasIndexExist('languages', 'languages_slug_unique')) {
+                    $table->unique('slug', 'languages_slug_unique');
+                }
+                if (!hasIndexExist('languages', 'languages_name_unique')) {
+                    $table->unique('name', 'languages_name_unique');
+                }
                 if (!hasIndexExist('languages', 'languages_slug_index')) {
                     $table->index('slug', 'languages_slug_index');
                 }
@@ -39,6 +46,12 @@ return new class() extends Migration
                 }
                 if (hasIndexExist('languages', 'languages_name_index')) {
                     $table->dropIndex('languages_name_index');
+                }
+                if (hasIndexExist('languages', 'languages_slug_sunique')) {
+                    $table->dropUnique('languages_slug_unique');
+                }
+                if (hasIndexExist('languages', 'languages_name_unique')) {
+                    $table->dropUnique('languages_name_unique');
                 }
             });
         }

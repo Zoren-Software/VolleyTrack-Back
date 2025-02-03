@@ -16,10 +16,10 @@ return new class extends Migration
         if (!Schema::hasTable('confirmation_trainings')) {
             Schema::create('confirmation_trainings', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('user_id')->nullable()->index('confirmation_trainings_user_id_index');
-                $table->foreignId('player_id')->index('confirmation_trainings_player_id_index');
-                $table->foreignId('training_id')->index('confirmation_trainings_training_id_index');
-                $table->foreignId('team_id')->index('confirmation_trainings_team_id_index');
+                $table->foreignId('user_id')->nullable();
+                $table->foreignId('player_id');
+                $table->foreignId('training_id');
+                $table->foreignId('team_id');
                 
                 $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
                 $table->boolean('presence')->default(false);

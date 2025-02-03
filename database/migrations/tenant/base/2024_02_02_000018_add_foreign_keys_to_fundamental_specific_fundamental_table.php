@@ -28,14 +28,6 @@ return new class() extends Migration
                         ->on('specific_fundamentals')
                         ->onDelete('cascade');
                 }
-
-                if (!hasIndexExist('fundamental_specific_fundamental', 'fundamental_specific_fundamental_fundamental_id_index')) {
-                    $table->index('fundamental_id', 'fundamental_specific_fundamental_fundamental_id_index');
-                }
-
-                if (!hasIndexExist('fundamental_specific_fundamental', 'fundamental_specific_fundamental_specific_fundamental_id_index')) {
-                    $table->index('specific_fundamental_id', 'fundamental_specific_fundamental_specific_fundamental_id_index');
-                }
             });
         }
     }
@@ -55,14 +47,6 @@ return new class() extends Migration
 
                 if (hasForeignKeyExist('fundamental_specific_fundamental', 'fundamental_specific_fundamental_specific_fundamental_id_foreign')) {
                     $table->dropForeign('fundamental_specific_fundamental_specific_fundamental_id_foreign');
-                }
-
-                if (hasIndexExist('fundamental_specific_fundamental', 'fundamental_specific_fundamental_fundamental_id_index')) {
-                    $table->dropIndex('fundamental_specific_fundamental_fundamental_id_index');
-                }
-
-                if (hasIndexExist('fundamental_specific_fundamental', 'fundamental_specific_fundamental_specific_fundamental_id_index')) {
-                    $table->dropIndex('fundamental_specific_fundamental_specific_fundamental_id_index');
                 }
             });
         }

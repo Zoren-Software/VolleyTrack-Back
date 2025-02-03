@@ -16,9 +16,9 @@ return new class() extends Migration
         if (!Schema::hasTable('configs')) {
             Schema::create('configs', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('user_id')->index('configs_user_id_index');
+                $table->unsignedBigInteger('user_id');
                 $table->string('name_tenant', 50)->unique();
-                $table->unsignedBigInteger('language_id')->index('configs_language_id_index');
+                $table->unsignedBigInteger('language_id');
                 $table->timestamps();
                 $table->softDeletes();
             });

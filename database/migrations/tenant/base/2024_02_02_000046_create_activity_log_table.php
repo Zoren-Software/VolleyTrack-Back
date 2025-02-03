@@ -16,9 +16,9 @@ return new class extends Migration
                 $table->bigIncrements('id');
                 $table->string('log_name')->nullable();
                 $table->text('description');
-                $table->nullableMorphs('subject', 'subject_index');
+                $table->nullableMorphs('subject');
                 $table->string('event')->nullable();
-                $table->nullableMorphs('causer', 'causer_index');
+                $table->nullableMorphs('causer');
                 $table->json('properties')->nullable();
                 $table->uuid('batch_uuid')->nullable();
                 $table->timestamps();
