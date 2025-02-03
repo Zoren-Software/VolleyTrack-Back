@@ -17,6 +17,7 @@ return new class extends Migration
                 $table->string('log_name')->nullable();
                 $table->text('description');
                 $table->nullableMorphs('subject', 'subject_index');
+                $table->string('event')->nullable();
                 $table->nullableMorphs('causer', 'causer_index');
                 $table->json('properties')->nullable();
                 $table->timestamps();
