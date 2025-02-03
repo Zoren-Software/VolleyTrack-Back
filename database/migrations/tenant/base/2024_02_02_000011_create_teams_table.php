@@ -13,15 +13,15 @@ return new class() extends Migration
      */
     public function up()
     {
-        Schema::create('teams', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users');
-
-            $table->string('name');
-
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        if (!Schema::hasTable('teams')) {
+            Schema::create('teams', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id')->index('teams_user_id_index');
+                $table->string('name');
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
