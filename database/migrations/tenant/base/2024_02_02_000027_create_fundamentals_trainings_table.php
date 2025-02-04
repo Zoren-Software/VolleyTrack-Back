@@ -16,8 +16,8 @@ return new class() extends Migration
         if (!Schema::hasTable('fundamentals_trainings')) {
             Schema::create('fundamentals_trainings', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('fundamental_id')->index('fundamentals_trainings_fundamental_id_index');
-                $table->unsignedBigInteger('training_id')->index('fundamentals_trainings_training_id_index');
+                $table->unsignedBigInteger('fundamental_id');
+                $table->unsignedBigInteger('training_id');
 
                 $table->softDeletes();
                 $table->timestamps();
