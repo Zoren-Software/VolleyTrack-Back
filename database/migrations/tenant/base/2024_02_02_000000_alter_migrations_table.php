@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         if (Schema::hasTable('migrations')) {
             if (!hasAutoIncrement('migrations')) {
-                DB::statement("ALTER TABLE `migrations` MODIFY COLUMN `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT");
+                DB::statement("ALTER TABLE `migrations` MODIFY COLUMN `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT");
             }
         }
     }

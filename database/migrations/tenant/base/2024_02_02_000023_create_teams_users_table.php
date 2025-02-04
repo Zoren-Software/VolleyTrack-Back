@@ -16,8 +16,8 @@ return new class() extends Migration
         if (!Schema::hasTable('teams_users')) {
             Schema::create('teams_users', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('team_id')->index('teams_users_team_id_index');
-                $table->unsignedBigInteger('user_id')->index('teams_users_user_id_index');
+                $table->unsignedBigInteger('team_id');
+                $table->unsignedBigInteger('user_id');
                 $table->enum('role', ['player', 'technician']);
 
                 $table->timestamps();
