@@ -22,6 +22,11 @@ return new class extends Migration
                 if (!hasIndexExist('notifications', 'notifications_notifiable_type_index')) {
                     $table->index('notifiable_type', 'notifications_notifiable_type_index');
                 }
+
+                // Adição do índice composto (notifiable_type + notifiable_id)
+                if (!hasIndexExist('notifications', 'notifications_notifiable_type_notifiable_id_index')) {
+                    $table->index(['notifiable_type', 'notifiable_id'], 'notifications_notifiable_type_notifiable_id_index');
+                }
             });
         }
     }
@@ -41,6 +46,11 @@ return new class extends Migration
 
                 if (hasIndexExist('notifications', 'notifications_notifiable_type_index')) {
                     $table->dropIndex('notifications_notifiable_type_index');
+                }
+
+                // Remover o índice composto (notifiable_type + notifiable_id)
+                if (hasIndexExist('notifications', 'notifications_notifiable_type_notifiable_id_index')) {
+                    $table->dropIndex('notifications_notifiable_type_notifiable_id_index');
                 }
             });
         }
