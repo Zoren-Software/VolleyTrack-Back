@@ -23,11 +23,6 @@ return new class() extends Migration
                 $table->date('birth_date')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
-
-                // Índices únicos
-                $table->unique('user_id', 'user_information_user_id_unique');
-                $table->unique('cpf', 'user_information_cpf_unique');
-                $table->unique('rg', 'user_information_rg_unique');
             });
         }
     }
