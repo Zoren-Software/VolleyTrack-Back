@@ -16,8 +16,12 @@ return new class() extends Migration
     {
         if (Schema::hasTable('configs')) {
             Schema::table('configs', function (Blueprint $table) {
-                if (!hasAutoIncrement('languages')) {
-                    DB::statement("ALTER TABLE languages MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                if (!hasAutoIncrement('configs')) {
+                    DB::statement("ALTER TABLE configs MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                }
+
+                if (!hasIndexExist('configs', 'configs_name_tenant_unique')) {
+                    $table->unique('name_tenant', 'configs_name_tenant_unique');
                 }
 
                 if (!hasForeignKeyExist('configs', 'configs_user_id_foreign')) {
