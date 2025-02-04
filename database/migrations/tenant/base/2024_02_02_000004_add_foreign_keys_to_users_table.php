@@ -28,6 +28,10 @@ return new class() extends Migration
                         ->on('users')  // Relacionamento recursivo na própria tabela
                         ->onDelete('cascade');
                 }
+
+                if (!hasIndexExist('users', 'users_email_unique')) {
+                    $table->unique('email', 'users_email_unique');
+                }
             });
         }
     }
