@@ -24,12 +24,6 @@ return new class extends Migration
                 $table->string('name');
                 $table->string('guard_name');
                 $table->timestamps();
-
-                if ($teams) {
-                    $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name'], 'roles_team_name_guard_unique');
-                } else {
-                    $table->unique(['name', 'guard_name'], 'roles_name_guard_unique');
-                }
             });
         }
     }
