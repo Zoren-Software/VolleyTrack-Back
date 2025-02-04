@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,6 +15,10 @@ return new class extends Migration
 
         if (Schema::hasTable($tableNames['roles'])) {
             Schema::table($tableNames['roles'], function (Blueprint $table) use ($columnNames, $teams) {
+                if (!hasAutoIncrement($tableNames['roles'])) {
+                    DB::statement("ALTER TABLE {$tableNames['roles']} MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                }
+                
                 // Verificação e Criação do Índice
                 if ($teams && !hasIndexExist($table->getTable(), 'roles_team_foreign_key_index')) {
                     $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');

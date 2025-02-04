@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class() extends Migration
 {
@@ -15,6 +16,10 @@ return new class() extends Migration
     {
         if (Schema::hasTable('fundamental_specific_fundamental')) {
             Schema::table('fundamental_specific_fundamental', function (Blueprint $table) {
+                if (!hasAutoIncrement('fundamental_specific_fundamental')) {
+                    DB::statement("ALTER TABLE fundamental_specific_fundamental MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                }
+
                 if (!hasForeignKeyExist('fundamental_specific_fundamental', 'fundamental_specific_fundamental_fundamental_id_foreign')) {
                     $table->foreign('fundamental_id', 'fundamental_specific_fundamental_fundamental_id_foreign')
                         ->references('id')

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -15,6 +16,9 @@ return new class extends Migration
 
         if (Schema::hasTable($tableNames['model_has_permissions'])) {
             Schema::table($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $pivotPermission, $columnNames, $teams) {
+                if (!hasAutoIncrement($tableNames['model_has_permissions'])) {
+                    DB::statement("ALTER TABLE {$tableNames['model_has_permissions']} MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                }
 
                 // Índice para o campo model_type + model_morph_key
                 if (!hasIndexExist($table->getTable(), 'model_has_permissions_model_id_model_type_index')) {

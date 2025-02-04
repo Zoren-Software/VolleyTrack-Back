@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class() extends Migration
 {
@@ -15,7 +16,9 @@ return new class() extends Migration
     {
         if (Schema::hasTable('languages')) {
             Schema::table('languages', function (Blueprint $table) {
-
+                if (!hasAutoIncrement('languages')) {
+                    DB::statement("ALTER TABLE languages MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                }
                 if (!hasIndexExist('languages', 'languages_slug_unique')) {
                     $table->unique('slug', 'languages_slug_unique');
                 }
