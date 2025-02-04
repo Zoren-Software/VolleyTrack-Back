@@ -22,7 +22,7 @@ return new class extends Migration
                 $table->foreignId('team_id');
                 
                 $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
-                $table->boolean('presence')->default(false);
+                $table->boolean('presence');
 
                 $table->timestamps();
                 $table->softDeletes();
