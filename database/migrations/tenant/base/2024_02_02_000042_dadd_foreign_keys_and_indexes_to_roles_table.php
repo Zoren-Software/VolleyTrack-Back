@@ -33,6 +33,12 @@ return new class extends Migration
                             ->onDelete('cascade');
                     }
                 }
+
+                if ($teams) {
+                    $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name'], 'roles_team_name_guard_unique');
+                } else {
+                    $table->unique(['name', 'guard_name'], 'roles_name_guard_unique');
+                }
             });
         }
     }
