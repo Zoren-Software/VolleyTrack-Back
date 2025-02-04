@@ -14,7 +14,7 @@ return new class extends Migration
         $teams = config('permission.teams');
 
         if (Schema::hasTable($tableNames['roles'])) {
-            Schema::table($tableNames['roles'], function (Blueprint $table) use ($columnNames, $teams) {
+            Schema::table($tableNames['roles'], function (Blueprint $table) use ($columnNames, $teams, $tableNames) {
                 if (!hasAutoIncrement($tableNames['roles'])) {
                     DB::statement("ALTER TABLE {$tableNames['roles']} MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
                 }

@@ -16,10 +16,6 @@ return new class extends Migration
 
         if (Schema::hasTable($tableNames['role_has_permissions'])) {
             Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames, $pivotPermission, $pivotRole) {
-                if (!hasAutoIncrement($tableNames['role_has_permissions'])) {
-                    DB::statement("ALTER TABLE {$tableNames['role_has_permissions']} MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
-                }
-
                 // Verificação e adição da foreign key para permission_id
                 if (!hasForeignKeyExist($table->getTable(), 'role_has_permissions_permission_id_foreign')) {
                     $table->foreign($pivotPermission, 'role_has_permissions_permission_id_foreign')
