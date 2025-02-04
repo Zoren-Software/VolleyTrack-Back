@@ -16,8 +16,8 @@ return new class() extends Migration
         if (!Schema::hasTable('trainings')) {
             Schema::create('trainings', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('team_id')->index('trainings_team_id_index');
-                $table->unsignedBigInteger('user_id')->index('trainings_user_id_index');
+                $table->unsignedBigInteger('team_id');
+                $table->unsignedBigInteger('user_id');
 
                 $table->string('name');
                 $table->text('description')->nullable();
