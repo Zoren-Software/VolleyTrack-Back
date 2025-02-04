@@ -28,6 +28,18 @@ return new class() extends Migration
                         ->on('users')
                         ->onDelete('cascade');
                 }
+
+                if (!hasIndexExist('user_information', 'user_information_user_id_unique')) {
+                    $table->unique('user_id', 'user_information_user_id_unique');
+                }
+
+                if (!hasIndexExist('user_information', 'user_information_cpf_unique')) {
+                    $table->unique('cpf', 'user_information_cpf_unique');
+                }
+
+                if (!hasIndexExist('user_information', 'user_information_rg_unique')) {
+                    $table->unique('rg', 'user_information_rg_unique');
+                }
             });
         }
     }
