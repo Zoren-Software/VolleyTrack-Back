@@ -27,6 +27,7 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
   - [**Como Executar o Projeto**](#como-executar-o-projeto)
     - [**Passos para Provisionar a Infraestrutura**](#passos-para-provisionar-a-infraestrutura)
       - [0. Selecione o ambiente desejado (`conta1` ou `conta2`).](#0-selecione-o-ambiente-desejado-conta1-ou-conta2)
+      - [**1. Inicializar o Terraform**:](#1-inicializar-o-terraform)
       - [**2. Validar o Plano**:](#2-validar-o-plano)
       - [**3. Aplicar o Plano**:](#3-aplicar-o-plano)
   - [Migração Route 53 no Laravel Vapor](#migração-route-53-no-laravel-vapor)
@@ -277,6 +278,14 @@ aws ec2 describe-subnets --query "Subnets[*].SubnetId" --region us-east-1 --prof
 ```
 
 Se houver conflitos, você deve alterar as subredes no arquivo `terraform/environments/conta2/terraform.tfvars` para subredes que não estão sendo utilizadas.
+
+Ainda antes de iniciar o terraform, é importante rodar o seguinte script para garantir que o banco de dados seja importado corretamente sem as foreign keys, mas que elas sejam adicionadas no momento do deploy.
+
+```bash
+./scripts/alter_migrations_for_migration_database-db.sh
+```
+
+Depois de rodar o script, você pode prosseguir com o provisionamento da infraestrutura.
 
 #### **1. Inicializar o Terraform**:
 
