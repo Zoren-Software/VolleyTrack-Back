@@ -107,7 +107,7 @@ Deve ficar como na imagem abaixo:
 
 2. Na conta 1, acesse o console da AWS e vá até o serviço **IAM**.
 
-3. Crie um novo usuário com permissões de acesso programático. Minha sugestão de nome é `terraform-migration`.
+3. Crie uma nova role(função) com permissões de acesso programático. Minha sugestão de nome é `terraform-migration-dev*` (no asterisco vai versão do e-mail).
 
 4. Adicione as permissões necessárias para o usuário, ter acesso as ações na AWS, utilize essa para conceder acesso total:
 
@@ -122,27 +122,25 @@ Deve ficar como na imagem abaixo:
 ![AWS IAM](./.docs/images/usuario-iam-terraform-migration.png)
 
 
-5. Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta). Você vai precisar delas para configurar o Terraform e variáveis de ambiente nos passos seguintes.
+5. Agora, na conta 2, acesse o console da AWS e vá até o serviço **IAM**.
 
-6. Agora, na conta 2, acesse o console da AWS e vá até o serviço **IAM**.
+6. Crie um novo usuário(user) com permissões de acesso programático. Minha sugestão de nome é `terraform-migration`.
 
-7. Crie um novo usuário com permissões de acesso programático. Minha sugestão de nome é `terraform-migration`.
-
-8. Adicione as permissões necessárias para o usuário, ter acesso as ações na AWS, utilize essa para conceder acesso total:
+7. Adicione as permissões necessárias para o usuário, ter acesso as ações na AWS, utilize essa para conceder acesso total:
 
 ```text
 AdministratorAccess
 ```
 
-9.  Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta).
+8.  Após a criação do usuário, copie as credenciais de acesso (chave de acesso e chave secreta).
 
-10.  Adicione essas credenciais da conta 1 e conta 2 no arquivo `terraform/.env`.
+9.  Adicione essas credenciais da conta 1 e conta 2 no arquivo `terraform/.env`.
 
-11.  Adicione as credenciais da conta 1 e conta 2 no arquivo `terraform/environments/conta2/terraform.tfvars` também.
+10.  Adicione as credenciais da conta 1 e conta 2 no arquivo `terraform/environments/conta2/terraform.tfvars` também.
 
-12.  Após a configuração das credenciais, você pode prosseguir com o provisionamento da infraestrutura.
+11.  Após a configuração das credenciais, você pode prosseguir com o provisionamento da infraestrutura.
 
-13. **Importante**: Após a conclusão do provisionamento, remova as credenciais do arquivo `.env` e `terraform/environments/conta2/terraform.tfvars` para garantir a segurança das informações.
+12. **Importante**: Após a conclusão do provisionamento, remova as credenciais do arquivo `.env` e `terraform/environments/conta2/terraform.tfvars` para garantir a segurança das informações.
 
 ## Configuração no Laravel Vapor
 
