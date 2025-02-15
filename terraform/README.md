@@ -121,6 +121,8 @@ Deve ficar como na imagem abaixo:
 
 ![AWS IAM](./.docs/images/usuario-iam-terraform-migration.png)
 
+> Após fazer o vinculo da role para o Laravel Vapor, vá para o painel do Laravel Vapor e crie o banco de dados, com o nome `volleytrack` e o banco de cache com o nome `volleytrack-cache`.
+
 
 5. Agora, na conta 2, acesse o console da AWS e vá até o serviço **IAM**.
 
