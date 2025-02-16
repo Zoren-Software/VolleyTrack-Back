@@ -33,7 +33,6 @@ return new class() extends Migration
             if ($this->foreignKeyExists($table, $foreignKey)) {
                 try {
                     DB::statement("ALTER TABLE {$table} DROP FOREIGN KEY {$foreignKey}");
-                    dump("Removida FK: {$foreignKey} de {$table}");
                 } catch (\Exception $e) {
                     dump("Erro ao remover FK {$foreignKey} de {$table}: " . $e->getMessage());
                 }
@@ -44,7 +43,6 @@ return new class() extends Migration
         if (Schema::hasTable('users')) {
             if (!hasAutoIncrement('users')) {
                 DB::statement("ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
-                dump("Alterado users.id para BIGINT UNSIGNED AUTO_INCREMENT");
             }
         }
 
@@ -55,14 +53,11 @@ return new class() extends Migration
         foreach ($foreignKeys as $table => $foreignKey) {
             if (Schema::hasTable($table) && !$this->foreignKeyExists($table, $foreignKey)) {
                 Schema::table($table, function (Blueprint $tableB) use ($foreignKey, $table) {
-                    dump("Recriando FK: {$foreignKey} em {$table}");
                     $tableB->foreign('user_id', $foreignKey)
                         ->references('id')
                         ->on('users')
                         ->onDelete('cascade');
                 });
-            } else {
-                dump("FK já existe: {$foreignKey} em {$table}, pulando recriação.");
             }
         }
     }
@@ -93,7 +88,6 @@ return new class() extends Migration
             if ($this->foreignKeyExists($table, $foreignKey)) {
                 try {
                     DB::statement("ALTER TABLE {$table} DROP FOREIGN KEY {$foreignKey}");
-                    dump("Removida FK: {$foreignKey} de {$table} (rollback)");
                 } catch (\Exception $e) {
                     dump("Erro ao remover FK {$foreignKey} de {$table} (rollback): " . $e->getMessage());
                 }
@@ -107,14 +101,11 @@ return new class() extends Migration
         foreach ($foreignKeys as $table => $foreignKey) {
             if (Schema::hasTable($table) && !$this->foreignKeyExists($table, $foreignKey)) {
                 Schema::table($table, function (Blueprint $tableB) use ($foreignKey, $table) {
-                    dump("Recriando FK: {$foreignKey} em {$table} (rollback)");
                     $tableB->foreign('user_id', $foreignKey)
                         ->references('id')
                         ->on('users')
                         ->onDelete('cascade');
                 });
-            } else {
-                dump("FK já existe: {$foreignKey} em {$table}, pulando recriação.");
             }
         }
     }
