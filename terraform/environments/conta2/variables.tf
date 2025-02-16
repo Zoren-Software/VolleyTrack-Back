@@ -51,11 +51,7 @@ variable "AWS_SECRET_ACCESS_KEY" {
 
 
 
-variable "vpc_id" {
-  description = "ID da VPC para associar ao recurso"
-  type        = string
-  default     = "vpc-001000340dd5aff43"  # Substitua pelo valor correto da sua VPC
-}
+
 
 variable "db_subnet_group_name" {
   description = "Nome do grupo de subnets do RDS"

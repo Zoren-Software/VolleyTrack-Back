@@ -69,15 +69,6 @@ module "dms" {
 
   # IDs das subnets que o DMS vai usar
 
-  subnet_ids = [
-    "subnet-0a03a0e0a19423210",
-    "subnet-0b5a3c2ffffaafee6",
-    "subnet-043ec4afffe7accd7",
-    "subnet-05e45fb79b3cc92dc",
-    "subnet-07e77f53abd7a06dd",
-    "subnet-0401a05a72a03e94a"
-  ]
-
   source_db_user      = var.source_db_user
   source_db_password  = var.source_db_password
   source_db_endpoint  = var.source_db_endpoint

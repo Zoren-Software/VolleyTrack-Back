@@ -31,7 +31,3 @@ variable "target_db_name" {
 }
 
 # Subnets para o DMS usar
-variable "subnet_ids" {
-  description = "Lista de IDs das subnets que o DMS vai usar"
-  type        = list(string)
-}

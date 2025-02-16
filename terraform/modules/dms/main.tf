@@ -1,10 +1,29 @@
+resource "aws_security_group" "dms_security_group" {
+  name_prefix = "dms-security-group"
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Permitir o tráfego de entrada na porta do MySQL
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "DMS Security Group"
+  }
+}
 resource "aws_dms_replication_instance" "replication_instance" {
   replication_instance_class = "dms.t3.micro"  # Classe econômica para testes.
   allocated_storage          = 50
   engine_version             = "3.5.4"         # Teste uma versão estável.
   replication_instance_id    = "dms-replication-instance"
-  replication_subnet_group_id = aws_dms_replication_subnet_group.dms_subnet_group.id
-  vpc_security_group_ids      = ["sg-09e9e3daafb99d261"]
   # Configuração adicional
   publicly_accessible = true
   tags = {
@@ -135,37 +154,9 @@ resource "aws_dms_replication_task" "migration_task" {
 }
 
 # Security Group para permitir que o DMS se comunique com o banco de dados
-resource "aws_security_group" "dms_security_group" {
-  name_prefix = "dms-security-group"
 
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Permitir o tráfego de entrada na porta do MySQL
-  }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
-  tags = {
-    Name = "DMS Security Group"
-  }
-}
-
-resource "aws_dms_replication_subnet_group" "dms_subnet_group" {
-  replication_subnet_group_id          = "dms-subnet-group"
-  replication_subnet_group_description = "Subnet group for DMS replication"  # Adicione uma descrição aqui
-  subnet_ids                           = var.subnet_ids  # IDs das subnets, como configurado anteriormente
-
-  tags = {
-    Name = "DMS Subnet Group"
-  }
-}
 
 # Cria a role se ela não existir. Se já existir, o Terraform lidará com o erro.
 resource "aws_iam_role" "dms_vpc_role" {
