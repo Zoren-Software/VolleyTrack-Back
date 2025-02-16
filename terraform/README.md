@@ -107,7 +107,7 @@ Deve ficar como na imagem abaixo:
 
 2. Na conta 1, acesse o console da AWS e vá até o serviço **IAM**.
 
-3. Crie uma nova role(função) com permissões de acesso programático. Minha sugestão de nome é `terraform-migration-dev*` (no asterisco vai versão do e-mail).
+3. Crie uma nova role(função) com permissões de acesso programático. Minha sugestão de nome é `laravel-vapor-role-dev*` (no asterisco vai versão do e-mail).
 
 4. Adicione as permissões necessárias para o usuário, ter acesso as ações na AWS, utilize essa para conceder acesso total:
 
@@ -120,8 +120,6 @@ AmazonRoute53FullAccess
 Deve ficar como na imagem abaixo:
 
 ![AWS IAM](./.docs/images/usuario-iam-terraform-migration.png)
-
-> Após fazer o vinculo da role para o Laravel Vapor, vá para o painel do Laravel Vapor e crie o banco de dados, com o nome `volleytrack` e o banco de cache com o nome `volleytrack-cache`.
 
 
 5. Agora, na conta 2, acesse o console da AWS e vá até o serviço **IAM**.
@@ -148,7 +146,7 @@ AdministratorAccess
 
 ### Criar Projeto no Laravel Vapor
 
-Para iniciar, crie um Projeto no Laravel Vapor pode criar com qualquer nome, mas esse projeto provisionará toda a infraestrutura dos nossos projetos Backend, o do Multi Tenancy e o Landing Page. Eu geralmente o crio com o nome `VolleyTrack Production`.
+Para iniciar, crie um Projeto no Laravel Vapor pode criar com qualquer nome, mas esse projeto provisionará toda a infraestrutura dos nossos projetos Backend, o do Multi Tenancy e o Landing Page. Eu geralmente o crio com o nome `VolleyTrack Production Dev*`.
 
 ### Criar Role no AWS IAM, para o Laravel Vapor
 
@@ -206,7 +204,7 @@ Deve mostrar algo como na imagem abaixo:
 ![AWS Role](./.docs/images/vapor-env-list.png)
 
 ```bash
-composer vapor env pull production
+composer vapor env:pull production
 ```
 
 Deve mostrar algo como na imagem abaixo:
@@ -318,6 +316,8 @@ Confirme com `yes` quando solicitado.
 ```bash
 yes
 ```
+
+> Esse comando pode demorar alguns minutos para ser concluído, dependendo da quantidade de recursos a serem provisionados. Aguarde até que o processo seja concluído. Demora cerca de 20 minutos. (15m da última migração feita).
 
 ## Migração Route 53 no Laravel Vapor
 
