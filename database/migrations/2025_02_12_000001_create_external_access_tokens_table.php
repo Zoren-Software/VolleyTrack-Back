@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('external_access_tokens', function (Blueprint $table) {
-            $table->id();
-            $table->string('token');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('external_access_tokens')) {
+            Schema::create('external_access_tokens', function (Blueprint $table) {
+                $table->unsignedBigInteger('id')->primary(); // ID sem auto incremento
+                $table->string('token');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
