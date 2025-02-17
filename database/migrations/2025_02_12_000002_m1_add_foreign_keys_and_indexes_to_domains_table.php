@@ -28,7 +28,7 @@ return new class() extends Migration
                         ->onDelete('cascade');
                 }
 
-                if (Schema::hasColumn('domains', 'domain')) {
+                if (Schema::hasColumn('domains', 'domain') && !hasIndexExist('domains', 'domains_domain_unique')) {
                     $table->unique('domain');
                 }
             });

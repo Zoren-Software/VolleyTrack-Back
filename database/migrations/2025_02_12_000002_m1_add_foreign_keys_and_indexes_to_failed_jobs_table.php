@@ -19,7 +19,7 @@ return new class() extends Migration
                 if (!hasAutoIncrement('failed_jobs')) {
                     DB::statement("ALTER TABLE failed_jobs MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
                 }
-                if (Schema::hasColumn('failed_jobs', 'uuid')) {
+                if (Schema::hasColumn('failed_jobs', 'uuid') && !hasIndexExist('failed_jobs', 'failed_jobs_uuid_unique')) {
                     $table->unique('uuid');
                 }
             });

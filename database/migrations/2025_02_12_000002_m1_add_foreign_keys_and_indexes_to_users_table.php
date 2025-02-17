@@ -19,7 +19,7 @@ return new class() extends Migration
                 if (!hasAutoIncrement('users')) {
                     DB::statement("ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
                 }
-                if (Schema::hasColumn('users', 'email')) {
+                if (Schema::hasColumn('users', 'email') && !hasIndexExist('users', 'users_email_unique')) {
                     $table->unique('email');
                 }
             });
