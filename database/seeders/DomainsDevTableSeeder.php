@@ -21,7 +21,11 @@ class DomainsDevTableSeeder extends Seeder
             $domains = Domain::all();
             foreach ($domains as $domain) {
                 if (strpos($domain->domain, '.volleytrack.com') !== false) {
-                    $domain->domain = str_replace('.volleytrack.com', '.volleytrack.local', $domain->domain);
+                    $domain->domain = str_replace(
+                        '.volleytrack.com',
+                        '.volleytrack.local',
+                        $domain->domain
+                    );
                     $domain->save();
                 }
             }
