@@ -53,6 +53,7 @@
       <file>./tests/Feature/GraphQL/ConfirmationTrainingTest.php</file>
     </testsuite>
     <testsuite name="Database">
+        <directory suffix="Test.php">./tests/Feature/Database/Central</directory>
         <directory suffix="Test.php">./tests/Feature/Database/Tenants</directory>
     </testsuite>
   </testsuites>
