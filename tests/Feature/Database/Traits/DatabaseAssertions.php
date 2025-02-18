@@ -146,4 +146,24 @@ trait DatabaseAssertions
             "Some unique keys are missing in the '{$this->table}' table: " . implode(', ', $missingUniqueKeys)
         );
     }
+
+    /**
+     * Verificar o total de campos no array de campos e na tabela.
+     *
+     * @return void
+     */
+    public function verifyTotalFields()
+    {
+        $this->ensureTableExists();
+
+        $columns = Schema::getColumnListing($this->table);
+        $totalFieldsArray = count(static::$fields ?? []);
+        $totalFieldsTable = count($columns);
+
+        $this->assertEquals(
+            $totalFieldsArray,
+            $totalFieldsTable,
+            "The total number of fields in the '{$this->table}' table does not match. Expected: {$totalFieldsArray}. Found: {$totalFieldsTable}."
+        );
+    }
 }

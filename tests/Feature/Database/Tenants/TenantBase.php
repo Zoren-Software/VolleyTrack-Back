@@ -69,4 +69,14 @@ class TenantBase extends TestCase
     {
         $this->verifyUniqueKeys();
     }
+
+    /**
+     * Verificar número total de campos na tabela.
+     * @test
+     * @return void
+     */
+    public function databaseVerifyTotalFields()
+    {
+        $this->verifyTotalFields();
+    }
 }
