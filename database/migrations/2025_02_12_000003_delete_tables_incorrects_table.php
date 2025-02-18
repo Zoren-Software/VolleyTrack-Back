@@ -7,6 +7,7 @@ return new class() extends Migration
 {
     /**
      * Run the migrations.
+     * NOTE - Deletar na próxima consolidação de migrations
      *
      * @return void
      */
