@@ -81,6 +81,10 @@ trait DatabaseAssertions
     {
         $this->ensureTableExists();
 
+        if (empty(static::$autoIncrements)) {
+            $this->markTestSkipped("No foreign keys for table '{$this->table}'.");
+        }
+
         foreach (static::$autoIncrements as $column) {
             $this->assertTrue(
                 hasAutoIncrement($this->table, $column),
