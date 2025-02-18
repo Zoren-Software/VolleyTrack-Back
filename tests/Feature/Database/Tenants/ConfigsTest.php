@@ -23,7 +23,7 @@ class ConfigsTest extends TenantBase
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment
 
     public static $foreignKeys = [
-        //'configs_user_id_foreign',
+        'configs_user_id_foreign',
         'configs_language_id_foreign'
     ]; // Define as chaves estrangeiras
 
