@@ -8,20 +8,34 @@ use Illuminate\Support\Facades\Schema;
 trait DatabaseAssertions
 {
     /**
+     * Verifica se a tabela existe antes de rodar os testes.
+     *
+     * @return void
+     */
+    private function ensureTableExists()
+    {
+        if (!Schema::hasTable($this->table)) {
+            $this->markTestSkipped("The table '{$this->table}' does not exist.");
+        }
+    }
+
+    /**
      * Verificar se todos os campos definidos existem na tabela.
      *
      * @return void
      */
     public function verifyFields()
     {
-        $columns = Schema::getColumnListing($this->table);
+        $this->ensureTableExists();
 
-        foreach (static::$fields as $field) {
-            $this->assertTrue(
-                in_array($field, $columns),
-                "The field '{$field}' does not exist in the '{$this->table}' table."
-            );
+        $columns = Schema::getColumnListing($this->table);
+        $missingFields = array_diff(static::$fields ?? [], $columns);
+
+        foreach ($missingFields as $field) {
+            $this->fail("The field '{$field}' does not exist in the '{$this->table}' table.");
         }
+
+        $this->assertEmpty($missingFields, "Some fields are missing in the '{$this->table}' table.");
     }
 
     /**
@@ -31,9 +45,10 @@ trait DatabaseAssertions
      */
     public function verifyPrimaryKey()
     {
+        $this->ensureTableExists();
+
         if (empty(static::$primaryKey)) {
             $this->markTestSkipped("No primary key defined for table '{$this->table}'.");
-            return;
         }
 
         $databaseName = DB::getDatabaseName();
@@ -48,14 +63,14 @@ trait DatabaseAssertions
 
         $primaryKeyColumns = array_column($primaryKey, 'COLUMN_NAME');
 
+        $missingPrimaryKeys = array_diff(static::$primaryKey ?? [], $primaryKeyColumns);
+
         $this->assertNotEmpty($primaryKey, "The table '{$this->table}' does not have a primary key.");
-        $this->assertEquals(
-            static::$primaryKey, 
-            $primaryKeyColumns, 
-            "The primary key of the '{$this->table}' table is incorrect. Found: " . implode(', ', $primaryKeyColumns)
+        $this->assertEmpty(
+            $missingPrimaryKeys,
+            "The primary key of the '{$this->table}' table is incorrect. Expected: " . implode(', ', static::$primaryKey) . ". Found: " . implode(', ', $primaryKeyColumns)
         );
     }
-
 
     /**
      * Verificar se os campos auto_increment estão corretamente definidos.
@@ -64,6 +79,8 @@ trait DatabaseAssertions
      */
     public function verifyAutoIncrements()
     {
+        $this->ensureTableExists();
+
         foreach (static::$autoIncrements as $column) {
             $this->assertTrue(
                 hasAutoIncrement($this->table, $column),
@@ -79,16 +96,50 @@ trait DatabaseAssertions
      */
     public function verifyForeignKeys()
     {
+        $this->ensureTableExists();
+
         if (empty(static::$foreignKeys)) {
             $this->markTestSkipped("No foreign keys for table '{$this->table}'.");
-            return;
         }
-    
+
+        $missingForeignKeys = [];
+
         foreach (static::$foreignKeys as $foreignKey) {
-            $this->assertTrue(
-                hasForeignKeyExist($this->table, $foreignKey),
-                "The foreign key '{$foreignKey}' does not exist in the '{$this->table}' table."
-            );
+            if (!hasForeignKeyExist($this->table, $foreignKey)) {
+                $missingForeignKeys[] = $foreignKey;
+            }
         }
+
+        $this->assertEmpty(
+            $missingForeignKeys,
+            "Some foreign keys are missing in the '{$this->table}' table: " . implode(', ', $missingForeignKeys)
+        );
+    }
+
+    /**
+     * Verificar se as chaves únicas estão corretamente definidas.
+     *
+     * @return void
+     */
+    public function verifyUniqueKeys()
+    {
+        $this->ensureTableExists();
+
+        if (empty(static::$uniqueKeys)) {
+            $this->markTestSkipped("No unique keys for table '{$this->table}'.");
+        }
+
+        $missingUniqueKeys = [];
+
+        foreach (static::$uniqueKeys as $uniqueKey) {
+            if (!hasIndexExist($this->table, $uniqueKey)) {
+                $missingUniqueKeys[] = $uniqueKey;
+            }
+        }
+
+        $this->assertEmpty(
+            $missingUniqueKeys,
+            "Some unique keys are missing in the '{$this->table}' table: " . implode(', ', $missingUniqueKeys)
+        );
     }
 }

@@ -59,4 +59,14 @@ class TenantBase extends TestCase
     {
         $this->verifyAutoIncrements();
     }
+
+    /**
+     * Verificar se as chaves únicas estão corretamente definidas.
+     * @test
+     * @return void
+     */
+    public function databaseVerifyUniqueKeys()
+    {
+        $this->verifyUniqueKeys();
+    }
 }
