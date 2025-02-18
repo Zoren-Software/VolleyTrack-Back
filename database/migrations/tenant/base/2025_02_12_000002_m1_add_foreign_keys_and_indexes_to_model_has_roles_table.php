@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -53,7 +52,7 @@ return new class extends Migration
         $teams = config('permission.teams');
 
         if (Schema::hasTable($tableNames['model_has_roles'])) {
-            Schema::table($tableNames['model_has_roles'], function (Blueprint $table) use ($columnNames, $teams) {
+            Schema::table($tableNames['model_has_roles'], function (Blueprint $table) use ($teams) {
 
                 // Remover índices
                 if (hasIndexExist($table->getTable(), 'model_has_roles_model_id_model_type_index')) {

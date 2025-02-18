@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -43,7 +42,7 @@ return new class extends Migration
         $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
 
         if (Schema::hasTable($tableNames['role_has_permissions'])) {
-            Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) use ($pivotPermission, $pivotRole) {
+            Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) {
 
                 // Remover chaves estrangeiras
                 if (hasForeignKeyExist($table->getTable(), 'role_has_permissions_permission_id_foreign')) {

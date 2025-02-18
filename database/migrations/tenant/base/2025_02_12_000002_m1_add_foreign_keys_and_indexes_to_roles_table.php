@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -88,7 +88,7 @@ return new class extends Migration
         $columnNames = config('permission.column_names');
 
         if (Schema::hasTable($tableNames['roles'])) {
-            Schema::table($tableNames['roles'], function (Blueprint $table) use ($columnNames) {
+            Schema::table($tableNames['roles'], function (Blueprint $table) {
                 if (hasIndexExist($table->getTable(), 'roles_team_foreign_key_index')) {
                     $table->dropIndex('roles_team_foreign_key_index');
                 }

@@ -14,7 +14,7 @@ return new class extends Migration
         $teams = config('permission.teams');
 
         if (!Schema::hasTable($tableNames['model_has_permissions'])) {
-            Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $pivotPermission, $columnNames, $teams) {
+            Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($pivotPermission, $columnNames, $teams) {
                 $table->unsignedBigInteger($pivotPermission);
                 $table->string('model_type');
                 $table->unsignedBigInteger($columnNames['model_morph_key']);
@@ -28,13 +28,13 @@ return new class extends Migration
                         $columnNames['team_foreign_key'],
                         $pivotPermission,
                         $columnNames['model_morph_key'],
-                        'model_type'
+                        'model_type',
                     ], 'model_has_permissions_primary');
                 } else {
                     $table->primary([
                         $pivotPermission,
                         $columnNames['model_morph_key'],
-                        'model_type'
+                        'model_type',
                     ], 'model_has_permissions_primary');
                 }
             });

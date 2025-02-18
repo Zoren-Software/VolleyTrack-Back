@@ -20,7 +20,7 @@ return new class extends Migration
                 $table->foreignId('player_id');
                 $table->foreignId('training_id');
                 $table->foreignId('team_id');
-                
+
                 $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
                 $table->boolean('presence');
 

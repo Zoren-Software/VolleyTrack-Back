@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
@@ -42,7 +42,7 @@ return new class() extends Migration
         // 🚀 Alterando a coluna ID da tabela users
         if (Schema::hasTable('users')) {
             if (!hasAutoIncrement('users')) {
-                DB::statement("ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
             }
         }
 
@@ -52,7 +52,7 @@ return new class() extends Migration
         // 🚀 Recriando Foreign Keys (somente se não existirem)
         foreach ($foreignKeys as $table => $foreignKey) {
             if (Schema::hasTable($table) && !$this->foreignKeyExists($table, $foreignKey)) {
-                Schema::table($table, function (Blueprint $tableB) use ($foreignKey, $table) {
+                Schema::table($table, function (Blueprint $tableB) use ($foreignKey) {
                     $tableB->foreign('user_id', $foreignKey)
                         ->references('id')
                         ->on('users')
@@ -100,7 +100,7 @@ return new class() extends Migration
         // 🚀 Recriando Foreign Keys depois do rollback
         foreach ($foreignKeys as $table => $foreignKey) {
             if (Schema::hasTable($table) && !$this->foreignKeyExists($table, $foreignKey)) {
-                Schema::table($table, function (Blueprint $tableB) use ($foreignKey, $table) {
+                Schema::table($table, function (Blueprint $tableB) use ($foreignKey) {
                     $tableB->foreign('user_id', $foreignKey)
                         ->references('id')
                         ->on('users')
@@ -113,8 +113,8 @@ return new class() extends Migration
     /**
      * Verifica se a chave estrangeira existe na tabela.
      *
-     * @param string $table Nome da tabela
-     * @param string $foreignKey Nome da chave estrangeira
+     * @param  string  $table  Nome da tabela
+     * @param  string  $foreignKey  Nome da chave estrangeira
      * @return bool Retorna true se a FK existir, false se não existir
      */
     private function foreignKeyExists(string $table, string $foreignKey): bool

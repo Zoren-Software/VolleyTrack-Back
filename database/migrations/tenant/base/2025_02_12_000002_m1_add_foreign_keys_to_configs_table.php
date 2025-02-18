@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
@@ -17,7 +17,7 @@ return new class() extends Migration
         if (Schema::hasTable('configs')) {
             Schema::table('configs', function (Blueprint $table) {
                 if (!hasAutoIncrement('configs')) {
-                    DB::statement("ALTER TABLE configs MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                    DB::statement('ALTER TABLE configs MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
                 }
 
                 if (!hasIndexExist('configs', 'configs_name_tenant_unique')) {

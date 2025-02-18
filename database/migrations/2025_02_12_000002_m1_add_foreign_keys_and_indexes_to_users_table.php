@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
@@ -17,7 +17,7 @@ return new class() extends Migration
         if (Schema::hasTable('users')) {
             Schema::table('users', function (Blueprint $table) {
                 if (!hasAutoIncrement('users')) {
-                    DB::statement("ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                    DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
                 }
                 if (Schema::hasColumn('users', 'email') && !hasIndexExist('users', 'users_email_unique')) {
                     $table->unique('email');
@@ -36,7 +36,7 @@ return new class() extends Migration
         // Reverter a alteração do AUTO_INCREMENT
         if (Schema::hasTable('users')) {
             Schema::table('users', function (Blueprint $table) {
-                DB::statement("ALTER TABLE users MODIFY id BIGINT UNSIGNED");
+                DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED');
             });
         }
     }

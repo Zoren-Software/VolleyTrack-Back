@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
@@ -19,7 +19,7 @@ return new class() extends Migration
 
                 // Verificação do AUTO_INCREMENT
                 if (!hasAutoIncrement('user_information')) {
-                    DB::statement("ALTER TABLE user_information MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                    DB::statement('ALTER TABLE user_information MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
                 }
 
                 if (!hasForeignKeyExist('user_information', 'user_information_user_id_foreign')) {

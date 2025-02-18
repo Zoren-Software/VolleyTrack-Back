@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
@@ -22,7 +22,7 @@ return new class() extends Migration
             Schema::table('teams', function (Blueprint $table) {
                 // Verificar se o campo ID possui AUTO_INCREMENT
                 if (!hasAutoIncrement('teams')) {
-                    DB::statement("ALTER TABLE teams MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                    DB::statement('ALTER TABLE teams MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
                 }
 
                 if (!hasForeignKeyExist('teams', 'teams_user_id_foreign')) {

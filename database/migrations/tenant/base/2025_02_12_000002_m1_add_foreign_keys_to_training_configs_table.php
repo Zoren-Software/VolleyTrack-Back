@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
@@ -17,7 +17,7 @@ return new class() extends Migration
         if (Schema::hasTable('training_configs')) {
             Schema::table('training_configs', function (Blueprint $table) {
                 if (!hasAutoIncrement('training_configs')) {
-                    DB::statement("ALTER TABLE training_configs MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+                    DB::statement('ALTER TABLE training_configs MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
                 }
 
                 if (!hasForeignKeyExist('training_configs', 'training_configs_config_id_foreign')) {

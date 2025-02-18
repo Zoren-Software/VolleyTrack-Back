@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Central\ExternalAccessToken;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Domain;
+use Illuminate\Database\Seeder;
 
 class DomainsDevTableSeeder extends Seeder
 {
@@ -19,7 +17,6 @@ class DomainsDevTableSeeder extends Seeder
         /**
          * NOTE - Criando token se já não existir
          */
-        
         if (env('APP_ENV') !== 'production') {
             $domains = Domain::all();
             foreach ($domains as $domain) {
@@ -29,6 +26,5 @@ class DomainsDevTableSeeder extends Seeder
                 }
             }
         }
-
     }
 }
