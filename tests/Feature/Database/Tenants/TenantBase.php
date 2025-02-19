@@ -88,4 +88,14 @@ class TenantBase extends TestCase
     public function databaseVerifyTotalForeignKeys() {
         $this->verifyTotalForeignKeys();
     }
+
+    /**
+     * Verificar se o total de unique keys está correto.
+     * @test
+     * @return void
+     */
+    public function databaseVerifyTotalUniqueKeys()
+    {
+        $this->verifyTotalUniqueKeys();
+    }
 }

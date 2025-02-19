@@ -90,3 +90,24 @@ function getForeignKeys(string $table): array
 
     return array_column($foreignKeys, 'CONSTRAINT_NAME');
 }
+
+/**
+ * Retorna uma lista de unique keys de uma tabela no banco de dados.
+ *
+ * @param  string  $table  Nome da tabela
+ * @return array Lista de unique keys
+ */
+function getUniqueKeys($table)
+{
+    $databaseName = DB::getDatabaseName();
+
+    $results = DB::select("
+        SELECT CONSTRAINT_NAME 
+        FROM information_schema.TABLE_CONSTRAINTS 
+        WHERE TABLE_SCHEMA = ? 
+        AND TABLE_NAME = ? 
+        AND CONSTRAINT_TYPE = 'UNIQUE'
+    ", [$databaseName, $table]);
+
+    return array_column($results, 'CONSTRAINT_NAME');
+}

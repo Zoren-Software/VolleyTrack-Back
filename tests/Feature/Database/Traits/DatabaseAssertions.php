@@ -190,4 +190,29 @@ trait DatabaseAssertions
             "The total number of foreign keys in the '{$this->table}' table does not match. Expected: {$totalForeignKeysArray}. Found: {$totalForeignKeysTable}."
         );
     }
+
+    /**
+     * Verificar o total de unique keys definidos no array e na tabela do banco.
+     *
+     * @return void
+     */
+    public function verifyTotalUniqueKeys()
+    {
+        $this->ensureTableExists();
+
+        // Total de unique keys definidos no array de testes
+        $totalUniqueKeysArray = count(static::$uniqueKeys ?? []);
+
+        // Total de unique keys reais no banco
+        $uniqueKeysFromTable = getUniqueKeys($this->table);
+        $totalUniqueKeysTable = is_array($uniqueKeysFromTable) ? count($uniqueKeysFromTable) : 0;
+
+        // Comparação e erro se os valores forem diferentes
+        $this->assertEquals(
+            $totalUniqueKeysArray,
+            $totalUniqueKeysTable,
+            "The total number of unique keys in the '{$this->table}' table does not match. Expected: {$totalUniqueKeysArray}. Found: {$totalUniqueKeysTable}."
+        );
+    }
+
 }
