@@ -18,7 +18,9 @@ class ModelHasPermissionsTest extends TenantBase
 
     public static $autoIncrements = []; // Nenhuma coluna auto_increment
 
-    public static $foreignKeys = []; // Nenhuma chave estrangeira definida
+    public static $foreignKeys = [
+        'model_has_permissions_permission_id_foreign' // Verifique o nome correto no banco
+    ];
 
     public static $uniqueKeys = []; // Nenhuma chave única definida
 

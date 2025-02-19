@@ -24,7 +24,9 @@ class UserInformationTest extends TenantBase
 
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = []; // Nenhuma chave estrangeira foi definida
+    public static $foreignKeys = [
+        'user_information_user_id_foreign' // Nome correto da FK
+    ];
 
     public static $uniqueKeys = [
         'user_information_user_id_unique',

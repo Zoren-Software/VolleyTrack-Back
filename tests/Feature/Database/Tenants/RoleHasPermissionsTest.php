@@ -22,7 +22,9 @@ class RoleHasPermissionsTest extends TenantBase
 
     public static $foreignKeys = [
         'role_has_permissions_role_id_foreign',
-    ]; // Chaves estrangeiras definidas
+        'role_has_permissions_permission_id_foreign',
+    ];
+    
 
     public static $uniqueKeys = []; // Nenhuma chave única
 }

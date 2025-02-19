@@ -18,7 +18,10 @@ class ModelHasRolesTest extends TenantBase
 
     public static $autoIncrements = []; // Nenhuma coluna auto_increment
 
-    public static $foreignKeys = []; // Nenhuma chave estrangeira definida
+    public static $foreignKeys = [
+        'model_has_roles_role_id_foreign' // Nome correto da FK no banco
+    ];
+    
 
     public static $uniqueKeys = []; // Nenhuma chave única definida
 

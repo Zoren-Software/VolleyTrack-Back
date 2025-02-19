@@ -28,7 +28,8 @@ class ConfirmationTrainingsTest extends TenantBase
     public static $foreignKeys = [
         'confirmation_trainings_user_id_foreign',
         'confirmation_trainings_team_id_foreign',
-        'confirmation_trainings_training_id_foreign'
+        'confirmation_trainings_training_id_foreign',
+        'confirmation_trainings_player_id_foreign',
     ]; // Define as chaves estrangeiras
 
     public static $uniqueKeys = [];

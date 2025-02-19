@@ -166,4 +166,28 @@ trait DatabaseAssertions
             "The total number of fields in the '{$this->table}' table does not match. Expected: {$totalFieldsArray}. Found: {$totalFieldsTable}."
         );
     }
+
+    /**
+     * Verificar o total de chaves estrangeiras no array de chaves estrangeiras e na tabela.
+     *
+     * @return void
+     */
+    public function verifyTotalForeignKeys()
+    {
+        $this->ensureTableExists();
+        
+        // Obtém a quantidade de chaves estrangeiras definidas no array da classe
+        $totalForeignKeysArray = count(static::$foreignKeys ?? []);
+
+        // Obtém a quantidade real de chaves estrangeiras da tabela no banco
+        $foreignKeysFromTable = getForeignKeys($this->table);
+        $totalForeignKeysTable = is_array($foreignKeysFromTable) ? count($foreignKeysFromTable) : 0;
+
+        // Compara os valores e exibe erro caso sejam diferentes
+        $this->assertEquals(
+            $totalForeignKeysArray,
+            $totalForeignKeysTable,
+            "The total number of foreign keys in the '{$this->table}' table does not match. Expected: {$totalForeignKeysArray}. Found: {$totalForeignKeysTable}."
+        );
+    }
 }

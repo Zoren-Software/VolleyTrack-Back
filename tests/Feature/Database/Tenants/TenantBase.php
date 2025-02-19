@@ -79,4 +79,13 @@ class TenantBase extends TestCase
     {
         $this->verifyTotalFields();
     }
+
+    /**
+     * Verificar o total de chaves estrangeiras no array de chaves estrangeiras e na tabela.
+     * @test
+     * @return void
+     */
+    public function databaseVerifyTotalForeignKeys() {
+        $this->verifyTotalForeignKeys();
+    }
 }

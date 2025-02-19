@@ -69,3 +69,24 @@ function hasAutoIncrement($table, $column = 'id')
 
     return !empty($result);
 }
+
+/**
+ * Obtém as chaves estrangeiras de uma tabela.
+ *
+ * @param string $table
+ * @return array
+ */
+function getForeignKeys(string $table): array
+{
+    $databaseName = DB::getDatabaseName();
+
+    $foreignKeys = DB::select("
+        SELECT CONSTRAINT_NAME 
+        FROM information_schema.KEY_COLUMN_USAGE 
+        WHERE TABLE_SCHEMA = ? 
+        AND TABLE_NAME = ? 
+        AND REFERENCED_TABLE_NAME IS NOT NULL
+    ", [$databaseName, $table]);
+
+    return array_column($foreignKeys, 'CONSTRAINT_NAME');
+}
