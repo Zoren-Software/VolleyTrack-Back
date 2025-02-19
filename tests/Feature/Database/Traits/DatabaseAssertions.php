@@ -234,20 +234,63 @@ trait DatabaseAssertions
                 continue;
             }
 
-            // Obtendo o tipo real da coluna no banco
-            $actualType = Schema::getColumnType($this->table, $column);
+            // Obtém as informações detalhadas da coluna
+            $columnInfo = DB::selectOne("SHOW FULL COLUMNS FROM {$this->table} WHERE Field = ?", [$column]);
+
+            if (!$columnInfo) {
+                $mismatchedTypes[] = "Failed to retrieve details for column '{$column}' in table '{$this->table}'.";
+                continue;
+            }
+
+            // Verifica o tipo da coluna
+            $actualType = explode('(', $columnInfo->Type)[0]; // Remove detalhes de tamanho e precisão
             $expectedType = $expectedConfig['type'];
 
-            // Verifica se o tipo é o esperado
             if ($actualType !== $expectedType) {
                 $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has type '{$actualType}', expected '{$expectedType}'.";
             }
 
+            // Verifica se é unsigned
+            if (isset($expectedConfig['unsigned']) && $expectedConfig['unsigned']) {
+                if (strpos($columnInfo->Type, 'unsigned') === false) {
+                    $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be UNSIGNED.";
+                }
+            }
+
+            // Verifica auto_increment
+            if (isset($expectedConfig['auto_increment']) && $expectedConfig['auto_increment']) {
+                if (strpos($columnInfo->Extra, 'auto_increment') === false) {
+                    $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be AUTO_INCREMENT.";
+                }
+            }
+
+            // Verifica se é nullable
+            if (isset($expectedConfig['nullable']) && $expectedConfig['nullable']) {
+                if ($columnInfo->Null !== 'YES') {
+                    $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be NULLABLE.";
+                }
+            } elseif ($columnInfo->Null === 'YES') {
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' should NOT be NULLABLE.";
+            }
+
+            // Verifica o tamanho de colunas VARCHAR e CHAR
+            if (isset($expectedConfig['length']) && in_array($expectedType, ['varchar', 'char'])) {
+                preg_match('/\((\d+)\)/', $columnInfo->Type, $matches);
+                $actualLength = isset($matches[1]) ? (int) $matches[1] : null;
+
+                if ($actualLength !== $expectedConfig['length']) {
+                    $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has length '{$actualLength}', expected '{$expectedConfig['length']}'.";
+                }
+            }
+
+            // Verifica collation
+            if (isset($expectedConfig['collation']) && $columnInfo->Collation !== $expectedConfig['collation']) {
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has collation '{$columnInfo->Collation}', expected '{$expectedConfig['collation']}'.";
+            }
+
             // Para campos numéricos, verificamos precisão e escala apenas se o tipo suportar
             if (in_array($expectedType, ['decimal', 'float', 'double']) && isset($expectedConfig['precision'])) {
-                $columnInfo = DB::selectOne("SHOW COLUMNS FROM {$this->table} WHERE Field = ?", [$column]);
-
-                if ($columnInfo && preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->Type, $matches)) {
+                if (preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->Type, $matches)) {
                     $actualPrecision = (int)$matches[1];
                     $actualScale = isset($matches[2]) ? (int)$matches[2] : 0;
 
@@ -267,4 +310,5 @@ trait DatabaseAssertions
             "Field type mismatches in the '{$this->table}' table:\n" . implode("\n", $mismatchedTypes)
         );
     }
+
 }

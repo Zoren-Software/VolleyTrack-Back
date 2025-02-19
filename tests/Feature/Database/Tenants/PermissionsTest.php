@@ -12,8 +12,8 @@ class PermissionsTest extends TenantBase
         'id'          => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'name'        => ['type' => 'varchar', 'length' => 255],
         'guard_name'  => ['type' => 'varchar', 'length' => 255],
-        'created_at'  => ['type' => 'timestamp'],
-        'updated_at'  => ['type' => 'timestamp'],
+        'created_at'  => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at'  => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

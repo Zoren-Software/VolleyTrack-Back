@@ -12,9 +12,9 @@ class FundamentalsTrainingsTest extends TenantBase
         'id'              => ['type' => 'bigint'],
         'fundamental_id'  => ['type' => 'bigint'],
         'training_id'     => ['type' => 'bigint'],
-        'deleted_at'      => ['type' => 'timestamp'],
-        'created_at'      => ['type' => 'timestamp'],
-        'updated_at'      => ['type' => 'timestamp'],
+        'deleted_at'      => ['type' => 'timestamp', 'nullable' => true],
+        'created_at'      => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at'      => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

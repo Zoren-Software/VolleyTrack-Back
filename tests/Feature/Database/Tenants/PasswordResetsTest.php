@@ -11,7 +11,7 @@ class PasswordResetsTest extends TenantBase
     public static $fieldTypes = [
         'email'      => ['type' => 'varchar', 'length' => 255],
         'token'      => ['type' => 'varchar', 'length' => 255],
-        'created_at' => ['type' => 'timestamp'],
+        'created_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = []; // Nenhuma chave primária definida

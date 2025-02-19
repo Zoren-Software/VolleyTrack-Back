@@ -14,9 +14,9 @@ class NotificationsTest extends TenantBase
         'notifiable_type' => ['type' => 'varchar', 'length' => 255],
         'notifiable_id'   => ['type' => 'bigint'],
         'data'            => ['type' => 'text'],
-        'read_at'         => ['type' => 'timestamp'],
-        'created_at'      => ['type' => 'timestamp'],
-        'updated_at'      => ['type' => 'timestamp'],
+        'read_at'         => ['type' => 'timestamp', 'nullable' => true],
+        'created_at'      => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at'      => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

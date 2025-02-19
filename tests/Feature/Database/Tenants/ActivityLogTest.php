@@ -11,7 +11,7 @@ class ActivityLogTest extends TenantBase
 
     public static $fieldTypes = [
         'id'            => ['type' => 'bigint'],
-        'log_name'      => ['type' => 'varchar', 'length' => 255],
+        'log_name'      => ['type' => 'varchar', 'length' => 255, 'nullable' => true],
         'description'   => ['type' => 'text'],
         'subject_type'  => ['type' => 'varchar', 'length' => 255, 'nullable' => true],
         'event'         => ['type' => 'varchar', 'length' => 255, 'nullable' => true],

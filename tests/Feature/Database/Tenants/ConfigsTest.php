@@ -13,9 +13,9 @@ class ConfigsTest extends TenantBase
         'user_id'      => ['type' => 'bigint'],
         'name_tenant'  => ['type' => 'varchar', 'length' => 50],
         'language_id'  => ['type' => 'bigint'],
-        'created_at'   => ['type' => 'timestamp'],
-        'updated_at'   => ['type' => 'timestamp'],
-        'deleted_at'   => ['type' => 'timestamp'],
+        'created_at'   => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at'   => ['type' => 'timestamp', 'nullable' => true],
+        'deleted_at'   => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária
