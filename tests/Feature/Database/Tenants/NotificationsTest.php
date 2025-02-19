@@ -19,6 +19,17 @@ class NotificationsTest extends TenantBase
         'updated_at',
     ];
 
+    public static $fieldTypes = [
+        'id'              => ['type' => 'char', 'length' => 36],
+        'type'            => ['type' => 'varchar', 'length' => 255],
+        'notifiable_type' => ['type' => 'varchar', 'length' => 255],
+        'notifiable_id'   => ['type' => 'bigint'],
+        'data'            => ['type' => 'text'],
+        'read_at'         => ['type' => 'timestamp'],
+        'created_at'      => ['type' => 'timestamp'],
+        'updated_at'      => ['type' => 'timestamp'],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = []; // Nenhuma coluna auto_increment, pois `id` é um UUID (char(36))

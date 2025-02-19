@@ -17,6 +17,15 @@ class LanguagesTest extends TenantBase
         'deleted_at',
     ];
 
+    public static $fieldTypes = [
+        'id'         => ['type' => 'bigint'],
+        'slug'       => ['type' => 'varchar', 'length' => 7],
+        'name'       => ['type' => 'varchar', 'length' => 20],
+        'created_at' => ['type' => 'timestamp'],
+        'updated_at' => ['type' => 'timestamp'],
+        'deleted_at' => ['type' => 'timestamp'],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment

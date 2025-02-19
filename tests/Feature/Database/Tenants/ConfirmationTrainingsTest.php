@@ -21,6 +21,19 @@ class ConfirmationTrainingsTest extends TenantBase
         'deleted_at',
     ];
 
+    public static $fieldTypes = [
+        'id'           => ['type' => 'bigint'],
+        'user_id'      => ['type' => 'bigint'],
+        'player_id'    => ['type' => 'bigint'],
+        'training_id'  => ['type' => 'bigint'],
+        'team_id'      => ['type' => 'bigint'],
+        'status'       => ['type' => 'enum', 'values' => ['pending', 'confirmed', 'rejected']],
+        'presence'     => ['type' => 'tinyint'],
+        'created_at'   => ['type' => 'timestamp'],
+        'updated_at'   => ['type' => 'timestamp'],
+        'deleted_at'   => ['type' => 'timestamp'],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment

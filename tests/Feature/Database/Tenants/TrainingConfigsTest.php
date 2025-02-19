@@ -20,6 +20,18 @@ class TrainingConfigsTest extends TenantBase
         'deleted_at',
     ];
 
+    public static $fieldTypes = [
+        'id'                                => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
+        'config_id'                         => ['type' => 'bigint', 'unsigned' => true],
+        'user_id'                           => ['type' => 'bigint', 'unsigned' => true],
+        'days_notification'                 => ['type' => 'smallint'],
+        'notification_team_by_email'        => ['type' => 'tinyint'],
+        'notification_technician_by_email'  => ['type' => 'tinyint'],
+        'created_at'                        => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at'                        => ['type' => 'timestamp', 'nullable' => true],
+        'deleted_at'                        => ['type' => 'timestamp', 'nullable' => true],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = ['id']; // Define o campo auto_increment

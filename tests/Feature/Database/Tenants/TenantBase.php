@@ -98,4 +98,14 @@ class TenantBase extends TestCase
     {
         $this->verifyTotalUniqueKeys();
     }
+
+    /**
+     * Verificar se os tipos e precisão dos campos estão corretos.
+     * @test
+     * @return void
+     */
+    public function databaseVerifyFieldTypes()
+    {
+        $this->verifyFieldTypes();
+    }
 }

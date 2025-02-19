@@ -14,6 +14,12 @@ class ModelHasRolesTest extends TenantBase
         'model_id',
     ];
 
+    public static $fieldTypes = [
+        'role_id'    => ['type' => 'bigint'],
+        'model_type' => ['type' => 'varchar', 'length' => 255],
+        'model_id'   => ['type' => 'bigint'],
+    ];
+
     public static $primaryKey = ['role_id', 'model_type', 'model_id']; // Define a chave primária composta
 
     public static $autoIncrements = []; // Nenhuma coluna auto_increment

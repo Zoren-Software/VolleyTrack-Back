@@ -14,6 +14,12 @@ class MigrationsTest extends TenantBase
         'batch',
     ];
 
+    public static $fieldTypes = [
+        'id'         => ['type' => 'int'],
+        'migration'  => ['type' => 'varchar', 'length' => 255],
+        'batch'      => ['type' => 'int'],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment

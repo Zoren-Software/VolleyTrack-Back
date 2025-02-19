@@ -16,6 +16,14 @@ class RolesTest extends TenantBase
         'updated_at',
     ];
 
+    public static $fieldTypes = [
+        'id'          => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
+        'name'        => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
+        'guard_name'  => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
+        'created_at'  => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at'  => ['type' => 'timestamp', 'nullable' => true],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment

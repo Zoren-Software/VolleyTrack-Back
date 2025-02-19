@@ -13,6 +13,11 @@ class RoleHasPermissionsTest extends TenantBase
         'role_id',
     ];
 
+    public static $fieldTypes = [
+        'permission_id' => ['type' => 'bigint', 'unsigned' => true],
+        'role_id'       => ['type' => 'bigint', 'unsigned' => true],
+    ];
+
     public static $primaryKey = [
         'permission_id',
         'role_id',

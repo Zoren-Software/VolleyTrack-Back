@@ -17,6 +17,15 @@ class FundamentalSpecificFundamentalTest extends TenantBase
         'deleted_at',
     ];
 
+    public static $fieldTypes = [
+        'id'                        => ['type' => 'bigint'],
+        'fundamental_id'            => ['type' => 'bigint'],
+        'specific_fundamental_id'   => ['type' => 'bigint'],
+        'created_at'                => ['type' => 'timestamp'],
+        'updated_at'                => ['type' => 'timestamp'],
+        'deleted_at'                => ['type' => 'timestamp'],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment

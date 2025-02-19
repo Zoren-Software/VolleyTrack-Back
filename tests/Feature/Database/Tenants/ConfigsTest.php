@@ -18,6 +18,16 @@ class ConfigsTest extends TenantBase
         'deleted_at',
     ];
 
+    public static $fieldTypes = [
+        'id'           => ['type' => 'bigint'],
+        'user_id'      => ['type' => 'bigint'],
+        'name_tenant'  => ['type' => 'varchar', 'length' => 50],
+        'language_id'  => ['type' => 'bigint'],
+        'created_at'   => ['type' => 'timestamp'],
+        'updated_at'   => ['type' => 'timestamp'],
+        'deleted_at'   => ['type' => 'timestamp'],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment

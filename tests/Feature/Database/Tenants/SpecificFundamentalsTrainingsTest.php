@@ -17,6 +17,15 @@ class SpecificFundamentalsTrainingsTest extends TenantBase
         'updated_at',
     ];
 
+    public static $fieldTypes = [
+        'id'                        => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
+        'specific_fundamental_id'   => ['type' => 'bigint', 'unsigned' => true],
+        'training_id'               => ['type' => 'bigint', 'unsigned' => true],
+        'deleted_at'                => ['type' => 'timestamp', 'nullable' => true],
+        'created_at'                => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at'                => ['type' => 'timestamp', 'nullable' => true],
+    ];
+
     public static $primaryKey = ['id']; // Define a chave primária
 
     public static $autoIncrements = ['id']; // Define o campo auto_increment

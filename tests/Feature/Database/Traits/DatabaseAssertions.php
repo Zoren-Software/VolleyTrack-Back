@@ -215,4 +215,59 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * Verificar se os campos da tabela possuem os tipos e precisões esperados.
+     *
+     * @return void
+     */
+    public function verifyFieldTypes()
+    {
+        $this->ensureTableExists();
+
+        if (empty(static::$fieldTypes)) {
+            $this->markTestSkipped("No field types defined for table '{$this->table}'.");
+        }
+
+        $columns = Schema::getColumnListing($this->table);
+        $mismatchedTypes = [];
+
+        foreach (static::$fieldTypes as $column => $expectedConfig) {
+            if (!in_array($column, $columns)) {
+                $mismatchedTypes[] = "Column '{$column}' does not exist in the '{$this->table}' table.";
+                continue;
+            }
+
+            // Obtendo o tipo real da coluna no banco
+            $actualType = Schema::getColumnType($this->table, $column);
+            $expectedType = $expectedConfig['type'];
+
+            // Verifica se o tipo é o esperado
+            if ($actualType !== $expectedType) {
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has type '{$actualType}', expected '{$expectedType}'.";
+            }
+
+            // Para campos numéricos, verificamos precisão e escala apenas se o tipo suportar
+            if (in_array($expectedType, ['decimal', 'float', 'double']) && isset($expectedConfig['precision'])) {
+                $columnInfo = DB::selectOne("SHOW COLUMNS FROM {$this->table} WHERE Field = ?", [$column]);
+
+                if ($columnInfo && preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->Type, $matches)) {
+                    $actualPrecision = (int)$matches[1];
+                    $actualScale = isset($matches[2]) ? (int)$matches[2] : 0;
+
+                    if ($actualPrecision !== $expectedConfig['precision']) {
+                        $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has precision '{$actualPrecision}', expected '{$expectedConfig['precision']}'.";
+                    }
+
+                    if (isset($expectedConfig['scale']) && $actualScale !== $expectedConfig['scale']) {
+                        $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has scale '{$actualScale}', expected '{$expectedConfig['scale']}'.";
+                    }
+                }
+            }
+        }
+
+        $this->assertEmpty(
+            $mismatchedTypes,
+            "Field type mismatches in the '{$this->table}' table:\n" . implode("\n", $mismatchedTypes)
+        );
+    }
 }
