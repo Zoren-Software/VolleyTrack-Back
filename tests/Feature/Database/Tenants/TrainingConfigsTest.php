@@ -8,18 +8,6 @@ class TrainingConfigsTest extends TenantBase
 {
     protected $table = 'training_configs';
 
-    public static $fields = [
-        'id',
-        'config_id',
-        'user_id',
-        'days_notification',
-        'notification_team_by_email',
-        'notification_technician_by_email',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     public static $fieldTypes = [
         'id'                                => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'config_id'                         => ['type' => 'bigint', 'unsigned' => true],

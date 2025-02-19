@@ -8,16 +8,6 @@ class WebsocketsStatisticsEntriesTest extends TenantBase
 {
     protected $table = 'websockets_statistics_entries';
 
-    public static $fields = [
-        'id',
-        'app_id',
-        'peak_connection_count',
-        'websocket_message_count',
-        'api_message_count',
-        'created_at',
-        'updated_at',
-    ];
-
     public static $fieldTypes = [
         'id'                      => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'app_id'                  => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],

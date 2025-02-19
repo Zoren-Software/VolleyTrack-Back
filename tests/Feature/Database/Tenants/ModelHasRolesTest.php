@@ -8,12 +8,6 @@ class ModelHasRolesTest extends TenantBase
 {
     protected $table = 'model_has_roles';
 
-    public static $fields = [
-        'role_id',
-        'model_type',
-        'model_id',
-    ];
-
     public static $fieldTypes = [
         'role_id'    => ['type' => 'bigint'],
         'model_type' => ['type' => 'varchar', 'length' => 255],

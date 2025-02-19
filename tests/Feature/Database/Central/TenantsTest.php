@@ -8,11 +8,11 @@ class TenantsTest extends CentralBase
 {
     protected $table = 'tenants';
 
-    public static $fields = [
-        'id',
-        'created_at',
-        'updated_at',
-        'data',
+    public static $fieldTypes = [
+        'id'         => ['type' => 'varchar', 'length' => 255],
+        'created_at' => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at' => ['type' => 'timestamp', 'nullable' => true],
+        'data'       => ['type' => 'longtext', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

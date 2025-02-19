@@ -8,18 +8,6 @@ class UserInformationTest extends TenantBase
 {
     protected $table = 'user_information';
 
-    public static $fields = [
-        'id',
-        'user_id',
-        'cpf',
-        'phone',
-        'rg',
-        'birth_date',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     public static $fieldTypes = [
         'id'          => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'user_id'     => ['type' => 'bigint', 'unsigned' => true],

@@ -8,15 +8,6 @@ class SpecificFundamentalsTrainingsTest extends TenantBase
 {
     protected $table = 'specific_fundamentals_trainings';
 
-    public static $fields = [
-        'id',
-        'specific_fundamental_id',
-        'training_id',
-        'deleted_at',
-        'created_at',
-        'updated_at',
-    ];
-
     public static $fieldTypes = [
         'id'                        => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'specific_fundamental_id'   => ['type' => 'bigint', 'unsigned' => true],

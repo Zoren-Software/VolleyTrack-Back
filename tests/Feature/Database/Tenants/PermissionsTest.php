@@ -8,14 +8,6 @@ class PermissionsTest extends TenantBase
 {
     protected $table = 'permissions';
 
-    public static $fields = [
-        'id',
-        'name',
-        'guard_name',
-        'created_at',
-        'updated_at',
-    ];
-
     public static $fieldTypes = [
         'id'          => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'name'        => ['type' => 'varchar', 'length' => 255],

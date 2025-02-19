@@ -8,12 +8,6 @@ class ModelHasPermissionsTest extends TenantBase
 {
     protected $table = 'model_has_permissions';
 
-    public static $fields = [
-        'permission_id',
-        'model_type',
-        'model_id',
-    ];
-
     public static $fieldTypes = [
         'permission_id' => ['type' => 'bigint'],
         'model_type'    => ['type' => 'varchar', 'length' => 255],

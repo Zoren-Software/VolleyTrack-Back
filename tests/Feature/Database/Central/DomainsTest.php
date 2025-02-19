@@ -8,12 +8,12 @@ class DomainsTest extends CentralBase
 {
     protected $table = 'domains';
 
-    public static $fields = [
-        'id',
-        'domain',
-        'tenant_id',
-        'created_at',
-        'updated_at',
+    public static $fieldTypes = [
+        'id'         => ['type' => 'bigint', 'auto_increment' => true],
+        'domain'     => ['type' => 'varchar', 'length' => 255],
+        'tenant_id'  => ['type' => 'varchar', 'length' => 255],
+        'created_at' => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

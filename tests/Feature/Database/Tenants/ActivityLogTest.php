@@ -9,21 +9,6 @@ class ActivityLogTest extends TenantBase
 
     protected $table = 'activity_log';
 
-    public static $fields = [
-        'id',
-        'log_name',
-        'description',
-        'subject_type',
-        'event',
-        'subject_id',
-        'causer_type',
-        'causer_id',
-        'properties',
-        'batch_uuid',
-        'created_at',
-        'updated_at',
-    ];
-
     public static $fieldTypes = [
         'id'            => ['type' => 'bigint'],
         'log_name'      => ['type' => 'varchar', 'length' => 255],

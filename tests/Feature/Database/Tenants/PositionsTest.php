@@ -8,15 +8,6 @@ class PositionsTest extends TenantBase
 {
     protected $table = 'positions';
 
-    public static $fields = [
-        'id',
-        'user_id',
-        'name',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     public static $fieldTypes = [
         'id'         => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'user_id'    => ['type' => 'bigint', 'unsigned' => true],

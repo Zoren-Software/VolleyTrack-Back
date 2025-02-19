@@ -8,19 +8,6 @@ class PersonalAccessTokensTest extends TenantBase
 {
     protected $table = 'personal_access_tokens';
 
-    public static $fields = [
-        'id',
-        'tokenable_type',
-        'tokenable_id',
-        'name',
-        'token',
-        'abilities',
-        'last_used_at',
-        'expires_at',
-        'created_at',
-        'updated_at',
-    ];
-
     public static $fieldTypes = [
         'id'             => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'tokenable_type' => ['type' => 'varchar', 'length' => 255],

@@ -8,12 +8,6 @@ class PasswordResetsTest extends TenantBase
 {
     protected $table = 'password_resets';
 
-    public static $fields = [
-        'email',
-        'token',
-        'created_at',
-    ];
-
     public static $fieldTypes = [
         'email'      => ['type' => 'varchar', 'length' => 255],
         'token'      => ['type' => 'varchar', 'length' => 255],

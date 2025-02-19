@@ -8,12 +8,6 @@ class MigrationsTest extends TenantBase
 {
     protected $table = 'migrations';
 
-    public static $fields = [
-        'id',
-        'migration',
-        'batch',
-    ];
-
     public static $fieldTypes = [
         'id'         => ['type' => 'int'],
         'migration'  => ['type' => 'varchar', 'length' => 255],

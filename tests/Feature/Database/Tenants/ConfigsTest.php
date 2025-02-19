@@ -8,16 +8,6 @@ class ConfigsTest extends TenantBase
 {
     protected $table = 'configs';
 
-    public static $fields = [
-        'id',
-        'user_id',
-        'name_tenant',
-        'language_id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     public static $fieldTypes = [
         'id'           => ['type' => 'bigint'],
         'user_id'      => ['type' => 'bigint'],

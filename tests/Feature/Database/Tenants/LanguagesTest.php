@@ -8,15 +8,6 @@ class LanguagesTest extends TenantBase
 {
     protected $table = 'languages';
 
-    public static $fields = [
-        'id',
-        'slug',
-        'name',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     public static $fieldTypes = [
         'id'         => ['type' => 'bigint'],
         'slug'       => ['type' => 'varchar', 'length' => 7],

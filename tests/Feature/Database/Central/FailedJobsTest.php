@@ -8,15 +8,16 @@ class FailedJobsTest extends CentralBase
 {
     protected $table = 'failed_jobs';
 
-    public static $fields = [
-        'id',
-        'uuid',
-        'connection',
-        'queue',
-        'payload',
-        'exception',
-        'failed_at',
+    public static $fieldTypes = [
+        'id'          => ['type' => 'bigint', 'auto_increment' => true],
+        'uuid'        => ['type' => 'varchar', 'length' => 255],
+        'connection'  => ['type' => 'text'],
+        'queue'       => ['type' => 'text'],
+        'payload'     => ['type' => 'longtext'],
+        'exception'   => ['type' => 'longtext'],
+        'failed_at'   => ['type' => 'timestamp', 'nullable' => true],
     ];
+    
 
     public static $primaryKey = ['id']; // Define a chave primária
 

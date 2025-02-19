@@ -20,22 +20,19 @@ trait DatabaseAssertions
     }
 
     /**
-     * Verificar se todos os campos definidos existem na tabela.
-     *
-     * @return void
+     * Verifica se todos os campos definidos existem na tabela.
      */
     public function verifyFields()
     {
         $this->ensureTableExists();
 
         $columns = Schema::getColumnListing($this->table);
-        $missingFields = array_diff(static::$fields ?? [], $columns);
+        $missingFields = array_diff(array_keys(static::$fieldTypes), $columns);
 
-        foreach ($missingFields as $field) {
-            $this->fail("The field '{$field}' does not exist in the '{$this->table}' table.");
-        }
-
-        $this->assertEmpty($missingFields, "Some fields are missing in the '{$this->table}' table.");
+        $this->assertEmpty(
+            $missingFields,
+            "The following fields are missing in the '{$this->table}' table: " . implode(', ', $missingFields)
+        );
     }
 
     /**
@@ -157,7 +154,7 @@ trait DatabaseAssertions
         $this->ensureTableExists();
 
         $columns = Schema::getColumnListing($this->table);
-        $totalFieldsArray = count(static::$fields ?? []);
+        $totalFieldsArray = count(static::$fieldTypes ?? []);
         $totalFieldsTable = count($columns);
 
         $this->assertEquals(

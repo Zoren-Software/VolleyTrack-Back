@@ -8,11 +8,6 @@ class RoleHasPermissionsTest extends TenantBase
 {
     protected $table = 'role_has_permissions';
 
-    public static $fields = [
-        'permission_id',
-        'role_id',
-    ];
-
     public static $fieldTypes = [
         'permission_id' => ['type' => 'bigint', 'unsigned' => true],
         'role_id'       => ['type' => 'bigint', 'unsigned' => true],

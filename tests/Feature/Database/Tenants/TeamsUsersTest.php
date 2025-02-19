@@ -8,16 +8,6 @@ class TeamsUsersTest extends TenantBase
 {
     protected $table = 'teams_users';
 
-    public static $fields = [
-        'id',
-        'team_id',
-        'user_id',
-        'role',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     public static $fieldTypes = [
         'id'         => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
         'team_id'    => ['type' => 'bigint', 'unsigned' => true],

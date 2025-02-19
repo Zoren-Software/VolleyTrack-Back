@@ -8,17 +8,6 @@ class NotificationsTest extends TenantBase
 {
     protected $table = 'notifications';
 
-    public static $fields = [
-        'id',
-        'type',
-        'notifiable_type',
-        'notifiable_id',
-        'data',
-        'read_at',
-        'created_at',
-        'updated_at',
-    ];
-
     public static $fieldTypes = [
         'id'              => ['type' => 'char', 'length' => 36],
         'type'            => ['type' => 'varchar', 'length' => 255],

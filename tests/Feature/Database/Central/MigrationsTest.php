@@ -8,11 +8,12 @@ class MigrationsTest extends CentralBase
 {
     protected $table = 'migrations';
 
-    public static $fields = [
-        'id',
-        'migration',
-        'batch',
+    public static $fieldTypes = [
+        'id'         => ['type' => 'int', 'length' => 10, 'auto_increment' => true],
+        'migration'  => ['type' => 'varchar', 'length' => 255],
+        'batch'      => ['type' => 'int', 'length' => 11],
     ];
+    
 
     public static $primaryKey = ['id']; // Define a chave primária
 
