@@ -2,16 +2,14 @@
 
 namespace Tests\Feature\Database\Central;
 
-use Tests\TestCase;
-
 class DomainsTest extends CentralBase
 {
     protected $table = 'domains';
 
     public static $fieldTypes = [
-        'id'         => ['type' => 'bigint', 'auto_increment' => true],
-        'domain'     => ['type' => 'varchar', 'length' => 255],
-        'tenant_id'  => ['type' => 'varchar', 'length' => 255],
+        'id' => ['type' => 'bigint'],
+        'domain' => ['type' => 'varchar', 'length' => 255],
+        'tenant_id' => ['type' => 'varchar', 'length' => 255],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
@@ -21,10 +19,10 @@ class DomainsTest extends CentralBase
     public static $autoIncrements = ['id']; // Define quais campos são auto_increment
 
     public static $foreignKeys = [
-        'domains_tenant_id_foreign'
+        'domains_tenant_id_foreign',
     ]; // Define as chaves estrangeiras
 
     public static $uniqueKeys = [
-        'domains_domain_unique'
+        'domains_domain_unique',
     ]; // Define as chaves únicas
 }

@@ -2,21 +2,18 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class PositionsUsersTest extends TenantBase
 {
     protected $table = 'positions_users';
 
     public static $fieldTypes = [
-        'id'          => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
+        'id' => ['type' => 'bigint', 'unsigned' => true],
         'position_id' => ['type' => 'bigint', 'unsigned' => true],
-        'user_id'     => ['type' => 'bigint', 'unsigned' => true],
-        'created_at'  => ['type' => 'timestamp', 'nullable' => true],
-        'updated_at'  => ['type' => 'timestamp', 'nullable' => true],
-        'deleted_at'  => ['type' => 'timestamp', 'nullable' => true],
+        'user_id' => ['type' => 'bigint', 'unsigned' => true],
+        'created_at' => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at' => ['type' => 'timestamp', 'nullable' => true],
+        'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
-    
 
     public static $primaryKey = ['id']; // Define a chave primária
 

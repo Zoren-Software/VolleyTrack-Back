@@ -2,21 +2,19 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class NotificationsTest extends TenantBase
 {
     protected $table = 'notifications';
 
     public static $fieldTypes = [
-        'id'              => ['type' => 'char', 'length' => 36],
-        'type'            => ['type' => 'varchar', 'length' => 255],
+        'id' => ['type' => 'char', 'length' => 36],
+        'type' => ['type' => 'varchar', 'length' => 255],
         'notifiable_type' => ['type' => 'varchar', 'length' => 255],
-        'notifiable_id'   => ['type' => 'bigint'],
-        'data'            => ['type' => 'text'],
-        'read_at'         => ['type' => 'timestamp', 'nullable' => true],
-        'created_at'      => ['type' => 'timestamp', 'nullable' => true],
-        'updated_at'      => ['type' => 'timestamp', 'nullable' => true],
+        'notifiable_id' => ['type' => 'bigint'],
+        'data' => ['type' => 'text'],
+        'read_at' => ['type' => 'timestamp', 'nullable' => true],
+        'created_at' => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

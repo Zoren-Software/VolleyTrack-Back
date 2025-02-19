@@ -2,18 +2,16 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class PermissionsTest extends TenantBase
 {
     protected $table = 'permissions';
 
     public static $fieldTypes = [
-        'id'          => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
-        'name'        => ['type' => 'varchar', 'length' => 255],
-        'guard_name'  => ['type' => 'varchar', 'length' => 255],
-        'created_at'  => ['type' => 'timestamp', 'nullable' => true],
-        'updated_at'  => ['type' => 'timestamp', 'nullable' => true],
+        'id' => ['type' => 'bigint', 'unsigned' => true],
+        'name' => ['type' => 'varchar', 'length' => 255],
+        'guard_name' => ['type' => 'varchar', 'length' => 255],
+        'created_at' => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

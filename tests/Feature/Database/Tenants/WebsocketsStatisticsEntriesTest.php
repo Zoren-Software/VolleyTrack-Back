@@ -2,20 +2,18 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class WebsocketsStatisticsEntriesTest extends TenantBase
 {
     protected $table = 'websockets_statistics_entries';
 
     public static $fieldTypes = [
-        'id'                      => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
-        'app_id'                  => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
-        'peak_connection_count'    => ['type' => 'int', 'length' => 11],
-        'websocket_message_count'  => ['type' => 'int', 'length' => 11],
-        'api_message_count'        => ['type' => 'int', 'length' => 11],
-        'created_at'               => ['type' => 'timestamp', 'nullable' => true],
-        'updated_at'               => ['type' => 'timestamp', 'nullable' => true],
+        'id' => ['type' => 'bigint', 'unsigned' => true],
+        'app_id' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
+        'peak_connection_count' => ['type' => 'int', 'length' => 11],
+        'websocket_message_count' => ['type' => 'int', 'length' => 11],
+        'api_message_count' => ['type' => 'int', 'length' => 11],
+        'created_at' => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

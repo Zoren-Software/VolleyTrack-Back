@@ -2,22 +2,19 @@
 
 namespace Tests\Feature\Database\Central;
 
-use Tests\TestCase;
-
 class FailedJobsTest extends CentralBase
 {
     protected $table = 'failed_jobs';
 
     public static $fieldTypes = [
-        'id'          => ['type' => 'bigint', 'auto_increment' => true],
-        'uuid'        => ['type' => 'varchar', 'length' => 255],
-        'connection'  => ['type' => 'text'],
-        'queue'       => ['type' => 'text'],
-        'payload'     => ['type' => 'longtext'],
-        'exception'   => ['type' => 'longtext'],
-        'failed_at'   => ['type' => 'timestamp', 'nullable' => true],
+        'id' => ['type' => 'bigint'],
+        'uuid' => ['type' => 'varchar', 'length' => 255],
+        'connection' => ['type' => 'text'],
+        'queue' => ['type' => 'text'],
+        'payload' => ['type' => 'longtext'],
+        'exception' => ['type' => 'longtext'],
+        'failed_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
-    
 
     public static $primaryKey = ['id']; // Define a chave primária
 
@@ -26,6 +23,6 @@ class FailedJobsTest extends CentralBase
     public static $foreignKeys = []; // Nenhuma chave estrangeira definida
 
     public static $uniqueKeys = [
-        'failed_jobs_uuid_unique'
+        'failed_jobs_uuid_unique',
     ]; // Define chaves únicas
 }

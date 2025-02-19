@@ -2,16 +2,14 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class MigrationsTest extends TenantBase
 {
     protected $table = 'migrations';
 
     public static $fieldTypes = [
-        'id'         => ['type' => 'int'],
-        'migration'  => ['type' => 'varchar', 'length' => 255],
-        'batch'      => ['type' => 'int'],
+        'id' => ['type' => 'int'],
+        'migration' => ['type' => 'varchar', 'length' => 255],
+        'batch' => ['type' => 'int'],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária

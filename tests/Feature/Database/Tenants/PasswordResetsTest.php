@@ -2,15 +2,13 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class PasswordResetsTest extends TenantBase
 {
     protected $table = 'password_resets';
 
     public static $fieldTypes = [
-        'email'      => ['type' => 'varchar', 'length' => 255],
-        'token'      => ['type' => 'varchar', 'length' => 255],
+        'email' => ['type' => 'varchar', 'length' => 255],
+        'token' => ['type' => 'varchar', 'length' => 255],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 

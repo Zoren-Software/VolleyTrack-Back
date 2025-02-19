@@ -2,15 +2,13 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class RoleHasPermissionsTest extends TenantBase
 {
     protected $table = 'role_has_permissions';
 
     public static $fieldTypes = [
         'permission_id' => ['type' => 'bigint', 'unsigned' => true],
-        'role_id'       => ['type' => 'bigint', 'unsigned' => true],
+        'role_id' => ['type' => 'bigint', 'unsigned' => true],
     ];
 
     public static $primaryKey = [
@@ -24,7 +22,6 @@ class RoleHasPermissionsTest extends TenantBase
         'role_has_permissions_role_id_foreign',
         'role_has_permissions_permission_id_foreign',
     ];
-    
 
     public static $uniqueKeys = []; // Nenhuma chave única
 }

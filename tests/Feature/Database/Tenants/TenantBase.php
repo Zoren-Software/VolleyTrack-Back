@@ -2,15 +2,13 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use App\Models\Position;
-use Faker\Factory as Faker;
-use Tests\TestCase;
 use Tests\Feature\Database\Traits\DatabaseAssertions;
+use Tests\TestCase;
 
 class TenantBase extends TestCase
 {
     use DatabaseAssertions;
-    
+
     protected $graphql = false;
 
     protected $tenancy = true;
@@ -21,7 +19,9 @@ class TenantBase extends TestCase
 
     /**
      * Verificar se os campos estão corretamente definidos.
+     *
      * @test
+     *
      * @return void
      */
     public function databaseVerifyFields()
@@ -31,7 +31,9 @@ class TenantBase extends TestCase
 
     /**
      * Verificar se a chave primária está corretamente definida.
+     *
      * @test
+     *
      * @return void
      */
     public function databaseVerifyPrimaryKey()
@@ -39,10 +41,11 @@ class TenantBase extends TestCase
         $this->verifyPrimaryKey();
     }
 
-
     /**
      * Verificar se as chaves estrangeiras estão corretamente definidas.
+     *
      * @test
+     *
      * @return void
      */
     public function databaseVerifyForeignKeys()
@@ -52,7 +55,9 @@ class TenantBase extends TestCase
 
     /**
      * Verificar se os campos auto_increment estão corretamente definidos.
+     *
      * @test
+     *
      * @return void
      */
     public function databaseVerifyAutoIncrements()
@@ -62,7 +67,9 @@ class TenantBase extends TestCase
 
     /**
      * Verificar se as chaves únicas estão corretamente definidas.
+     *
      * @test
+     *
      * @return void
      */
     public function databaseVerifyUniqueKeys()
@@ -72,7 +79,9 @@ class TenantBase extends TestCase
 
     /**
      * Verificar número total de campos na tabela.
+     *
      * @test
+     *
      * @return void
      */
     public function databaseVerifyTotalFields()
@@ -82,16 +91,21 @@ class TenantBase extends TestCase
 
     /**
      * Verificar o total de chaves estrangeiras no array de chaves estrangeiras e na tabela.
+     *
      * @test
+     *
      * @return void
      */
-    public function databaseVerifyTotalForeignKeys() {
+    public function databaseVerifyTotalForeignKeys()
+    {
         $this->verifyTotalForeignKeys();
     }
 
     /**
      * Verificar se o total de unique keys está correto.
+     *
      * @test
+     *
      * @return void
      */
     public function databaseVerifyTotalUniqueKeys()
@@ -101,7 +115,9 @@ class TenantBase extends TestCase
 
     /**
      * Verificar se os tipos e precisão dos campos estão corretos.
+     *
      * @test
+     *
      * @return void
      */
     public function databaseVerifyFieldTypes()

@@ -2,18 +2,15 @@
 
 namespace Tests\Feature\Database\Central;
 
-use Tests\TestCase;
-
 class MigrationsTest extends CentralBase
 {
     protected $table = 'migrations';
 
     public static $fieldTypes = [
-        'id'         => ['type' => 'int', 'length' => 10, 'auto_increment' => true],
-        'migration'  => ['type' => 'varchar', 'length' => 255],
-        'batch'      => ['type' => 'int', 'length' => 11],
+        'id' => ['type' => 'int', 'length' => 10],
+        'migration' => ['type' => 'varchar', 'length' => 255],
+        'batch' => ['type' => 'int', 'length' => 11],
     ];
-    
 
     public static $primaryKey = ['id']; // Define a chave primária
 

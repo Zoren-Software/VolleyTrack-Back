@@ -2,16 +2,14 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class LanguagesTest extends TenantBase
 {
     protected $table = 'languages';
 
     public static $fieldTypes = [
-        'id'         => ['type' => 'bigint'],
-        'slug'       => ['type' => 'varchar', 'length' => 7],
-        'name'       => ['type' => 'varchar', 'length' => 20],
+        'id' => ['type' => 'bigint'],
+        'slug' => ['type' => 'varchar', 'length' => 7],
+        'name' => ['type' => 'varchar', 'length' => 20],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],

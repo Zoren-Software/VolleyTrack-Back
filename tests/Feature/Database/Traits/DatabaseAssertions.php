@@ -65,7 +65,7 @@ trait DatabaseAssertions
         $this->assertNotEmpty($primaryKey, "The table '{$this->table}' does not have a primary key.");
         $this->assertEmpty(
             $missingPrimaryKeys,
-            "The primary key of the '{$this->table}' table is incorrect. Expected: " . implode(', ', static::$primaryKey) . ". Found: " . implode(', ', $primaryKeyColumns)
+            "The primary key of the '{$this->table}' table is incorrect. Expected: " . implode(', ', static::$primaryKey) . '. Found: ' . implode(', ', $primaryKeyColumns)
         );
     }
 
@@ -172,7 +172,7 @@ trait DatabaseAssertions
     public function verifyTotalForeignKeys()
     {
         $this->ensureTableExists();
-        
+
         // Obtém a quantidade de chaves estrangeiras definidas no array da classe
         $totalForeignKeysArray = count(static::$foreignKeys ?? []);
 
@@ -213,7 +213,7 @@ trait DatabaseAssertions
     }
 
     /**
-     * Verificar se os campos da tabela possuem os tipos e precisões esperados.
+     * Verificar se os campos da tabela possuem os tipos e atributos esperados.
      *
      * @return void
      */
@@ -231,6 +231,7 @@ trait DatabaseAssertions
         foreach (static::$fieldTypes as $column => $expectedConfig) {
             if (!in_array($column, $columns)) {
                 $mismatchedTypes[] = "Column '{$column}' does not exist in the '{$this->table}' table.";
+
                 continue;
             }
 
@@ -239,6 +240,7 @@ trait DatabaseAssertions
 
             if (!$columnInfo) {
                 $mismatchedTypes[] = "Failed to retrieve details for column '{$column}' in table '{$this->table}'.";
+
                 continue;
             }
 
@@ -250,21 +252,21 @@ trait DatabaseAssertions
                 $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has type '{$actualType}', expected '{$expectedType}'.";
             }
 
-            // Verifica se é unsigned
+            // Verifica se a coluna é UNSIGNED
             if (isset($expectedConfig['unsigned']) && $expectedConfig['unsigned']) {
                 if (strpos($columnInfo->Type, 'unsigned') === false) {
                     $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be UNSIGNED.";
                 }
             }
 
-            // Verifica auto_increment
+            // Verifica se a coluna é AUTO_INCREMENT
             if (isset($expectedConfig['auto_increment']) && $expectedConfig['auto_increment']) {
                 if (strpos($columnInfo->Extra, 'auto_increment') === false) {
                     $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be AUTO_INCREMENT.";
                 }
             }
 
-            // Verifica se é nullable
+            // Verifica se a coluna é nullable
             if (isset($expectedConfig['nullable']) && $expectedConfig['nullable']) {
                 if ($columnInfo->Null !== 'YES') {
                     $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be NULLABLE.";
@@ -291,8 +293,8 @@ trait DatabaseAssertions
             // Para campos numéricos, verificamos precisão e escala apenas se o tipo suportar
             if (in_array($expectedType, ['decimal', 'float', 'double']) && isset($expectedConfig['precision'])) {
                 if (preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->Type, $matches)) {
-                    $actualPrecision = (int)$matches[1];
-                    $actualScale = isset($matches[2]) ? (int)$matches[2] : 0;
+                    $actualPrecision = (int) $matches[1];
+                    $actualScale = isset($matches[2]) ? (int) $matches[2] : 0;
 
                     if ($actualPrecision !== $expectedConfig['precision']) {
                         $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has precision '{$actualPrecision}', expected '{$expectedConfig['precision']}'.";
@@ -310,5 +312,4 @@ trait DatabaseAssertions
             "Field type mismatches in the '{$this->table}' table:\n" . implode("\n", $mismatchedTypes)
         );
     }
-
 }

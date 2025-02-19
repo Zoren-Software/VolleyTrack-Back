@@ -2,16 +2,14 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class PositionsTest extends TenantBase
 {
     protected $table = 'positions';
 
     public static $fieldTypes = [
-        'id'         => ['type' => 'bigint', 'unsigned' => true, 'auto_increment' => true],
-        'user_id'    => ['type' => 'bigint', 'unsigned' => true],
-        'name'       => ['type' => 'varchar', 'length' => 255],
+        'id' => ['type' => 'bigint', 'unsigned' => true],
+        'user_id' => ['type' => 'bigint', 'unsigned' => true],
+        'name' => ['type' => 'varchar', 'length' => 255],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],

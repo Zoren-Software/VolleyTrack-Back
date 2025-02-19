@@ -2,19 +2,16 @@
 
 namespace Tests\Feature\Database\Central;
 
-use Tests\TestCase;
-
 class ExternalAccessTokensTest extends CentralBase
 {
     protected $table = 'external_access_tokens';
 
     public static $fieldTypes = [
-        'id'         => ['type' => 'bigint', 'auto_increment' => true],
-        'token'      => ['type' => 'varchar', 'length' => 255],
+        'id' => ['type' => 'bigint'],
+        'token' => ['type' => 'varchar', 'length' => 255],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
-    
 
     public static $primaryKey = ['id']; // Define a chave primária
 

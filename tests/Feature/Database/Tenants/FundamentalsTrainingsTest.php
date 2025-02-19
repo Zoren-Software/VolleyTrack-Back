@@ -2,19 +2,17 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\TestCase;
-
 class FundamentalsTrainingsTest extends TenantBase
 {
     protected $table = 'fundamentals_trainings';
 
     public static $fieldTypes = [
-        'id'              => ['type' => 'bigint'],
-        'fundamental_id'  => ['type' => 'bigint'],
-        'training_id'     => ['type' => 'bigint'],
-        'deleted_at'      => ['type' => 'timestamp', 'nullable' => true],
-        'created_at'      => ['type' => 'timestamp', 'nullable' => true],
-        'updated_at'      => ['type' => 'timestamp', 'nullable' => true],
+        'id' => ['type' => 'bigint'],
+        'fundamental_id' => ['type' => 'bigint'],
+        'training_id' => ['type' => 'bigint'],
+        'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
+        'created_at' => ['type' => 'timestamp', 'nullable' => true],
+        'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária
@@ -23,7 +21,7 @@ class FundamentalsTrainingsTest extends TenantBase
 
     public static $foreignKeys = [
         'fundamentals_trainings_fundamental_id_foreign',
-        'fundamentals_trainings_training_id_foreign'
+        'fundamentals_trainings_training_id_foreign',
     ]; // Define as chaves estrangeiras
 
     public static $uniqueKeys = [];

@@ -2,17 +2,15 @@
 
 namespace Tests\Feature\Database\Central;
 
-use Tests\TestCase;
-
 class TenantsTest extends CentralBase
 {
     protected $table = 'tenants';
 
     public static $fieldTypes = [
-        'id'         => ['type' => 'varchar', 'length' => 255],
+        'id' => ['type' => 'varchar', 'length' => 255],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
-        'data'       => ['type' => 'longtext', 'nullable' => true],
+        'data' => ['type' => 'longtext', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id']; // Define a chave primária
@@ -22,6 +20,6 @@ class TenantsTest extends CentralBase
     public static $foreignKeys = []; // Nenhuma chave estrangeira definida
 
     public static $uniqueKeys = [
-        'tenants_id_unique'
+        'tenants_id_unique',
     ]; // Define as chaves únicas
 }
