@@ -230,14 +230,15 @@ trait DatabaseAssertions
 
         foreach (static::$fieldTypes as $column => $expectedConfig) {
             // Obtém informações detalhadas da coluna no INFORMATION_SCHEMA
-            $columnInfo = DB::selectOne("
+            $columnInfo = DB::selectOne('
                 SELECT COLUMN_TYPE, DATA_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, COLLATION_NAME, COLUMN_KEY, EXTRA
                 FROM INFORMATION_SCHEMA.COLUMNS
                 WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = ?
-            ", [$databaseName, $this->table, $column]);
+            ', [$databaseName, $this->table, $column]);
 
             if (!$columnInfo) {
                 $mismatchedTypes[] = "Column '{$column}' does not exist in the '{$this->table}' table.";
+
                 continue;
             }
 
@@ -252,7 +253,7 @@ trait DatabaseAssertions
             // Verifica se a coluna é UNSIGNED corretamente
             $isUnsigned = strpos($columnInfo->COLUMN_TYPE, 'unsigned') !== false;
             if (isset($expectedConfig['unsigned']) && $expectedConfig['unsigned'] !== $isUnsigned) {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' expected to be " . ($expectedConfig['unsigned'] ? "UNSIGNED" : "SIGNED") . ".";
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' expected to be " . ($expectedConfig['unsigned'] ? 'UNSIGNED' : 'SIGNED') . '.';
             }
 
             // Verifica se a coluna é AUTO_INCREMENT
@@ -264,7 +265,7 @@ trait DatabaseAssertions
             // Verifica se a coluna é nullable
             $isNullable = $columnInfo->IS_NULLABLE === 'YES';
             if (isset($expectedConfig['nullable']) && $expectedConfig['nullable'] !== $isNullable) {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' should be " . ($expectedConfig['nullable'] ? "NULLABLE" : "NOT NULLABLE") . ".";
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' should be " . ($expectedConfig['nullable'] ? 'NULLABLE' : 'NOT NULLABLE') . '.';
             }
 
             // Verifica o tamanho de colunas VARCHAR e CHAR
@@ -284,8 +285,8 @@ trait DatabaseAssertions
             // Para campos numéricos, verificamos precisão e escala apenas se o tipo suportar
             if (in_array($expectedType, ['decimal', 'float', 'double']) && isset($expectedConfig['precision'])) {
                 if (preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->COLUMN_TYPE, $matches)) {
-                    $actualPrecision = (int)$matches[1];
-                    $actualScale = isset($matches[2]) ? (int)$matches[2] : 0;
+                    $actualPrecision = (int) $matches[1];
+                    $actualScale = isset($matches[2]) ? (int) $matches[2] : 0;
 
                     if ($actualPrecision !== $expectedConfig['precision']) {
                         $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has precision '{$actualPrecision}', expected '{$expectedConfig['precision']}'.";
@@ -303,5 +304,4 @@ trait DatabaseAssertions
             "Field type mismatches in the '{$this->table}' table:\n" . implode("\n", $mismatchedTypes)
         );
     }
-
 }
