@@ -225,76 +225,67 @@ trait DatabaseAssertions
             $this->markTestSkipped("No field types defined for table '{$this->table}'.");
         }
 
-        $columns = Schema::getColumnListing($this->table);
+        $databaseName = DB::getDatabaseName();
         $mismatchedTypes = [];
 
         foreach (static::$fieldTypes as $column => $expectedConfig) {
-            if (!in_array($column, $columns)) {
-                $mismatchedTypes[] = "Column '{$column}' does not exist in the '{$this->table}' table.";
-
-                continue;
-            }
-
-            // Obtém as informações detalhadas da coluna
-            $columnInfo = DB::selectOne("SHOW FULL COLUMNS FROM {$this->table} WHERE Field = ?", [$column]);
+            // Obtém informações detalhadas da coluna no INFORMATION_SCHEMA
+            $columnInfo = DB::selectOne("
+                SELECT COLUMN_TYPE, DATA_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, COLLATION_NAME, COLUMN_KEY, EXTRA
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = ?
+            ", [$databaseName, $this->table, $column]);
 
             if (!$columnInfo) {
-                $mismatchedTypes[] = "Failed to retrieve details for column '{$column}' in table '{$this->table}'.";
-
+                $mismatchedTypes[] = "Column '{$column}' does not exist in the '{$this->table}' table.";
                 continue;
             }
 
             // Verifica o tipo da coluna
-            $actualType = explode('(', $columnInfo->Type)[0]; // Remove detalhes de tamanho e precisão
+            $actualType = $columnInfo->DATA_TYPE;
             $expectedType = $expectedConfig['type'];
 
             if ($actualType !== $expectedType) {
                 $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has type '{$actualType}', expected '{$expectedType}'.";
             }
 
-            // Verifica se a coluna é UNSIGNED
-            if (isset($expectedConfig['unsigned']) && $expectedConfig['unsigned']) {
-                if (strpos($columnInfo->Type, 'unsigned') === false) {
-                    $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be UNSIGNED.";
-                }
+            // Verifica se a coluna é UNSIGNED corretamente
+            $isUnsigned = strpos($columnInfo->COLUMN_TYPE, 'unsigned') !== false;
+            if (isset($expectedConfig['unsigned']) && $expectedConfig['unsigned'] !== $isUnsigned) {
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' expected to be " . ($expectedConfig['unsigned'] ? "UNSIGNED" : "SIGNED") . ".";
             }
 
             // Verifica se a coluna é AUTO_INCREMENT
-            if (isset($expectedConfig['auto_increment']) && $expectedConfig['auto_increment']) {
-                if (strpos($columnInfo->Extra, 'auto_increment') === false) {
-                    $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be AUTO_INCREMENT.";
-                }
+            $isAutoIncrement = strpos($columnInfo->EXTRA, 'auto_increment') !== false;
+            if (isset($expectedConfig['auto_increment']) && $expectedConfig['auto_increment'] !== $isAutoIncrement) {
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' expected to be AUTO_INCREMENT.";
             }
 
             // Verifica se a coluna é nullable
-            if (isset($expectedConfig['nullable']) && $expectedConfig['nullable']) {
-                if ($columnInfo->Null !== 'YES') {
-                    $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' is expected to be NULLABLE.";
-                }
-            } elseif ($columnInfo->Null === 'YES') {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' should NOT be NULLABLE.";
+            $isNullable = $columnInfo->IS_NULLABLE === 'YES';
+            if (isset($expectedConfig['nullable']) && $expectedConfig['nullable'] !== $isNullable) {
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' should be " . ($expectedConfig['nullable'] ? "NULLABLE" : "NOT NULLABLE") . ".";
             }
 
             // Verifica o tamanho de colunas VARCHAR e CHAR
             if (isset($expectedConfig['length']) && in_array($expectedType, ['varchar', 'char'])) {
-                preg_match('/\((\d+)\)/', $columnInfo->Type, $matches);
-                $actualLength = isset($matches[1]) ? (int) $matches[1] : null;
+                $actualLength = $columnInfo->CHARACTER_MAXIMUM_LENGTH;
 
-                if ($actualLength !== $expectedConfig['length']) {
+                if ($actualLength != $expectedConfig['length']) {
                     $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has length '{$actualLength}', expected '{$expectedConfig['length']}'.";
                 }
             }
 
             // Verifica collation
-            if (isset($expectedConfig['collation']) && $columnInfo->Collation !== $expectedConfig['collation']) {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has collation '{$columnInfo->Collation}', expected '{$expectedConfig['collation']}'.";
+            if (isset($expectedConfig['collation']) && $columnInfo->COLLATION_NAME !== $expectedConfig['collation']) {
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has collation '{$columnInfo->COLLATION_NAME}', expected '{$expectedConfig['collation']}'.";
             }
 
             // Para campos numéricos, verificamos precisão e escala apenas se o tipo suportar
             if (in_array($expectedType, ['decimal', 'float', 'double']) && isset($expectedConfig['precision'])) {
-                if (preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->Type, $matches)) {
-                    $actualPrecision = (int) $matches[1];
-                    $actualScale = isset($matches[2]) ? (int) $matches[2] : 0;
+                if (preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->COLUMN_TYPE, $matches)) {
+                    $actualPrecision = (int)$matches[1];
+                    $actualScale = isset($matches[2]) ? (int)$matches[2] : 0;
 
                     if ($actualPrecision !== $expectedConfig['precision']) {
                         $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has precision '{$actualPrecision}', expected '{$expectedConfig['precision']}'.";
@@ -312,4 +303,5 @@ trait DatabaseAssertions
             "Field type mismatches in the '{$this->table}' table:\n" . implode("\n", $mismatchedTypes)
         );
     }
+
 }

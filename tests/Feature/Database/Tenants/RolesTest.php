@@ -7,7 +7,7 @@ class RolesTest extends TenantBase
     protected $table = 'roles';
 
     public static $fieldTypes = [
-        'id' => ['type' => 'bigint', 'unsigned' => false],
+        'id' => ['type' => 'bigint', 'unsigned' => true],
         'name' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
         'guard_name' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
