@@ -13,7 +13,7 @@ return new class extends Migration
     {
         if (Schema::hasTable('websockets_statistics_entries')) {
             if (!hasAutoIncrement('websockets_statistics_entries')) {
-                DB::statement('ALTER TABLE websockets_statistics_entries MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
+                DB::statement('ALTER TABLE websockets_statistics_entries MODIFY id INT(10) UNSIGNED AUTO_INCREMENT');
             }
         }
     }

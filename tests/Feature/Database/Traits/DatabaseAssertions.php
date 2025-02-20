@@ -283,7 +283,7 @@ trait DatabaseAssertions
             }
 
             // Para campos numéricos, verificamos precisão e escala apenas se o tipo suportar
-            if (in_array($expectedType, ['decimal', 'float', 'double']) && isset($expectedConfig['precision'])) {
+            if (in_array($expectedType, ['decimal', 'float', 'double', 'int']) && isset($expectedConfig['precision'])) {
                 if (preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->COLUMN_TYPE, $matches)) {
                     $actualPrecision = (int) $matches[1];
                     $actualScale = isset($matches[2]) ? (int) $matches[2] : 0;

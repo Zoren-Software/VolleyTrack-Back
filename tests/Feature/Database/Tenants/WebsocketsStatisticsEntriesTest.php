@@ -7,7 +7,7 @@ class WebsocketsStatisticsEntriesTest extends TenantBase
     protected $table = 'websockets_statistics_entries';
 
     public static $fieldTypes = [
-        'id' => ['type' => 'bigint', 'unsigned' => true],
+        'id' => ['type' => 'int', 'precision' => 10, 'unsigned' => true],
         'app_id' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
         'peak_connection_count' => ['type' => 'int', 'length' => 11],
         'websocket_message_count' => ['type' => 'int', 'length' => 11],
