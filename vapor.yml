@@ -41,4 +41,3 @@ environments:
             - 'php artisan config:cache'
             - 'php artisan lighthouse:clear-cache'
             - 'php artisan cache:clear'
-        

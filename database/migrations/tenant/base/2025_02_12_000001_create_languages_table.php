@@ -16,8 +16,8 @@ return new class() extends Migration
         if (!Schema::hasTable('languages')) {
             Schema::create('languages', function (Blueprint $table) {
                 $table->id();
-                $table->string('slug', 7)->unique();
-                $table->string('name', 20)->unique();
+                $table->string('slug', 7);
+                $table->string('name', 20);
                 $table->timestamps();
                 $table->softDeletes();
             });

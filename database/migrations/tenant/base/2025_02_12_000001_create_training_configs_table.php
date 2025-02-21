@@ -18,9 +18,12 @@ return new class() extends Migration
                 $table->id();
                 $table->unsignedBigInteger('config_id');
                 $table->unsignedBigInteger('user_id');
-                $table->smallInteger('days_notification');
-                $table->boolean('notification_team_by_email');
-                $table->boolean('notification_technician_by_email');
+                $table->smallInteger('days_notification')
+                    ->default(1);
+                $table->boolean('notification_team_by_email')
+                    ->default(true);
+                $table->boolean('notification_technician_by_email')
+                    ->default(true);
                 $table->timestamps();
                 $table->softDeletes();
             });
