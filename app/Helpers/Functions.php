@@ -78,8 +78,8 @@ function getForeignKeys(string $table): array
     $databaseName = DB::getDatabaseName();
 
     $foreignKeys = DB::select('
-        SELECT CONSTRAINT_NAME 
-        FROM information_schema.KEY_COLUMN_USAGE 
+        SELECT CONSTRAINT_NAME
+        FROM information_schema.KEY_COLUMN_USAGE
         WHERE TABLE_SCHEMA = ?
             AND TABLE_NAME = ?
             AND REFERENCED_TABLE_NAME IS NOT NULL
