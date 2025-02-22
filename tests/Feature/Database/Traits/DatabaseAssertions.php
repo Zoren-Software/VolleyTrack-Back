@@ -38,6 +38,7 @@ trait DatabaseAssertions
         // Se a tabela não deve ter uma primary key, o teste deve passar
         if (empty(static::$primaryKey)) {
             $this->assertTrue(true, "No primary key expected for table '{$this->table}'.");
+
             return;
         }
 
@@ -61,6 +62,7 @@ trait DatabaseAssertions
         // Se a tabela não deve ter auto_increment, o teste deve passar sem erro
         if (empty(static::$autoIncrements)) {
             $this->assertTrue(true, "No auto_increment expected for table '{$this->table}'.");
+
             return;
         }
 
@@ -81,6 +83,7 @@ trait DatabaseAssertions
 
         if (empty(static::$foreignKeys)) {
             $this->assertTrue(true, "No foreign keys expected for table '{$this->table}'.");
+
             return;
         }
 
@@ -238,6 +241,7 @@ trait DatabaseAssertions
 
             if (!$columnInfo) {
                 $mismatchedTypes[] = "Column '{$column}' does not exist in the '{$this->table}' table.";
+
                 continue;
             }
 

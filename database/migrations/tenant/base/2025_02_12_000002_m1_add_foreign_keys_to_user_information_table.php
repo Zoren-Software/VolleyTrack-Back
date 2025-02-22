@@ -62,8 +62,8 @@ return new class() extends Migration
     {
         $indexes = [
             'user_id' => 'user_information_user_id_unique',
-            'cpf'     => 'user_information_cpf_unique',
-            'rg'      => 'user_information_rg_unique',
+            'cpf' => 'user_information_cpf_unique',
+            'rg' => 'user_information_rg_unique',
         ];
 
         foreach ($indexes as $column => $indexName) {

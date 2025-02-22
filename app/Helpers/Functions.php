@@ -116,10 +116,10 @@ function getUniqueKeys($table)
  * @return array Lista de unique keys
  */
 function getPrimaryKeyColumns($table): array
-    {
-        $databaseName = DB::getDatabaseName();
+{
+    $databaseName = DB::getDatabaseName();
 
-        $primaryKey = DB::select("
+    $primaryKey = DB::select("
             SELECT COLUMN_NAME 
             FROM information_schema.KEY_COLUMN_USAGE 
             WHERE TABLE_SCHEMA = ? 
@@ -127,5 +127,5 @@ function getPrimaryKeyColumns($table): array
             AND CONSTRAINT_NAME = 'PRIMARY'
         ", [$databaseName, $table]);
 
-        return array_column($primaryKey, 'COLUMN_NAME');
-    }
+    return array_column($primaryKey, 'COLUMN_NAME');
+}

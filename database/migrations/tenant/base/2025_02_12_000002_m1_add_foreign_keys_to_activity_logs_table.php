@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -19,7 +18,7 @@ return new class() extends Migration
             !hasAutoIncrement(config('activitylog.table_name'))
         ) {
             DB::statement(
-                'ALTER TABLE ' . config('activitylog.table_name') . 
+                'ALTER TABLE ' . config('activitylog.table_name') .
                 ' MODIFY id BIGINT UNSIGNED AUTO_INCREMENT'
             );
         }
@@ -37,7 +36,7 @@ return new class() extends Migration
             hasAutoIncrement(config('activitylog.table_name'))
         ) {
             DB::statement(
-                'ALTER TABLE ' . config('activitylog.table_name') . 
+                'ALTER TABLE ' . config('activitylog.table_name') .
                 ' MODIFY id BIGINT UNSIGNED NOT NULL'
             );
         }

@@ -24,9 +24,9 @@ return new class() extends Migration
     private function removeForeignKeys(): void
     {
         $tables = [
-            'confirmation_trainings'             => 'confirmation_trainings_training_id_foreign',
-            'fundamentals_trainings'             => 'fundamentals_trainings_training_id_foreign',
-            'specific_fundamentals_trainings'    => 'specific_fundamentals_trainings_training_id_foreign',
+            'confirmation_trainings' => 'confirmation_trainings_training_id_foreign',
+            'fundamentals_trainings' => 'fundamentals_trainings_training_id_foreign',
+            'specific_fundamentals_trainings' => 'specific_fundamentals_trainings_training_id_foreign',
         ];
 
         foreach ($tables as $table => $foreignKey) {
@@ -69,9 +69,9 @@ return new class() extends Migration
     private function recreateForeignKeys(): void
     {
         $tables = [
-            'confirmation_trainings'             => 'confirmation_trainings_training_id_foreign',
-            'fundamentals_trainings'             => 'fundamentals_trainings_training_id_foreign',
-            'specific_fundamentals_trainings'    => 'specific_fundamentals_trainings_training_id_foreign',
+            'confirmation_trainings' => 'confirmation_trainings_training_id_foreign',
+            'fundamentals_trainings' => 'fundamentals_trainings_training_id_foreign',
+            'specific_fundamentals_trainings' => 'specific_fundamentals_trainings_training_id_foreign',
         ];
 
         foreach ($tables as $table => $foreignKey) {

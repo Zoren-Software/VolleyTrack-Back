@@ -50,10 +50,10 @@ return new class extends Migration
     private function addForeignKeys(Blueprint $table): void
     {
         $foreignKeys = [
-            'user_id'    => ['users', 'nullOnDelete'],
-            'player_id'  => ['users', 'cascadeOnDelete'],
-            'training_id'=> ['trainings', 'cascadeOnDelete'],
-            'team_id'    => ['teams', 'cascadeOnDelete'],
+            'user_id' => ['users', 'nullOnDelete'],
+            'player_id' => ['users', 'cascadeOnDelete'],
+            'training_id' => ['trainings', 'cascadeOnDelete'],
+            'team_id' => ['teams', 'cascadeOnDelete'],
         ];
 
         foreach ($foreignKeys as $column => [$referenceTable, $onDelete]) {

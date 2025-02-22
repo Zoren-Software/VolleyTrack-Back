@@ -29,7 +29,7 @@ return new class extends Migration
     {
         $foreignKeys = [
             'model_has_permissions' => 'model_has_permissions_permission_id_foreign',
-            'role_has_permissions'  => 'role_has_permissions_permission_id_foreign',
+            'role_has_permissions' => 'role_has_permissions_permission_id_foreign',
         ];
 
         foreach ($foreignKeys as $table => $foreignKey) {
@@ -77,7 +77,7 @@ return new class extends Migration
     {
         $foreignKeys = [
             'model_has_permissions' => 'model_has_permissions_permission_id_foreign',
-            'role_has_permissions'  => 'role_has_permissions_permission_id_foreign',
+            'role_has_permissions' => 'role_has_permissions_permission_id_foreign',
         ];
 
         foreach ($foreignKeys as $table => $foreignKey) {
