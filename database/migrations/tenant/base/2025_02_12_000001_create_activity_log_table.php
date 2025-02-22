@@ -22,11 +22,6 @@ return new class extends Migration
                 $table->json('properties')->nullable();
                 $table->uuid('batch_uuid')->nullable();
                 $table->timestamps();
-
-                // Criação do índice para a coluna log_name, se não existir
-                if (!hasIndexExist($table->getTable(), 'activity_log_log_name_index')) {
-                    $table->index('log_name', 'activity_log_log_name_index');
-                }
             });
         }
     }
