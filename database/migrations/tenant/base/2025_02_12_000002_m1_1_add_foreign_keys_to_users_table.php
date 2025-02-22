@@ -10,10 +10,14 @@ return new class() extends Migration
     public function up()
     {
         // 🚀 Alterando a coluna ID da tabela users
-        if (Schema::hasTable('users')) {
-            if (!hasAutoIncrement('users')) {
-                DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
-            }
+        if (
+            Schema::hasTable('users') &&
+            Schema::hasColumn('users', 'id') &&
+            !hasAutoIncrement('users')
+        ) {
+            DB::statement(
+                'ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT'
+            );
         }
 
         if (Schema::hasTable('users') && !hasForeignKeyExist('users', 'users_user_id_foreign')) {
@@ -28,9 +32,15 @@ return new class() extends Migration
 
     public function down()
     {
-        // 🚀 Revertendo a alteração da coluna ID da tabela users
-        if (Schema::hasTable('users')) {
-            DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED');
+        // 🚀 Alterando a coluna ID da tabela users
+        if (
+            Schema::hasTable('users') &&
+            Schema::hasColumn('users', 'id') &&
+            hasAutoIncrement('users')
+        ) {
+            DB::statement(
+                'ALTER TABLE users MODIFY id BIGINT UNSIGNED NOT NULL'
+            );
         }
 
         if (Schema::hasTable('users') && hasForeignKeyExist('users', 'users_user_id_foreign')) {
