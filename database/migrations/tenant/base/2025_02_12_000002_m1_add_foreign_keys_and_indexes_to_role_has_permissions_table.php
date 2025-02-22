@@ -10,49 +10,54 @@ return new class extends Migration
     {
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
-        $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';
-        $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
 
-        if (Schema::hasTable($tableNames['role_has_permissions'])) {
-            Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames, $pivotPermission, $pivotRole) {
-                // Verificação e adição da foreign key para permission_id
-                if (!hasForeignKeyExist($table->getTable(), 'role_has_permissions_permission_id_foreign')) {
-                    $table->foreign($pivotPermission, 'role_has_permissions_permission_id_foreign')
-                        ->references('id')
-                        ->on($tableNames['permissions'])
-                        ->onDelete('cascade');
-                }
-
-                // Verificação e adição da foreign key para role_id
-                if (!hasForeignKeyExist($table->getTable(), 'role_has_permissions_role_id_foreign')) {
-                    $table->foreign($pivotRole, 'role_has_permissions_role_id_foreign')
-                        ->references('id')
-                        ->on($tableNames['roles'])
-                        ->onDelete('cascade');
-                }
-            });
+        if (!Schema::hasTable($tableNames['role_has_permissions'])) {
+            return;
         }
+
+        Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames) {
+            $this->addForeignKeys($table, $tableNames, $columnNames);
+        });
     }
 
     public function down(): void
     {
         $tableNames = config('permission.table_names');
-        $columnNames = config('permission.column_names');
-        $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';
-        $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
 
-        if (Schema::hasTable($tableNames['role_has_permissions'])) {
-            Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) {
+        if (!Schema::hasTable($tableNames['role_has_permissions'])) {
+            return;
+        }
 
-                // Remover chaves estrangeiras
-                if (hasForeignKeyExist($table->getTable(), 'role_has_permissions_permission_id_foreign')) {
-                    $table->dropForeign('role_has_permissions_permission_id_foreign');
-                }
+        Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) {
+            $this->removeForeignKeys($table);
+        });
+    }
 
-                if (hasForeignKeyExist($table->getTable(), 'role_has_permissions_role_id_foreign')) {
-                    $table->dropForeign('role_has_permissions_role_id_foreign');
-                }
-            });
+    private function addForeignKeys(Blueprint $table, array $tableNames, array $columnNames): void
+    {
+        if (!hasForeignKeyExist($table->getTable(), 'role_has_permissions_permission_id_foreign')) {
+            $table->foreign($columnNames['permission_pivot_key'] ?? 'permission_id', 'role_has_permissions_permission_id_foreign')
+                ->references('id')
+                ->on($tableNames['permissions'])
+                ->onDelete('cascade');
+        }
+
+        if (!hasForeignKeyExist($table->getTable(), 'role_has_permissions_role_id_foreign')) {
+            $table->foreign($columnNames['role_pivot_key'] ?? 'role_id', 'role_has_permissions_role_id_foreign')
+                ->references('id')
+                ->on($tableNames['roles'])
+                ->onDelete('cascade');
+        }
+    }
+
+    private function removeForeignKeys(Blueprint $table): void
+    {
+        if (hasForeignKeyExist($table->getTable(), 'role_has_permissions_permission_id_foreign')) {
+            $table->dropForeign('role_has_permissions_permission_id_foreign');
+        }
+
+        if (hasForeignKeyExist($table->getTable(), 'role_has_permissions_role_id_foreign')) {
+            $table->dropForeign('role_has_permissions_role_id_foreign');
         }
     }
 };
