@@ -45,6 +45,10 @@ return new class() extends Migration
                 if (hasIndexExist('personal_access_tokens', 'personal_access_tokens_tokenable_type_tokenable_id_index')) {
                     $table->dropIndex('personal_access_tokens_tokenable_type_tokenable_id_index');
                 }
+
+                if (hasIndexExist('personal_access_tokens', 'personal_access_tokens_token_unique')) {
+                    $table->dropUnique('personal_access_tokens_token_unique');
+                }
             });
         }
     }
