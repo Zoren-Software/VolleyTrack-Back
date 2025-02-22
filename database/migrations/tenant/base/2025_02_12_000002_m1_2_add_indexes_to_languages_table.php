@@ -9,45 +9,66 @@ return new class() extends Migration
 {
     public function up()
     {
-        if (Schema::hasTable('languages')) {
-            Schema::table('languages', function (Blueprint $table) {
-                if (!hasAutoIncrement('languages')) {
-                    DB::statement('ALTER TABLE languages MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
-                }
-                if (!hasIndexExist('languages', 'languages_slug_unique')) {
-                    $table->unique('slug', 'languages_slug_unique');
-                }
-                if (!hasIndexExist('languages', 'languages_name_unique')) {
-                    $table->unique('name', 'languages_name_unique');
-                }
-                if (!hasIndexExist('languages', 'languages_slug_index')) {
-                    $table->index('slug', 'languages_slug_index');
-                }
-                if (!hasIndexExist('languages', 'languages_name_index')) {
-                    $table->index('name', 'languages_name_index');
-                }
-            });
+        if (!Schema::hasTable('languages')) {
+            return;
         }
 
+        Schema::table('languages', function (Blueprint $table) {
+            $this->modifyAutoIncrement();
+            $this->addIndexes($table);
+        });
     }
 
     public function down()
     {
-        if (Schema::hasTable('languages')) {
-            Schema::table('languages', function (Blueprint $table) {
-                if (hasIndexExist('languages', 'languages_slug_index')) {
-                    $table->dropIndex('languages_slug_index');
+        if (!Schema::hasTable('languages')) {
+            return;
+        }
+
+        Schema::table('languages', function (Blueprint $table) {
+            $this->removeIndexes($table);
+        });
+    }
+
+    private function modifyAutoIncrement(): void
+    {
+        if (!hasAutoIncrement('languages')) {
+            DB::statement('ALTER TABLE languages MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
+        }
+    }
+
+    private function addIndexes(Blueprint $table): void
+    {
+        $indexes = [
+            'slug' => ['languages_slug_unique', 'languages_slug_index'],
+            'name' => ['languages_name_unique', 'languages_name_index'],
+        ];
+
+        foreach ($indexes as $column => $keys) {
+            foreach ($keys as $indexName) {
+                if (!hasIndexExist('languages', $indexName)) {
+                    if (strpos($indexName, 'unique') !== false) {
+                        $table->unique($column, $indexName);
+                    } else {
+                        $table->index($column, $indexName);
+                    }
                 }
-                if (hasIndexExist('languages', 'languages_name_index')) {
-                    $table->dropIndex('languages_name_index');
+            }
+        }
+    }
+
+    private function removeIndexes(Blueprint $table): void
+    {
+        $indexes = ['languages_slug_index', 'languages_name_index', 'languages_slug_unique', 'languages_name_unique'];
+
+        foreach ($indexes as $indexName) {
+            if (hasIndexExist('languages', $indexName)) {
+                if (strpos($indexName, 'unique') !== false) {
+                    $table->dropUnique($indexName);
+                } else {
+                    $table->dropIndex($indexName);
                 }
-                if (hasIndexExist('languages', 'languages_slug_unique')) {
-                    $table->dropUnique('languages_slug_unique');
-                }
-                if (hasIndexExist('languages', 'languages_name_unique')) {
-                    $table->dropUnique('languages_name_unique');
-                }
-            });
+            }
         }
     }
 };
