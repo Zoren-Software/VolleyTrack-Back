@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('websockets_statistics_entries')) {
-            if (!hasAutoIncrement('websockets_statistics_entries')) {
-                DB::statement('ALTER TABLE websockets_statistics_entries MODIFY id INT(10) UNSIGNED AUTO_INCREMENT');
-            }
+        if (
+            Schema::hasTable('websockets_statistics_entries') &&
+            !hasAutoIncrement('websockets_statistics_entries')
+        ) {
+            DB::statement(
+                'ALTER TABLE websockets_statistics_entries MODIFY id INT(10) UNSIGNED AUTO_INCREMENT'
+            );
         }
     }
 
@@ -23,5 +26,13 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (
+            Schema::hasTable('websockets_statistics_entries') &&
+            hasAutoIncrement('websockets_statistics_entries')
+        ) {
+            DB::statement(
+                'ALTER TABLE websockets_statistics_entries MODIFY id INT(10) UNSIGNED NOT NULL'
+            );
+        }
     }
 };
