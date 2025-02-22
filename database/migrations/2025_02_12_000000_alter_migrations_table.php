@@ -11,8 +11,8 @@ return new class extends Migration
     public function up(): void
     {
         if (
-            Schema::hasTable('migrations') && 
-            Schema::hasColumn('migrations', 'id') && 
+            Schema::hasTable('migrations') &&
+            Schema::hasColumn('migrations', 'id') &&
             !hasAutoIncrement('migrations')
         ) {
             DB::statement(
@@ -27,8 +27,8 @@ return new class extends Migration
     public function down(): void
     {
         if (
-            Schema::hasTable('migrations') && 
-            Schema::hasColumn('migrations', 'id') && 
+            Schema::hasTable('migrations') &&
+            Schema::hasColumn('migrations', 'id') &&
             hasAutoIncrement('migrations')
         ) {
             DB::statement(
