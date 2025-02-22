@@ -126,7 +126,6 @@ class User extends Authenticatable implements HasApiTokensContract
             ->logOnlyDirty()
             ->dontLogIfAttributesChangedOnly(
                 [
-                    'password',
                     'remember_token',
                     'token',
                     'token_sessao',
