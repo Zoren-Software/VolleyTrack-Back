@@ -10,83 +10,98 @@ return new class extends Migration
     public function up(): void
     {
         $tableNames = config('permission.table_names');
-        $columnNames = config('permission.column_names');
         $teams = config('permission.teams');
 
-        // 🚀 Removendo Foreign Keys antes da alteração
-        if (Schema::hasTable($tableNames['model_has_roles'])) {
-            Schema::table($tableNames['model_has_roles'], function (Blueprint $table) {
-                if (hasForeignKeyExist($table->getTable(), 'model_has_roles_role_id_foreign')) {
-                    $table->dropForeign('model_has_roles_role_id_foreign');
-                }
-            });
-        }
-
-        if (Schema::hasTable($tableNames['role_has_permissions'])) {
-            Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) {
-                if (hasForeignKeyExist($table->getTable(), 'role_has_permissions_role_id_foreign')) {
-                    $table->dropForeign('role_has_permissions_role_id_foreign');
-                }
-            });
-        }
-
-        // 🚀 Modificando a coluna ID na tabela roles
-        if (Schema::hasTable($tableNames['roles'])) {
-            Schema::table($tableNames['roles'], function (Blueprint $table) use ($columnNames, $teams, $tableNames) {
-                if (!hasAutoIncrement($tableNames['roles'])) {
-                    DB::statement("ALTER TABLE {$tableNames['roles']} MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
-                }
-
-                if ($teams && !hasIndexExist($table->getTable(), 'roles_team_foreign_key_index')) {
-                    $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
-                }
-
-                if ($teams && Schema::hasTable('teams')) {
-                    if (!hasForeignKeyExist($table->getTable(), 'roles_team_foreign_key_foreign')) {
-                        $table->foreign($columnNames['team_foreign_key'])
-                            ->references('id')
-                            ->on('teams')
-                            ->onDelete('cascade');
-                    }
-                }
-
-                if ($teams) {
-                    $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name'], 'roles_team_name_guard_unique');
-                } else {
-                    $table->unique(['name', 'guard_name'], 'roles_name_guard_unique');
-                }
-            });
-        }
-
-        // 🚀 Recriando as Foreign Keys
-        if (Schema::hasTable($tableNames['model_has_roles'])) {
-            Schema::table($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames) {
-                if (!hasForeignKeyExist($table->getTable(), 'model_has_roles_role_id_foreign')) {
-                    $table->foreign('role_id')
-                        ->references('id')
-                        ->on($tableNames['roles'])
-                        ->onDelete('cascade');
-                }
-            });
-        }
-
-        if (Schema::hasTable($tableNames['role_has_permissions'])) {
-            Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames) {
-                if (!hasForeignKeyExist($table->getTable(), 'role_has_permissions_role_id_foreign')) {
-                    $table->foreign('role_id')
-                        ->references('id')
-                        ->on($tableNames['roles'])
-                        ->onDelete('cascade');
-                }
-            });
-        }
+        $this->removeForeignKeys($tableNames);
+        $this->modifyRolesTable($tableNames, $teams);
+        $this->recreateForeignKeys($tableNames);
     }
 
     public function down(): void
     {
         $tableNames = config('permission.table_names');
-        $columnNames = config('permission.column_names');
+        $this->removeIndexesAndForeignKeys($tableNames);
+    }
 
+    private function removeForeignKeys(array $tableNames): void
+    {
+        $foreignKeys = [
+            'model_has_roles' => 'model_has_roles_role_id_foreign',
+            'role_has_permissions' => 'role_has_permissions_role_id_foreign',
+        ];
+
+        foreach ($foreignKeys as $table => $foreignKey) {
+            if (Schema::hasTable($tableNames[$table])) {
+                Schema::table($tableNames[$table], function (Blueprint $table) use ($foreignKey) {
+                    if (hasForeignKeyExist($table->getTable(), $foreignKey)) {
+                        $table->dropForeign($foreignKey);
+                    }
+                });
+            }
+        }
+    }
+
+    private function modifyRolesTable(array $tableNames, bool $teams): void
+    {
+        if (!Schema::hasTable($tableNames['roles'])) {
+            return;
+        }
+
+        Schema::table($tableNames['roles'], function (Blueprint $table) use ($tableNames, $teams) {
+            if (!hasAutoIncrement($tableNames['roles'])) {
+                DB::statement("ALTER TABLE {$tableNames['roles']} MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
+            }
+
+            if ($teams) {
+                $this->addTeamForeignKey($table);
+                $table->unique(['team_id', 'name', 'guard_name'], 'roles_team_name_guard_unique');
+            } else {
+                $table->unique(['name', 'guard_name'], 'roles_name_guard_unique');
+            }
+        });
+    }
+
+    private function addTeamForeignKey(Blueprint $table): void
+    {
+        if (!Schema::hasTable('teams')) {
+            return;
+        }
+
+        if (!hasIndexExist($table->getTable(), 'roles_team_foreign_key_index')) {
+            $table->index('team_id', 'roles_team_foreign_key_index');
+        }
+
+        if (!hasForeignKeyExist($table->getTable(), 'roles_team_foreign_key_foreign')) {
+            $table->foreign('team_id')
+                ->references('id')
+                ->on('teams')
+                ->onDelete('cascade');
+        }
+    }
+
+    private function recreateForeignKeys(array $tableNames): void
+    {
+        $foreignKeys = [
+            'model_has_roles' => 'model_has_roles_role_id_foreign',
+            'role_has_permissions' => 'role_has_permissions_role_id_foreign',
+        ];
+
+        foreach ($foreignKeys as $table => $foreignKey) {
+            if (Schema::hasTable($tableNames[$table])) {
+                Schema::table($tableNames[$table], function (Blueprint $table) use ($tableNames, $foreignKey) {
+                    if (!hasForeignKeyExist($table->getTable(), $foreignKey)) {
+                        $table->foreign('role_id')
+                            ->references('id')
+                            ->on($tableNames['roles'])
+                            ->onDelete('cascade');
+                    }
+                });
+            }
+        }
+    }
+
+    private function removeIndexesAndForeignKeys(array $tableNames): void
+    {
         if (Schema::hasTable($tableNames['roles'])) {
             Schema::table($tableNames['roles'], function (Blueprint $table) {
                 if (hasIndexExist($table->getTable(), 'roles_team_foreign_key_index')) {
@@ -99,20 +114,6 @@ return new class extends Migration
             });
         }
 
-        if (Schema::hasTable($tableNames['model_has_roles'])) {
-            Schema::table($tableNames['model_has_roles'], function (Blueprint $table) {
-                if (hasForeignKeyExist($table->getTable(), 'model_has_roles_role_id_foreign')) {
-                    $table->dropForeign('model_has_roles_role_id_foreign');
-                }
-            });
-        }
-
-        if (Schema::hasTable($tableNames['role_has_permissions'])) {
-            Schema::table($tableNames['role_has_permissions'], function (Blueprint $table) {
-                if (hasForeignKeyExist($table->getTable(), 'role_has_permissions_role_id_foreign')) {
-                    $table->dropForeign('role_has_permissions_role_id_foreign');
-                }
-            });
-        }
+        $this->removeForeignKeys($tableNames);
     }
 };
