@@ -17,9 +17,14 @@ return new class() extends Migration
         if (Schema::hasTable('users')) {
             Schema::table('users', function (Blueprint $table) {
                 if (!hasAutoIncrement('users')) {
-                    DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
+                    DB::statement(
+                        'ALTER TABLE users MODIFY id BIGINT UNSIGNED AUTO_INCREMENT'
+                    );
                 }
-                if (Schema::hasColumn('users', 'email') && !hasIndexExist('users', 'users_email_unique')) {
+                if (
+                    Schema::hasColumn('users', 'email') &&
+                    !hasIndexExist('users', 'users_email_unique')
+                ) {
                     $table->unique('email');
                 }
             });
@@ -33,10 +38,19 @@ return new class() extends Migration
      */
     public function down()
     {
-        // Reverter a alteração do AUTO_INCREMENT
         if (Schema::hasTable('users')) {
             Schema::table('users', function (Blueprint $table) {
-                DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED');
+                if (hasAutoIncrement('users')) {
+                    DB::statement(
+                        'ALTER TABLE users MODIFY id BIGINT UNSIGNED NOT NULL'
+                    );
+                }
+                if (
+                    Schema::hasColumn('users', 'email') &&
+                    hasIndexExist('users', 'users_email_unique')
+                ) {
+                    $table->dropUnique('users_email_unique');
+                }
             });
         }
     }
