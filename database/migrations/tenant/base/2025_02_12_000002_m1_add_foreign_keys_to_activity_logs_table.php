@@ -14,13 +14,14 @@ return new class() extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable(config('activitylog.table_name'))) {
-            Schema::table(config('activitylog.table_name'), function (Blueprint $table) {
-                if (!hasAutoIncrement(config('activitylog.table_name'))) {
-                    DB::statement('ALTER TABLE ' . config('activitylog.table_name') . ' MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
-                }
-
-            });
+        if (
+            Schema::hasTable(config('activitylog.table_name')) &&
+            !hasAutoIncrement(config('activitylog.table_name'))
+        ) {
+            DB::statement(
+                'ALTER TABLE ' . config('activitylog.table_name') . 
+                ' MODIFY id BIGINT UNSIGNED AUTO_INCREMENT'
+            );
         }
     }
 
@@ -31,6 +32,14 @@ return new class() extends Migration
      */
     public function down()
     {
-
+        if (
+            Schema::hasTable(config('activitylog.table_name')) &&
+            hasAutoIncrement(config('activitylog.table_name'))
+        ) {
+            DB::statement(
+                'ALTER TABLE ' . config('activitylog.table_name') . 
+                ' MODIFY id BIGINT UNSIGNED NOT NULL'
+            );
+        }
     }
 };
