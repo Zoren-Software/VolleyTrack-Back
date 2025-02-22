@@ -34,7 +34,7 @@ return new class extends Migration
         }
 
         Schema::table($tableNames['model_has_roles'], function (Blueprint $table) use ($columnNames, $teams) {
-            $this->removeIndexes($table, $columnNames, $teams);
+            $this->removeIndexes($table, $teams);
             $this->removeForeignKeys($table, $teams);
         });
     }
@@ -69,7 +69,7 @@ return new class extends Migration
         }
     }
 
-    private function removeIndexes(Blueprint $table, array $columnNames, bool $teams): void
+    private function removeIndexes(Blueprint $table, bool $teams): void
     {
         if (hasIndexExist($table->getTable(), 'model_has_roles_model_id_model_type_index')) {
             $table->dropIndex('model_has_roles_model_id_model_type_index');
