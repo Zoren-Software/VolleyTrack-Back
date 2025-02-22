@@ -25,7 +25,6 @@ return new class extends Migration
     public function down(): void
     {
         $tableNames = config('permission.table_names');
-        $columnNames = config('permission.column_names');
         $teams = config('permission.teams');
 
         if (!Schema::hasTable($tableNames['model_has_permissions'])) {
