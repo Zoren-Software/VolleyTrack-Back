@@ -21,8 +21,8 @@ function hasForeignKeyExist($table, $nameForeignKey)
         SELECT CONSTRAINT_NAME
         FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
         WHERE TABLE_SCHEMA = ?
-          AND TABLE_NAME = ?
-          AND CONSTRAINT_NAME = ?
+            AND TABLE_NAME = ?
+            AND CONSTRAINT_NAME = ?
     ', [$databaseName, $table, $nameForeignKey]);
 
     return !empty($result);
@@ -35,8 +35,8 @@ function hasIndexExist($table, $nameIndex)
         SELECT INDEX_NAME
         FROM INFORMATION_SCHEMA.STATISTICS
         WHERE TABLE_SCHEMA = ?
-          AND TABLE_NAME = ?
-          AND INDEX_NAME = ?
+            AND TABLE_NAME = ?
+            AND INDEX_NAME = ?
     ', [$databaseName, $table, $nameIndex]);
 
     return !empty($result);
@@ -48,8 +48,8 @@ function hasEventExist($eventName)
     $result = DB::select('
         SELECT EVENT_NAME
         FROM INFORMATION_SCHEMA.EVENTS
-        WHERE EVENT_SCHEMA = ? 
-          AND EVENT_NAME = ?
+        WHERE EVENT_SCHEMA = ?
+            AND EVENT_NAME = ?
     ', [$dbName, $eventName]);
 
     return !empty($result);
@@ -80,9 +80,9 @@ function getForeignKeys(string $table): array
     $foreignKeys = DB::select('
         SELECT CONSTRAINT_NAME 
         FROM information_schema.KEY_COLUMN_USAGE 
-        WHERE TABLE_SCHEMA = ? 
-        AND TABLE_NAME = ? 
-        AND REFERENCED_TABLE_NAME IS NOT NULL
+        WHERE TABLE_SCHEMA = ?
+            AND TABLE_NAME = ?
+            AND REFERENCED_TABLE_NAME IS NOT NULL
     ', [$databaseName, $table]);
 
     return array_column($foreignKeys, 'CONSTRAINT_NAME');
@@ -101,9 +101,9 @@ function getUniqueKeys($table)
     $results = DB::select("
         SELECT CONSTRAINT_NAME 
         FROM information_schema.TABLE_CONSTRAINTS 
-        WHERE TABLE_SCHEMA = ? 
-        AND TABLE_NAME = ? 
-        AND CONSTRAINT_TYPE = 'UNIQUE'
+        WHERE TABLE_SCHEMA = ?
+            AND TABLE_NAME = ?
+            AND CONSTRAINT_TYPE = 'UNIQUE'
     ", [$databaseName, $table]);
 
     return array_column($results, 'CONSTRAINT_NAME');
