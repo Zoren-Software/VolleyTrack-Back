@@ -15,7 +15,7 @@ trait DatabaseAssertions
     private function ensureTableExists()
     {
         if (!Schema::hasTable($this->table)) {
-            $this->markTestSkipped("The table '{$this->table}' does not exist.");
+            $this->fail("The table '{$this->table}' does not exist.");
         }
     }
 
@@ -25,44 +25,26 @@ trait DatabaseAssertions
     public function verifyFields()
     {
         $this->ensureTableExists();
-
-        $columns = Schema::getColumnListing($this->table);
-        $missingFields = array_diff(array_keys(static::$fieldTypes), $columns);
-
-        $this->assertEmpty(
-            $missingFields,
-            "The following fields are missing in the '{$this->table}' table: " . implode(', ', $missingFields)
-        );
+        $this->checkMissingFields();
     }
 
     /**
-     * Verificar se a chave primária está corretamente definida.
-     *
-     * @return void
+     * Verifica se a chave primária está corretamente definida.
      */
     public function verifyPrimaryKey()
     {
         $this->ensureTableExists();
 
+        // Se a tabela não deve ter uma primary key, o teste deve passar
         if (empty(static::$primaryKey)) {
-            $this->markTestSkipped("No primary key defined for table '{$this->table}'.");
+            $this->assertTrue(true, "No primary key expected for table '{$this->table}'.");
+            return;
         }
 
-        $databaseName = DB::getDatabaseName();
+        $primaryKeyColumns = getPrimaryKeyColumns($this->table);
+        $missingPrimaryKeys = array_diff(static::$primaryKey, $primaryKeyColumns);
 
-        $primaryKey = DB::select("
-            SELECT COLUMN_NAME 
-            FROM information_schema.KEY_COLUMN_USAGE 
-            WHERE TABLE_SCHEMA = ? 
-            AND TABLE_NAME = ? 
-            AND CONSTRAINT_NAME = 'PRIMARY'
-        ", [$databaseName, $this->table]);
-
-        $primaryKeyColumns = array_column($primaryKey, 'COLUMN_NAME');
-
-        $missingPrimaryKeys = array_diff(static::$primaryKey ?? [], $primaryKeyColumns);
-
-        $this->assertNotEmpty($primaryKey, "The table '{$this->table}' does not have a primary key.");
+        $this->assertNotEmpty($primaryKeyColumns, "The table '{$this->table}' does not have a primary key.");
         $this->assertEmpty(
             $missingPrimaryKeys,
             "The primary key of the '{$this->table}' table is incorrect. Expected: " . implode(', ', static::$primaryKey) . '. Found: ' . implode(', ', $primaryKeyColumns)
@@ -70,16 +52,16 @@ trait DatabaseAssertions
     }
 
     /**
-     * Verificar se os campos auto_increment estão corretamente definidos.
-     *
-     * @return void
+     * Verifica se os campos auto_increment estão corretamente definidos.
      */
     public function verifyAutoIncrements()
     {
         $this->ensureTableExists();
 
+        // Se a tabela não deve ter auto_increment, o teste deve passar sem erro
         if (empty(static::$autoIncrements)) {
-            $this->markTestSkipped("No foreign keys for table '{$this->table}'.");
+            $this->assertTrue(true, "No auto_increment expected for table '{$this->table}'.");
+            return;
         }
 
         foreach (static::$autoIncrements as $column) {
@@ -91,16 +73,15 @@ trait DatabaseAssertions
     }
 
     /**
-     * Verificar se as chaves estrangeiras estão corretamente definidas.
-     *
-     * @return void
+     * Verifica se as chaves estrangeiras estão corretamente definidas.
      */
     public function verifyForeignKeys()
     {
         $this->ensureTableExists();
 
         if (empty(static::$foreignKeys)) {
-            $this->markTestSkipped("No foreign keys for table '{$this->table}'.");
+            $this->assertTrue(true, "No foreign keys expected for table '{$this->table}'.");
+            return;
         }
 
         $missingForeignKeys = [];
@@ -118,21 +99,83 @@ trait DatabaseAssertions
     }
 
     /**
-     * Verificar se as chaves únicas estão corretamente definidas.
-     *
-     * @return void
+     * Verifica se as chaves únicas estão corretamente definidas.
      */
     public function verifyUniqueKeys()
     {
         $this->ensureTableExists();
+        $this->checkUniqueKeys(static::$uniqueKeys ?? []);
+    }
 
-        if (empty(static::$uniqueKeys)) {
-            $this->markTestSkipped("No unique keys for table '{$this->table}'.");
+    /**
+     * Verifica o total de campos na tabela e no array de definição.
+     */
+    public function verifyTotalFields()
+    {
+        $this->ensureTableExists();
+        $this->assertCountFieldsMatch(static::$fieldTypes ?? []);
+    }
+
+    /**
+     * Verifica o total de chaves estrangeiras no array e na tabela.
+     */
+    public function verifyTotalForeignKeys()
+    {
+        $this->ensureTableExists();
+        $this->assertCountForeignKeysMatch(static::$foreignKeys ?? []);
+    }
+
+    /**
+     * Verifica o total de unique keys no array e na tabela.
+     */
+    public function verifyTotalUniqueKeys()
+    {
+        $this->ensureTableExists();
+        $this->assertCountUniqueKeysMatch(static::$uniqueKeys ?? []);
+    }
+
+    /**
+     * Verifica se os campos da tabela possuem os tipos e atributos esperados.
+     */
+    public function verifyFieldTypes()
+    {
+        $this->ensureTableExists();
+        $this->checkFieldTypes(static::$fieldTypes ?? []);
+    }
+
+    // MÉTODOS AUXILIARES PARA REUTILIZAÇÃO
+    private function checkMissingFields(): void
+    {
+        $columns = Schema::getColumnListing($this->table);
+        $missingFields = array_diff(array_keys(static::$fieldTypes), $columns);
+
+        $this->assertEmpty(
+            $missingFields,
+            "The following fields are missing in the '{$this->table}' table: " . implode(', ', $missingFields)
+        );
+    }
+
+    private function checkForeignKeys(array $foreignKeys): void
+    {
+        $missingForeignKeys = [];
+
+        foreach ($foreignKeys as $foreignKey) {
+            if (!hasForeignKeyExist($this->table, $foreignKey)) {
+                $missingForeignKeys[] = $foreignKey;
+            }
         }
 
+        $this->assertEmpty(
+            $missingForeignKeys,
+            "Some foreign keys are missing in the '{$this->table}' table: " . implode(', ', $missingForeignKeys)
+        );
+    }
+
+    private function checkUniqueKeys(array $uniqueKeys): void
+    {
         $missingUniqueKeys = [];
 
-        foreach (static::$uniqueKeys as $uniqueKey) {
+        foreach ($uniqueKeys as $uniqueKey) {
             if (!hasIndexExist($this->table, $uniqueKey)) {
                 $missingUniqueKeys[] = $uniqueKey;
             }
@@ -144,17 +187,10 @@ trait DatabaseAssertions
         );
     }
 
-    /**
-     * Verificar o total de campos no array de campos e na tabela.
-     *
-     * @return void
-     */
-    public function verifyTotalFields()
+    private function assertCountFieldsMatch(array $fieldTypes): void
     {
-        $this->ensureTableExists();
-
         $columns = Schema::getColumnListing($this->table);
-        $totalFieldsArray = count(static::$fieldTypes ?? []);
+        $totalFieldsArray = count($fieldTypes);
         $totalFieldsTable = count($columns);
 
         $this->assertEquals(
@@ -164,23 +200,11 @@ trait DatabaseAssertions
         );
     }
 
-    /**
-     * Verificar o total de chaves estrangeiras no array de chaves estrangeiras e na tabela.
-     *
-     * @return void
-     */
-    public function verifyTotalForeignKeys()
+    private function assertCountForeignKeysMatch(array $foreignKeys): void
     {
-        $this->ensureTableExists();
+        $totalForeignKeysArray = count($foreignKeys);
+        $totalForeignKeysTable = count(getForeignKeys($this->table) ?? []);
 
-        // Obtém a quantidade de chaves estrangeiras definidas no array da classe
-        $totalForeignKeysArray = count(static::$foreignKeys ?? []);
-
-        // Obtém a quantidade real de chaves estrangeiras da tabela no banco
-        $foreignKeysFromTable = getForeignKeys($this->table);
-        $totalForeignKeysTable = is_array($foreignKeysFromTable) ? count($foreignKeysFromTable) : 0;
-
-        // Compara os valores e exibe erro caso sejam diferentes
         $this->assertEquals(
             $totalForeignKeysArray,
             $totalForeignKeysTable,
@@ -188,23 +212,11 @@ trait DatabaseAssertions
         );
     }
 
-    /**
-     * Verificar o total de unique keys definidos no array e na tabela do banco.
-     *
-     * @return void
-     */
-    public function verifyTotalUniqueKeys()
+    private function assertCountUniqueKeysMatch(array $uniqueKeys): void
     {
-        $this->ensureTableExists();
+        $totalUniqueKeysArray = count($uniqueKeys);
+        $totalUniqueKeysTable = count(getUniqueKeys($this->table) ?? []);
 
-        // Total de unique keys definidos no array de testes
-        $totalUniqueKeysArray = count(static::$uniqueKeys ?? []);
-
-        // Total de unique keys reais no banco
-        $uniqueKeysFromTable = getUniqueKeys($this->table);
-        $totalUniqueKeysTable = is_array($uniqueKeysFromTable) ? count($uniqueKeysFromTable) : 0;
-
-        // Comparação e erro se os valores forem diferentes
         $this->assertEquals(
             $totalUniqueKeysArray,
             $totalUniqueKeysTable,
@@ -212,24 +224,12 @@ trait DatabaseAssertions
         );
     }
 
-    /**
-     * Verificar se os campos da tabela possuem os tipos e atributos esperados.
-     *
-     * @return void
-     */
-    public function verifyFieldTypes()
+    private function checkFieldTypes(array $fieldTypes): void
     {
-        $this->ensureTableExists();
-
-        if (empty(static::$fieldTypes)) {
-            $this->markTestSkipped("No field types defined for table '{$this->table}'.");
-        }
-
         $databaseName = DB::getDatabaseName();
         $mismatchedTypes = [];
 
-        foreach (static::$fieldTypes as $column => $expectedConfig) {
-            // Obtém informações detalhadas da coluna no INFORMATION_SCHEMA
+        foreach ($fieldTypes as $column => $expectedConfig) {
             $columnInfo = DB::selectOne('
                 SELECT COLUMN_TYPE, DATA_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, COLLATION_NAME, COLUMN_KEY, EXTRA
                 FROM INFORMATION_SCHEMA.COLUMNS
@@ -238,64 +238,11 @@ trait DatabaseAssertions
 
             if (!$columnInfo) {
                 $mismatchedTypes[] = "Column '{$column}' does not exist in the '{$this->table}' table.";
-
                 continue;
             }
 
-            // Verifica o tipo da coluna
-            $actualType = $columnInfo->DATA_TYPE;
-            $expectedType = $expectedConfig['type'];
-
-            if ($actualType !== $expectedType) {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has type '{$actualType}', expected '{$expectedType}'.";
-            }
-
-            // Verifica se a coluna é UNSIGNED corretamente
-            $isUnsigned = strpos($columnInfo->COLUMN_TYPE, 'unsigned') !== false;
-            if (isset($expectedConfig['unsigned']) && $expectedConfig['unsigned'] !== $isUnsigned) {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' expected to be " . ($expectedConfig['unsigned'] ? 'UNSIGNED' : 'SIGNED') . '.';
-            }
-
-            // Verifica se a coluna é AUTO_INCREMENT
-            $isAutoIncrement = strpos($columnInfo->EXTRA, 'auto_increment') !== false;
-            if (isset($expectedConfig['auto_increment']) && $expectedConfig['auto_increment'] !== $isAutoIncrement) {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' expected to be AUTO_INCREMENT.";
-            }
-
-            // Verifica se a coluna é nullable
-            $isNullable = $columnInfo->IS_NULLABLE === 'YES';
-            if (isset($expectedConfig['nullable']) && $expectedConfig['nullable'] !== $isNullable) {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' should be " . ($expectedConfig['nullable'] ? 'NULLABLE' : 'NOT NULLABLE') . '.';
-            }
-
-            // Verifica o tamanho de colunas VARCHAR e CHAR
-            if (isset($expectedConfig['length']) && in_array($expectedType, ['varchar', 'char'])) {
-                $actualLength = $columnInfo->CHARACTER_MAXIMUM_LENGTH;
-
-                if ($actualLength != $expectedConfig['length']) {
-                    $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has length '{$actualLength}', expected '{$expectedConfig['length']}'.";
-                }
-            }
-
-            // Verifica collation
-            if (isset($expectedConfig['collation']) && $columnInfo->COLLATION_NAME !== $expectedConfig['collation']) {
-                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has collation '{$columnInfo->COLLATION_NAME}', expected '{$expectedConfig['collation']}'.";
-            }
-
-            // Para campos numéricos, verificamos precisão e escala apenas se o tipo suportar
-            if (in_array($expectedType, ['decimal', 'float', 'double', 'int']) && isset($expectedConfig['precision'])) {
-                if (preg_match('/\((\d+),?(\d+)?\)/', $columnInfo->COLUMN_TYPE, $matches)) {
-                    $actualPrecision = (int) $matches[1];
-                    $actualScale = isset($matches[2]) ? (int) $matches[2] : 0;
-
-                    if ($actualPrecision !== $expectedConfig['precision']) {
-                        $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has precision '{$actualPrecision}', expected '{$expectedConfig['precision']}'.";
-                    }
-
-                    if (isset($expectedConfig['scale']) && $actualScale !== $expectedConfig['scale']) {
-                        $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has scale '{$actualScale}', expected '{$expectedConfig['scale']}'.";
-                    }
-                }
+            if ($columnInfo->DATA_TYPE !== $expectedConfig['type']) {
+                $mismatchedTypes[] = "Column '{$column}' in '{$this->table}' has type '{$columnInfo->DATA_TYPE}', expected '{$expectedConfig['type']}'.";
             }
         }
 

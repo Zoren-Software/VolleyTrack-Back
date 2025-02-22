@@ -108,3 +108,24 @@ function getUniqueKeys($table)
 
     return array_column($results, 'CONSTRAINT_NAME');
 }
+
+/**
+ * Retorna uma lista de chaves primárias de uma tabela no banco de dados.
+ *
+ * @param  string  $table  Nome da tabela
+ * @return array Lista de unique keys
+ */
+function getPrimaryKeyColumns($table): array
+    {
+        $databaseName = DB::getDatabaseName();
+
+        $primaryKey = DB::select("
+            SELECT COLUMN_NAME 
+            FROM information_schema.KEY_COLUMN_USAGE 
+            WHERE TABLE_SCHEMA = ? 
+            AND TABLE_NAME = ? 
+            AND CONSTRAINT_NAME = 'PRIMARY'
+        ", [$databaseName, $table]);
+
+        return array_column($primaryKey, 'COLUMN_NAME');
+    }
