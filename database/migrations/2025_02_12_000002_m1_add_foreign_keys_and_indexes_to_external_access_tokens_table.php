@@ -12,12 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('external_access_tokens')) {
-            Schema::table('external_access_tokens', function (Blueprint $table) {
-                if (!hasAutoIncrement('external_access_tokens')) {
-                    DB::statement('ALTER TABLE external_access_tokens MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
-                }
-            });
+        if (
+            Schema::hasTable('external_access_tokens') &&
+            !hasAutoIncrement('external_access_tokens')
+        ) {
+            DB::statement(
+                'ALTER TABLE external_access_tokens MODIFY id BIGINT UNSIGNED AUTO_INCREMENT'
+            );
         }
     }
 
@@ -26,10 +27,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('external_access_tokens')) {
-            Schema::table('external_access_tokens', function (Blueprint $table) {
-                DB::statement('ALTER TABLE external_access_tokens MODIFY id BIGINT UNSIGNED');
-            });
+        if (
+            Schema::hasTable('external_access_tokens') &&
+            hasAutoIncrement('external_access_tokens')
+        ) {
+            DB::statement(
+                'ALTER TABLE external_access_tokens MODIFY id BIGINT UNSIGNED NOT NULL'
+            );
         }
     }
 };
