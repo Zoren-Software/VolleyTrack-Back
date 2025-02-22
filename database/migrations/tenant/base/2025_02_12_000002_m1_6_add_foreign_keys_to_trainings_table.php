@@ -37,8 +37,6 @@ return new class() extends Migration
     {
         if (Schema::hasTable('trainings')) {
             Schema::table('trainings', function (Blueprint $table) {
-                $foreignKeys = ['trainings_team_id_foreign', 'trainings_user_id_foreign'];
-
                 if (hasForeignKeyExist($table->getTable(), 'trainings_team_id_foreign')) {
                     $table->dropForeign('trainings_team_id_foreign');
                 }
