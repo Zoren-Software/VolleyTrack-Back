@@ -10,10 +10,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('migrations')) {
-            if (!hasAutoIncrement('migrations')) {
-                DB::statement('ALTER TABLE `migrations` MODIFY COLUMN `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT');
-            }
+        if (
+            Schema::hasTable('migrations') &&
+            !hasAutoIncrement('migrations')
+        ) {
+            DB::statement(
+                'ALTER TABLE `migrations` MODIFY COLUMN `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT'
+            );
         }
     }
 
@@ -22,5 +25,13 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (
+            Schema::hasTable('migrations') &&
+            hasAutoIncrement('migrations')
+        ) {
+            DB::statement(
+                'ALTER TABLE `migrations` MODIFY COLUMN `id` INT(10) UNSIGNED NOT NULL'
+            );
+        }
     }
 };
