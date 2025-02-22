@@ -1,15 +1,29 @@
-id: 58960
-name: VolleyTrackMultiTenancy
+id: 69659
+name: VolleyTrackMultiTenancyDev5
+
+ignore:
+    - 'storage/app/public'
+    - 'storage/logs'
+    - 'public/vendor'
+    - 'public/docs'
+    - 'terraform'
+    - 'node_modules'
+    - '.env'
+    - '.env.example'
+    - '.git'
+    - '.github'
+
 environments:
     production:
-        domain: graphql.volleytrack.com
+        #domain: graphql.volleytrack.com
         cache: volleytrack-cache
         database: volleytrack
         memory: 1024
         cli-memory: 512
         runtime: 'php-8.3:al2'
         build:
-            - 'composer install --no-dev'
+            - 'composer install --optimize-autoloader --no-dev'
+            - 'composer dump-autoload -o'
             - 'php artisan event:cache'
             - 'php artisan lighthouse:cache'
             - 'php artisan lighthouse:clear-cache'
