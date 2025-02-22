@@ -99,8 +99,8 @@ function getUniqueKeys($table)
     $databaseName = DB::getDatabaseName();
 
     $results = DB::select("
-        SELECT CONSTRAINT_NAME 
-        FROM information_schema.TABLE_CONSTRAINTS 
+        SELECT CONSTRAINT_NAME
+        FROM information_schema.TABLE_CONSTRAINTS
         WHERE TABLE_SCHEMA = ?
             AND TABLE_NAME = ?
             AND CONSTRAINT_TYPE = 'UNIQUE'
@@ -120,10 +120,10 @@ function getPrimaryKeyColumns($table): array
     $databaseName = DB::getDatabaseName();
 
     $primaryKey = DB::select("
-            SELECT COLUMN_NAME 
-            FROM information_schema.KEY_COLUMN_USAGE 
-            WHERE TABLE_SCHEMA = ? 
-            AND TABLE_NAME = ? 
+            SELECT COLUMN_NAME
+            FROM information_schema.KEY_COLUMN_USAGE
+            WHERE TABLE_SCHEMA = ?
+            AND TABLE_NAME = ?
             AND CONSTRAINT_NAME = 'PRIMARY'
         ", [$databaseName, $table]);
 
