@@ -32,7 +32,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::table($tableNames['model_has_permissions'], function (Blueprint $table) use ($columnNames, $teams) {
+        Schema::table($tableNames['model_has_permissions'], function (Blueprint $table) use ($teams) {
             $this->removeIndexes($table, $teams);
             $this->removeForeignKeys($table, $teams);
         });

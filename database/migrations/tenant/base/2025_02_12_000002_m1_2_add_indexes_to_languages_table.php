@@ -9,15 +9,6 @@ return new class() extends Migration
 {
     public function up()
     {
-        // 🚀 Removendo a foreign key antes da alteração
-        if (Schema::hasTable('configs')) {
-            Schema::table('configs', function (Blueprint $table) {
-                if (hasForeignKeyExist($table->getTable(), 'configs_language_id_foreign')) {
-                    $table->dropForeign('configs_language_id_foreign');
-                }
-            });
-        }
-
         if (Schema::hasTable('languages')) {
             Schema::table('languages', function (Blueprint $table) {
                 if (!hasAutoIncrement('languages')) {
@@ -38,30 +29,10 @@ return new class() extends Migration
             });
         }
 
-        // 🚀 Recriando a foreign key depois da alteração
-        if (Schema::hasTable('configs')) {
-            Schema::table('configs', function (Blueprint $table) {
-                if (!hasForeignKeyExist($table->getTable(), 'configs_language_id_foreign')) {
-                    $table->foreign('language_id', 'configs_language_id_foreign')
-                        ->references('id')
-                        ->on('languages')
-                        ->onDelete('cascade');
-                }
-            });
-        }
     }
 
     public function down()
     {
-        // 🚀 Removendo a foreign key antes da reversão
-        if (Schema::hasTable('configs')) {
-            Schema::table('configs', function (Blueprint $table) {
-                if (hasForeignKeyExist($table->getTable(), 'configs_language_id_foreign')) {
-                    $table->dropForeign('configs_language_id_foreign');
-                }
-            });
-        }
-
         if (Schema::hasTable('languages')) {
             Schema::table('languages', function (Blueprint $table) {
                 if (hasIndexExist('languages', 'languages_slug_index')) {
@@ -75,18 +46,6 @@ return new class() extends Migration
                 }
                 if (hasIndexExist('languages', 'languages_name_unique')) {
                     $table->dropUnique('languages_name_unique');
-                }
-            });
-        }
-
-        // 🚀 Recriando a foreign key depois da reversão
-        if (Schema::hasTable('configs')) {
-            Schema::table('configs', function (Blueprint $table) {
-                if (!hasForeignKeyExist($table->getTable(), 'configs_language_id_foreign')) {
-                    $table->foreign('language_id', 'configs_language_id_foreign')
-                        ->references('id')
-                        ->on('languages')
-                        ->onDelete('cascade');
                 }
             });
         }
