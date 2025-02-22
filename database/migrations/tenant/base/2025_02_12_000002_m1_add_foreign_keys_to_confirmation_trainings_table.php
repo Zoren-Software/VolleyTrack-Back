@@ -14,41 +14,14 @@ return new class extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('confirmation_trainings')) {
-            Schema::table('confirmation_trainings', function (Blueprint $table) {
-                if (!hasAutoIncrement('confirmation_trainings')) {
-                    DB::statement('ALTER TABLE confirmation_trainings MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
-                }
-
-                if (!hasForeignKeyExist('confirmation_trainings', 'confirmation_trainings_user_id_foreign')) {
-                    $table->foreign('user_id')
-                        ->references('id')
-                        ->on('users')
-                        ->nullOnDelete();
-                }
-
-                if (!hasForeignKeyExist('confirmation_trainings', 'confirmation_trainings_player_id_foreign')) {
-                    $table->foreign('player_id')
-                        ->references('id')
-                        ->on('users')
-                        ->cascadeOnDelete();
-                }
-
-                if (!hasForeignKeyExist('confirmation_trainings', 'confirmation_trainings_training_id_foreign')) {
-                    $table->foreign('training_id')
-                        ->references('id')
-                        ->on('trainings')
-                        ->cascadeOnDelete();
-                }
-
-                if (!hasForeignKeyExist('confirmation_trainings', 'confirmation_trainings_team_id_foreign')) {
-                    $table->foreign('team_id')
-                        ->references('id')
-                        ->on('teams')
-                        ->cascadeOnDelete();
-                }
-            });
+        if (!Schema::hasTable('confirmation_trainings')) {
+            return;
         }
+
+        Schema::table('confirmation_trainings', function (Blueprint $table) {
+            $this->modifyIdColumn();
+            $this->addForeignKeys($table);
+        });
     }
 
     /**
@@ -58,24 +31,56 @@ return new class extends Migration
      */
     public function down()
     {
-        if (Schema::hasTable('confirmation_trainings')) {
-            Schema::table('confirmation_trainings', function (Blueprint $table) {
-                if (hasForeignKeyExist('confirmation_trainings', 'confirmation_trainings_user_id_foreign')) {
-                    $table->dropForeign('confirmation_trainings_user_id_foreign');
-                }
+        if (!Schema::hasTable('confirmation_trainings')) {
+            return;
+        }
 
-                if (hasForeignKeyExist('confirmation_trainings', 'confirmation_trainings_player_id_foreign')) {
-                    $table->dropForeign('confirmation_trainings_player_id_foreign');
-                }
+        Schema::table('confirmation_trainings', function (Blueprint $table) {
+            $this->removeForeignKeys($table);
+        });
+    }
 
-                if (hasForeignKeyExist('confirmation_trainings', 'confirmation_trainings_training_id_foreign')) {
-                    $table->dropForeign('confirmation_trainings_training_id_foreign');
-                }
+    private function modifyIdColumn(): void
+    {
+        if (!hasAutoIncrement('confirmation_trainings')) {
+            DB::statement('ALTER TABLE confirmation_trainings MODIFY id BIGINT UNSIGNED AUTO_INCREMENT');
+        }
+    }
 
-                if (hasForeignKeyExist('confirmation_trainings', 'confirmation_trainings_team_id_foreign')) {
-                    $table->dropForeign('confirmation_trainings_team_id_foreign');
-                }
-            });
+    private function addForeignKeys(Blueprint $table): void
+    {
+        $foreignKeys = [
+            'user_id'    => ['users', 'nullOnDelete'],
+            'player_id'  => ['users', 'cascadeOnDelete'],
+            'training_id'=> ['trainings', 'cascadeOnDelete'],
+            'team_id'    => ['teams', 'cascadeOnDelete'],
+        ];
+
+        foreach ($foreignKeys as $column => [$referenceTable, $onDelete]) {
+            $foreignKeyName = "confirmation_trainings_{$column}_foreign";
+            if (!hasForeignKeyExist('confirmation_trainings', $foreignKeyName)) {
+                $table->foreign($column)
+                    ->references('id')
+                    ->on($referenceTable)
+                    ->{$onDelete}();
+            }
+        }
+    }
+
+    private function removeForeignKeys(Blueprint $table): void
+    {
+        $foreignKeys = [
+            'user_id',
+            'player_id',
+            'training_id',
+            'team_id',
+        ];
+
+        foreach ($foreignKeys as $column) {
+            $foreignKeyName = "confirmation_trainings_{$column}_foreign";
+            if (hasForeignKeyExist('confirmation_trainings', $foreignKeyName)) {
+                $table->dropForeign($foreignKeyName);
+            }
         }
     }
 };
