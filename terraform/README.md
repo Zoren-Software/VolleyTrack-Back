@@ -39,6 +39,7 @@ Este projeto utiliza **Terraform** para provisionar a infraestrutura necessária
     - [**Registros NS e SOA**](#registros-ns-e-soa)
     - [**Variáveis de ambiente no novo Ambiente Produção**](#variáveis-de-ambiente-no-novo-ambiente-produção)
   - [Amazon SES](#amazon-ses)
+  - [Projeto Landing Page](#projeto-landing-page)
   - [**Contribuições**](#contribuições)
   - [**Autor**](#autor)
 
@@ -280,7 +281,7 @@ Se houver conflitos, você deve alterar as subredes no arquivo `terraform/enviro
 Ainda antes de iniciar o terraform, é importante rodar o seguinte script para garantir que o banco de dados seja importado corretamente sem as foreign keys, mas que elas sejam adicionadas no momento do deploy.
 
 ```bash
-./scripts/alter_migrations_for_migration_database-db.sh
+./scripts/alter_migrations_for_migration_database.sh
 ```
 
 Depois de rodar o script, você pode prosseguir com o provisionamento da infraestrutura.
@@ -384,6 +385,24 @@ Isso pode demorar um pouco para ser configurado, então é importante saber que 
 ```bash
 composer vapor env:push production
 ```
+
+## Projeto Landing Page
+
+Precisamos migrar o projeto da Landing Page para o novo ambiente de produção, para garantir que o ambiente esteja configurado corretamente.
+
+O banco de dados é o `landing_page` e as migrations seguem o mesmo padrão do projeto principal.
+
+```bash
+./scripts/alter_migrations_for_migration_database.sh
+```
+
+Também precisamos adicionar as variáveis de ambiente do Laravel Vapor no novo ambiente de produção, para garantir que o ambiente esteja configurado corretamente.
+
+```bash
+composer vapor env:pull production
+```
+Agora para finalizar, não esqueça de verificar o funcionamento do projeto no Route53 e no Laravel Vapor.
+DSN, dominio e subdominio, e o funcionamento do banco de dados.
 
 ## **Contribuições**
 
