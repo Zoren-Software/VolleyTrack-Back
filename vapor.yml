@@ -15,7 +15,7 @@ ignore:
 
 environments:
     production:
-        #domain: graphql.volleytrack.com
+        domain: graphql.volleytrack.com
         cache: volleytrack-cache
         database: volleytrack
         memory: 1024
@@ -31,7 +31,6 @@ environments:
             - 'php artisan config:clear'
             - 'php artisan route:clear'
             - 'php artisan view:clear'
-          # - 'npm ci && npm run build && rm -rf node_modules'
         deploy:
             - 'php artisan migrate --force'
             - 'php artisan db:seed --force'
