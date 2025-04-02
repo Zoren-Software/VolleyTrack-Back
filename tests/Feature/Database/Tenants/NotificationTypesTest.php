@@ -15,6 +15,7 @@ class NotificationTypesTest extends TenantBase
         'is_active' => ['type' => 'tinyint'], // boolean
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
+        'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
     public static $primaryKey = ['id'];

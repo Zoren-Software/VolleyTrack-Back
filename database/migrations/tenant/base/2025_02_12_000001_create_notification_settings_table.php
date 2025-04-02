@@ -20,6 +20,7 @@ return new class() extends Migration
                 $table->boolean('via_system')->default(true);
                 $table->boolean('is_active')->default(true);
                 $table->timestamps();
+                $table->softDeletes();
             });
         }
     }

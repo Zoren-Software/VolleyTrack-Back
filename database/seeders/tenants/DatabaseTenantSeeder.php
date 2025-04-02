@@ -21,6 +21,8 @@ class DatabaseTenantSeeder extends Seeder
             PermissionTableSeeder::class,
             FundamentalTableSeeder::class,
             PositionTableSeeder::class,
+            NotificationTypesSeeder::class,
+            NotificationSettingsSeeder::class,
         ]);
     }
 }
