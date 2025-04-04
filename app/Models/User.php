@@ -19,6 +19,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\NotificationSetting;
 
 /**
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -385,5 +386,20 @@ class User extends Authenticatable implements HasApiTokensContract
 
             Mail::to($user->email)->send(new ForgotPasswordMail($user, tenant('id')));
         }
+    }
+
+    public function canReceiveNotification(string $typeKey): bool
+    {
+        return $this->notificationSettings()
+            ->whereHas('type', function ($query) use ($typeKey) {
+                $query->where('key', $typeKey)->where('is_active', true);
+            })
+            ->where('via_email', true)
+            ->exists();
+    }
+
+    public function notificationSettings()
+    {
+        return $this->hasMany(NotificationSetting::class);
     }
 }

@@ -207,7 +207,12 @@ class Training extends Model
     public function sendNotificationPlayersTrainingCancelled()
     {
         $this->team->players()->each(function ($player) {
-            $player->notify(new CancelTrainingNotification($this, null));
+            if (
+                $player->email_verified_at &&
+                $player->canReceiveNotification('training_cancelled')
+            ) {
+                $player->notify(new CancelTrainingNotification($this, null));
+            }
         });
     }
 
