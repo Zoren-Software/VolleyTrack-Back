@@ -120,10 +120,12 @@ class Training extends Model
      * @param  null  $daysNotification
      * @return void
      */
-    public function sendNotificationTechnicians(?int $daysNotification = null)
+    public function sendNotificationTechnicians(?int $daysNotification = null): void
     {
         $this->team->technicians()->each(function ($technician) use ($daysNotification) {
             if (
+                $technician->email_verified_at &&
+                $technician->canReceiveNotification('training_created') &&
                 $this->rangeDateNotification(
                     $this->date_start->format($this->format),
                     now()->format($this->format),
