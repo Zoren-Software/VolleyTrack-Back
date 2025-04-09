@@ -16,10 +16,6 @@ class NotificationTypesSeeder extends Seeder
     {
         $tipos = [
             [
-                'key' => 'account_created', 
-                'description' => 'Conta criada com sucesso'
-            ],
-            [
                 'key' => 'account_confirmation', 
                 'description' => 'Confirmação de e-mail da conta'
             ],
@@ -30,10 +26,6 @@ class NotificationTypesSeeder extends Seeder
             [
                 'key' => 'training_cancelled', 
                 'description' => 'Treino cancelado'
-            ],
-            [
-                'key' => 'password_reset', 
-                'description' => 'Redefinição de senha'
             ],
         ];
 
