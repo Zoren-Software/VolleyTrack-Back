@@ -41,6 +41,10 @@ class UserCreateValidator extends Validator
                 'nullable',
                 'unique:user_information,rg',
             ],
+            'sendEmailNotification' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 
@@ -60,6 +64,7 @@ class UserCreateValidator extends Validator
             'email.unique' => trans('UserCreate.email_unique'),
             'cpf.unique' => trans('UserCreate.cpf_unique'),
             'rg.unique' => trans('UserCreate.rg_unique'),
+            'send_email_notification.required' => trans('UserCreate.send_email_nofification_required'),
         ];
     }
 }

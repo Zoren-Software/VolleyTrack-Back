@@ -11,6 +11,7 @@ extend type Mutation @guard {
         positionId: [Int]
         teamId: [Int]
         password: String
+        sendEmailNotification: Boolean 
     ): User
         @field(resolver: "UserMutation@make")
         @validator

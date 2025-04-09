@@ -253,8 +253,30 @@ class UserTest extends TestCase
         $userCreate = ['userCreate'];
 
         return [
+            'create user with notification email, success' => [
+                [
+                    'sendEmailNotification' => true,
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'positionId' => [1],
+                    'password' => $password,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => self::$data,
+                    ],
+                ],
+                'hasTeam' => true,
+                'hasPermission' => true,
+            ],
             'create user with teams, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'roleId' => [2],
@@ -275,6 +297,7 @@ class UserTest extends TestCase
             ],
             'create user with position, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $emailExistent,
                     'positionId' => [1],
@@ -295,6 +318,7 @@ class UserTest extends TestCase
             ],
             'create user with non-mandatory parameters, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'cpf' => $cpfExistent,
@@ -318,6 +342,7 @@ class UserTest extends TestCase
             ],
             'create user with cpf existent, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'cpf' => $cpfExistent,
@@ -337,6 +362,7 @@ class UserTest extends TestCase
             ],
             'create user with rg existent, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'rg' => $rgExistent,
@@ -356,6 +382,7 @@ class UserTest extends TestCase
             ],
             'declare roleId is required, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => $password,
@@ -374,6 +401,7 @@ class UserTest extends TestCase
             ],
             'create user, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -393,6 +421,7 @@ class UserTest extends TestCase
             ],
             'create user with birth date, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -413,6 +442,7 @@ class UserTest extends TestCase
             ],
             'create user with 2 roles, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -432,6 +462,7 @@ class UserTest extends TestCase
             ],
             'create user with permission that shouldnt have, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -450,6 +481,7 @@ class UserTest extends TestCase
             ],
             'create user without permission, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -468,6 +500,7 @@ class UserTest extends TestCase
             ],
             'text password less than 6 characters, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -486,6 +519,7 @@ class UserTest extends TestCase
             ],
             'text password with 6 characters, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -505,6 +539,7 @@ class UserTest extends TestCase
             ],
             'email field is required, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'password' => $password,
                     'positionId' => [1],
@@ -523,6 +558,7 @@ class UserTest extends TestCase
             ],
             'name field is required, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => null,
                     'password' => $password,
                     'positionId' => [1],
@@ -541,6 +577,7 @@ class UserTest extends TestCase
             ],
             'name field is min 3 characters, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => 'Th',
                     'password' => $password,
                     'positionId' => [1],
@@ -559,6 +596,7 @@ class UserTest extends TestCase
             ],
             'email field is not unique, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'password' => $password,
                     'positionId' => [1],
@@ -577,6 +615,7 @@ class UserTest extends TestCase
             ],
             'email field is not email valid, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'password' => $password,
                     'positionId' => [1],

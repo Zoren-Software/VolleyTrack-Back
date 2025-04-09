@@ -230,7 +230,7 @@ abstract class TestCase extends BaseTestCase
                 $query .= $this->converteDadosString($query, $key, $value, $input, $value['type'], $parametrosEntrada);
             } elseif (is_array($value)) {
                 $query .= $this->converteDadosArrayEntrada($key, $value);
-            } elseif ($value) {
+            } elseif ($value !== null) {
                 $query .= $this->converteDadosString($query, $key, $value, $input, $type, $parametrosEntrada);
             }
         }
@@ -310,7 +310,7 @@ abstract class TestCase extends BaseTestCase
                     $value = 'false';
                 }
 
-                return $key . ': ' . $value . ' ';
+                return $key . ': ' . $value . " \n ";
             }
 
             return $key . ': ' . '"' . $value . '" ';
@@ -322,7 +322,7 @@ abstract class TestCase extends BaseTestCase
                     $value = 'false';
                 }
 
-                return $key . ': ' . $value . ' ';
+                return $key . ': ' . $value . " \n ";
             }
 
             return $key . ': ' . '"' . $value . '" ';
