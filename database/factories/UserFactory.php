@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\NotificationType;
+use App\Models\NotificationSetting;
 use App\Models\UserInformation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +31,7 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $email,
-            'email_verified_at' => null,
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'set_password_token' => Str::random(60),
             'remember_token' => Str::random(10),
@@ -39,7 +41,25 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
+            // Cria o UserInformation
             UserInformation::factory()->create(['user_id' => $user->id]);
+
+            // Cria os NotificationSettings
+            $types = NotificationType::where('is_active', true)->get();
+
+            foreach ($types as $type) {
+                NotificationSetting::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'notification_type_id' => $type->id,
+                    ],
+                    [
+                        'via_email' => false,
+                        'via_system' => $type->allow_system,
+                        'is_active' => true,
+                    ]
+                );
+            }
         });
     }
 

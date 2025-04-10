@@ -52,7 +52,7 @@ class NotificationSetting extends Model
         });
     }
 
-    public function type()
+    public function notificationType()
     {
         return $this->belongsTo(NotificationType::class, 'notification_type_id');
     }

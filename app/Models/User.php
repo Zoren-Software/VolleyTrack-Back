@@ -387,10 +387,11 @@ class User extends Authenticatable implements HasApiTokensContract
         }
     }
 
+    // TODO - Ainda falta fazer a diferença entre o via_system e via_email
     public function canReceiveNotification(string $typeKey): bool
     {
         return $this->notificationSettings()
-            ->whereHas('type', function ($query) use ($typeKey) {
+            ->whereHas('notificationType', function ($query) use ($typeKey) {
                 $query->where('key', $typeKey)->where('is_active', true);
             })
             ->where('via_email', true)
