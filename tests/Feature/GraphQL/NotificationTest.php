@@ -126,7 +126,6 @@ class NotificationTest extends TestCase
             true
         );
 
-
         $this->assertMessageError($typeMessageError, $response, $hasLogin, $expectedMessage);
 
         if ($data['error'] === null) {
