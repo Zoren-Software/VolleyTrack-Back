@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Database\Tenants\DataInitials;
 
-use App\Models\NotificationSetting;
 use App\Models\NotificationType;
-use Database\Seeders\Tenants\UserTableSeeder;
 use App\Models\User;
+use Database\Seeders\Tenants\UserTableSeeder;
 use Illuminate\Support\Facades\DB;
 
 class NotificationTypesSeederTest extends DataAbstract
@@ -15,7 +14,7 @@ class NotificationTypesSeederTest extends DataAbstract
         parent::setUp();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        
+
         User::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -27,7 +26,6 @@ class NotificationTypesSeederTest extends DataAbstract
 
     /**
      * @test
-     * @return void
      */
     public function notificationTypesAreSeeded(): void
     {
@@ -46,7 +44,6 @@ class NotificationTypesSeederTest extends DataAbstract
 
     /**
      * @test
-     * @return void
      */
     public function notificationSettingsAreCreatedForEachUser(): void
     {

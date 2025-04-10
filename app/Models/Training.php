@@ -118,7 +118,6 @@ class Training extends Model
      * @codeCoverageIgnore
      *
      * @param  null  $daysNotification
-     * @return void
      */
     public function sendNotificationTechnicians(?int $daysNotification = null): void
     {

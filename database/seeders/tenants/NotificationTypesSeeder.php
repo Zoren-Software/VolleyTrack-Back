@@ -9,23 +9,21 @@ class NotificationTypesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
         $tipos = [
             [
-                'key' => 'account_confirmation', 
-                'description' => 'Confirmação de e-mail da conta'
+                'key' => 'account_confirmation',
+                'description' => 'Confirmação de e-mail da conta',
             ],
             [
-                'key' => 'training_created', 
-                'description' => 'Novo treino criado'
+                'key' => 'training_created',
+                'description' => 'Novo treino criado',
             ],
             [
-                'key' => 'training_cancelled', 
-                'description' => 'Treino cancelado'
+                'key' => 'training_cancelled',
+                'description' => 'Treino cancelado',
             ],
         ];
 
