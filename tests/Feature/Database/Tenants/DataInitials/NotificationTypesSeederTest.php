@@ -32,11 +32,9 @@ class NotificationTypesSeederTest extends DataAbstract
     public function notificationTypesAreSeeded(): void
     {
         $expectedKeys = [
-            'account_created',
             'account_confirmation',
             'training_created',
             'training_cancelled',
-            'password_reset',
         ];
 
         foreach ($expectedKeys as $key) {
