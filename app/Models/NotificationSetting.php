@@ -51,4 +51,9 @@ class NotificationSetting extends Model
             $query->filterName($args['filter']['search']);
         });
     }
+
+    public function type()
+    {
+        return $this->belongsTo(NotificationType::class, 'notification_type_id');
+    }
 }
