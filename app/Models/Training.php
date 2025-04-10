@@ -123,7 +123,7 @@ class Training extends Model
     {
         $this->team->technicians()->each(function ($technician) use ($daysNotification) {
             if (
-                $technician->email_verified_at &&
+                $technician->email_verified_at !== null &&
                 $technician->canReceiveNotification('training_created') &&
                 $this->rangeDateNotification(
                     $this->date_start->format($this->format),
@@ -179,6 +179,8 @@ class Training extends Model
             }
 
             if (
+                $player->email_verified_at !== null &&
+                $player->canReceiveNotification('training_created') &&
                 $this->rangeDateNotification(
                     $this->date_start->format($this->format),
                     now()->format($this->format),

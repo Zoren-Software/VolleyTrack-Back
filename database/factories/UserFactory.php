@@ -29,7 +29,7 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $email,
-            'email_verified_at' => now(),
+            'email_verified_at' => null,
             'password' => Hash::make('password'),
             'set_password_token' => Str::random(60),
             'remember_token' => Str::random(10),

@@ -25,7 +25,7 @@ class NotificationSettingsSeeder extends Seeder
                         'notification_type_id' => $type->id,
                     ],
                     [
-                        'via_email' => true,
+                        'via_email' => false,
                         'via_system' => $type->allow_system,
                         'is_active' => true,
                     ]
