@@ -14,23 +14,24 @@ class NotificationSettingsSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::all();
         $types = NotificationType::where('is_active', true)->get();
 
-        foreach ($users as $user) {
-            foreach ($types as $type) {
-                NotificationSetting::updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                        'notification_type_id' => $type->id,
-                    ],
-                    [
-                        'via_email' => false,
-                        'via_system' => $type->allow_system,
-                        'is_active' => true,
-                    ]
-                );
+        User::chunkById(100, function ($users) use ($types) {
+            foreach ($users as $user) {
+                foreach ($types as $type) {
+                    NotificationSetting::updateOrCreate(
+                        [
+                            'user_id' => $user->id,
+                            'notification_type_id' => $type->id,
+                        ],
+                        [
+                            'via_email' => false,
+                            'via_system' => $type->allow_system,
+                            'is_active' => true,
+                        ]
+                    );
+                }
             }
-        }
+        });
     }
 }
