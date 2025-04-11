@@ -40,6 +40,7 @@ class TrainingObserver
 
         if ($training->getOriginal('status') && $training->status == 0) {
             $training->sendNotificationPlayersTrainingCancelled();
+            $training->sendEmailPlayersTrainingCancelled();
         }
     }
 

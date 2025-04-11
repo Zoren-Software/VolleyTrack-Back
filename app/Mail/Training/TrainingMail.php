@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-class CancellationNotificationTrainingMail extends Mail
+class TrainingMail extends Mail
 {
     /**
      * The title of the mail.
@@ -24,10 +24,10 @@ class CancellationNotificationTrainingMail extends Mail
     public function __construct(Training $training, User $user)
     {
         parent::__construct($training, $user);
-        $this->title = "$training->name - {$training->date_start->format('d/m/Y')} " .
-            trans('TrainingNotification.preposition_hours_from') . ' ' .
-            "{$training->date_start->format('H:m')} " . trans('TrainingNotification.preposition_hours_to') .
-            " {$training->date_end->format('H:m')} - " . trans('TrainingNotification.cancel');
+        $this->title = "{$training->name} - {$training->date_start->format('d/m/Y')} " .
+            trans('TrainingNotification.preposition_hours_from') .
+            " {$training->date_start->format('H:m')} " . trans('TrainingNotification.preposition_hours_to') .
+            " {$training->date_end->format('H:m')}";
     }
 
     /**
@@ -39,10 +39,10 @@ class CancellationNotificationTrainingMail extends Mail
     {
         return new Envelope(
             subject: env('APP_NAME') .
-            ' - ' . trans('TrainingNotification.title_mail_cancel') .
+            ' - ' . trans('TrainingNotification.title_mail') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
             ' ' . trans('TrainingNotification.preposition_hours_to') . ' ' .
-            $this->training->date_end->format('H:m') . ' - ' . trans('TrainingNotification.cancel')
+            $this->training->date_end->format('H:m')
         );
     }
 
@@ -54,7 +54,7 @@ class CancellationNotificationTrainingMail extends Mail
     public function content()
     {
         return new Content(
-            markdown: 'emails.training.cancellation-notification',
+            markdown: 'emails.training.notification',
         );
     }
 }

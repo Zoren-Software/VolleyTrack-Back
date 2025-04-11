@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Mail\Training\ConfirmationTrainingMail;
+use App\Mail\Training\TrainingMail;
+use App\Mail\Training\CancellationTrainingMail;
 
 class Training extends Model
 {
@@ -123,15 +126,21 @@ class Training extends Model
     {
         $this->team->technicians()->each(function ($technician) use ($daysNotification) {
             if (
-                $technician->email_verified_at !== null &&
-                $technician->canReceiveNotification('training_created') &&
+                $technician->email_verified_at &&
                 $this->rangeDateNotification(
                     $this->date_start->format($this->format),
                     now()->format($this->format),
                     now()->addDays($daysNotification)->format($this->format)
                 )
             ) {
-                $technician->notify(new ConfirmationTrainingNotification($this, null));
+                if ($technician->canReceiveNotification('training_created', 'system')) {
+                    $technician->notify(new ConfirmationTrainingNotification($this, null));
+                }
+    
+                if ($technician->canReceiveNotification('training_created', 'email')) {
+                    \Mail::to($technician->email)
+                        ->send(new ConfirmationTrainingMail($this, $technician));
+                }
             }
         });
     }
@@ -153,11 +162,13 @@ class Training extends Model
     public function confirmationsPlayers(?int $trainingId = null, ?int $daysNotification = null)
     {
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
+
         $this->team->players()->each(function ($player) use ($trainingId, $daysNotification) {
             $confirmationTraining = $this->confirmationsTraining()
                 ->where('training_id', $trainingId)
                 ->where('player_id', $player->id)
                 ->first();
+
             if ($trainingId === null || $confirmationTraining === null) {
                 $confirmationTraining = $this->confirmationsTraining()->create([
                     'user_id' => auth()->user()->id ?? null,
@@ -179,15 +190,21 @@ class Training extends Model
             }
 
             if (
-                $player->email_verified_at !== null &&
-                $player->canReceiveNotification('training_created') &&
+                $player->email_verified_at &&
                 $this->rangeDateNotification(
                     $this->date_start->format($this->format),
                     now()->format($this->format),
                     now()->addDays($daysNotification)->format($this->format)
                 )
             ) {
-                $player->notify(new TrainingNotification($this, $confirmationTraining));
+                if ($player->canReceiveNotification('training_created', 'system')) {
+                    $player->notify(new TrainingNotification($this, $confirmationTraining));
+                }
+
+                if ($player->canReceiveNotification('training_created', 'email')) {
+                    \Mail::to($player->email)
+                        ->send(new TrainingMail($this, $player, $confirmationTraining));
+                }
             }
         });
 
@@ -212,9 +229,22 @@ class Training extends Model
         $this->team->players()->each(function ($player) {
             if (
                 $player->email_verified_at &&
-                $player->canReceiveNotification('training_cancelled')
+                $player->canReceiveNotification('training_cancelled', 'system')
             ) {
-                $player->notify(new CancelTrainingNotification($this, null));
+                $player->notify(new CancelTrainingNotification($this));
+            }
+        });
+    }
+
+    public function sendEmailPlayersTrainingCancelled()
+    {
+        $this->team->players()->each(function ($player) {
+            if (
+                $player->email_verified_at &&
+                $player->canReceiveNotification('training_cancelled', 'email')
+            ) {
+                \Mail::to($player->email)
+                    ->send(new CancellationTrainingMail($this, $player));
             }
         });
     }

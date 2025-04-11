@@ -35,38 +35,14 @@ class Notification extends IlluminateNotification implements ShouldQueue
 
     /**
      * Get the notification's delivery channels.
+     * 
+     * NOTE - Todas as notificações Training agora são apenas via sistema (database).
      *
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via(
-        User $notifiable,
-        $mock = 'notMock',
-        $notificationTechnicianByEmail = false,
-        $notificationTeamByEmail = false
-    ) {
-        $this->queue = 'emails';
-
-        $notificationTechnicianByEmail =
-            $mock == 'notMock'
-                // @codeCoverageIgnoreStart
-                ? TrainingConfig::first()->notification_technician_by_email
-                // @codeCoverageIgnoreEnd
-                : $notificationTechnicianByEmail;
-
-        $notificationTeamByEmail =
-            $mock == 'notMock'
-            // @codeCoverageIgnoreStart
-            ? TrainingConfig::first()->notification_team_by_email
-            // @codeCoverageIgnoreEnd
-            : $notificationTeamByEmail;
-
-        if (
-            $notificationTechnicianByEmail || $notificationTeamByEmail
-        ) {
-            return ['database', 'mail'];
-        }
-
+    public function via($notifiable)
+    {
         return ['database'];
     }
 
