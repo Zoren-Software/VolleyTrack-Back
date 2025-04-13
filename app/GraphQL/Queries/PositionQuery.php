@@ -7,7 +7,6 @@ use App\Models\Position;
 class PositionQuery
 {
     /**
-     * @codeCoverageIgnore
      *
      * @param  null  $_
      * @param  array{}  $args

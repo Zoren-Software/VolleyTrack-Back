@@ -21,3 +21,4 @@ reports
 html
 /portainer-data
 .scribe/
+/coverage-cache

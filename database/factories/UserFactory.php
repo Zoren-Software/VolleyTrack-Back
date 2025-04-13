@@ -48,17 +48,22 @@ class UserFactory extends Factory
             $types = NotificationType::where('is_active', true)->get();
 
             foreach ($types as $type) {
-                NotificationSetting::updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                        'notification_type_id' => $type->id,
-                    ],
-                    [
-                        'via_email' => false,
-                        'via_system' => $type->allow_system,
-                        'is_active' => true,
-                    ]
-                );
+                if($type->id != null) {
+                    NotificationSetting::updateOrCreate(
+                        [
+                            'user_id' => $user->id,
+                            'notification_type_id' => $type->id,
+                        ],
+                        [
+                            'via_email' => false,
+                            'via_system' => $type->allow_system,
+                            'is_active' => true,
+                        ]
+                    );
+                }
+                else {
+                    dd($type);
+                }
             }
         });
     }

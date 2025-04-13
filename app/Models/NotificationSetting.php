@@ -41,19 +41,93 @@ class NotificationSetting extends Model
 
     public function list(array $args)
     {
-        return $this
-            ->filterSearch($args);
+        return auth()
+            ->user()
+            ->notificationSettings()
+            ->select([
+                'id',
+                'user_id',
+                'notification_type_id',
+                'via_email',
+                'via_system',
+                'is_active',
+                'created_at',
+                'updated_at',
+            ])
+            ->with([
+                'notificationType:id,key,description,allow_email,allow_system,is_active,created_at,updated_at',
+            ])
+            ->when(isset($args['filter']) && isset($args['filter']['is_active']), function ($query) use ($args) {
+                $query->where('is_active', $args['filter']['is_active']);
+            })
+            ->when(isset($args['filter']) && isset($args['filter']['via_email']), function ($query) use ($args) {
+                $query->where('via_email', $args['filter']['via_email']);
+            })
+            ->when(isset($args['filter']) && isset($args['filter']['via_system']), function ($query) use ($args) {
+                $query->where('via_system', $args['filter']['via_system']);
+            })
+            ->when(isset($args['orderBy']), function ($query) use ($args) {
+                $query->orderBy($args['orderBy'], $args['orderDirection'] ?? 'asc');
+            });
     }
 
-    public function scopeFilterSearch(Builder $query, array $args)
+    public function scopeFilter(Builder $query, array $args)
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
-            $query->filterName($args['filter']['search']);
-        });
+        return
+            $query->filterIsActive($args)
+                ->filterViaEmail($args)
+                ->filterViaSystem($args)
+                ->orderBy('created_at', 'desc');
     }
 
+    /**
+     * @param  Builder  $query
+     * @param  array{}  $args
+     */
+    public function scopeFilterIsActive(Builder $query, array $args)
+    {
+        return 
+            $query->when(isset($args['filter']) && isset($args['filter']['is_active']), function ($query) use ($args) {
+                $query->where('is_active', $args['filter']['is_active']);
+            });
+    }
+
+    /**
+     * @param  Builder  $query
+     * @param  array{}  $args
+     */
+    public function scopeFilterViaEmail(Builder $query, array $args)
+    {
+        return 
+            $query->when(isset($args['filter']) && isset($args['filter']['via_email']), function ($query) use ($args) {
+                $query->where('via_email', $args['filter']['via_email']);
+            });
+    }
+    /**
+     * @param  Builder  $query
+     * @param  array{}  $args
+     */
+    public function scopeFilterViaSystem(Builder $query, array $args)
+    {
+        return 
+            $query->when(isset($args['filter']) && isset($args['filter']['via_system']), function ($query) use ($args) {
+                $query->where('via_system', $args['filter']['via_system']);
+            });
+    }
+
+    /**
+     * @return [type]
+     */
     public function notificationType()
     {
         return $this->belongsTo(NotificationType::class, 'notification_type_id');
+    }
+
+    /**
+     * @return [type]
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

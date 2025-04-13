@@ -1,0 +1,26 @@
+"NotificationType"
+type NotificationType {
+    "Notification setting id"
+    id: ID!
+
+    "Notification setting key"
+    key: String!
+
+    "Notification setting description"
+    description: String!
+
+    "Notification setting type is active for email"
+    allowEmail: Boolean! @rename(attribute: "allow_email")
+
+    "Notification setting type is active for system"
+    allowSystem: Boolean! @rename(attribute: "allow_system")
+
+    "Notification setting type is active for push"
+    isActive: Boolean ! @rename(attribute: "is_active")
+
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
