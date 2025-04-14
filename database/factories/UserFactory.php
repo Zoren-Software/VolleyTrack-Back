@@ -44,7 +44,9 @@ class UserFactory extends Factory
             // Cria o UserInformation
             UserInformation::factory()->create(['user_id' => $user->id]);
 
-            // Cria os NotificationSettings
+            // NOTE Cria os NotificationSettings padrões para o usuário
+            // Deve ser igual ao que está no UserObserver
+            // e no NotificationSettingsSeeder que deve apenas executar uma vez no deploy
             $types = NotificationType::where('is_active', true)->get();
 
             foreach ($types as $type) {

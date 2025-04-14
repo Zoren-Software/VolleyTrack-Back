@@ -4,6 +4,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Position;
 use App\Models\Team;
+use App\Models\NotificationType;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
@@ -236,6 +237,29 @@ class UserTest extends TestCase
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
+
+        if ($expectedMessage === false) {
+            // NOTE - Verifica se o usuário foi criado no banc o de dados
+            $user = User::where('email', $parameters['email'])->first();
+            $this->assertDatabaseHas('users', [
+                'id' => $user->id,
+                'name' => $parameters['name'],
+                'email' => $parameters['email'],
+            ]);
+
+            // NOTE - Verifica se o usuário foi criado com os registros default em notification_settings
+            $notificationsTypes = NotificationType::where('is_active', true)->get();
+
+            foreach ($notificationsTypes as $type) {
+                $this->assertDatabaseHas('notification_settings', [
+                    'user_id' => $user->id,
+                    'notification_type_id' => $type->id,
+                    'via_email' => false,
+                    'via_system' => $type->allow_system,
+                    'is_active' => true,
+                ]);
+            }
+        }
     }
 
     /**

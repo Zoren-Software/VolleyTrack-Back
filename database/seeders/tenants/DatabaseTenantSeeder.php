@@ -22,7 +22,6 @@ class DatabaseTenantSeeder extends Seeder
             FundamentalTableSeeder::class,
             PositionTableSeeder::class,
             NotificationTypesSeeder::class,
-            NotificationSettingsSeeder::class,
         ]);
     }
 }

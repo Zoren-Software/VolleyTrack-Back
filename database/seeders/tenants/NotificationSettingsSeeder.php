@@ -11,6 +11,9 @@ class NotificationSettingsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * 
+     * NOTE - Seeder para gerar as configurações de notificação para os usuários padrão.
+     * NOTE - Apagavel após release
      */
     public function run(): void
     {
