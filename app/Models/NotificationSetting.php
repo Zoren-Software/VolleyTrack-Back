@@ -57,18 +57,7 @@ class NotificationSetting extends Model
             ->with([
                 'notificationType:id,key,description,allow_email,allow_system,is_active,created_at,updated_at',
             ])
-            ->when(isset($args['filter']) && isset($args['filter']['is_active']), function ($query) use ($args) {
-                $query->where('is_active', $args['filter']['is_active']);
-            })
-            ->when(isset($args['filter']) && isset($args['filter']['via_email']), function ($query) use ($args) {
-                $query->where('via_email', $args['filter']['via_email']);
-            })
-            ->when(isset($args['filter']) && isset($args['filter']['via_system']), function ($query) use ($args) {
-                $query->where('via_system', $args['filter']['via_system']);
-            })
-            ->when(isset($args['orderBy']), function ($query) use ($args) {
-                $query->orderBy($args['orderBy'], $args['orderDirection'] ?? 'asc');
-            });
+            ->filter($args);
     }
 
     public function scopeFilter(Builder $query, array $args)
@@ -82,7 +71,7 @@ class NotificationSetting extends Model
 
     /**
      * @param  Builder  $query
-     * @param  array{}  $args
+     * @param  array $args
      */
     public function scopeFilterIsActive(Builder $query, array $args)
     {
@@ -94,7 +83,7 @@ class NotificationSetting extends Model
 
     /**
      * @param  Builder  $query
-     * @param  array{}  $args
+     * @param  array $args
      */
     public function scopeFilterViaEmail(Builder $query, array $args)
     {
@@ -105,7 +94,7 @@ class NotificationSetting extends Model
     }
     /**
      * @param  Builder  $query
-     * @param  array{}  $args
+     * @param  array $args
      */
     public function scopeFilterViaSystem(Builder $query, array $args)
     {
