@@ -387,7 +387,6 @@ class User extends Authenticatable implements HasApiTokensContract
         }
     }
 
-    // TODO - Ainda falta fazer a diferença entre o via_system e via_email
     public function canReceiveNotification(string $typeKey, string $channel = 'system'): bool
     {
         $channelColumn = match ($channel) {
