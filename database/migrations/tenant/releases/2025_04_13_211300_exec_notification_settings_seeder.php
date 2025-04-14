@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Database\Seeders\Tenants\NotificationSettingsSeeder;
+use Database\Seeders\Tenants\NotificationTypesSeeder;
 
 return new class() extends Migration
 {
@@ -13,6 +14,7 @@ return new class() extends Migration
      */
     public function up()
     {
+        (new NotificationTypesSeeder())->run();
         (new NotificationSettingsSeeder())->run();
     }
 

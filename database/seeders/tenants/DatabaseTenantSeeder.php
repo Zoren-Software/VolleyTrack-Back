@@ -14,6 +14,7 @@ class DatabaseTenantSeeder extends Seeder
     public function run()
     {
         $this->call([
+            NotificationTypesSeeder::class,
             UserTableSeeder::class,
             LanguageTableSeeder::class,
             ConfigTableSeeder::class,
@@ -21,7 +22,6 @@ class DatabaseTenantSeeder extends Seeder
             PermissionTableSeeder::class,
             FundamentalTableSeeder::class,
             PositionTableSeeder::class,
-            NotificationTypesSeeder::class,
         ]);
     }
 }
