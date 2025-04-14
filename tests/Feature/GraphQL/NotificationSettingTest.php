@@ -65,8 +65,6 @@ class NotificationSettingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
      * @return void
      */
     public function notificationsSettingsEdit() 
@@ -77,7 +75,7 @@ class NotificationSettingTest extends TestCase
 
         // TODO - Parei aqui, para ver como fazer esse endpoint
         // iniciei o teste com base em outra classe, mas preciso ver mais detalhes de como fazer isso com eficiencia
-        
+
         dd(auth()->user());
 
         if ($parameters['id'] && $hasLogin) {
