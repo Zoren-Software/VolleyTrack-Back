@@ -32,7 +32,7 @@ class NotificationSettingTest extends TestCase
      *
      * @return void
      */
-    public function notificationList()
+    public function notificationSettingsList()
     {
         $response = $this->graphQL(
             'notificationsSettings',
@@ -58,5 +58,57 @@ class NotificationSettingTest extends TestCase
                 ],
             ],
         ])->assertStatus(200);
+    }
+
+    /**
+     * Edição de configurações de notificação
+     *
+     * @author Maicon Cerutti
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function notificationsSettingsEdit() 
+    {
+        $user = User::factory()->create(); 
+
+        $this->be($user);
+
+        // TODO - Parei aqui, para ver como fazer esse endpoint
+        // iniciei o teste com base em outra classe, mas preciso ver mais detalhes de como fazer isso com eficiencia
+        
+        dd(auth()->user());
+
+        if ($parameters['id'] && $hasLogin) {
+            $notification = $user->notifications()->first();
+            $parameters['id'] = [$notification->id];
+        } else {
+            unset($parameters['id']);
+        }
+
+        $response = $this->graphQL(
+            'notificationsSettingsEdit',
+            $parameters,
+            [
+                'message',
+            ],
+            'mutation',
+            false,
+            true
+        );
+
+        $this->assertMessageError($typeMessageError, $response, $hasLogin, $expectedMessage);
+
+        if ($data['error'] === null) {
+            $this->assertEquals(
+                $data['message_expected'],
+                $response->json('data.notificationsRead.message')
+            );
+
+            $response
+                ->assertJsonStructure($expected)
+                ->assertStatus(200);
+        }
     }
 }
