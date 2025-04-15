@@ -26,7 +26,7 @@ class NotificationSettingTest extends TestCase
     ];
 
     /**
-     * A basic feature test example.
+     * Listagem de configurações de notificação
      *
      * @test
      *
@@ -65,48 +65,282 @@ class NotificationSettingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @test
+     * 
+     * @dataProvider notificationSettingActiveEmailAndSystemEditSuccess
+     * @dataProvider notificationSettingDesactiveEmailAndSystemEditSuccess
+     * @dataProvider notificationSettingActiveEmailEditSuccess
+     * @dataProvider notificationSettingActiveSystemEditSuccess
+     * 
+     * TODO - Falta criar os cenários de erro do request e mensagens traduzidas
+     * 
      * @return void
      */
-    public function notificationsSettingsEdit() 
+    public function notificationSettingEdit(
+        $data,
+        $parameters,
+        $typeMessageError,
+        $expectedMessage,
+        $expected,
+    )
     {
         $user = User::factory()->create(); 
 
         $this->be($user);
 
-        // TODO - Parei aqui, para ver como fazer esse endpoint
-        // iniciei o teste com base em outra classe, mas preciso ver mais detalhes de como fazer isso com eficiencia
-
-        dd(auth()->user());
-
-        if ($parameters['id'] && $hasLogin) {
-            $notification = $user->notifications()->first();
-            $parameters['id'] = [$notification->id];
-        } else {
-            unset($parameters['id']);
-        }
-
+        $parameters['id'] = $user->notificationSettings
+            ->firstWhere('notification_type_id', $parameters['notificationTypeId'])
+            ?->id;
+        
         $response = $this->graphQL(
-            'notificationsSettingsEdit',
+            'notificationSettingEdit',
             $parameters,
-            [
-                'message',
-            ],
+            self::$data,
             'mutation',
             false,
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, $hasLogin, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, false, $expectedMessage);
 
-        if ($data['error'] === null) {
-            $this->assertEquals(
-                $data['message_expected'],
-                $response->json('data.notificationsRead.message')
-            );
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
 
-            $response
-                ->assertJsonStructure($expected)
-                ->assertStatus(200);
-        }
+    public static function notificationSettingActiveEmailAndSystemEditSuccess() {
+        return [
+            'notification setting edit, active email and system notification type account confirmation' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 1,
+                    'viaEmail' => true,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+            'notification setting edit, active email and system notification type training created' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 2,
+                    'viaEmail' => true,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+            'notification setting edit, active email and system notification type training canceled' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 3,
+                    'viaEmail' => true,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function notificationSettingActiveEmailEditSuccess() {
+        return [
+            'notification setting edit, active email notification type account confirmation' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 1,
+                    'viaEmail' => true,
+                    'viaSystem' => false,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+            'notification setting edit, active email notification type training created' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 2,
+                    'viaEmail' => true,
+                    'viaSystem' => false,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+            'notification setting edit, active email notification type training canceled' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 3,
+                    'viaEmail' => true,
+                    'viaSystem' => false,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function notificationSettingActiveSystemEditSuccess() {
+        return [
+            'notification setting edit, active system notification type account confirmation' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 1,
+                    'viaEmail' => false,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+            'notification setting edit, active system notification type training created' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 2,
+                    'viaEmail' => false,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+            'notification setting edit, active system notification type training canceled' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 3,
+                    'viaEmail' => false,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function notificationSettingDesactiveEmailAndSystemEditSuccess() {
+        return [
+            'notification setting edit, desactive email and system notification type account confirmation' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 1,
+                    'viaEmail' => false,
+                    'viaSystem' => false,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+            'notification setting edit, desactive email and system notification type training created' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 2,
+                    'viaEmail' => false,
+                    'viaSystem' => false,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+            'notification setting edit, desactive email and system notification type training canceled' => [
+                'data' => [
+                    'error' => null,
+                    'message_expected' => 'Configuração de notificação editada com sucesso',
+                ],
+                'parameters' => [
+                    'notificationTypeId' => 3,
+                    'viaEmail' => false,
+                    'viaSystem' => false,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+        ];
     }
 }
