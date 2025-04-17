@@ -71,6 +71,7 @@ class NotificationSettingTest extends TestCase
      * @dataProvider notificationSettingDesactiveEmailAndSystemEditSuccess
      * @dataProvider notificationSettingActiveEmailEditSuccess
      * @dataProvider notificationSettingActiveSystemEditSuccess
+     * @dataProvider notificationSettingRequiredParametersEditError
      * 
      * TODO - Falta criar os cenários de erro do request e mensagens traduzidas
      * 
@@ -88,10 +89,27 @@ class NotificationSettingTest extends TestCase
 
         $this->be($user);
 
-        $parameters['id'] = $user->notificationSettings
-            ->firstWhere('notification_type_id', $parameters['notificationTypeId'])
-            ?->id;
-        
+        if ($parameters['notificationTypeId'] === false) {
+            unset($parameters['notificationTypeId']);
+        } elseif (!is_numeric($parameters['notificationTypeId'])) {
+            // mantém como está
+        } else {
+            $parameters['notificationTypeId'] = (int) $parameters['notificationTypeId'];
+        }
+
+        if ($parameters['id'] === false) {
+            unset($parameters['id']);
+        } elseif($parameters['id'] === 'test') {
+
+        } else{
+            $parameters['id'] = $user->notificationSettings
+                ->when(isset($parameters['notificationTypeId']), function ($query) use ($parameters) {
+                    return $query->where('notification_type_id', $parameters['notificationTypeId']);
+                })
+                ->first()
+                ?->id;
+        }
+
         $response = $this->graphQL(
             'notificationSettingEdit',
             $parameters,
@@ -101,7 +119,7 @@ class NotificationSettingTest extends TestCase
             true
         );
 
-        $this->assertMessageError($typeMessageError, $response, false, $expectedMessage);
+        $this->assertMessageError($typeMessageError, $response, true, $expectedMessage);
 
         $response
             ->assertJsonStructure($expected)
@@ -116,6 +134,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 1,
                     'viaEmail' => true,
                     'viaSystem' => true,
@@ -134,6 +153,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 2,
                     'viaEmail' => true,
                     'viaSystem' => true,
@@ -152,6 +172,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 3,
                     'viaEmail' => true,
                     'viaSystem' => true,
@@ -175,6 +196,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 1,
                     'viaEmail' => true,
                     'viaSystem' => false,
@@ -193,6 +215,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 2,
                     'viaEmail' => true,
                     'viaSystem' => false,
@@ -211,6 +234,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 3,
                     'viaEmail' => true,
                     'viaSystem' => false,
@@ -234,6 +258,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 1,
                     'viaEmail' => false,
                     'viaSystem' => true,
@@ -252,6 +277,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 2,
                     'viaEmail' => false,
                     'viaSystem' => true,
@@ -270,6 +296,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 3,
                     'viaEmail' => false,
                     'viaSystem' => true,
@@ -293,6 +320,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 1,
                     'viaEmail' => false,
                     'viaSystem' => false,
@@ -311,6 +339,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 2,
                     'viaEmail' => false,
                     'viaSystem' => false,
@@ -329,6 +358,7 @@ class NotificationSettingTest extends TestCase
                     'message_expected' => 'Configuração de notificação editada com sucesso',
                 ],
                 'parameters' => [
+                    'id' => true,
                     'notificationTypeId' => 3,
                     'viaEmail' => false,
                     'viaSystem' => false,
@@ -338,6 +368,84 @@ class NotificationSettingTest extends TestCase
                 'expected' => [
                     'data' => [
                         'notificationSettingEdit' => self::$data,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function notificationSettingRequiredParametersEditError(): array
+    {
+        return [
+            'notification setting edit, input id is required' => [
+                'data' => [
+                    'error' => true,
+                    'message_expected' => 'Configuração de notificação não editada',
+                ],
+                'parameters' => [
+                    'id' => false,
+                    'notificationTypeId' => 1,
+                    'viaEmail' => null,
+                    'viaSystem' => null,
+                ],
+                'typeMessageError' => 'id',
+                'expectedMessage' => 'NotificationSettingEdit.id_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'path',
+                            'extensions',
+                        ],
+                    ],
+                ],
+            ],
+            'notification setting edit, input id not is boolean' => [
+                'data' => [
+                    'error' => true,
+                    'message_expected' => 'Configuração de notificação não editada',
+                ],
+                'parameters' => [
+                    'id' => 'test',
+                    'notificationTypeId' => 1,
+                    'viaEmail' => null,
+                    'viaSystem' => null,
+                ],
+                'typeMessageError' => 'id',
+                'expectedMessage' => 'NotificationSettingEdit.id_integer',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'path',
+                            'extensions',
+                        ],
+                    ],
+                ],
+            ],
+            'notification setting edit, input notificationTypeId is required' => [
+                'data' => [
+                    'error' => true,
+                    'message_expected' => 'Configuração de notificação não editada',
+                ],
+                'parameters' => [
+                    'id' => true,
+                    'notificationTypeId' => false,
+                    'viaEmail' => true,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => 'notificationTypeId',
+                'expectedMessage' => 'NotificationSettingEdit.notificationTypeId_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'path',
+                            'extensions',
+                        ],
                     ],
                 ],
             ],

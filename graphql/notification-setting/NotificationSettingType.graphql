@@ -1,7 +1,7 @@
 "NotificationSettingType"
 type NotificationSetting {
     "Notification setting id"
-    id: ID!
+    id: ID
 
     "UserId editing the position."
     userId: Int @rename(attribute: "user_id")
