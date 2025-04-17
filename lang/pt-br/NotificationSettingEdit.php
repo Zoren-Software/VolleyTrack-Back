@@ -18,6 +18,7 @@ return [
     'id_exists' => 'O ID selecionado é inválido.',
     'notificationTypeId_required' => 'O campo Tipo de Notificação é obrigatório.',
     'notificationTypeId_integer' => 'O Tipo de Notificação deve ser um número inteiro.',
+    'notificationTypeId_exists' => 'O Tipo de Notificação selecionado é inválido.',
     'viaEmail_required' => 'O campo viaEmail é obrigatório.',
     'viaEmail_boolean' => 'O campo viaEmail deve ser um booleano',
     'viaSystem_required' => 'O campo viaSystem é obrigatório.',

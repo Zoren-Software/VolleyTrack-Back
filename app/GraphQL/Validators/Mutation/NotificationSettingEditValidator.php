@@ -49,6 +49,7 @@ class NotificationSettingEditValidator extends Validator
             'id.exists' => trans('NotificationSettingEdit.id_exists'),
             'notificationTypeId.required' => trans('NotificationSettingEdit.notificationTypeId_required'),
             'notificationTypeId.integer' => trans('NotificationSettingEdit.notificationTypeId_integer'),
+            'notificationTypeId.exists' => trans('NotificationSettingEdit.notificationTypeId_exists'),
             'viaEmail.required' => trans('NotificationSettingEdit.viaEmail_required'),
             'viaEmail.boolean' => trans('NotificationSettingEdit.viaEmail_boolean'),
             'viaSystem.required' => trans('NotificationSettingEdit.viaSystem_required'),

@@ -91,6 +91,10 @@ class NotificationSettingTest extends TestCase
 
         if ($parameters['notificationTypeId'] === false) {
             unset($parameters['notificationTypeId']);
+        } elseif ($parameters['notificationTypeId']  === 'notExists') {
+            $parameters['notificationTypeId'] = NotificationSetting::max('notification_type_id') + 1;
+        } elseif ($parameters['notificationTypeId'] === 'test') {
+            $parameters['notificationTypeId'] = 'test';
         } elseif (!is_numeric($parameters['notificationTypeId'])) {
             // mantém como está
         } else {
@@ -101,6 +105,8 @@ class NotificationSettingTest extends TestCase
             unset($parameters['id']);
         } elseif($parameters['id'] === 'test') {
 
+        } elseif($parameters['id'] === 'notExists') {
+            $parameters['id'] = NotificationSetting::max('id') + 1;
         } else{
             $parameters['id'] = $user->notificationSettings
                 ->when(isset($parameters['notificationTypeId']), function ($query) use ($parameters) {
@@ -385,8 +391,8 @@ class NotificationSettingTest extends TestCase
                 'parameters' => [
                     'id' => false,
                     'notificationTypeId' => 1,
-                    'viaEmail' => null,
-                    'viaSystem' => null,
+                    'viaEmail' => true,
+                    'viaSystem' => true,
                 ],
                 'typeMessageError' => 'id',
                 'expectedMessage' => 'NotificationSettingEdit.id_required',
@@ -401,7 +407,7 @@ class NotificationSettingTest extends TestCase
                     ],
                 ],
             ],
-            'notification setting edit, input id not is boolean' => [
+            'notification setting edit, input id not is integer' => [
                 'data' => [
                     'error' => true,
                     'message_expected' => 'Configuração de notificação não editada',
@@ -409,11 +415,35 @@ class NotificationSettingTest extends TestCase
                 'parameters' => [
                     'id' => 'test',
                     'notificationTypeId' => 1,
-                    'viaEmail' => null,
-                    'viaSystem' => null,
+                    'viaEmail' => true,
+                    'viaSystem' => true,
                 ],
                 'typeMessageError' => 'id',
                 'expectedMessage' => 'NotificationSettingEdit.id_integer',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'path',
+                            'extensions',
+                        ],
+                    ],
+                ],
+            ],
+            'notification setting edit, input id not exists' => [
+                'data' => [
+                    'error' => true,
+                    'message_expected' => 'Configuração de notificação não editada',
+                ],
+                'parameters' => [
+                    'id' => 'notExists',
+                    'notificationTypeId' => 1,
+                    'viaEmail' => true,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => 'id',
+                'expectedMessage' => 'NotificationSettingEdit.id_exists',
                 'expected' => [
                     'errors' => [
                         '*' => [
@@ -438,6 +468,78 @@ class NotificationSettingTest extends TestCase
                 ],
                 'typeMessageError' => 'notificationTypeId',
                 'expectedMessage' => 'NotificationSettingEdit.notificationTypeId_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'path',
+                            'extensions',
+                        ],
+                    ],
+                ],
+            ],
+            'notification setting edit, input notificationTypeId not exists' => [
+                'data' => [
+                    'error' => true,
+                    'message_expected' => 'Configuração de notificação não editada',
+                ],
+                'parameters' => [
+                    'id' => true,
+                    'notificationTypeId' => 'notExists',
+                    'viaEmail' => true,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => 'notificationTypeId',
+                'expectedMessage' => 'NotificationSettingEdit.notificationTypeId_exists',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'path',
+                            'extensions',
+                        ],
+                    ],
+                ],
+            ],
+            'notification setting edit, input viaEmail is required' => [
+                'data' => [
+                    'error' => true,
+                    'message_expected' => 'Configuração de notificação não editada',
+                ],
+                'parameters' => [
+                    'id' => true,
+                    'notificationTypeId' => 1,
+                    'viaEmail' => null,
+                    'viaSystem' => true,
+                ],
+                'typeMessageError' => 'viaEmail',
+                'expectedMessage' => 'NotificationSettingEdit.viaEmail_required',
+                'expected' => [
+                    'errors' => [
+                        '*' => [
+                            'message',
+                            'locations',
+                            'path',
+                            'extensions',
+                        ],
+                    ],
+                ],
+            ],
+            'notification setting edit, input viaSystem is required' => [
+                'data' => [
+                    'error' => true,
+                    'message_expected' => 'Configuração de notificação não editada',
+                ],
+                'parameters' => [
+                    'id' => true,
+                    'notificationTypeId' => 1,
+                    'viaEmail' => false,
+                    'viaSystem' => null,
+                ],
+                'typeMessageError' => 'viaSystem',
+                'expectedMessage' => 'NotificationSettingEdit.viaSystem_required',
                 'expected' => [
                     'errors' => [
                         '*' => [

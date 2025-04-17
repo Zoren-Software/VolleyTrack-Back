@@ -18,6 +18,7 @@ return [
     'id_exists' => 'The selected ID is invalid.',
     'notificationTypeId_required' => 'The Notification Type ID field is required.',
     'notificationTypeId_integer' => 'The Notification Type ID must be an integer.',
+    'notificationTypeId_exists' => 'The selected Notification Type ID is invalid.',
     'viaEmail_required' => 'The viaEmail field is required.',
     'viaEmail_boolean' => 'The viaEmail field must be true or false.',
     'viaSystem_required' => 'The viaSystem field is required.',
