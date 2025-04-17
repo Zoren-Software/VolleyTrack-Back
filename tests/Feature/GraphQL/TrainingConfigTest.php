@@ -168,6 +168,20 @@ class TrainingConfigTest extends TestCase
                 ],
                 'hasPermission' => false,
             ],
+            'edit config with permission, not required userId , expected error' => [
+                [
+                    'daysNotification' => $faker->randomNumber(2),
+                    'notificationTeamByEmail' => $faker->boolean,
+                    'notificationTechnicianByEmail' => $faker->boolean,
+                ],
+                'typeMessageError' => 'userId',
+                'expectedMessage' => 'TrainingConfigEdit.user_id_required',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $trainingConfigEdit,
+                ],
+                'hasPermission' => true,
+            ],
             'edit config, success' => [
                 [
                     'userId' => $userId,
