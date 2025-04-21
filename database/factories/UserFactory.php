@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\NotificationType;
+use App\Models\NotificationSetting;
 use App\Models\UserInformation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -39,7 +41,32 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
+            // Cria o UserInformation
             UserInformation::factory()->create(['user_id' => $user->id]);
+
+            // NOTE Cria os NotificationSettings padrões para o usuário
+            // Deve ser igual ao que está no UserObserver
+            // e no NotificationSettingsSeeder que deve apenas executar uma vez no deploy
+            $types = NotificationType::where('is_active', true)->get();
+
+            foreach ($types as $type) {
+                if($type->id != null) {
+                    NotificationSetting::updateOrCreate(
+                        [
+                            'user_id' => $user->id,
+                            'notification_type_id' => $type->id,
+                        ],
+                        [
+                            'via_email' => false,
+                            'via_system' => $type->allow_system,
+                            'is_active' => true,
+                        ]
+                    );
+                }
+                else {
+                    dd($type);
+                }
+            }
         });
     }
 

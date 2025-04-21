@@ -111,6 +111,8 @@ class NotificationTest extends TestCase
         if ($parameters['id'] && $hasLogin) {
             $notification = $user->notifications()->first();
             $parameters['id'] = [$notification->id];
+        } else {
+            unset($parameters['id']);
         }
 
         $response = $this->graphQL(

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\App\Mail\Training;
 
-use App\Mail\Training\NotificationTrainingMail;
+use App\Mail\Training\TrainingMail;
 use App\Models\Training;
 use App\Models\User;
 use Illuminate\Mail\Mailables\Content;
@@ -35,7 +35,7 @@ class NotificationTrainingMailTest extends TestCase
         });
 
         $userMock = $this->createMock(User::class);
-        $mail = new NotificationTrainingMail($trainingMock, $userMock);
+        $mail = new TrainingMail($trainingMock, $userMock);
         $envelope = $mail->envelope();
 
         $this->assertInstanceOf(Envelope::class, $envelope);
@@ -63,7 +63,7 @@ class NotificationTrainingMailTest extends TestCase
         });
 
         $userMock = $this->createMock(User::class);
-        $mail = new NotificationTrainingMail($trainingMock, $userMock);
+        $mail = new TrainingMail($trainingMock, $userMock);
         $content = $mail->content();
 
         $this->assertInstanceOf(Content::class, $content);

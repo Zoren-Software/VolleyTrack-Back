@@ -2,7 +2,7 @@
 extend type Mutation @guard {
     trainingConfigEdit(
         id: ID
-        userId: Int! @rename(attribute: "user_id")
+        userId: Int @rename(attribute: "user_id")
         daysNotification: Int @rename(attribute: "days_notification")
         notificationTeamByEmail: Boolean @rename(attribute: "notification_team_by_email")
         notificationTechnicianByEmail: Boolean @rename(attribute: "notification_technician_by_email")

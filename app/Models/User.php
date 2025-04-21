@@ -386,4 +386,31 @@ class User extends Authenticatable implements HasApiTokensContract
             Mail::to($user->email)->send(new ForgotPasswordMail($user, tenant('id')));
         }
     }
+
+    public function canReceiveNotification(string $typeKey, string $channel = 'system'): bool
+    {
+        $channelColumn = match ($channel) {
+            'email' => 'via_email',
+            'system' => 'via_system',
+            default => null,
+        };
+
+        if (!$channelColumn) {
+            return false;
+        }
+
+        return $this->notificationSettings()
+            ->whereHas('notificationType', function ($query) use ($typeKey) {
+                $query
+                    ->where('key', $typeKey)
+                    ->where('is_active', true);
+            })
+            ->where($channelColumn, true)
+            ->exists();
+    }
+
+    public function notificationSettings()
+    {
+        return $this->hasMany(NotificationSetting::class);
+    }
 }

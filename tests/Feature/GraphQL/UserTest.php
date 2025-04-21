@@ -4,6 +4,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Position;
 use App\Models\Team;
+use App\Models\NotificationType;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
@@ -236,6 +237,29 @@ class UserTest extends TestCase
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
+
+        if ($expectedMessage === false) {
+            // NOTE - Verifica se o usuário foi criado no banc o de dados
+            $user = User::where('email', $parameters['email'])->first();
+            $this->assertDatabaseHas('users', [
+                'id' => $user->id,
+                'name' => $parameters['name'],
+                'email' => $parameters['email'],
+            ]);
+
+            // NOTE - Verifica se o usuário foi criado com os registros default em notification_settings
+            $notificationsTypes = NotificationType::where('is_active', true)->get();
+
+            foreach ($notificationsTypes as $type) {
+                $this->assertDatabaseHas('notification_settings', [
+                    'user_id' => $user->id,
+                    'notification_type_id' => $type->id,
+                    'via_email' => false,
+                    'via_system' => $type->allow_system,
+                    'is_active' => true,
+                ]);
+            }
+        }
     }
 
     /**
@@ -253,8 +277,30 @@ class UserTest extends TestCase
         $userCreate = ['userCreate'];
 
         return [
+            'create user with notification email, success' => [
+                [
+                    'sendEmailNotification' => true,
+                    'name' => $faker->name,
+                    'email' => $faker->email,
+                    'roleId' => [2],
+                    'positionId' => [1],
+                    'teamId' => [1],
+                    'positionId' => [1],
+                    'password' => $password,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'userCreate' => self::$data,
+                    ],
+                ],
+                'hasTeam' => true,
+                'hasPermission' => true,
+            ],
             'create user with teams, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'roleId' => [2],
@@ -275,6 +321,7 @@ class UserTest extends TestCase
             ],
             'create user with position, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $emailExistent,
                     'positionId' => [1],
@@ -295,6 +342,7 @@ class UserTest extends TestCase
             ],
             'create user with non-mandatory parameters, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'cpf' => $cpfExistent,
@@ -318,6 +366,7 @@ class UserTest extends TestCase
             ],
             'create user with cpf existent, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'cpf' => $cpfExistent,
@@ -337,6 +386,7 @@ class UserTest extends TestCase
             ],
             'create user with rg existent, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'rg' => $rgExistent,
@@ -356,6 +406,7 @@ class UserTest extends TestCase
             ],
             'declare roleId is required, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'password' => $password,
@@ -374,6 +425,7 @@ class UserTest extends TestCase
             ],
             'create user, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -393,6 +445,7 @@ class UserTest extends TestCase
             ],
             'create user with birth date, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -413,6 +466,7 @@ class UserTest extends TestCase
             ],
             'create user with 2 roles, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -432,6 +486,7 @@ class UserTest extends TestCase
             ],
             'create user with permission that shouldnt have, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -450,6 +505,7 @@ class UserTest extends TestCase
             ],
             'create user without permission, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -468,6 +524,7 @@ class UserTest extends TestCase
             ],
             'text password less than 6 characters, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -486,6 +543,7 @@ class UserTest extends TestCase
             ],
             'text password with 6 characters, success' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'email' => $faker->email,
                     'positionId' => [1],
@@ -505,6 +563,7 @@ class UserTest extends TestCase
             ],
             'email field is required, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'password' => $password,
                     'positionId' => [1],
@@ -523,6 +582,7 @@ class UserTest extends TestCase
             ],
             'name field is required, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => null,
                     'password' => $password,
                     'positionId' => [1],
@@ -541,6 +601,7 @@ class UserTest extends TestCase
             ],
             'name field is min 3 characters, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => 'Th',
                     'password' => $password,
                     'positionId' => [1],
@@ -559,6 +620,7 @@ class UserTest extends TestCase
             ],
             'email field is not unique, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'password' => $password,
                     'positionId' => [1],
@@ -577,6 +639,7 @@ class UserTest extends TestCase
             ],
             'email field is not email valid, expected error' => [
                 [
+                    'sendEmailNotification' => false,
                     'name' => $faker->name,
                     'password' => $password,
                     'positionId' => [1],

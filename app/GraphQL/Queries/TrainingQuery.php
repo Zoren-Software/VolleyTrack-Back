@@ -7,7 +7,6 @@ use App\Models\Training;
 class TrainingQuery
 {
     /**
-     * @codeCoverageIgnore
      *
      * @param  null  $_
      * @param  array{}  $args

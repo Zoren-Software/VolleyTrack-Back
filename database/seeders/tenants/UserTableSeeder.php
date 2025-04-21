@@ -3,6 +3,8 @@
 namespace Database\Seeders\Tenants;
 
 use App\Models\User;
+use App\Models\NotificationSetting;
+use App\Models\NotificationType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -76,6 +78,22 @@ class UserTableSeeder extends Seeder
                     'birth_date' => '1998-01-06',
                 ]
             );
+
+            $types = NotificationType::where('is_active', true)->get();
+
+            foreach ($types as $type) {
+                NotificationSetting::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'notification_type_id' => $type->id,
+                    ],
+                    [
+                        'via_email' => false,
+                        'via_system' => $type->allow_system,
+                        'is_active' => true,
+                    ]
+                );
+            }
         }
     }
 }

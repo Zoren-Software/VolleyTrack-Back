@@ -7,7 +7,6 @@ use App\Models\Team;
 class TeamQuery
 {
     /**
-     * @codeCoverageIgnore
      *
      * @param  null  $_
      * @param  array{}  $args

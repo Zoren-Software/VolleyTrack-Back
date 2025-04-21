@@ -8,7 +8,6 @@ use App\Models\Training;
 class ConfirmationTrainingQuery
 {
     /**
-     * @codeCoverageIgnore
      *
      * @param  null  $_
      * @param  array{}  $args
@@ -20,9 +19,6 @@ class ConfirmationTrainingQuery
         return $confirmationTraining->list($args);
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function metrics(Training $training)
     {
         return $training->metrics();

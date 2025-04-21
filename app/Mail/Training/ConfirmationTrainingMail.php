@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-class NotificationTrainingMail extends Mail
+class ConfirmationTrainingMail extends Mail
 {
     /**
      * The title of the mail.
@@ -24,9 +24,9 @@ class NotificationTrainingMail extends Mail
     public function __construct(Training $training, User $user)
     {
         parent::__construct($training, $user);
-        $this->title = "{$training->name} - {$training->date_start->format('d/m/Y')} " .
-            trans('TrainingNotification.preposition_hours_from') .
-            " {$training->date_start->format('H:m')} " . trans('TrainingNotification.preposition_hours_to') .
+        $this->title = "$training->name - {$training->date_start->format('d/m/Y')} " .
+            trans('TrainingNotification.preposition_hours_from') . ' ' .
+            "{$training->date_start->format('H:m')} " . trans('TrainingNotification.preposition_hours_to') .
             " {$training->date_end->format('H:m')}";
     }
 
@@ -39,7 +39,7 @@ class NotificationTrainingMail extends Mail
     {
         return new Envelope(
             subject: env('APP_NAME') .
-            ' - ' . trans('TrainingNotification.title_mail') .
+            ' - ' . trans('TrainingNotification.title_mail_confirmation') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
             ' ' . trans('TrainingNotification.preposition_hours_to') . ' ' .
             $this->training->date_end->format('H:m')
@@ -54,7 +54,7 @@ class NotificationTrainingMail extends Mail
     public function content()
     {
         return new Content(
-            markdown: 'emails.training.notification',
+            markdown: 'emails.training.confirmation-notification',
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,5 +22,20 @@ class TeamFactory extends Factory
             'name' => $this->faker->name() . ' TEAM',
             'user_id' => User::first()->id,
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Team $team) {
+            $team->players()->syncWithPivotValues(
+                User::factory()->count(10)->create()->pluck('id'),
+                ['role' => 'player']
+            );
+
+            $team->technicians()->syncWithPivotValues(
+                User::factory()->count(2)->create()->pluck('id'),
+                ['role' => 'technician']
+            );
+        });
     }
 }

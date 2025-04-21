@@ -75,7 +75,12 @@ class TrainingTest extends TestCase
 
         $this->setPermissions($hasPermission);
 
-        Training::factory()->make()->save();
+        $team = Team::factory()
+            ->create();
+
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
 
         $response = $this->graphQL(
             'trainings',
@@ -158,8 +163,12 @@ class TrainingTest extends TestCase
 
         $this->setPermissions($hasPermission);
 
-        $training = Training::factory()->make();
-        $training->save();
+        $team = Team::factory()
+            ->create();
+
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
 
         $response = $this->graphQL(
             'training',
@@ -235,8 +244,37 @@ class TrainingTest extends TestCase
         $this->be(User::find(3));
 
         $team = Team::factory()
-            ->hasPlayers(10)
             ->create();
+
+        if($parameters['sendEmailPlayer']) {
+            $player = $team->players()->first();
+
+            $setting = $player->notificationSettings()
+                ->whereHas('notificationType', function ($query) {
+                    $query->where('key', 'training_created');
+                })
+                ->first();
+
+            if ($setting) {
+                $setting->via_email = true;
+                $setting->save();
+            }
+        }
+
+        if($parameters['sendEmailTechnician']) {
+            $technician = $team->technicians()->first();
+
+            $setting = $technician->notificationSettings()
+                ->whereHas('notificationType', function ($query) {
+                    $query->where('key', 'training_created');
+                })
+                ->first();
+
+            if ($setting) {
+                $setting->via_email = true;
+                $setting->save();
+            }
+        }
 
         $user = $team->players->first();
 
@@ -247,6 +285,9 @@ class TrainingTest extends TestCase
         $team->save();
 
         $parameters['teamId'] = $team->id;
+
+        unset($parameters['sendEmailPlayer']);
+        unset($parameters['sendEmailTechnician']);
 
         $response = $this->graphQL(
             'trainingCreate',
@@ -301,6 +342,8 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => false,
                 'expectedMessage' => false,
@@ -310,12 +353,50 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => false,
             ],
+            'create training with minimal parameters and send email player, success' => [
+                [
+                    'name' => $nameExistent,
+                    'description' => null,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => true,
+                    'sendEmailTechnician' => false,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingCreate' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
+            'create training with minimal parameters and send email technician, success' => [
+                [
+                    'name' => $nameExistent,
+                    'description' => null,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingCreate' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
             'create training with minimal parameters, success' => [
                 [
                     'name' => $nameExistent,
                     'description' => null,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => false,
                 'expectedMessage' => false,
@@ -332,6 +413,8 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => false,
                 'expectedMessage' => false,
@@ -348,6 +431,8 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                     'fundamentalId' => [1, 2],
                 ],
                 'typeMessageError' => false,
@@ -365,6 +450,8 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2],
                 ],
@@ -383,6 +470,8 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $today,
                     'dateEnd' => $todayPlusTwoHours,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2],
                 ],
@@ -422,6 +511,8 @@ class TrainingTest extends TestCase
                     'name' => ' ',
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => 'name',
                 'expectedMessage' => 'TrainingCreate.name_required',
@@ -436,6 +527,8 @@ class TrainingTest extends TestCase
                     'name' => 'AB',
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => 'name',
                 'expectedMessage' => 'TrainingCreate.name_min',
@@ -450,6 +543,8 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => 'dateStart',
                 'expectedMessage' => 'TrainingCreate.date_start_before',
@@ -464,6 +559,8 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => 'dateEnd',
                 'expectedMessage' => 'TrainingCreate.date_end_after',
@@ -478,6 +575,8 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => 'dateEnd',
                 'expectedMessage' => 'TrainingCreate.date_end_date_format',
@@ -492,6 +591,8 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
                 'typeMessageError' => 'dateStart',
                 'expectedMessage' => 'TrainingCreate.date_start_date_format',
@@ -506,6 +607,8 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
