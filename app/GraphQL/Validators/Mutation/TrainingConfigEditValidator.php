@@ -26,7 +26,7 @@ final class TrainingConfigEditValidator extends Validator
     public function messages(): array
     {
         return [
-            'user_id.required' => trans('TrainingConfigEdit.user_id_required'),
+            'userId.required' => trans('TrainingConfigEdit.user_id_required'),
         ];
     }
 }

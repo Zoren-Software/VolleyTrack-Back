@@ -14,6 +14,7 @@ class DatabaseTenantSeeder extends Seeder
     public function run()
     {
         $this->call([
+            NotificationTypesSeeder::class,
             UserTableSeeder::class,
             LanguageTableSeeder::class,
             ConfigTableSeeder::class,

@@ -8,20 +8,6 @@ use App\Models\User;
 class ConfirmationTrainingNotification extends Notification
 {
     /**
-     * Get the mail representation of the notification.
-     *
-     * @codeCoverageIgnore
-     *
-     * @param  mixed  $notifiable
-     * @return \App\Mail\Training\ConfirmationNotificationTrainingMail
-     */
-    public function toMail(User $notifiable)
-    {
-        return (new ConfirmationNotificationTrainingMail($this->training, $notifiable))
-            ->to($notifiable->email);
-    }
-
-    /**
      * Get the array representation of the notification.
      *
      * @codeCoverageIgnore

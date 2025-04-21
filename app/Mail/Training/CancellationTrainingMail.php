@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-class ConfirmationNotificationTrainingMail extends Mail
+class CancellationTrainingMail extends Mail
 {
     /**
      * The title of the mail.
@@ -27,7 +27,7 @@ class ConfirmationNotificationTrainingMail extends Mail
         $this->title = "$training->name - {$training->date_start->format('d/m/Y')} " .
             trans('TrainingNotification.preposition_hours_from') . ' ' .
             "{$training->date_start->format('H:m')} " . trans('TrainingNotification.preposition_hours_to') .
-            " {$training->date_end->format('H:m')}";
+            " {$training->date_end->format('H:m')} - " . trans('TrainingNotification.cancel');
     }
 
     /**
@@ -39,10 +39,10 @@ class ConfirmationNotificationTrainingMail extends Mail
     {
         return new Envelope(
             subject: env('APP_NAME') .
-            ' - ' . trans('TrainingNotification.title_mail_confirmation') .
+            ' - ' . trans('TrainingNotification.title_mail_cancel') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
             ' ' . trans('TrainingNotification.preposition_hours_to') . ' ' .
-            $this->training->date_end->format('H:m')
+            $this->training->date_end->format('H:m') . ' - ' . trans('TrainingNotification.cancel')
         );
     }
 
@@ -54,7 +54,7 @@ class ConfirmationNotificationTrainingMail extends Mail
     public function content()
     {
         return new Content(
-            markdown: 'emails.training.confirmation-notification',
+            markdown: 'emails.training.cancellation-notification',
         );
     }
 }

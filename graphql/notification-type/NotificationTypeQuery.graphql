@@ -1,0 +1,12 @@
+extend type Query @guard {
+    "List multiple notifications for the authenticated user."
+    notificationsTypes(
+        "Bring list of notifications based on reading."
+        read: Boolean
+    ): [NotificationSetting!]! 
+        @paginate(
+            builder: "App\\GraphQL\\Queries\\NotificationSettingQuery@list"
+            defaultCount: 10, 
+            maxCount: 100
+        )
+}

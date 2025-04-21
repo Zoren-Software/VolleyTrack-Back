@@ -38,7 +38,7 @@ if (app()->environment('local') && config('app.debug')) {
         $training = App\Models\Training::find(1);
         $user = App\Models\User::find(1);
 
-        return new App\Mail\Training\NotificationTrainingMail($training, $user);
+        return new App\Mail\Training\TrainingMail($training, $user);
     });
 
     Route::get('/test-confirmation-notification-training-mail', function () {
@@ -56,7 +56,7 @@ if (app()->environment('local') && config('app.debug')) {
         $training = App\Models\Training::find(1);
         $user = App\Models\User::find(3);
 
-        return new App\Mail\Training\CancellationNotificationTrainingMail($training, $user);
+        return new App\Mail\Training\CancellationTrainingMail($training, $user);
     });
 
     Route::get('/test-confirm-email-and-create-password', function () {

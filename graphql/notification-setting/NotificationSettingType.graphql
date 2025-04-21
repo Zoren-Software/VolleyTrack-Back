@@ -1,0 +1,32 @@
+"NotificationSettingType"
+type NotificationSetting {
+    "Notification setting id"
+    id: ID
+
+    "UserId editing the position."
+    userId: Int @rename(attribute: "user_id")
+
+    "Notification setting id"
+    notificationTypeId: Int @rename(attribute: "notification_type_id")
+
+    "Notification setting user"
+    user: User @belongsTo
+
+    "Notification setting send to email"
+    viaEmail: Boolean @rename(attribute: "via_email")
+
+    "Notification setting send to system"
+    viaSystem: Boolean @rename(attribute: "via_system")
+
+    "Notification setting send to push"
+    isActive: Boolean @rename(attribute: "is_active")
+
+    "Notification setting type"
+    notificationType: NotificationType @belongsTo
+
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}

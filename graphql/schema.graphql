@@ -11,4 +11,6 @@
 #import specific-fundamental/*.graphql
 #import position/*.graphql
 #import notification/*.graphql
+#import notification-type/*.graphql
+#import notification-setting/*.graphql
 #import confirmation-training/*.graphql
