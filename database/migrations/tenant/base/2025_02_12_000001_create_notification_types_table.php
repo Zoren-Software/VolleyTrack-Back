@@ -22,6 +22,8 @@ return new class extends Migration
                     ->default(true);
                 $table->boolean('is_active')
                     ->default(true);
+                $table->boolean('show_list')
+                    ->default(true);
                 $table->timestamps();
                 $table->softDeletes();
             });

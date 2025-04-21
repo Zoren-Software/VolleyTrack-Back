@@ -13,6 +13,7 @@ class NotificationTypesTest extends TenantBase
         'allow_email' => ['type' => 'tinyint'], // boolean
         'allow_system' => ['type' => 'tinyint'], // boolean
         'is_active' => ['type' => 'tinyint'], // boolean
+        'show_list' => ['type' => 'tinyint'], // boolean
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],

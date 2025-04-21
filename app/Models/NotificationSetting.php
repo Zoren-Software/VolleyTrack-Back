@@ -44,6 +44,11 @@ class NotificationSetting extends Model
         return auth()
             ->user()
             ->notificationSettings()
+            ->whereHas('notificationType', function ($query) {
+                // NOTE - Para não mostrar os tipos de notificação que não são editáveis
+                // ou que não são mostrados na lista de configurações
+                $query->where('show_list', true);
+            })
             ->select([
                 'id',
                 'user_id',
