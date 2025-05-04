@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Database\Central;
 
-use Tests\Feature\Database\BaseDatabaseTest;
+use Tests\Feature\Database\BaseDatabase;
 
-class CentralBase extends BaseDatabaseTest
+class CentralBase extends BaseDatabase
 {
     protected $graphql = false;
 
