@@ -5,7 +5,7 @@ namespace Tests\Feature\Database;
 use Tests\Feature\Database\Traits\DatabaseAssertions;
 use Tests\TestCase;
 
-abstract class BaseDatabaseTest extends TestCase
+abstract class BaseDatabase extends TestCase
 {
     use DatabaseAssertions;
 

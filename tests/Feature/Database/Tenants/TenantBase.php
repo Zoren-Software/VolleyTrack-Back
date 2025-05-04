@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-use Tests\Feature\Database\BaseDatabaseTest;
+use Tests\Feature\Database\BaseDatabase;
 
-class TenantBase extends BaseDatabaseTest
+class TenantBase extends BaseDatabase
 {
     protected $graphql = false;
 
