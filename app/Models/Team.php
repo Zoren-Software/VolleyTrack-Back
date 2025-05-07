@@ -66,6 +66,11 @@ class Team extends Model
             ->dontSubmitEmptyLogs();
     }
 
+    public function category()
+    {
+        return $this->belongsTo(TeamCategory::class, 'team_category_id');
+    }
+
     public function list(array $args)
     {
         return $this

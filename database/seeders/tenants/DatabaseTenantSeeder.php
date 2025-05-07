@@ -22,6 +22,8 @@ class DatabaseTenantSeeder extends Seeder
             PermissionTableSeeder::class,
             FundamentalTableSeeder::class,
             PositionTableSeeder::class,
+            TeamCategoryTableSeeder::class,
+            TeamLevelTableSeeder::class,
         ]);
     }
 }

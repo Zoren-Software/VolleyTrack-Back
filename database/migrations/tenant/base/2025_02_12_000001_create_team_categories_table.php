@@ -13,15 +13,16 @@ return new class() extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('teams')) {
-            Schema::create('teams', function (Blueprint $table) {
+        if (!Schema::hasTable('team_categories')) {
+            Schema::create('team_categories', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('user_id');
-                $table->unsignedBigInteger('team_category_id')
-                    ->nullable();
-                $table->unsignedBigInteger('team_level_id')
-                    ->nullable();
                 $table->string('name');
+                $table->string('description')
+                    ->nullable();
+                $table->integer('min_age')
+                    ->nullable();
+                $table->integer('max_age')
+                    ->nullable();
                 $table->timestamps();
                 $table->softDeletes();
             });
@@ -35,6 +36,6 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('team_categories');
     }
 };
