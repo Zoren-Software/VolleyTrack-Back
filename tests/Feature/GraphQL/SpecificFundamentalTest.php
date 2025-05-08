@@ -53,7 +53,6 @@ class SpecificFundamentalTest extends TestCase
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->seed([
-            UserTableSeeder::class,
             FundamentalTableSeeder::class,
         ]);
     }

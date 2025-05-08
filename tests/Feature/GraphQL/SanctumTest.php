@@ -46,12 +46,11 @@ class SanctumTest extends TestCase
         UserInformation::where('user_id', '!=', $this->user?->id)->forceDelete();
         User::where('id', '!=', $this->user?->id)->forceDelete();
 
-        // Não remova os tokens nem o usuário autenticado
-        // DB::table('personal_access_tokens')->truncate();
-
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // Não precisa do seeder se o TestCase já cria o user
+        $this->seed([
+            UserTableSeeder::class,
+        ]);
     }
 
     /**
