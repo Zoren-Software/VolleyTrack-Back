@@ -5,6 +5,9 @@ namespace Tests\Feature\GraphQL;
 use App\Models\Fundamental;
 use Faker\Factory as Faker;
 use Tests\TestCase;
+use Database\Seeders\Tenants\FundamentalTableSeeder;
+use Illuminate\Support\Facades\DB;
+
 
 class FundamentalTest extends TestCase
 {
@@ -23,6 +26,30 @@ class FundamentalTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+        
+        parent::tearDown();
+    }
+
+    private function limparAmbiente() : void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Fundamental::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed([
+            FundamentalTableSeeder::class,
+        ]);
+    }
 
     private function setPermissions(bool $hasPermission)
     {
