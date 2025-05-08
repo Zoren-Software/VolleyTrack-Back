@@ -7,7 +7,6 @@ use App\Models\Role;
 class RoleQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

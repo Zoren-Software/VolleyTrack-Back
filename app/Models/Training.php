@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Mail\Training\CancellationTrainingMail;
+use App\Mail\Training\ConfirmationTrainingMail;
+use App\Mail\Training\TrainingMail;
 use App\Notifications\Training\CancelTrainingNotification;
 use App\Notifications\Training\ConfirmationTrainingNotification;
 use App\Notifications\Training\TrainingNotification;
@@ -13,9 +16,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use App\Mail\Training\ConfirmationTrainingMail;
-use App\Mail\Training\TrainingMail;
-use App\Mail\Training\CancellationTrainingMail;
 
 class Training extends Model
 {
@@ -136,7 +136,7 @@ class Training extends Model
                 if ($technician->canReceiveNotification('training_created', 'system')) {
                     $technician->notify(new ConfirmationTrainingNotification($this, null));
                 }
-    
+
                 if ($technician->canReceiveNotification('training_created', 'email')) {
                     \Mail::to($technician->email)
                         ->send(new ConfirmationTrainingMail($this, $technician));

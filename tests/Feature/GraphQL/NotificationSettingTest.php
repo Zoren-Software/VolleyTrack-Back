@@ -66,15 +66,15 @@ class NotificationSettingTest extends TestCase
      * @author Maicon Cerutti
      *
      * @test
-     * 
+     *
      * @dataProvider notificationSettingActiveEmailAndSystemEditSuccess
      * @dataProvider notificationSettingDesactiveEmailAndSystemEditSuccess
      * @dataProvider notificationSettingActiveEmailEditSuccess
      * @dataProvider notificationSettingActiveSystemEditSuccess
      * @dataProvider notificationSettingRequiredParametersEditError
-     * 
+     *
      * TODO - Falta criar os cenários de erro do request e mensagens traduzidas
-     * 
+     *
      * @return void
      */
     public function notificationSettingEdit(
@@ -83,15 +83,14 @@ class NotificationSettingTest extends TestCase
         $typeMessageError,
         $expectedMessage,
         $expected,
-    )
-    {
-        $user = User::factory()->create(); 
+    ) {
+        $user = User::factory()->create();
 
         $this->be($user);
 
         if ($parameters['notificationTypeId'] === false) {
             unset($parameters['notificationTypeId']);
-        } elseif ($parameters['notificationTypeId']  === 'notExists') {
+        } elseif ($parameters['notificationTypeId'] === 'notExists') {
             $parameters['notificationTypeId'] = NotificationSetting::max('notification_type_id') + 1;
         } elseif ($parameters['notificationTypeId'] === 'test') {
             $parameters['notificationTypeId'] = 'test';
@@ -103,11 +102,11 @@ class NotificationSettingTest extends TestCase
 
         if ($parameters['id'] === false) {
             unset($parameters['id']);
-        } elseif($parameters['id'] === 'test') {
+        } elseif ($parameters['id'] === 'test') {
 
-        } elseif($parameters['id'] === 'notExists') {
+        } elseif ($parameters['id'] === 'notExists') {
             $parameters['id'] = NotificationSetting::max('id') + 1;
-        } else{
+        } else {
             $parameters['id'] = $user->notificationSettings
                 ->when(isset($parameters['notificationTypeId']), function ($query) use ($parameters) {
                     return $query->where('notification_type_id', $parameters['notificationTypeId']);
@@ -132,7 +131,8 @@ class NotificationSettingTest extends TestCase
             ->assertStatus(200);
     }
 
-    public static function notificationSettingActiveEmailAndSystemEditSuccess() {
+    public static function notificationSettingActiveEmailAndSystemEditSuccess()
+    {
         return [
             'notification setting edit, active email and system notification type account confirmation' => [
                 'data' => [
@@ -194,7 +194,8 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingActiveEmailEditSuccess() {
+    public static function notificationSettingActiveEmailEditSuccess()
+    {
         return [
             'notification setting edit, active email notification type account confirmation' => [
                 'data' => [
@@ -256,7 +257,8 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingActiveSystemEditSuccess() {
+    public static function notificationSettingActiveSystemEditSuccess()
+    {
         return [
             'notification setting edit, active system notification type account confirmation' => [
                 'data' => [
@@ -318,7 +320,8 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingDesactiveEmailAndSystemEditSuccess() {
+    public static function notificationSettingDesactiveEmailAndSystemEditSuccess()
+    {
         return [
             'notification setting edit, desactive email and system notification type account confirmation' => [
                 'data' => [

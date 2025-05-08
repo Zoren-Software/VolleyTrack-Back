@@ -7,7 +7,6 @@ use App\Models\Language;
 class LanguageQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

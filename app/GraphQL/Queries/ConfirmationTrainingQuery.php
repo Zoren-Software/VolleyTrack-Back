@@ -8,7 +8,6 @@ use App\Models\Training;
 class ConfirmationTrainingQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

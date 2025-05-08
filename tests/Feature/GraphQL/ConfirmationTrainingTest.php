@@ -4,8 +4,8 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
 use App\Models\Training;
-use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class ConfirmationTrainingTest extends TestCase
 {
@@ -29,7 +29,6 @@ class ConfirmationTrainingTest extends TestCase
         'updatedAt',
     ];
 
-    
     public function setUp(): void
     {
         parent::setUp();

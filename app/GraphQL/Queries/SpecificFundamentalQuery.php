@@ -7,7 +7,6 @@ use App\Models\SpecificFundamental;
 class SpecificFundamentalQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

@@ -18,6 +18,8 @@ class Team extends Model
     protected $fillable = [
         'name',
         'user_id',
+        'team_category_id',
+        'team_level_id',
     ];
 
     public function user()
@@ -71,9 +73,18 @@ class Team extends Model
         return $this->belongsTo(TeamCategory::class, 'team_category_id');
     }
 
+    public function level()
+    {
+        return $this->belongsTo(TeamLevel::class, 'team_level_id');
+    }
+
     public function list(array $args)
     {
         return $this
+            ->with([
+                'category',
+                'level',
+            ])
             ->filterSearch($args)
             ->filterIgnores($args)
             ->filterPosition($args)

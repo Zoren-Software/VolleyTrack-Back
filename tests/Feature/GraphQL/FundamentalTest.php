@@ -3,11 +3,10 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Fundamental;
-use Faker\Factory as Faker;
-use Tests\TestCase;
 use Database\Seeders\Tenants\FundamentalTableSeeder;
+use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
-
+use Tests\TestCase;
 
 class FundamentalTest extends TestCase
 {
@@ -36,11 +35,11 @@ class FundamentalTest extends TestCase
     public function tearDown(): void
     {
         $this->limparAmbiente();
-        
+
         parent::tearDown();
     }
 
-    private function limparAmbiente() : void
+    private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Fundamental::truncate();

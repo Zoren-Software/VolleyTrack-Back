@@ -8,7 +8,7 @@ return new class() extends Migration
 {
     /**
      * NOTE - Apagável na próxima versão
-     * 
+     *
      * @return [type]
      */
     public function up()

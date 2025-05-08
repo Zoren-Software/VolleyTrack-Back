@@ -23,7 +23,7 @@ return new class() extends Migration
                         ->onDelete('cascade');
                 }
                 if (
-                    !hasForeignKeyExist('teams', 'teams_team_category_id_foreign') && 
+                    !hasForeignKeyExist('teams', 'teams_team_category_id_foreign') &&
                     Schema::hasColumn('teams', 'team_category_id')
                 ) {
                     $table->foreign('team_category_id')

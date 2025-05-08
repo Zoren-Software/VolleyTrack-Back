@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Models\NotificationType;
 use App\Models\Position;
 use App\Models\Team;
-use App\Models\NotificationType;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;

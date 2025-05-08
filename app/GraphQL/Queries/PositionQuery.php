@@ -7,7 +7,6 @@ use App\Models\Position;
 class PositionQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

@@ -4,8 +4,6 @@ namespace App\Notifications\Training;
 
 use App\Models\ConfirmationTraining;
 use App\Models\Training;
-use App\Models\TrainingConfig;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification as IlluminateNotification;
@@ -35,7 +33,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
 
     /**
      * Get the notification's delivery channels.
-     * 
+     *
      * NOTE - Todas as notificações Training agora são apenas via sistema (database).
      *
      * @param  mixed  $notifiable

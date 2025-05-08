@@ -7,7 +7,6 @@ use App\Models\Notification;
 class NotificationQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

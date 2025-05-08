@@ -246,7 +246,7 @@ class TrainingTest extends TestCase
         $team = Team::factory()
             ->create();
 
-        if($parameters['sendEmailPlayer']) {
+        if ($parameters['sendEmailPlayer']) {
             $player = $team->players()->first();
 
             $setting = $player->notificationSettings()
@@ -261,7 +261,7 @@ class TrainingTest extends TestCase
             }
         }
 
-        if($parameters['sendEmailTechnician']) {
+        if ($parameters['sendEmailTechnician']) {
             $technician = $team->technicians()->first();
 
             $setting = $technician->notificationSettings()
