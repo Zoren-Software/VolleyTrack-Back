@@ -42,7 +42,7 @@ class NotificationSettingTest extends TestCase
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        
+
         NotificationSetting::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
