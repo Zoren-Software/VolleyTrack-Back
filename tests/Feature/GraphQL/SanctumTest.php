@@ -3,7 +3,10 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\User;
+use App\Models\UserInformation;
+use Database\Seeders\Tenants\UserTableSeeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class SanctumTest extends TestCase
@@ -22,6 +25,34 @@ class SanctumTest extends TestCase
      * @var bool
      */
     protected $otherUser = true;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // Só remove os outros usuários, se necessário
+        UserInformation::where('user_id', '!=', $this->user?->id)->forceDelete();
+        User::where('id', '!=', $this->user?->id)->forceDelete();
+
+        // Não remova os tokens nem o usuário autenticado
+        // DB::table('personal_access_tokens')->truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        // Não precisa do seeder se o TestCase já cria o user
+    }
 
     /**
      * Teste da rota de login.
