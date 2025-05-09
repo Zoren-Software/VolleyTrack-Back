@@ -7,6 +7,7 @@ use App\Models\TeamsUsers;
 use App\Models\Training;
 use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TrainingTest extends TestCase
@@ -52,6 +53,30 @@ class TrainingTest extends TestCase
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-training');
         $this->checkPermission($hasPermission, $this->role, 'view-training');
+    }
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Team::truncate();
+        Training::truncate();
+        TeamsUsers::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
@@ -647,16 +672,16 @@ class TrainingTest extends TestCase
 
         $this->be(User::find(3));
 
+        $team = Team::factory()->hasPlayers(10)->create();
+
         $training = Training::factory()
             ->setStatus($parameters['status'])
-            ->make();
+            ->make([
+                'team_id' => $team->id,
+            ]);
         $training->save();
 
         $parameters['id'] = $training->id;
-
-        $team = Team::factory()
-            ->hasPlayers(10)
-            ->create();
 
         $user = $team->players->first();
 
