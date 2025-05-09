@@ -4,6 +4,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TeamTest extends TestCase
@@ -25,6 +26,28 @@ class TeamTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Team::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+    }
 
     private function setPermissions(bool $hasPermission)
     {
@@ -205,6 +228,11 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
+        if ($parameters['name'] == 'nameExistent') {
+            $team = Team::factory()->create();
+            $parameters['name'] = $team->name;
+        }
+
         $response = $this->graphQL(
             'teamCreate',
             $parameters,
@@ -285,7 +313,7 @@ class TeamTest extends TestCase
             ],
             'name field is not unique, expected error' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => 'nameExistent',
                     'playerId' => [],
                 ],
                 'typeMessageError' => 'name',
