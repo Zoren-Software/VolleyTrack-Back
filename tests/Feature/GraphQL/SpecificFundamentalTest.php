@@ -4,10 +4,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
-use Database\Seeders\Tenants\UserTableSeeder;
 use Database\Seeders\Tenants\FundamentalTableSeeder;
-
-
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
