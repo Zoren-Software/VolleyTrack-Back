@@ -82,8 +82,8 @@ class Team extends Model
     {
         return $this
             ->with([
-                'category',
-                'level',
+                'category:id,name,updated_at',
+                'level:id,name,updated_at',
             ])
             ->filterSearch($args)
             ->filterIgnores($args)

@@ -38,4 +38,11 @@ class TeamFactory extends Factory
             );
         });
     }
+
+    public function setAttributes(array $attributes)
+    {
+        return $this->state(function (array $attributesOriginal) use ($attributes) {
+            return array_merge($attributesOriginal, $attributes);
+        });
+    }
 }

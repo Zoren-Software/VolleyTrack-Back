@@ -3,6 +3,8 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
+use App\Models\TeamCategory;
+use App\Models\TeamLevel;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -23,6 +25,9 @@ class TeamTest extends TestCase
         'id',
         'name',
         'userId',
+        // TODO - Parei aqui fazendo relacionamento para trazer entidades
+        'teamCategoryId',
+        'teamLevelId',
         'createdAt',
         'updatedAt',
     ];
@@ -74,7 +79,17 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        Team::factory()->make()->save();
+        $teamCategory = TeamCategory::where('id', 1)->first();
+
+        $teamLevel = TeamLevel::where('id', 1)->first();
+
+        $team = Team::factory()
+            ->hasPlayers(10)
+            ->setAttributes([
+                'team_category_id' => $teamCategory->id,
+                'team_level_id' => $teamLevel->id,
+            ])
+            ->create();
 
         $response = $this->graphQL(
             'teams',
@@ -89,6 +104,8 @@ class TeamTest extends TestCase
             'query',
             false
         );
+
+        dd($response->json());
 
         $this->assertMessageError(
             $typeMessageError,
@@ -155,8 +172,17 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $team = Team::factory()->make();
-        $team->save();
+        $teamCategory = TeamCategory::where('id', 1)->first();
+
+        $teamLevel = TeamLevel::where('id', 1)->first();
+
+        $team = Team::factory()
+            ->hasPlayers(10)
+            ->setAttributes([
+                'team_category_id' => $teamCategory->id,
+                'team_level_id' => $teamLevel->id,
+            ])
+            ->create();
 
         $response = $this->graphQL(
             'team',
