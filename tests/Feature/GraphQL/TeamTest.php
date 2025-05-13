@@ -25,7 +25,6 @@ class TeamTest extends TestCase
         'id',
         'name',
         'userId',
-        // TODO - Parei aqui fazendo relacionamento para trazer entidades
         'teamCategoryId',
         'teamLevelId',
         'createdAt',

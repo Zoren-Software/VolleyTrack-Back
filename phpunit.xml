@@ -47,6 +47,9 @@
         <testsuite name="Team">
             <file>./tests/Feature/GraphQL/TeamTest.php</file>
         </testsuite>
+        <testsuite name="TeamLevel">
+            <file>./tests/Feature/GraphQL/TeamLevelTest.php</file>
+        </testsuite>
         <testsuite name="TrainingConfig">
             <file>./tests/Feature/GraphQL/TrainingConfigTest.php</file>
         </testsuite>
