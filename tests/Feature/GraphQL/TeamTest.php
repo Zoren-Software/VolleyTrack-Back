@@ -105,8 +105,6 @@ class TeamTest extends TestCase
             false
         );
 
-        dd($response->json());
-
         $this->assertMessageError(
             $typeMessageError,
             $response,
