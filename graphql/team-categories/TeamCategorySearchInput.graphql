@@ -1,0 +1,9 @@
+"TeamSearchType"
+input TeamCategorySearchInput {
+
+    "String to search for in teams name"
+    search: String
+
+    "Ignore ids selected"
+    ignoreIds: [Int]
+}

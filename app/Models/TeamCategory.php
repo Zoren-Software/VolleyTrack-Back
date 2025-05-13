@@ -39,4 +39,25 @@ class TeamCategory extends Model
             )
             ->dontSubmitEmptyLogs();
     }
+
+    public function list(array $args)
+    {
+        return $this
+            ->filterSearch($args)
+            ->filterIgnores($args);
+    }
+
+    public function scopeFilterSearch($query, array $args)
+    {
+        $query->when(isset($args['search']), function ($query) use ($args) {
+            $query->where('team_categories.name', 'like', '%' . $args['search'] . '%');
+        });
+    }
+
+    public function scopeFilterIgnores($query, array $args)
+    {
+        $query->when(isset($args['ignore']), function ($query) use ($args) {
+            $query->whereNotIn('team_categories.id', $args['ignore']);
+        });
+    }
 }
