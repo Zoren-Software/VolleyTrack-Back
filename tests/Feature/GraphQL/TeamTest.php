@@ -251,6 +251,20 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
+        if (isset($parameters['teamCategoryId'])) {
+            if ($parameters['teamCategoryId'] == true) {
+                $teamCategory = TeamCategory::factory()->create();
+                $parameters['teamCategoryId'] = $teamCategory->id;
+            }
+        }
+
+        if (isset($parameters['teamLevelId'])) {
+            if ($parameters['teamLevelId'] == true) {
+                $teamLevel = TeamLevel::factory()->create();
+                $parameters['teamLevelId'] = $teamLevel->id;
+            }
+        }
+
         if ($parameters['name'] == 'nameExistent') {
             $team = Team::factory()->create();
             $parameters['name'] = $team->name;
@@ -334,6 +348,21 @@ class TeamTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
+            'create team and relating a team category and team level, success' => [
+                [
+                    'name' => $faker->name,
+                    'teamCategoryId' => true,
+                    'teamLevelId' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'teamCreate' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
             'name field is not unique, expected error' => [
                 [
                     'name' => 'nameExistent',
@@ -402,6 +431,20 @@ class TeamTest extends TestCase
         $team->save();
 
         $parameters['id'] = $team->id;
+
+        if (isset($parameters['teamCategoryId'])) {
+            if ($parameters['teamCategoryId'] == true) {
+                $teamCategory = TeamCategory::factory()->create();
+                $parameters['teamCategoryId'] = $teamCategory->id;
+            }
+        }
+
+        if (isset($parameters['teamLevelId'])) {
+            if ($parameters['teamLevelId'] == true) {
+                $teamLevel = TeamLevel::factory()->create();
+                $parameters['teamLevelId'] = $teamLevel->id;
+            }
+        }
 
         if ($expectedMessage == 'TeamEdit.name_unique') {
             $parameters['name'] = $teamExist->name;
@@ -472,6 +515,21 @@ class TeamTest extends TestCase
                 [
                     'name' => $faker->name . self::$teamText,
                     'playerId' => [1, 2, 3],
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'teamEdit' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
+            'edit team and relating a team category and team level, success' => [
+                [
+                    'name' => $faker->name,
+                    'teamCategoryId' => true,
+                    'teamLevelId' => true,
                 ],
                 'typeMessageError' => false,
                 'expectedMessage' => false,
