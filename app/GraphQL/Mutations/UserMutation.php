@@ -51,7 +51,8 @@ final class UserMutation
 
         $this->user->touch();
 
-        return $this->user;
+        // Recarrega o usuário com todos os campos necessários
+        return $this->user->fresh();
     }
 
     /**

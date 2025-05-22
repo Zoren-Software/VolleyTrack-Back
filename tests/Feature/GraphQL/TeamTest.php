@@ -5,6 +5,7 @@ namespace Tests\Feature\GraphQL;
 use App\Models\Team;
 use App\Models\TeamCategory;
 use App\Models\TeamLevel;
+use App\Models\TeamsUsers;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -49,6 +50,7 @@ class TeamTest extends TestCase
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         Team::truncate();
+        TeamsUsers::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
@@ -82,7 +84,7 @@ class TeamTest extends TestCase
 
         $teamLevel = TeamLevel::where('id', 1)->first();
 
-        $team = Team::factory()
+        Team::factory()
             ->hasPlayers(10)
             ->setAttributes([
                 'team_category_id' => $teamCategory->id,

@@ -8,6 +8,13 @@ use App\Models\Team;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Tests\TestCase;
+use Illuminate\Support\Facades\DB;
+use App\Models\TeamsUsers;
+use App\Models\Training;
+use App\Models\PositionsUsers;
+use App\Models\UserInformation;
+use Database\Seeders\Tenants\UserTableSeeder;
+use Database\Seeders\Tenants\PositionTableSeeder;
 
 class UserTest extends TestCase
 {
@@ -29,6 +36,38 @@ class UserTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        UserInformation::truncate();
+        Training::truncate();
+        TeamsUsers::truncate();
+        Team::truncate();
+        PositionsUsers::truncate();
+        User::where('id', '>', 5)->forceDelete();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed([
+            UserTableSeeder::class,
+            PositionTableSeeder::class,
+        ]);
+    }
 
     private function setPermissions(bool $hasPermission)
     {
@@ -214,6 +253,14 @@ class UserTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
+        if ($expectedMessage === 'UserCreate.cpf_unique') {
+            // Cria um usuário com o mesmo CPF informado nos parâmetros
+            $existingUser = User::factory()->create();
+            $existingUser->information()->update([
+                'cpf' => $parameters['cpf'],
+            ]);
+        }
+
         if ($hasTeam) {
             $team = Team::factory()->create();
             $parameters['teamId'] = $team->id;
@@ -231,6 +278,7 @@ class UserTest extends TestCase
             false,
             true
         );
+        
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
@@ -337,7 +385,7 @@ class UserTest extends TestCase
                         'userCreate' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'create user with non-mandatory parameters, success' => [
@@ -361,7 +409,7 @@ class UserTest extends TestCase
                         'userCreate' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'create user with cpf existent, expected error' => [
@@ -440,7 +488,7 @@ class UserTest extends TestCase
                         'userCreate' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'create user with birth date, success' => [
@@ -461,7 +509,7 @@ class UserTest extends TestCase
                         'userCreate' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'create user with 2 roles, success' => [
@@ -481,7 +529,7 @@ class UserTest extends TestCase
                         'userCreate' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'create user with permission that shouldnt have, expected error' => [
@@ -558,7 +606,7 @@ class UserTest extends TestCase
                         'userCreate' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'email field is required, expected error' => [
@@ -897,7 +945,7 @@ class UserTest extends TestCase
                         'userEdit' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'edit user, success' => [
@@ -916,7 +964,7 @@ class UserTest extends TestCase
                         'userEdit' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'edit user with birth date, success' => [
@@ -936,7 +984,7 @@ class UserTest extends TestCase
                         'userEdit' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'edit user with 2 roles, success' => [
@@ -955,7 +1003,7 @@ class UserTest extends TestCase
                         'userEdit' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'text password less than 6 characters, expected error' => [
@@ -992,7 +1040,7 @@ class UserTest extends TestCase
                         'userEdit' => self::$data,
                     ],
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'email field is required, expected error' => [
@@ -1010,7 +1058,7 @@ class UserTest extends TestCase
                     'errors' => self::$errors,
                     'data' => $userEdit,
                 ],
-                'hasTeam' => false,
+                'hasTeam' => true,
                 'hasPermission' => true,
             ],
             'name field is required, expected error' => [
