@@ -68,12 +68,12 @@ class Team extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function category()
+    public function teamCategory()
     {
         return $this->belongsTo(TeamCategory::class, 'team_category_id');
     }
 
-    public function level()
+    public function teamLevel()
     {
         return $this->belongsTo(TeamLevel::class, 'team_level_id');
     }
@@ -82,8 +82,8 @@ class Team extends Model
     {
         return $this
             ->with([
-                'category:id,name,updated_at',
-                'level:id,name,updated_at',
+                'teamCategory:id,name,updated_at',
+                'teamLevel:id,name,updated_at',
             ])
             ->filterSearch($args)
             ->filterIgnores($args)
