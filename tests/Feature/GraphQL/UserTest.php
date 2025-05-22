@@ -60,6 +60,7 @@ class UserTest extends TestCase
         Team::truncate();
         PositionsUsers::truncate();
         User::where('id', '>', 5)->forceDelete();
+        Position::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 

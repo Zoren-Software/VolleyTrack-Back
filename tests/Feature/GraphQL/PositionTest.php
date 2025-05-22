@@ -6,7 +6,7 @@ use App\Models\Position;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
-
+use Database\Seeders\Tenants\PositionTableSeeder;
 class PositionTest extends TestCase
 {
     protected $graphql = true;
@@ -45,6 +45,10 @@ class PositionTest extends TestCase
         Position::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed([
+            PositionTableSeeder::class,
+        ]);
     }
 
     private function setPermissions(bool $hasPermission)

@@ -9,6 +9,8 @@ use App\Models\TeamsUsers;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
+use Database\Seeders\Tenants\TeamCategoryTableSeeder;
+use Database\Seeders\Tenants\TeamLevelTableSeeder;
 
 class TeamTest extends TestCase
 {
@@ -51,8 +53,15 @@ class TeamTest extends TestCase
 
         Team::truncate();
         TeamsUsers::truncate();
+        TeamCategory::truncate();
+        TeamLevel::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed([
+            TeamCategoryTableSeeder::class,
+            TeamLevelTableSeeder::class,
+        ]);
     }
 
     private function setPermissions(bool $hasPermission)
