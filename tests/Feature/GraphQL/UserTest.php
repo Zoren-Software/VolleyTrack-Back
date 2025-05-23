@@ -4,17 +4,17 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\NotificationType;
 use App\Models\Position;
+use App\Models\PositionsUsers;
 use App\Models\Team;
-use App\Models\User;
-use Faker\Factory as Faker;
-use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 use App\Models\TeamsUsers;
 use App\Models\Training;
-use App\Models\PositionsUsers;
+use App\Models\User;
 use App\Models\UserInformation;
-use Database\Seeders\Tenants\UserTableSeeder;
 use Database\Seeders\Tenants\PositionTableSeeder;
+use Database\Seeders\Tenants\UserTableSeeder;
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -279,7 +279,6 @@ class UserTest extends TestCase
             false,
             true
         );
-        
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 

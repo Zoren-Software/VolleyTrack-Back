@@ -6,11 +6,11 @@ use App\Models\Team;
 use App\Models\TeamCategory;
 use App\Models\TeamLevel;
 use App\Models\TeamsUsers;
+use Database\Seeders\Tenants\TeamCategoryTableSeeder;
+use Database\Seeders\Tenants\TeamLevelTableSeeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
-use Database\Seeders\Tenants\TeamCategoryTableSeeder;
-use Database\Seeders\Tenants\TeamLevelTableSeeder;
 
 class TeamTest extends TestCase
 {

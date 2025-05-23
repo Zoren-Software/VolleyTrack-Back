@@ -2,11 +2,6 @@
 
 namespace Tests\Feature\GraphQL;
 
-use App\Models\Team;
-use App\Models\TeamCategory;
-use App\Models\TeamLevel;
-use Faker\Factory as Faker;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TeamCategoryTest extends TestCase
@@ -181,5 +176,4 @@ class TeamCategoryTest extends TestCase
             ],
         ];
     }
-
 }

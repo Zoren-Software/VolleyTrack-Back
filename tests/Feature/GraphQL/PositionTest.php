@@ -3,10 +3,11 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Position;
+use Database\Seeders\Tenants\PositionTableSeeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
-use Database\Seeders\Tenants\PositionTableSeeder;
+
 class PositionTest extends TestCase
 {
     protected $graphql = true;
