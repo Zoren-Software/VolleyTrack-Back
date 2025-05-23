@@ -49,7 +49,7 @@ class TeamCategory extends Model
 
     public function scopeFilterSearch($query, array $args)
     {
-        $query->when(isset($args['search']), function ($query) use ($args) {
+        return $query->when(isset($args['search']), function ($query) use ($args) {
             $query->where('team_categories.name', 'like', '%' . $args['search'] . '%');
         });
     }
