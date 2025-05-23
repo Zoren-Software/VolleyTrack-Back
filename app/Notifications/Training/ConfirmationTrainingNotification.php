@@ -2,7 +2,6 @@
 
 namespace App\Notifications\Training;
 
-use App\Mail\Training\ConfirmationNotificationTrainingMail;
 use App\Models\User;
 
 class ConfirmationTrainingNotification extends Notification

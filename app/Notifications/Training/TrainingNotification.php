@@ -2,8 +2,6 @@
 
 namespace App\Notifications\Training;
 
-use App\Mail\Training\TrainingMail;
-
 class TrainingNotification extends Notification
 {
     /**

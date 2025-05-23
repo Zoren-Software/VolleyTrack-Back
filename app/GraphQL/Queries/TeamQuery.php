@@ -7,7 +7,6 @@ use App\Models\Team;
 class TeamQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

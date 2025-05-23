@@ -4,6 +4,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
 use App\Models\Training;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ConfirmationTrainingTest extends TestCase
@@ -27,6 +28,30 @@ class ConfirmationTrainingTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Team::truncate();
+        Training::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+    }
 
     private function setPermissions(bool $hasPermission)
     {

@@ -7,7 +7,6 @@ use App\Models\Training;
 class TrainingQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Models\User;
-use App\Models\NotificationType;
 use App\Models\NotificationSetting;
+use App\Models\NotificationType;
+use App\Models\User;
 
 class UserObserver
 {
@@ -17,9 +17,8 @@ class UserObserver
 
     /**
      * NOTE Create notification settings default for the user
-     * 
-     * @param User $user
-     * 
+     *
+     *
      * @return [type]
      */
     public function created(User $user)

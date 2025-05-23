@@ -93,10 +93,22 @@ class PermissionTableSeeder extends Seeder
         $confirmationTraining[] = Permission::updateOrCreate(['id' => 22], ['name' => 'view-confirmation-training']);
 
         /**
+         * Permissões Time Levels
+         */
+        $teamLevels[] = Permission::updateOrCreate(['id' => 23], ['name' => 'view-team-levels']);
+
+        /**
+         * Permissões de Time Categories
+         */
+        $teamCategories[] = Permission::updateOrCreate(['id' => 24], ['name' => 'view-team-categories']);
+
+        /**
          * Relacionando Permissões
          */
         $this->sync($admin, $user);
         $this->sync($admin, $team);
+        $this->sync($admin, $teamLevels);
+        $this->sync($admin, $teamCategories);
         $this->sync($admin, $role);
         $this->sync($admin, $fundamental);
         $this->sync($admin, $position);
@@ -108,6 +120,8 @@ class PermissionTableSeeder extends Seeder
 
         $this->sync($technician, $user);
         $this->sync($technician, $team);
+        $this->sync($technician, $teamLevels);
+        $this->sync($technician, $teamCategories);
         $this->sync($technician, $role);
         $this->sync($technician, $fundamental);
         $this->sync($technician, $position);
@@ -119,6 +133,8 @@ class PermissionTableSeeder extends Seeder
 
         $this->sync($player, $user);
         $this->sync($player, $team);
+        $this->sync($player, $teamLevels);
+        $this->sync($player, $teamCategories);
         $this->sync($player, $role);
         $this->sync($player, $fundamental);
         $this->sync($player, $position);

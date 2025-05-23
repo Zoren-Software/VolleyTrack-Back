@@ -3,7 +3,9 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Position;
+use Database\Seeders\Tenants\PositionTableSeeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class PositionTest extends TestCase
@@ -23,6 +25,32 @@ class PositionTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Position::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed([
+            PositionTableSeeder::class,
+        ]);
+    }
 
     private function setPermissions(bool $hasPermission)
     {
@@ -204,6 +232,11 @@ class PositionTest extends TestCase
     ) {
         $this->checkPermission($hasPermission, $this->role, 'edit-position');
 
+        if ($parameters['name'] === 'nameExistent') {
+            $position = Position::factory()->create();
+            $parameters['name'] = $position->name;
+        }
+
         $response = $this->graphQL(
             'positionCreate',
             $parameters,
@@ -227,13 +260,12 @@ class PositionTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name;
         $positionCreate = ['positionCreate'];
 
         return [
             'create position, success' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'typeMessageError' => false,
@@ -260,7 +292,7 @@ class PositionTest extends TestCase
             ],
             'name field is not unique, expected error' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => 'nameExistent',
                     'userId' => $userId,
                 ],
                 'typeMessageError' => 'name',
