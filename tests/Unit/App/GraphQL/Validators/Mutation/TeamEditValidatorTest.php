@@ -11,13 +11,12 @@ class TeamEditValidatorTest extends TestCase
     /**
      * A basic unit test messages.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function messages()
     {
-        $validator = new TeamEditValidator();
+        $validator = new TeamEditValidator;
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
@@ -26,16 +25,15 @@ class TeamEditValidatorTest extends TestCase
     /**
      * A basic unit test rules.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function rules()
     {
-        $args = new ArgumentSet();
+        $args = new ArgumentSet;
         $args->toArray('id');
 
-        $validator = new TeamEditValidator();
+        $validator = new TeamEditValidator;
         $validator->setArgs($args);
 
         $this->assertIsArray($validator->rules());

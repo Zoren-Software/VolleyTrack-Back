@@ -12,10 +12,10 @@ class ConfirmPresencePolicyTest extends TestCase
     /**
      * A basic unit test view.
      *
-     * @dataProvider permissionProvider
-     *
-     * @test
+     * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function permissionView(bool $expected): void
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
@@ -32,10 +32,10 @@ class ConfirmPresencePolicyTest extends TestCase
     /**
      * A basic unit test confirmTraining.
      *
-     * @test
-     *
-     * @dataProvider permissionProvider
+     * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function permissionConfirmTraining(bool $expected): void
     {
         $args = [
@@ -62,10 +62,10 @@ class ConfirmPresencePolicyTest extends TestCase
     /**
      * A basic unit test view.
      *
-     * @test
-     *
-     * @dataProvider permissionProvider
+     * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function permissionConfirmPresence(bool $expected): void
     {
         $args = [

@@ -13,13 +13,11 @@ class PositionMutationTest extends TestCase
     /**
      * A basic unit test create and edit position.
      *
-     * @dataProvider positionProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function positionMake($data, $method)
+    #[\PHPUnit\Framework\Attributes\DataProvider('positionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function position_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $positionMock = $this->mock(Position::class, function (MockInterface $mock) use ($data, $method) {
@@ -68,13 +66,11 @@ class PositionMutationTest extends TestCase
     /**
      * A basic unit test in delete position.
      *
-     * @dataProvider positionDeleteProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function positionDelete($data, $numberFind, $numberDelete)
+    #[\PHPUnit\Framework\Attributes\DataProvider('positionDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function position_delete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $position = $this->mock(

@@ -34,13 +34,11 @@ class TeamCategoryTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function teamCategoriesList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_categories_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -113,13 +111,11 @@ class TeamCategoryTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function teamCategoryInfo(
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_category_info(
         $typeMessageError,
         $expectedMessage,
         $expected,

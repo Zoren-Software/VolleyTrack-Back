@@ -10,26 +10,24 @@ class ConfigPermissionLoadedTest extends TestCase
     /**
      * A basic unit test example.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function render()
     {
-        $exception = new ConfigPermissionLoaded();
+        $exception = new ConfigPermissionLoaded;
         $this->assertIsString($exception->render());
     }
 
     /**
      * A basic test method report.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function report()
     {
-        $exception = new ConfigPermissionLoaded();
+        $exception = new ConfigPermissionLoaded;
         $this->assertNull($exception->report());
     }
 }

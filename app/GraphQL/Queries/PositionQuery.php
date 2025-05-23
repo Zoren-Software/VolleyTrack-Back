@@ -12,7 +12,7 @@ class PositionQuery
      */
     public function list($_, array $args)
     {
-        $position = new Position();
+        $position = new Position;
 
         return $position->list($args);
     }

@@ -12,11 +12,11 @@ class PositionPolicyTest extends TestCase
     /**
      * A basic unit test create.
      *
-     * @dataProvider permissionProvider
-     *
-     * @test
+     * @return void
      */
-    public function permissionCreate(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_create(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -24,18 +24,18 @@ class PositionPolicyTest extends TestCase
             ->with('edit-position')
             ->willReturn($expected);
 
-        $positionPolicy = new PositionPolicy();
+        $positionPolicy = new PositionPolicy;
         $positionPolicy->create($user);
     }
 
     /**
      * A basic unit test edit.
      *
-     * @dataProvider permissionProvider
-     *
-     * @test
+     * @return void
      */
-    public function permissionEdit(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_edit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -43,18 +43,18 @@ class PositionPolicyTest extends TestCase
             ->with('edit-position')
             ->willReturn($expected);
 
-        $positionPolicy = new PositionPolicy();
+        $positionPolicy = new PositionPolicy;
         $positionPolicy->edit($user);
     }
 
     /**
      * A basic unit test delete.
      *
-     * @dataProvider permissionProvider
-     *
-     * @test
+     * @return void
      */
-    public function permissionDelete(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_delete(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -62,18 +62,18 @@ class PositionPolicyTest extends TestCase
             ->with('edit-position')
             ->willReturn($expected);
 
-        $positionPolicy = new PositionPolicy();
+        $positionPolicy = new PositionPolicy;
         $positionPolicy->delete($user);
     }
 
     /**
      * A basic unit test view.
      *
-     * @dataProvider permissionProvider
-     *
-     * @test
+     * @return void
      */
-    public function permissionView(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_view(bool $expected): void
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
             $mock->shouldReceive('hasPermissionTo')
@@ -85,7 +85,7 @@ class PositionPolicyTest extends TestCase
                 ->andReturn($expected);
         });
 
-        $positionPolicy = new PositionPolicy();
+        $positionPolicy = new PositionPolicy;
 
         $this->assertEquals($expected, $positionPolicy->view($userMock));
     }

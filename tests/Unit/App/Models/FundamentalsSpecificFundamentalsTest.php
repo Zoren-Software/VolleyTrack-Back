@@ -11,13 +11,12 @@ class FundamentalsSpecificFundamentalsTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
-     * @test
-     *
      * @return void
      */
-    public function getActivitylogOptions()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function get_activitylog_options()
     {
-        $fundamentalSpecificFundamentals = new FundamentalsSpecificFundamentals();
+        $fundamentalSpecificFundamentals = new FundamentalsSpecificFundamentals;
         $this->assertInstanceOf(LogOptions::class, $fundamentalSpecificFundamentals->getActivitylogOptions());
     }
 }

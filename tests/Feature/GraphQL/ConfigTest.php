@@ -32,14 +32,12 @@ class ConfigTest extends TestCase
     /**
      * Listagem de configurações.
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @author Maicon Cerutti
      *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function configInfo(
         $typeMessageError,
         $expectedMessage,
@@ -102,14 +100,12 @@ class ConfigTest extends TestCase
     /**
      * Método de edição de configurações.
      *
-     * @dataProvider configEditProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('configEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function configEdit(
         $parameters,
         $typeMessageError,

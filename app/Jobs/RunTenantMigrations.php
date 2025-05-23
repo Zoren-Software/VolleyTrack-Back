@@ -49,7 +49,7 @@ class RunTenantMigrations implements ShouldQueue
 
             Artisan::call('tenants:seed', ['--tenants' => $this->tenantId, '--force' => true]);
 
-            $user = new User();
+            $user = new User;
             $user->name = $this->name;
             $user->email = $this->email;
             $user->password = Hash::make(Str::random(8) . '@volleyball');

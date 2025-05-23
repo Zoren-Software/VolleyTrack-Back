@@ -26,13 +26,13 @@ class NotificationTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -51,11 +51,10 @@ class NotificationTest extends TestCase
     /**
      * A basic feature test example.
      *
-     * @test
-     *
      * @return void
      */
-    public function notificationList()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_list()
     {
         $user = User::factory()->create();
 
@@ -94,13 +93,11 @@ class NotificationTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider notificationReadProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function notificationsRead(
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationReadProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifications_read(
         $data,
         $parameters,
         $typeMessageError,

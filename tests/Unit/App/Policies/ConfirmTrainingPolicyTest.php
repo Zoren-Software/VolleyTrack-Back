@@ -12,11 +12,11 @@ class ConfirmTrainingPolicyTest extends TestCase
     /**
      * A basic unit test view.
      *
-     * @dataProvider permissionProvider
-     *
-     * @test
+     * @return void
      */
-    public function permissionView(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_view(bool $expected): void
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
             $mock->shouldReceive('hasPermissionTo')
@@ -24,7 +24,7 @@ class ConfirmTrainingPolicyTest extends TestCase
                 ->andReturn($expected);
         });
 
-        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy();
+        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy;
 
         $this->assertEquals($expected, $confirmationTrainingPolicy->view($userMock));
     }
@@ -32,11 +32,11 @@ class ConfirmTrainingPolicyTest extends TestCase
     /**
      * A basic unit test confirmTraining.
      *
-     * @test
-     *
-     * @dataProvider permissionProvider
+     * @return void
      */
-    public function permissionConfirmTraining(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_confirm_training(bool $expected): void
     {
         $args = [
             'player_id' => 1,
@@ -54,7 +54,7 @@ class ConfirmTrainingPolicyTest extends TestCase
                 ->andReturn($args['player_id']);
         });
 
-        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy();
+        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy;
 
         $this->assertEquals(true, $confirmationTrainingPolicy->confirmTraining($userMock, $args));
     }
@@ -62,11 +62,11 @@ class ConfirmTrainingPolicyTest extends TestCase
     /**
      * A basic unit test view.
      *
-     * @test
-     *
-     * @dataProvider permissionProvider
+     * @return void
      */
-    public function permissionConfirmPresence(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_confirm_presence(bool $expected): void
     {
         $args = [
             'player_id' => 1,
@@ -80,7 +80,7 @@ class ConfirmTrainingPolicyTest extends TestCase
                 ->andReturn($expected);
         });
 
-        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy();
+        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy;
 
         $this->assertEquals($expected, $confirmationTrainingPolicy->confirmPresence($userMock, $args));
     }

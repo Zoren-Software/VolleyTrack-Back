@@ -37,13 +37,13 @@ class UserTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -81,13 +81,11 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function usersList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function users_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -164,13 +162,11 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function userInfo(
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_info(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -236,15 +232,13 @@ class UserTest extends TestCase
     /**
      * Método de criação de um usuário.
      *
-     * @dataProvider userCreateProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function userCreate(
+    #[\PHPUnit\Framework\Attributes\DataProvider('userCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_create(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -710,15 +704,13 @@ class UserTest extends TestCase
     /**
      * Método de edição de um usuário.
      *
-     * @dataProvider userEditProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function userEdit(
+    #[\PHPUnit\Framework\Attributes\DataProvider('userEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_edit(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -1140,15 +1132,13 @@ class UserTest extends TestCase
     /**
      * Método de deletar um usuário.
      *
-     * @dataProvider userDeleteProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function deleteUser($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    #[\PHPUnit\Framework\Attributes\DataProvider('userDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function delete_user($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
         $this->setPermissions($hasPermission);
 
@@ -1249,12 +1239,10 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider meProvider
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('meProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function me(
         $typeMessageError,
         $expectedMessage,
@@ -1329,15 +1317,13 @@ class UserTest extends TestCase
     /**
      * Método de criar senha para um usuário.
      *
-     * @dataProvider setPasswordProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function setPassword($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    #[\PHPUnit\Framework\Attributes\DataProvider('setPasswordProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function set_password($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
         $this->setPermissions($hasPermission);
 

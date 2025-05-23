@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('websockets.router', function () {
-            return new \App\WebSockets\Server\Router();
+            return new \App\WebSockets\Server\Router;
         });
     }
 

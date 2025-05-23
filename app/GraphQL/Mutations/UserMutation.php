@@ -133,7 +133,7 @@ final class UserMutation
 
     public function forgotPassword($rootValue, array $args, GraphQLContext $context)
     {
-        $this->user = new User();
+        $this->user = new User;
 
         if ($this->user) {
             $this->user->sendForgotPasswordNotification($args);

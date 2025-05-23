@@ -11,13 +11,12 @@ class SpecificFundamentalEditValidatorTest extends TestCase
     /**
      * A basic unit test messages.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function messages()
     {
-        $validator = new SpecificFundamentalEditValidator();
+        $validator = new SpecificFundamentalEditValidator;
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
@@ -26,16 +25,15 @@ class SpecificFundamentalEditValidatorTest extends TestCase
     /**
      * A basic unit test rules.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function rules()
     {
-        $args = new ArgumentSet();
+        $args = new ArgumentSet;
         $args->toArray('id');
 
-        $validator = new SpecificFundamentalEditValidator();
+        $validator = new SpecificFundamentalEditValidator;
         $validator->setArgs($args);
 
         $this->assertIsArray($validator->rules());

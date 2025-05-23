@@ -22,11 +22,10 @@ class RoleTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
      * @return void
      */
-    public function roleInfo()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function role_info()
     {
         $this->login = true;
 
@@ -50,11 +49,10 @@ class RoleTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
      * @return void
      */
-    public function rolesList()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function roles_list()
     {
         $this->login = true;
 

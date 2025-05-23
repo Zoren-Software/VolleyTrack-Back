@@ -12,7 +12,7 @@ class LanguageQuery
      */
     public function list($_, array $args)
     {
-        $language = new Language();
+        $language = new Language;
 
         return $language->list($args);
     }

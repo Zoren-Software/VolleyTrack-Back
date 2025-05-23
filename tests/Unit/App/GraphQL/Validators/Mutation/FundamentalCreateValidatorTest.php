@@ -10,13 +10,12 @@ class FundamentalCreateValidatorTest extends TestCase
     /**
      * A basic unit test messages.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function messages()
     {
-        $validator = new FundamentalCreateValidator();
+        $validator = new FundamentalCreateValidator;
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
@@ -25,13 +24,12 @@ class FundamentalCreateValidatorTest extends TestCase
     /**
      * A basic unit test rules.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function rules()
     {
-        $validator = new FundamentalCreateValidator();
+        $validator = new FundamentalCreateValidator;
 
         $this->assertIsArray($validator->rules());
         $this->assertNotEmpty($validator->rules());

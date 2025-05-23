@@ -12,7 +12,7 @@ class TeamLevelQuery
      */
     public function list($_, array $args)
     {
-        $teamLevel = new TeamLevel();
+        $teamLevel = new TeamLevel;
 
         return $teamLevel->list($args);
     }

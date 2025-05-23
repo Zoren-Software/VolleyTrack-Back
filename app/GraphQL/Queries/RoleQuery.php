@@ -12,7 +12,7 @@ class RoleQuery
      */
     public function list($_, array $args)
     {
-        $role = new Role();
+        $role = new Role;
 
         return $role->list($args);
     }

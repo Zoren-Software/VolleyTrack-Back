@@ -11,26 +11,24 @@ class TrainingConfigTest extends TestCase
     /**
      * A basic unit test relation config.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function config()
     {
-        $trainingConfig = new TrainingConfig();
+        $trainingConfig = new TrainingConfig;
         $this->assertInstanceOf(BelongsTo::class, $trainingConfig->config());
     }
 
     /**
      * A basic unit test relation user.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user()
     {
-        $trainingConfig = new TrainingConfig();
+        $trainingConfig = new TrainingConfig;
         $this->assertInstanceOf(BelongsTo::class, $trainingConfig->user());
     }
 }

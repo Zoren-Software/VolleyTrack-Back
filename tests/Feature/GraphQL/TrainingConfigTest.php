@@ -36,13 +36,11 @@ class TrainingConfigTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function trainingConfigInfo(
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_config_info(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -103,15 +101,13 @@ class TrainingConfigTest extends TestCase
     /**
      * Método de edição de configurações.
      *
-     * @dataProvider ConfigEditProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function trainingConfigEdit(
+    #[\PHPUnit\Framework\Attributes\DataProvider('ConfigEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_config_edit(
         $parameters,
         $typeMessageError,
         $expectedMessage,

@@ -28,7 +28,7 @@ class TenantRequest extends FormRequest implements ScribeInterface
             'token' => [
                 'required',
                 'string',
-                new ValidToken(),
+                new ValidToken,
             ],
             'tenantId' => [
                 'required',

@@ -12,7 +12,7 @@ final class GitHubService extends Model
      */
     public function __construct(?GuzzleClient $client = null)
     {
-        $this->client = $client ?? new GuzzleClient();
+        $this->client = $client ?? new GuzzleClient;
 
         $this->accessToken = config('services.github.access_token');
 

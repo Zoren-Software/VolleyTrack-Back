@@ -11,13 +11,12 @@ class UserInformationTest extends TestCase
     /**
      * A basic unit test relation user.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user()
     {
-        $userInformation = new UserInformation();
+        $userInformation = new UserInformation;
         $this->assertInstanceOf(BelongsTo::class, $userInformation->user());
     }
 }

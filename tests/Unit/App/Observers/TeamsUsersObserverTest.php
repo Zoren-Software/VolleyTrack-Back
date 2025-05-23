@@ -11,10 +11,9 @@ class TeamsUsersObserverTest extends TestCase
     /**
      * Test created method
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function created()
     {
         $teamsUsersMock = $this->mock(TeamsUsers::class, function ($mock) {
@@ -22,17 +21,16 @@ class TeamsUsersObserverTest extends TestCase
                 ->once()
                 ->andReturn(true);
         });
-        $teamsUsersObserver = new TeamsUsersObserver();
+        $teamsUsersObserver = new TeamsUsersObserver;
         $teamsUsersObserver->created($teamsUsersMock);
     }
 
     /**
      * Test updated method
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function updated()
     {
         $teamsUsersMock = $this->mock(TeamsUsers::class, function ($mock) {
@@ -40,7 +38,7 @@ class TeamsUsersObserverTest extends TestCase
                 ->once()
                 ->andReturn(true);
         });
-        $teamsUsersObserver = new TeamsUsersObserver();
+        $teamsUsersObserver = new TeamsUsersObserver;
         $teamsUsersObserver->updated($teamsUsersMock);
     }
 }

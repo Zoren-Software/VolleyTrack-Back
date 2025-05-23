@@ -26,13 +26,13 @@ class NotificationSettingTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -51,11 +51,10 @@ class NotificationSettingTest extends TestCase
     /**
      * Listagem de configurações de notificação
      *
-     * @test
-     *
      * @return void
      */
-    public function notificationSettingsList()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_settings_list()
     {
         $response = $this->graphQL(
             'notificationsSettings',
@@ -88,19 +87,17 @@ class NotificationSettingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider notificationSettingActiveEmailAndSystemEditSuccess
-     * @dataProvider notificationSettingDesactiveEmailAndSystemEditSuccess
-     * @dataProvider notificationSettingActiveEmailEditSuccess
-     * @dataProvider notificationSettingActiveSystemEditSuccess
-     * @dataProvider notificationSettingRequiredParametersEditError
-     *
      * TODO - Falta criar os cenários de erro do request e mensagens traduzidas
      *
      * @return void
      */
-    public function notificationSettingEdit(
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingActiveEmailAndSystemEditSuccess')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingDesactiveEmailAndSystemEditSuccess')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingActiveEmailEditSuccess')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingActiveSystemEditSuccess')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingRequiredParametersEditError')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_setting_edit(
         $data,
         $parameters,
         $typeMessageError,

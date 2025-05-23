@@ -27,13 +27,13 @@ class SpecificFundamentalTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -65,13 +65,11 @@ class SpecificFundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function specificFundamentalsList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamentals_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -144,15 +142,13 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Listagem de um fundamento especifico.
      *
-     * @test
-     *
      * @author Maicon Cerutti
-     *
-     * @dataProvider infoProvider
      *
      * @return void
      */
-    public function specificFundamentalInfo(
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_info(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -216,15 +212,13 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Método de criação de um fundamento especifico.
      *
-     * @dataProvider specificFundamentalCreateProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function specificFundamentalCreate(
+    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_create(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -365,15 +359,13 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Método de edição de um fundamento especifico.
      *
-     * @dataProvider specificFundamentalEditProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function specificFundamentalEdit(
+    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_edit(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -520,13 +512,11 @@ class SpecificFundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider specificFundamentalDeleteProvider
-     *
      * @return void
      */
-    public function specificFundamentalDelete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_delete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
         $this->setPermissions($hasPermission);
 

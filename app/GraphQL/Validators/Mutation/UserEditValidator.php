@@ -35,7 +35,7 @@ final class UserEditValidator extends Validator
             'roleId' => [
                 'required',
                 'exists:roles,id',
-                new PermissionAssignment(),
+                new PermissionAssignment,
             ],
             'cpf' => [
                 'nullable',

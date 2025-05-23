@@ -11,13 +11,12 @@ class NotificationTest extends TestCase
     /**
      * A basic unit test list.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function list()
     {
-        $notification = new Notification();
+        $notification = new Notification;
 
         $args = [
             'read' => false,
@@ -31,13 +30,12 @@ class NotificationTest extends TestCase
     /**
      * A basic unit test scopeFilterRead.
      *
-     * @test
-     *
      * @return void
      */
-    public function scopeFilterRead()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function scope_filter_read()
     {
-        $notification = new Notification();
+        $notification = new Notification;
 
         $this->assertInstanceOf(Builder::class, $notification->scopeFilterRead($notification, true));
     }
@@ -45,13 +43,12 @@ class NotificationTest extends TestCase
     /**
      * A basic unit test userNotifiable.
      *
-     * @test
-     *
      * @return void
      */
-    public function userNotifiable()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_notifiable()
     {
-        $notification = new Notification();
+        $notification = new Notification;
 
         $this->assertInstanceOf(Builder::class, $notification->userNotifiable());
     }

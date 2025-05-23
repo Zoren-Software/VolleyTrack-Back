@@ -12,7 +12,7 @@ class TeamCategoryQuery
      */
     public function list($_, array $args)
     {
-        $teamCategory = new TeamCategory();
+        $teamCategory = new TeamCategory;
 
         return $teamCategory->list($args);
     }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Database\Central;
 
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TotalTablesCentralTest extends TestCase
@@ -15,13 +16,12 @@ class TotalTablesCentralTest extends TestCase
     /**
      * Verificar o número total de tabelas existentes.
      *
-     * @test
-     *
      * @return void
      */
-    public function verifyTotalTables()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function verify_total_tables()
     {
-        $tables = \DB::select('SHOW TABLES');
+        $tables = DB::select('SHOW TABLES');
         $totalTables = count($tables);
 
         $this->assertEquals(

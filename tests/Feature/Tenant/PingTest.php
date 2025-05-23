@@ -11,10 +11,9 @@ class PingTest extends TestCase
     /**
      * A basic feature test example.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ping()
     {
         $response = $this->get($this->tenantUrl . '/v1/ping');

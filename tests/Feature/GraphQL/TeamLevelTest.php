@@ -32,13 +32,11 @@ class TeamLevelTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function teamLevelsList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_levels_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -111,13 +109,11 @@ class TeamLevelTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function teamLevelInfo(
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_level_info(
         $typeMessageError,
         $expectedMessage,
         $expected,

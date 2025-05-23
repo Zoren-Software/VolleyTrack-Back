@@ -188,7 +188,7 @@ return [
         /*
          * Application Service Socialite
          */
-        //\SocialiteProviders\Manager\ServiceProvider::class
+        // \SocialiteProviders\Manager\ServiceProvider::class
         Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 

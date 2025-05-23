@@ -26,13 +26,13 @@ class FundamentalTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -61,13 +61,11 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function fundamentalsList(
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    public function fundamentals_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -142,13 +140,11 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function fundamentalInfo(
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function fundamental_info(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -212,13 +208,13 @@ class FundamentalTest extends TestCase
     /**
      * Método de criação de um fundamento.
      *
-     * @dataProvider fundamentalCreateProvider
-     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function fundamentalCreate(
+    #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function fundamental_create(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -326,15 +322,13 @@ class FundamentalTest extends TestCase
     /**
      * Método de edição de um fundamento.
      *
-     * @dataProvider fundamentalEditProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function fundamentalEdit(
+    #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function fundamental_edit(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -453,13 +447,11 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider fundamentalDeleteProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function fundamentalDelete(
+    #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function fundamental_delete(
         $data,
         $typeMessageError,
         $expectedMessage,

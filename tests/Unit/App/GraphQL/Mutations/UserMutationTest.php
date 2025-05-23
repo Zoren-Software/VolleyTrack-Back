@@ -16,12 +16,10 @@ class UserMutationTest extends TestCase
     /**
      * A basic unit test create and edit user.
      *
-     * @dataProvider userProvider
-     *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('userProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     // public function userMake($data)
     // {
     //     $graphQLContext = $this->createMock(GraphQLContext::class);
@@ -121,13 +119,11 @@ class UserMutationTest extends TestCase
     /**
      * A basic unit test in delete user.
      *
-     * @dataProvider userDeleteProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function userDelete($data, $numberFind, $numberDelete)
+    #[\PHPUnit\Framework\Attributes\DataProvider('userDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_delete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $user = $this->mock(User::class, function (MockInterface $mock) use ($data, $numberFind, $numberDelete) {

@@ -13,13 +13,11 @@ class HorizonRoutesTest extends TestCase
     /**
      * A basic test route horizon for login.
      *
-     * @test
-     *
-     * @dataProvider routesProvider
-     *
      * @return void
      */
-    public function routeLoginHorizon(string $route)
+    #[\PHPUnit\Framework\Attributes\DataProvider('routesProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function route_login_horizon(string $route)
     {
         $response = $this->get($this->tenantUrl . $route);
 

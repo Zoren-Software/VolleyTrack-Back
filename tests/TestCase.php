@@ -62,7 +62,7 @@ abstract class TestCase extends BaseTestCase
 
     public $tenantUrl;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -247,7 +247,7 @@ abstract class TestCase extends BaseTestCase
         $query .= "{$closeExit}";
 
         // NOTE - Para Debug das queries
-        //dump($query);
+        // dump($query);
 
         return $query;
     }

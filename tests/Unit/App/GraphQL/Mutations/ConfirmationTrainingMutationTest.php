@@ -12,13 +12,11 @@ class ConfirmationTrainingMutationTest extends TestCase
     /**
      * A basic unit test confirmTraining.
      *
-     * @test
-     *
-     * @dataProvider confirmationTrainingProvider
-     *
      * @return void
      */
-    public function confirmTraining($data, $variable, $method)
+    #[\PHPUnit\Framework\Attributes\DataProvider('confirmationTrainingProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function confirm_training($data, $variable, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
 
@@ -27,23 +25,23 @@ class ConfirmationTrainingMutationTest extends TestCase
                 $mock->shouldReceive('find')
                     ->once()
                     ->with(1)
-                    ->andReturn($mock);
+                    ->andReturnSelf();
             }
 
             if (isset($data['training_id']) && isset($data['player_id'])) {
                 $mock->shouldReceive('where')
                     ->once()
                     ->with('training_id', 1)
-                    ->andReturn($mock);
+                    ->andReturnSelf();
 
                 $mock->shouldReceive('where')
                     ->once()
                     ->with('player_id', 1)
-                    ->andReturn($mock);
+                    ->andReturnSelf();
 
                 $mock->shouldReceive('first')
                     ->once()
-                    ->andReturn($mock);
+                    ->andReturnSelf();
             }
 
             if ($variable === 'status') {
@@ -58,7 +56,7 @@ class ConfirmationTrainingMutationTest extends TestCase
 
             $mock->shouldReceive('save')
                 ->once()
-                ->andReturn(true);
+                ->andReturnSelf();
         });
 
         $confirmationTrainingMutation = new ConfirmationTrainingMutation($confirmationTrainingMock);

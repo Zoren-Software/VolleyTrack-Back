@@ -12,7 +12,7 @@ class UserQuery
      */
     public function list($_, array $args)
     {
-        $user = new User();
+        $user = new User;
 
         return $user->list($args);
     }

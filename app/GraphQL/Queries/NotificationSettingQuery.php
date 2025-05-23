@@ -12,7 +12,7 @@ class NotificationSettingQuery
      */
     public function list($_, array $args)
     {
-        $notificationSetting = new NotificationSetting();
+        $notificationSetting = new NotificationSetting;
 
         return $notificationSetting->list($args);
     }

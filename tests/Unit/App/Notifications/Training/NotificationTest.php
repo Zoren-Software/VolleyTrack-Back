@@ -12,12 +12,10 @@ class NotificationTest extends TestCase
     /**
      * A test method via.
      *
-     * @test
-     *
-     * @dataProvider dataProvider
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function via(
         $notificationTechnicianByEmail,
         $notificationTeamByEmail,
@@ -99,10 +97,9 @@ class NotificationTest extends TestCase
     /**
      * A test method tags.
      *
-     * @test
-     *
      * @return array
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function tags()
     {
         $trainingMock = $this->createMock(Training::class);

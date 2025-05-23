@@ -84,13 +84,11 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function trainingList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -172,13 +170,11 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function trainingInfo(
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_info(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -248,16 +244,14 @@ class TrainingTest extends TestCase
     /**
      * Método de criação de um treino.
      *
-     * @dataProvider trainingCreateSuccessProvider
-     * @dataProvider trainingCreateErrorProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function trainingCreate(
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateSuccessProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateErrorProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_create(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -651,16 +645,14 @@ class TrainingTest extends TestCase
     /**
      * Método de edição de um treino.
      *
-     * @dataProvider trainingEditSuccessProvider
-     * @dataProvider trainingEditErrorProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function trainingEdit(
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingEditSuccessProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingEditErrorProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_edit(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -1032,11 +1024,11 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider trainingDeleteProvider
-     *
      * @return void
      */
-    public function trainingDelete(
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_delete(
         $data,
         $typeMessageError,
         $expectedMessage,
@@ -1045,8 +1037,11 @@ class TrainingTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $training = Training::factory()->make();
-        $training->save();
+        $team = Team::factory()->create();
+
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
 
         $parameters['id'] = $training->id;
 
@@ -1109,8 +1104,8 @@ class TrainingTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'typeMessageError' => 'message',
-                'expectedMessage' => 'internal',
+                'typeMessageError' => 'id',
+                'expectedMessage' => 'The selected id is invalid.',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingDelete,

@@ -17,80 +17,72 @@ abstract class BaseDatabase extends TestCase
 
     /**
      * Verificar se os campos estão corretamente definidos.
-     *
-     * @test
      */
-    public function databaseVerifyFields()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_fields()
     {
         $this->verifyFields();
     }
 
     /**
      * Verificar se a chave primária está corretamente definida.
-     *
-     * @test
      */
-    public function databaseVerifyPrimaryKey()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_primary_key()
     {
         $this->verifyPrimaryKey();
     }
 
     /**
      * Verificar se as chaves estrangeiras estão corretamente definidas.
-     *
-     * @test
      */
-    public function databaseVerifyForeignKeys()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_foreign_keys()
     {
         $this->verifyForeignKeys();
     }
 
     /**
      * Verificar se os campos auto_increment estão corretamente definidos.
-     *
-     * @test
      */
-    public function databaseVerifyAutoIncrements()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_auto_increments()
     {
         $this->verifyAutoIncrements();
     }
 
     /**
      * Verificar se as chaves únicas estão corretamente definidas.
-     *
-     * @test
      */
-    public function databaseVerifyUniqueKeys()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_unique_keys()
     {
         $this->verifyUniqueKeys();
     }
 
     /**
      * Verificar número total de campos na tabela.
-     *
-     * @test
      */
-    public function databaseVerifyTotalFields()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_total_fields()
     {
         $this->verifyTotalFields();
     }
 
     /**
      * Verificar o total de chaves estrangeiras no array de chaves estrangeiras e na tabela.
-     *
-     * @test
      */
-    public function databaseVerifyTotalForeignKeys()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_total_foreign_keys()
     {
         $this->verifyTotalForeignKeys();
     }
 
     /**
      * Verificar se o total de unique keys está correto.
-     *
-     * @test
      */
-    public function databaseVerifyTotalUniqueKeys()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_total_unique_keys()
     {
         $this->verifyTotalUniqueKeys();
     }

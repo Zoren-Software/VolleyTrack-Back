@@ -21,7 +21,7 @@ class CheckTrainingCancelled implements Rule
         ?Training $training = null
     ) {
         $this->trainingId = $trainingId;
-        $this->training = $training ?? new Training();
+        $this->training = $training ?? new Training;
     }
 
     /**

@@ -13,7 +13,7 @@ class ConfirmationTrainingQuery
      */
     public function list($_, array $args)
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
 
         return $confirmationTraining->list($args);
     }

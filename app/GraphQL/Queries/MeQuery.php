@@ -12,7 +12,7 @@ class MeQuery
      */
     public function me($_, array $args)
     {
-        $user = new User();
+        $user = new User;
 
         return $user->me($args);
     }

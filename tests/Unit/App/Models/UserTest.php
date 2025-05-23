@@ -16,14 +16,13 @@ class UserTest extends TestCase
     /**
      * A basic unit test make password.
      *
-     * @test
-     *
      * @return void
      */
-    public function makePassword()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function make_password()
     {
         $password = 'password';
-        $user = new User();
+        $user = new User;
         $user->makePassword($password);
         $this->assertTrue(Hash::check($password, $user->password));
     }
@@ -31,28 +30,25 @@ class UserTest extends TestCase
     /**
      * A basic unit test relation positions.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function positions()
     {
-        $user = new User();
+        $user = new User;
         $this->assertInstanceOf(BelongsToMany::class, $user->positions());
     }
 
     /**
      * A basic unit test relation positions.
      *
-     * @dataProvider hasPermissionsViaRolesDataProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function hasPermissionsViaRoles($namePermission, $permissions, $expected)
+    #[\PHPUnit\Framework\Attributes\DataProvider('hasPermissionsViaRolesDataProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function has_permissions_via_roles($namePermission, $permissions, $expected)
     {
-        $user = new User();
+        $user = new User;
         $this->assertEquals($expected, $user->hasPermissionsViaRoles($namePermission, $permissions));
     }
 
@@ -90,11 +86,10 @@ class UserTest extends TestCase
     /**
      * A basic unit test hasPermissionRole.
      *
-     * @test
-     *
      * @return void
      */
-    public function hasPermissionRole()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function has_permission_role()
     {
         $userMock = $this->createMock(User::class);
         $permissionMock = $this->createMock(Permission::class);
@@ -106,72 +101,67 @@ class UserTest extends TestCase
 
         $this->be($userMock);
 
-        $user = new User();
+        $user = new User;
         $user->hasPermissionRole('view-role-admin');
     }
 
     /**
      * A basic unit test relation getActivitylogOptions.
      *
-     * @test
-     *
      * @return void
      */
-    public function getActivitylogOptions()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function get_activitylog_options()
     {
-        $user = new User();
+        $user = new User;
         $this->assertInstanceOf(LogOptions::class, $user->getActivitylogOptions());
     }
 
     /**
      * A basic unit test relation teams.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function teams()
     {
-        $user = new User();
+        $user = new User;
         $this->assertInstanceOf(BelongsToMany::class, $user->teams());
     }
 
     /**
      * A basic unit test relation playerConfirmationsTraining
      *
-     * @test
-     *
      * @return void
      */
-    public function playerConfirmationsTraining()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function player_confirmations_training()
     {
-        $user = new User();
+        $user = new User;
         $this->assertInstanceOf(HasMany::class, $user->playerConfirmationsTraining());
     }
 
     /**
      * A basic unit test relation userConfirmationsTraining
      *
-     * @test
-     *
      * @return void
      */
-    public function userConfirmationsTraining()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_confirmations_training()
     {
-        $user = new User();
+        $user = new User;
         $this->assertInstanceOf(HasMany::class, $user->userConfirmationsTraining());
     }
 
     /**
      * A basic unit test relation information
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function information()
     {
-        $user = new User();
+        $user = new User;
         $this->assertInstanceOf(HasOne::class, $user->information());
     }
 }

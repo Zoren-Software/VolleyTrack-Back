@@ -16,10 +16,9 @@ class CancellationNotificationTrainingMailTest extends TestCase
     /**
      * A method to test the envelope.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function envelope()
     {
         $trainingMock = $this->mock(Training::class, function ($mock) {
@@ -44,10 +43,9 @@ class CancellationNotificationTrainingMailTest extends TestCase
     /**
      * A method to test the content.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function content()
     {
         $trainingMock = $this->mock(Training::class, function ($mock) {

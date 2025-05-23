@@ -10,26 +10,24 @@ class VerifyColumnNameTest extends TestCase
     /**
      * A basic test method render.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function render()
     {
-        $exception = new VerifyColumnName();
+        $exception = new VerifyColumnName;
         $this->assertIsString($exception->render());
     }
 
     /**
      * A basic test method report.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function report()
     {
-        $exception = new VerifyColumnName();
+        $exception = new VerifyColumnName;
         $this->assertNull($exception->report());
     }
 }

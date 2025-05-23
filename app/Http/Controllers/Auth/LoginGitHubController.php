@@ -30,7 +30,7 @@ class LoginGitHubController extends Controller
     {
         $githubUser = Socialite::driver('github')->user();
 
-        $githubService = new GitHubService();
+        $githubService = new GitHubService;
 
         $login = $githubService->verifyPermissionUser($githubUser->getNickname());
 

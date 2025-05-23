@@ -14,13 +14,11 @@ class TenantTest extends TestCase
     /**
      * A basic test route horizon for login.
      *
-     * @test
-     *
-     * @dataProvider createTenantDataProvider
-     *
      * @return void
      */
-    public function createTenant(array $data, string $expectedMessage, int $expectedStatus)
+    #[\PHPUnit\Framework\Attributes\DataProvider('createTenantDataProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function create_tenant(array $data, string $expectedMessage, int $expectedStatus)
     {
         $this->withHeaders([
             'Content-Type' => 'application/json',

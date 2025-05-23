@@ -13,7 +13,7 @@ return new class extends Migration
 
         if (empty($tableNames)) {
             // Lançando a exceção personalizada
-            throw new PermissionConfigNotLoadedException();
+            throw new PermissionConfigNotLoadedException;
         }
 
         if (!Schema::hasTable($tableNames['permissions'])) {

@@ -12,7 +12,7 @@ class SpecificFundamentalQuery
      */
     public function list($_, array $args)
     {
-        $specificFundamental = new SpecificFundamental();
+        $specificFundamental = new SpecificFundamental;
 
         return $specificFundamental->list($args);
     }

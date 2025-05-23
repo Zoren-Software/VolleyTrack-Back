@@ -12,16 +12,15 @@ class NotificationTest extends TestCase
     /**
      * A basic test method authorize.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function authorize()
     {
         $subscriberMock = $this->createMock(Subscriber::class);
         $requestMock = $this->createMock(Request::class);
 
-        $notification = new Notification();
+        $notification = new Notification;
 
         $this->assertTrue($notification->authorize($subscriberMock, $requestMock));
     }
@@ -29,16 +28,15 @@ class NotificationTest extends TestCase
     /**
      * A basic test method filter.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function filter()
     {
         $subscriberMock = $this->createMock(Subscriber::class);
         $requestMock = $this->createMock(Request::class);
 
-        $notification = new Notification();
+        $notification = new Notification;
 
         $this->assertTrue($notification->filter($subscriberMock, $requestMock));
     }

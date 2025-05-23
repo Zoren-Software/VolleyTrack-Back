@@ -29,14 +29,14 @@ class ConfirmationTrainingTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -63,13 +63,11 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function confirmationsTrainingsList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function confirmations_trainings_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -151,13 +149,11 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider confirmPresenceProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function confirmPresence(
+    #[\PHPUnit\Framework\Attributes\DataProvider('confirmPresenceProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function confirm_presence(
         $data,
         $typeMessageError,
         $expectedMessage,
@@ -332,13 +328,11 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider confirmTrainingProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function confirmTraining(
+    #[\PHPUnit\Framework\Attributes\DataProvider('confirmTrainingProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function confirm_training(
         $data,
         $typeMessageError,
         $expectedMessage,

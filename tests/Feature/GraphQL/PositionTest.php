@@ -26,13 +26,13 @@ class PositionTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -63,13 +63,11 @@ class PositionTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function positionsList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function positions_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -144,13 +142,11 @@ class PositionTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function positionInfo(
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    public function position_info(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -215,15 +211,13 @@ class PositionTest extends TestCase
     /**
      * Método de criação de um fundamento.
      *
-     * @dataProvider positionCreateProvider
-     *
      * @author Maicon Cerutti
-     *
-     * @test
      *
      * @return void
      */
-    public function positionCreate(
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('positionCreateProvider')]
+    public function position_create(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -335,15 +329,13 @@ class PositionTest extends TestCase
     /**
      * Método de edição de um fundamento.
      *
-     * @dataProvider positionEditProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function positionEdit(
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('positionEditProvider')]
+    public function position_edit(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -462,13 +454,11 @@ class PositionTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider positionDeleteProvider
-     *
      * @return void
      */
-    public function positionDelete(
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('positionDeleteProvider')]
+    public function position_delete(
         $data,
         $typeMessageError,
         $expectedMessage,

@@ -14,52 +14,48 @@ class FundamentalTest extends TestCase
     /**
      * A basic unit test relation users.
      *
-     * @test
-     *
      * @return void
      */
-    public function specificFundamentals()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamentals()
     {
-        $fundamental = new Fundamental();
+        $fundamental = new Fundamental;
         $this->assertInstanceOf(HasMany::class, $fundamental->specificFundamental());
     }
 
     /**
      * A basic unit test relation user.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user()
     {
-        $fundamental = new Fundamental();
+        $fundamental = new Fundamental;
         $this->assertInstanceOf(BelongsTo::class, $fundamental->user());
     }
 
     /**
      * A basic unit test relation getActivitylogOptions.
      *
-     * @test
-     *
      * @return void
      */
-    public function getActivitylogOptions()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function get_activitylog_options()
     {
-        $fundamental = new Fundamental();
+        $fundamental = new Fundamental;
         $this->assertInstanceOf(LogOptions::class, $fundamental->getActivitylogOptions());
     }
 
     /**
      * A basic unit test relation trainings.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function trainings()
     {
-        $fundamental = new Fundamental();
+        $fundamental = new Fundamental;
         $this->assertInstanceOf(BelongsToMany::class, $fundamental->trainings());
     }
 }

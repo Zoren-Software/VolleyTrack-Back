@@ -34,13 +34,13 @@ class TeamTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -75,13 +75,11 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
-    public function teamsList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function teams_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -166,13 +164,11 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function teamInfo(
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_info(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -245,15 +241,13 @@ class TeamTest extends TestCase
     /**
      * Método de criação de um time.
      *
-     * @dataProvider teamCreateProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function teamCreate(
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_create(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -419,15 +413,13 @@ class TeamTest extends TestCase
     /**
      * Método de edição de um time.
      *
-     * @dataProvider teamEditProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function teamEdit(
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_edit(
         $parameters,
         $typeMessageError,
         $expectedMessage,
@@ -594,13 +586,11 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider teamDeleteProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function teamDelete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_delete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
         $this->setPermissions($hasPermission);
 

@@ -12,7 +12,7 @@ class TrainingQuery
      */
     public function list($_, array $args)
     {
-        $training = new Training();
+        $training = new Training;
 
         return $training->list($args);
     }

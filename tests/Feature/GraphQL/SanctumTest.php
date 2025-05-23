@@ -26,13 +26,13 @@ class SanctumTest extends TestCase
      */
     protected $otherUser = true;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
         parent::tearDown();
@@ -56,10 +56,9 @@ class SanctumTest extends TestCase
     /**
      * Teste da rota de login.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function login()
     {
         $user = User::factory()->make();
@@ -86,10 +85,9 @@ class SanctumTest extends TestCase
     /**
      * Teste da rota de logout.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function logout()
     {
         $this->login = true;
@@ -116,10 +114,9 @@ class SanctumTest extends TestCase
     /**
      * Teste da rota de registro de usuários.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function register()
     {
         $faker = Faker::create();
@@ -148,11 +145,10 @@ class SanctumTest extends TestCase
     /**
      * Teste de reenvio de email de verificação.
      *
-     * @test
-     *
      * @return void
      */
-    public function resendEmailVerification()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function resend_email_verification()
     {
         $this->graphQL(
             'resendEmailVerification',
@@ -174,11 +170,10 @@ class SanctumTest extends TestCase
     /**
      * Teste de reenvio de email para recuperar senha.
      *
-     * @test
-     *
      * @return void
      */
-    public function forgotPassword()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function forgot_password()
     {
         $this->login = true;
 
@@ -204,11 +199,10 @@ class SanctumTest extends TestCase
     /**
      * Teste de reenvio de email para atualizar senha.
      *
-     * @test
-     *
      * @return void
      */
-    public function updatePassword()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function update_password()
     {
         $this->login = true;
 
