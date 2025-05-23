@@ -2,8 +2,8 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Models\User;
 use App\Models\NotificationSetting;
+use App\Models\User;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class NotificationSettingMutation
@@ -25,12 +25,12 @@ final class NotificationSettingMutation
         $args['user_id'] = $user->id;
 
         $notificationSetting = NotificationSetting::findOrFail($args['id']);
-        
+
         $notificationSetting->fill($args);
 
         $notificationSetting->save();
         $notificationSetting->refresh();
-        
+
         return $notificationSetting;
     }
 }

@@ -9,6 +9,8 @@ class TeamsTest extends TenantBase
     public static $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'user_id' => ['type' => 'bigint', 'unsigned' => true],
+        'team_category_id' => ['type' => 'bigint', 'unsigned' => true, 'nullable' => true],
+        'team_level_id' => ['type' => 'bigint', 'unsigned' => true, 'nullable' => true],
         'name' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
@@ -21,6 +23,8 @@ class TeamsTest extends TenantBase
 
     public static $foreignKeys = [
         'teams_user_id_foreign',
+        'teams_team_category_id_foreign',
+        'teams_team_level_id_foreign',
     ]; // Define as chaves estrangeiras
 
     public static $uniqueKeys = []; // Nenhuma chave única

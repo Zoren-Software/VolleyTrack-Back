@@ -8,7 +8,19 @@ type Team {
 
     "UserId editing the team."
     userId: Int @rename(attribute: "user_id")
-    
+
+    "teamCategoryId editing the team."
+    teamCategoryId: Int @rename(attribute: "team_category_id")
+
+    "Team category."
+    teamCategory: TeamCategory @belongsTo
+
+    "teamLevelId editing the team."
+    teamLevelId: Int @rename(attribute: "team_level_id")
+
+    "Team level."
+    teamLevel: TeamLevel @belongsTo
+
     "User editing the team."
     user: User @belongsTo
 

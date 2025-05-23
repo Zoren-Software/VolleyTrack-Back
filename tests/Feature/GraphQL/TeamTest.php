@@ -3,7 +3,13 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\Team;
+use App\Models\TeamCategory;
+use App\Models\TeamLevel;
+use App\Models\TeamsUsers;
+use Database\Seeders\Tenants\TeamCategoryTableSeeder;
+use Database\Seeders\Tenants\TeamLevelTableSeeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TeamTest extends TestCase
@@ -22,9 +28,41 @@ class TeamTest extends TestCase
         'id',
         'name',
         'userId',
+        'teamCategoryId',
+        'teamLevelId',
         'createdAt',
         'updatedAt',
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Team::truncate();
+        TeamsUsers::truncate();
+        TeamCategory::truncate();
+        TeamLevel::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed([
+            TeamCategoryTableSeeder::class,
+            TeamLevelTableSeeder::class,
+        ]);
+    }
 
     private function setPermissions(bool $hasPermission)
     {
@@ -51,7 +89,17 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        Team::factory()->make()->save();
+        $teamCategory = TeamCategory::where('id', 1)->first();
+
+        $teamLevel = TeamLevel::where('id', 1)->first();
+
+        Team::factory()
+            ->hasPlayers(10)
+            ->setAttributes([
+                'team_category_id' => $teamCategory->id,
+                'team_level_id' => $teamLevel->id,
+            ])
+            ->create();
 
         $response = $this->graphQL(
             'teams',
@@ -132,8 +180,17 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $team = Team::factory()->make();
-        $team->save();
+        $teamCategory = TeamCategory::where('id', 1)->first();
+
+        $teamLevel = TeamLevel::where('id', 1)->first();
+
+        $team = Team::factory()
+            ->hasPlayers(10)
+            ->setAttributes([
+                'team_category_id' => $teamCategory->id,
+                'team_level_id' => $teamLevel->id,
+            ])
+            ->create();
 
         $response = $this->graphQL(
             'team',
@@ -204,6 +261,25 @@ class TeamTest extends TestCase
         $hasPermission
     ) {
         $this->setPermissions($hasPermission);
+
+        if (isset($parameters['teamCategoryId'])) {
+            if ($parameters['teamCategoryId'] == true) {
+                $teamCategory = TeamCategory::factory()->create();
+                $parameters['teamCategoryId'] = $teamCategory->id;
+            }
+        }
+
+        if (isset($parameters['teamLevelId'])) {
+            if ($parameters['teamLevelId'] == true) {
+                $teamLevel = TeamLevel::factory()->create();
+                $parameters['teamLevelId'] = $teamLevel->id;
+            }
+        }
+
+        if ($parameters['name'] == 'nameExistent') {
+            $team = Team::factory()->create();
+            $parameters['name'] = $team->name;
+        }
 
         $response = $this->graphQL(
             'teamCreate',
@@ -283,9 +359,24 @@ class TeamTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
+            'create team and relating a team category and team level, success' => [
+                [
+                    'name' => $faker->name,
+                    'teamCategoryId' => true,
+                    'teamLevelId' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'teamCreate' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
             'name field is not unique, expected error' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => 'nameExistent',
                     'playerId' => [],
                 ],
                 'typeMessageError' => 'name',
@@ -351,6 +442,20 @@ class TeamTest extends TestCase
         $team->save();
 
         $parameters['id'] = $team->id;
+
+        if (isset($parameters['teamCategoryId'])) {
+            if ($parameters['teamCategoryId'] == true) {
+                $teamCategory = TeamCategory::factory()->create();
+                $parameters['teamCategoryId'] = $teamCategory->id;
+            }
+        }
+
+        if (isset($parameters['teamLevelId'])) {
+            if ($parameters['teamLevelId'] == true) {
+                $teamLevel = TeamLevel::factory()->create();
+                $parameters['teamLevelId'] = $teamLevel->id;
+            }
+        }
 
         if ($expectedMessage == 'TeamEdit.name_unique') {
             $parameters['name'] = $teamExist->name;
@@ -421,6 +526,21 @@ class TeamTest extends TestCase
                 [
                     'name' => $faker->name . self::$teamText,
                     'playerId' => [1, 2, 3],
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'teamEdit' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
+            'edit team and relating a team category and team level, success' => [
+                [
+                    'name' => $faker->name,
+                    'teamCategoryId' => true,
+                    'teamLevelId' => true,
                 ],
                 'typeMessageError' => false,
                 'expectedMessage' => false,

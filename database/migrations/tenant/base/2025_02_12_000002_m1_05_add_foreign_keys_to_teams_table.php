@@ -22,6 +22,23 @@ return new class() extends Migration
                         ->on('users')
                         ->onDelete('cascade');
                 }
+                if (
+                    !hasForeignKeyExist('teams', 'teams_team_category_id_foreign') &&
+                    Schema::hasColumn('teams', 'team_category_id')
+                ) {
+                    $table->foreign('team_category_id')
+                        ->references('id')
+                        ->on('team_categories')
+                        ->nullOnDelete();
+                }
+                if (!hasForeignKeyExist('teams', 'teams_team_level_id_foreign') &&
+                    Schema::hasColumn('teams', 'team_level_id')
+                ) {
+                    $table->foreign('team_level_id')
+                        ->references('id')
+                        ->on('team_levels')
+                        ->nullOnDelete();
+                }
             });
         }
 

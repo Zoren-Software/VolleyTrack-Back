@@ -4,7 +4,9 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
+use Database\Seeders\Tenants\FundamentalTableSeeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class SpecificFundamentalTest extends TestCase
@@ -24,6 +26,33 @@ class SpecificFundamentalTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        SpecificFundamental::truncate();
+        Fundamental::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed([
+            FundamentalTableSeeder::class,
+        ]);
+    }
 
     private function setPermissions(bool $hasPermission)
     {
@@ -205,6 +234,11 @@ class SpecificFundamentalTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
+        if ($parameters['name'] === 'nameExistent') {
+            $specificFundamental = SpecificFundamental::factory()->create();
+            $parameters['name'] = $specificFundamental->name;
+        }
+
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
 
@@ -285,7 +319,7 @@ class SpecificFundamentalTest extends TestCase
             ],
             'name field is not unique, expected error' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => 'nameExistent',
                     'userId' => $userId,
                 ],
                 'typeMessageError' => 'name',

@@ -17,6 +17,10 @@ return new class() extends Migration
             Schema::create('teams', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('team_category_id')
+                    ->nullable();
+                $table->unsignedBigInteger('team_level_id')
+                    ->nullable();
                 $table->string('name');
                 $table->timestamps();
                 $table->softDeletes();

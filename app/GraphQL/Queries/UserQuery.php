@@ -7,7 +7,6 @@ use App\Models\User;
 class UserQuery
 {
     /**
-     *
      * @param  null  $_
      * @param  array{}  $args
      */

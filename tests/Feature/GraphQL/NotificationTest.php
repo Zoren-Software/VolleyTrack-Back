@@ -4,6 +4,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Notification;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class NotificationTest extends TestCase
@@ -24,6 +25,28 @@ class NotificationTest extends TestCase
         'createdAt',
         'updatedAt',
     ];
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    public function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Notification::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+    }
 
     /**
      * A basic feature test example.

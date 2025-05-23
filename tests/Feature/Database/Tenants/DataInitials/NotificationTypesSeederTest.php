@@ -4,6 +4,7 @@ namespace Tests\Feature\Database\Tenants\DataInitials;
 
 use App\Models\NotificationType;
 use App\Models\User;
+use App\Models\UserInformation;
 use Database\Seeders\Tenants\UserTableSeeder;
 use Illuminate\Support\Facades\DB;
 
@@ -16,6 +17,7 @@ class NotificationTypesSeederTest extends DataAbstract
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         User::truncate();
+        UserInformation::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 

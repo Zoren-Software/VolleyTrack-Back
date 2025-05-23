@@ -18,6 +18,8 @@ class Team extends Model
     protected $fillable = [
         'name',
         'user_id',
+        'team_category_id',
+        'team_level_id',
     ];
 
     public function user()
@@ -66,9 +68,23 @@ class Team extends Model
             ->dontSubmitEmptyLogs();
     }
 
+    public function teamCategory()
+    {
+        return $this->belongsTo(TeamCategory::class, 'team_category_id');
+    }
+
+    public function teamLevel()
+    {
+        return $this->belongsTo(TeamLevel::class, 'team_level_id');
+    }
+
     public function list(array $args)
     {
         return $this
+            ->with([
+                'teamCategory:id,name,updated_at',
+                'teamLevel:id,name,updated_at',
+            ])
             ->filterSearch($args)
             ->filterIgnores($args)
             ->filterPosition($args)

@@ -2,7 +2,6 @@
 
 namespace App\Notifications\Training;
 
-use App\Mail\Training\CancellationTrainingMail;
 use App\Models\User;
 
 class CancelTrainingNotification extends Notification

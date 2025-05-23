@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
-use App\Models\NotificationType;
 use App\Models\NotificationSetting;
+use App\Models\NotificationType;
+use App\Models\User;
 use App\Models\UserInformation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -50,7 +50,7 @@ class UserFactory extends Factory
             $types = NotificationType::where('is_active', true)->get();
 
             foreach ($types as $type) {
-                if($type->id != null) {
+                if ($type->id != null) {
                     NotificationSetting::updateOrCreate(
                         [
                             'user_id' => $user->id,
@@ -62,8 +62,7 @@ class UserFactory extends Factory
                             'is_active' => true,
                         ]
                     );
-                }
-                else {
+                } else {
                     dd($type);
                 }
             }

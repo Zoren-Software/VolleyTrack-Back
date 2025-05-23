@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Validators\Mutation;
 
-use App\Models\Training;
 use Nuwave\Lighthouse\Validation\Validator;
 
 class NotificationSettingEditValidator extends Validator
@@ -38,8 +37,6 @@ class NotificationSettingEditValidator extends Validator
 
     /**
      * TODO - Add custom messages for validation rules.
-     * 
-     * @return array
      */
     public function messages(): array
     {

@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -36,6 +36,13 @@ class TeamFactory extends Factory
                 User::factory()->count(2)->create()->pluck('id'),
                 ['role' => 'technician']
             );
+        });
+    }
+
+    public function setAttributes(array $attributes)
+    {
+        return $this->state(function (array $attributesOriginal) use ($attributes) {
+            return array_merge($attributesOriginal, $attributes);
         });
     }
 }
