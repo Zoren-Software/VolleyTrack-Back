@@ -38,7 +38,7 @@ class ConfigTest extends TestCase
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function configInfo(
+    public function config_info(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -106,7 +106,7 @@ class ConfigTest extends TestCase
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('configEditProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function configEdit(
+    public function config_edit(
         $parameters,
         $typeMessageError,
         $expectedMessage,

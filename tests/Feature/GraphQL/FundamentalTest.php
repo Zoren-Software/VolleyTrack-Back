@@ -223,6 +223,12 @@ class FundamentalTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
+        if ($expectedMessage == 'FundamentalCreate.name_unique') {
+            $fundamental = Fundamental::factory()->make();
+            $fundamental->save();
+            $parameters['name'] = $fundamental->name;
+        }
+
         $response = $this->graphQL(
             'fundamentalCreate',
             $parameters,
@@ -246,13 +252,12 @@ class FundamentalTest extends TestCase
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name;
         $fundamentalCreate = ['fundamentalCreate'];
 
         return [
             'create fundamental, success' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'typeMessageError' => false,
@@ -279,7 +284,7 @@ class FundamentalTest extends TestCase
             ],
             'name field is not unique, expected error' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => 'FundamentalCreate.name_unique',
                     'userId' => $userId,
                 ],
                 'typeMessageError' => 'name',

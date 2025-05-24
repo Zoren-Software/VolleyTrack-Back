@@ -11,8 +11,6 @@ class TrainingConfigPolicyTest extends TestCase
 {
     /**
      * A basic unit test edit.
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
@@ -30,8 +28,6 @@ class TrainingConfigPolicyTest extends TestCase
 
     /**
      * A basic unit test view.
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
     #[\PHPUnit\Framework\Attributes\Test]

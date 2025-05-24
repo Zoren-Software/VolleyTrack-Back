@@ -55,13 +55,13 @@ class TrainingTest extends TestCase
         $this->checkPermission($hasPermission, $this->role, 'view-training');
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 

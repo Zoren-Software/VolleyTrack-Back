@@ -11,8 +11,6 @@ class ConfirmTrainingPolicyTest extends TestCase
 {
     /**
      * A basic unit test view.
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
@@ -31,8 +29,6 @@ class ConfirmTrainingPolicyTest extends TestCase
 
     /**
      * A basic unit test confirmTraining.
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
@@ -61,8 +57,6 @@ class ConfirmTrainingPolicyTest extends TestCase
 
     /**
      * A basic unit test view.
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
     #[\PHPUnit\Framework\Attributes\Test]

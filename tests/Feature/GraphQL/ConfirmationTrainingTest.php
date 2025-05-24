@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Models\ConfirmationTraining;
 use App\Models\Team;
 use App\Models\Training;
 use Illuminate\Support\Facades\DB;
@@ -49,6 +50,7 @@ class ConfirmationTrainingTest extends TestCase
 
         Team::truncate();
         Training::truncate();
+        ConfirmationTraining::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

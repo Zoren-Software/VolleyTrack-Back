@@ -11,12 +11,10 @@ class ConfirmPresencePolicyTest extends TestCase
 {
     /**
      * A basic unit test view.
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function permissionView(bool $expected): void
+    public function permission_view(bool $expected): void
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
             $mock->shouldReceive('hasPermissionTo')
@@ -24,19 +22,17 @@ class ConfirmPresencePolicyTest extends TestCase
                 ->andReturn($expected);
         });
 
-        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy();
+        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy;
 
         $this->assertEquals($expected, $confirmationTrainingPolicy->view($userMock));
     }
 
     /**
      * A basic unit test confirmTraining.
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function permissionConfirmTraining(bool $expected): void
+    public function permission_confirm_training(bool $expected): void
     {
         $args = [
             'player_id' => 1,
@@ -54,19 +50,17 @@ class ConfirmPresencePolicyTest extends TestCase
                 ->andReturn($args['player_id']);
         });
 
-        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy();
+        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy;
 
         $this->assertEquals(true, $confirmationTrainingPolicy->confirmTraining($userMock, $args));
     }
 
     /**
      * A basic unit test view.
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function permissionConfirmPresence(bool $expected): void
+    public function permission_confirm_presence(bool $expected): void
     {
         $args = [
             'player_id' => 1,
@@ -80,7 +74,7 @@ class ConfirmPresencePolicyTest extends TestCase
                 ->andReturn($expected);
         });
 
-        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy();
+        $confirmationTrainingPolicy = new ConfirmationTrainingPolicy;
 
         $this->assertEquals($expected, $confirmationTrainingPolicy->confirmPresence($userMock, $args));
     }
