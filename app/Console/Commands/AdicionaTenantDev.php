@@ -23,12 +23,12 @@ class AdicionaTenantDev extends CommandDev
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $handle = parent::handle();
 
         if ($handle === false) {
-            return false;
+            return 1;
         }
 
         if (!$this->option('tenants')) {
@@ -50,10 +50,12 @@ class AdicionaTenantDev extends CommandDev
 
             $this->info("Tenant {$tenant->id} added successfully!");
 
-            $tenant->domains()->create(['domain' => $tenant->id . '.' . env('APP_HOST')]);
+            $tenant->domains()->create(['domain' => $tenant->id . '.' . config('app.host')]);
 
             $this->info('Default domain added successfully!');
-            $this->info("{$tenant->id}" . '.' . env('APP_HOST'));
+            $this->info("{$tenant->id}" . '.' . config('app.host'));
         }
+
+        return 0;
     }
 }

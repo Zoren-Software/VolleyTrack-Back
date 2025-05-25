@@ -207,4 +207,5 @@ return [
         // ...
     ])->toArray(),
 
+    'host' => env('APP_HOST', 'localhost'),
 ];
