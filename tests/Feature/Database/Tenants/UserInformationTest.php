@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Tenants;
 
 class UserInformationTest extends TenantBase
 {
-    protected $table = 'user_information';
+    protected string $table = 'user_information';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'user_id' => ['type' => 'bigint', 'unsigned' => true],
         'cpf' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci', 'nullable' => true],
@@ -18,15 +18,15 @@ class UserInformationTest extends TenantBase
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = [
+    protected static array $foreignKeys = [
         'user_information_user_id_foreign', // Nome correto da FK
     ];
 
-    public static $uniqueKeys = [
+    protected static array $uniqueKeys = [
         'user_information_user_id_unique',
         'user_information_cpf_unique',
         'user_information_rg_unique',

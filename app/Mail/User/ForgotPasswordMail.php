@@ -35,7 +35,7 @@ class ForgotPasswordMail extends Mail
     public function envelope()
     {
         return new Envelope(
-            subject: env('APP_NAME') .
+            subject: config('app.name') .
             ' - ' . 'Recuperação de senha'
         );
     }

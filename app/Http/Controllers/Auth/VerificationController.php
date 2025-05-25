@@ -33,7 +33,7 @@ class VerificationController extends Controller
         $user->email_verified_at = now();
         $user->save();
 
-        $link = env('APP_PROTOCOL') . '://' . $tenant->id . '.' . env('LINK_EXTERNAL_TENANT_URL') . '/set-password/' . $user->email . '/' . $token;
+        $link = config('app.protocol') . '://' . $tenant->id . '.' . config('app.external_tenant_url') . '/set-password/' . $user->email . '/' . $token;
 
         return redirect()->away($link);
     }

@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Tenants;
 
 class ActivityLogTest extends TenantBase
 {
-    protected $table = 'activity_log';
+    protected string $table = 'activity_log';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint'],
         'log_name' => ['type' => 'varchar', 'length' => 255, 'nullable' => true],
         'description' => ['type' => 'text'],
@@ -21,13 +21,13 @@ class ActivityLogTest extends TenantBase
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = [
+    protected static array $foreignKeys = [
     ];
 
-    public static $uniqueKeys = [
+    protected static array $uniqueKeys = [
     ];
 }

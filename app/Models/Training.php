@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -40,7 +43,7 @@ class Training extends Model
 
     private $format = 'd/m/Y';
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -50,7 +53,7 @@ class Training extends Model
         return $this->belongsTo(Team::class);
     }
 
-    public function fundamentals()
+    public function fundamentals(): BelongsToMany
     {
         return $this->belongsToMany(Fundamental::class, 'fundamentals_trainings')
             ->using(FundamentalsTrainings::class)
@@ -59,7 +62,7 @@ class Training extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
-    public function specificFundamentals()
+    public function specificFundamentals(): BelongsToMany
     {
         return $this->belongsToMany(SpecificFundamental::class, 'specific_fundamentals_trainings')
             ->using(SpecificFundamentalsTrainings::class)
@@ -68,7 +71,7 @@ class Training extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
-    public function confirmationsTraining()
+    public function confirmationsTraining(): HasMany
     {
         return $this->hasMany(ConfirmationTraining::class);
     }
@@ -145,7 +148,7 @@ class Training extends Model
         });
     }
 
-    public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit)
+    public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit): bool
     {
         $startDate = Carbon::createFromFormat($this->format, $startDate);
         $dateToday = Carbon::createFromFormat($this->format, $dateToday);
@@ -211,7 +214,7 @@ class Training extends Model
         $this->sendNotificationTechnicians($daysNotification);
     }
 
-    public function deleteConfirmationsPlayersOld(int $teamId)
+    public function deleteConfirmationsPlayersOld(int $teamId): void
     {
         $this->confirmationsTraining()
             ->where('team_id', $teamId)
@@ -224,7 +227,7 @@ class Training extends Model
      *
      * @return void
      */
-    public function sendNotificationPlayersTrainingCancelled()
+    public function sendNotificationPlayersTrainingCancelled(): void
     {
         $this->team->players()->each(function ($player) {
             if (
@@ -236,7 +239,7 @@ class Training extends Model
         });
     }
 
-    public function sendEmailPlayersTrainingCancelled()
+    public function sendEmailPlayersTrainingCancelled(): void
     {
         $this->team->players()->each(function ($player) {
             if (
@@ -254,7 +257,7 @@ class Training extends Model
      *
      * @return array
      */
-    public function metrics()
+    public function metrics(): array
     {
         $confirmed = $this->confirmationsTraining()->status('confirmed')->count() ?? 0;
         $pending = $this->confirmationsTraining()->status('pending')->count() ?? 0;
@@ -278,9 +281,9 @@ class Training extends Model
         ];
     }
 
-    public function list(array $args)
+    public function scopeList(Builder $query, array $args)
     {
-        return $this
+        return $query
             ->filterSearch($args)
             ->filterIgnores($args)
             ->filterTeam($args)

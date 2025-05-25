@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Tenants;
 
 class TeamCategoriesTest extends TenantBase
 {
-    protected $table = 'team_categories';
+    protected string $table = 'team_categories';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'name' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
         'description' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci', 'nullable' => true],
@@ -17,11 +17,11 @@ class TeamCategoriesTest extends TenantBase
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id'];
+    protected static array $primaryKey = ['id'];
 
-    public static $autoIncrements = ['id'];
+    protected static array $autoIncrements = ['id'];
 
-    public static $foreignKeys = [];
+    protected static array $foreignKeys = [];
 
-    public static $uniqueKeys = [];
+    protected static array $uniqueKeys = [];
 }

@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Tenants;
 
 class FundamentalsTest extends TenantBase
 {
-    protected $table = 'fundamentals';
+    protected string $table = 'fundamentals';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint'],
         'user_id' => ['type' => 'bigint'],
         'name' => ['type' => 'varchar', 'length' => 255],
@@ -15,13 +15,13 @@ class FundamentalsTest extends TenantBase
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = [
+    protected static array $foreignKeys = [
         'fundamentals_user_id_foreign',
     ]; // Define as chaves estrangeiras
 
-    public static $uniqueKeys = [];
+    protected static array $uniqueKeys = [];
 }

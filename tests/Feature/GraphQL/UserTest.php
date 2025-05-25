@@ -256,6 +256,10 @@ class UserTest extends TestCase
             ]);
         }
 
+        if ($parameters['password'] == 'testing.password_test') {
+            $parameters['password'] = config('testing.password_test');
+        }
+
         if ($hasTeam) {
             $team = Team::factory()->create();
             $parameters['teamId'] = $team->id;
@@ -314,7 +318,7 @@ class UserTest extends TestCase
         $cpfExistent = strval($faker->numberBetween(10000000000, 99999999999));
         $rgExistent = strval($faker->numberBetween(10000000000, 99999999999));
 
-        $password = env('PASSWORD_TEST', '123456');
+        $password = 'testing.password_test';
 
         $userCreate = ['userCreate'];
 
@@ -327,7 +331,6 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'positionId' => [1],
                     'teamId' => [1],
-                    'positionId' => [1],
                     'password' => $password,
                 ],
                 'typeMessageError' => false,
@@ -348,7 +351,6 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'positionId' => [1],
                     'teamId' => [1],
-                    'positionId' => [1],
                     'password' => $password,
                 ],
                 'typeMessageError' => false,
@@ -369,7 +371,6 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
-                    'positionId' => [1],
                     'password' => $password,
                 ],
                 'typeMessageError' => false,
@@ -393,7 +394,6 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
-                    'positionId' => [1],
                     'password' => $password,
                 ],
                 'typeMessageError' => false,
@@ -722,6 +722,10 @@ class UserTest extends TestCase
 
         $user = User::find($this->user->id);
 
+        if ($parameters['password'] == 'testing.password_test') {
+            $parameters['password'] = config('testing.password_test');
+        }
+
         if (isset($parameters['cpf']) && $parameters['cpf']) {
             $parameters['cpf'] = User::factory()->create()->information->cpf;
         } elseif (isset($parameters['cpf']) && !$parameters['cpf']) {
@@ -782,7 +786,7 @@ class UserTest extends TestCase
     {
         $faker = Faker::create();
 
-        $password = env('PASSWORD_TEST', '123456');
+        $password = 'testing.password_test';
         $userEdit = ['userEdit'];
 
         return [
@@ -908,7 +912,6 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
-                    'positionId' => [2],
                 ],
                 'typeMessageError' => false,
                 'expectedMessage' => false,
@@ -926,7 +929,6 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'password' => $password,
                     'roleId' => [2],
-                    'positionId' => [1],
                     'teamId' => [1],
                     'positionId' => [2],
                 ],
@@ -1344,13 +1346,13 @@ class UserTest extends TestCase
             $parameters['token'] = 'not_find_user_invalid_token';
         }
         if ($data['password']) {
-            $parameters['password'] = env('PASSWORD_TEST', '1234');
+            $parameters['password'] = config('testing.password_test');
         }
         if ($data['password'] === 'min_6') {
             $parameters['password'] = '1234';
         }
         if ($data['passwordConfirmation']) {
-            $parameters['passwordConfirmation'] = env('PASSWORD_TEST', '1234');
+            $parameters['passwordConfirmation'] = config('testing.password_test');
         }
         if ($data['passwordConfirmation'] === 'not_match') {
             $parameters['passwordConfirmation'] = '12345678';

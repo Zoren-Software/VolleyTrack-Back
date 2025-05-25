@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Tenants;
 
 class FundamentalSpecificFundamentalTest extends TenantBase
 {
-    protected $table = 'fundamental_specific_fundamental';
+    protected string $table = 'fundamental_specific_fundamental';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint'],
         'fundamental_id' => ['type' => 'bigint'],
         'specific_fundamental_id' => ['type' => 'bigint'],
@@ -15,14 +15,14 @@ class FundamentalSpecificFundamentalTest extends TenantBase
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = [
+    protected static array $foreignKeys = [
         'fundamental_specific_fundamental_fundamental_id_foreign',
         'fundamental_specific_fundamental_specific_fundamental_id_foreign',
     ]; // Define as chaves estrangeiras
 
-    public static $uniqueKeys = [];
+    protected static array $uniqueKeys = [];
 }

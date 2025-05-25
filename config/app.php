@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'VolleyTrack'),
 
     /*
     |--------------------------------------------------------------------------
@@ -207,5 +207,7 @@ return [
         // ...
     ])->toArray(),
 
-    'host' => env('APP_HOST', 'localhost'),
+    'host' => env('APP_HOST', 'volleytrack.com'),
+    'protocol' => env('APP_PROTOCOL', 'https'),
+    'external_tenant_url' => env('LINK_EXTERNAL_TENANT_URL', 'volleytrack.com'),
 ];

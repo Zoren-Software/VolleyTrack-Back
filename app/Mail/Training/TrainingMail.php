@@ -38,7 +38,7 @@ class TrainingMail extends Mail
     public function envelope()
     {
         return new Envelope(
-            subject: env('APP_NAME') .
+            subject: config('app.name') .
             ' - ' . trans('TrainingNotification.title_mail') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
             ' ' . trans('TrainingNotification.preposition_hours_to') . ' ' .

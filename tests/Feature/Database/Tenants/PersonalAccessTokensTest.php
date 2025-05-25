@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Tenants;
 
 class PersonalAccessTokensTest extends TenantBase
 {
-    protected $table = 'personal_access_tokens';
+    protected string $table = 'personal_access_tokens';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'tokenable_type' => ['type' => 'varchar', 'length' => 255],
         'tokenable_id' => ['type' => 'bigint', 'unsigned' => true],
@@ -19,17 +19,17 @@ class PersonalAccessTokensTest extends TenantBase
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = []; // Nenhuma chave estrangeira definida
+    protected static array $foreignKeys = []; // Nenhuma chave estrangeira definida
 
-    public static $uniqueKeys = [
+    protected static array $uniqueKeys = [
         'personal_access_tokens_token_unique',
     ]; // Chave única na tabela
 
-    public static $indexes = [
+    protected static array $indexes = [
         'personal_access_tokens_tokenable_type_tokenable_id_index',
     ]; // Índice composto
 }

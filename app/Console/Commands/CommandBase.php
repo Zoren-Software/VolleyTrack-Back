@@ -40,9 +40,9 @@ class CommandBase extends Command
         return "cron - tenant($tenant): PROCESSO {$this->nomeProcesso} %current%/%max% [%bar%] %percent:3s%% estimated: %estimated:-6s% - current: %elapsed:-3s%\n";
     }
 
-    public function handle()
+    public function handle(): int
     {
-        //
+        return 0;
     }
 
     protected function infoComando($nomeComando, $mensagem): void

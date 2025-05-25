@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Tenants;
 
 class PositionsUsersTest extends TenantBase
 {
-    protected $table = 'positions_users';
+    protected string $table = 'positions_users';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'position_id' => ['type' => 'bigint', 'unsigned' => true],
         'user_id' => ['type' => 'bigint', 'unsigned' => true],
@@ -15,14 +15,14 @@ class PositionsUsersTest extends TenantBase
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = [
+    protected static array $foreignKeys = [
         'positions_users_user_id_foreign',
         'positions_users_position_id_foreign',
     ]; // Define as chaves estrangeiras
 
-    public static $uniqueKeys = []; // Nenhuma chave única definida
+    protected static array $uniqueKeys = []; // Nenhuma chave única definida
 }

@@ -39,7 +39,7 @@ class PasswordResetController extends Controller
         $user->remember_token = null;
         $user->save();
 
-        $link = env('APP_PROTOCOL') . '://' . $tenant . '.' . env('LINK_EXTERNAL_TENANT_URL') . '/login';
+        $link = config('app.protocol') . '://' . $tenant . '.' . config('app.external_tenant_url') . '/login';
 
         return redirect()->away($link);
     }

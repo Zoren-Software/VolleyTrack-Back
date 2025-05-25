@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\TeamCategory;
+use App\Models\TeamLevel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -78,9 +80,9 @@ class Team extends Model
         return $this->belongsTo(TeamLevel::class, 'team_level_id');
     }
 
-    public function list(array $args)
+    public function scopeList(Builder $query, array $args)
     {
-        return $this
+        return $query
             ->with([
                 'teamCategory:id,name,updated_at',
                 'teamLevel:id,name,updated_at',

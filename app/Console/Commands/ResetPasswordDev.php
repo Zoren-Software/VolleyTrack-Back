@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Tenant;
 use App\Models\User;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class ResetPasswordDev extends CommandDev
 {
@@ -27,23 +27,18 @@ class ResetPasswordDev extends CommandDev
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $handle = parent::handle();
 
-        if ($handle === false) {
-            return false;
+        if ($handle !== 0) {
+            return $handle;
         }
 
-        if (!$this->option('secret')) {
-            $secret = $this->ask('What is the new password?');
-        } else {
-            $secret = $this->option('secret')[0];
-        }
+        $secret = $this->option('secret')[0] ?? $this->ask('What is the new password?');
 
-        $tenants = $this->option('tenants') == []
-            ? Tenant::pluck('id')->toArray()
-            : $this->option('tenants');
+        $tenants = $this->option('tenants');
+        $tenants = empty($tenants) ? Tenant::pluck('id')->toArray() : $tenants;
 
         foreach ($tenants as $tenant) {
             tenancy()->initialize($tenant);
@@ -52,8 +47,7 @@ class ResetPasswordDev extends CommandDev
 
             try {
                 $total = User::count();
-                $total = $total > 0 ? $total : 1;
-                $total = ceil($total / 100);
+                $total = max(1, ceil($total / 100));
                 $bar = $this->output->createProgressBar($total);
                 $bar->start();
 
@@ -64,11 +58,14 @@ class ResetPasswordDev extends CommandDev
                     }
                     $bar->advance();
                 });
+
                 $this->processoComando('update_passwords', $tenant, 'FIM');
             } catch (\Throwable $error) {
                 $this->processoComando('update_passwords', $tenant, 'ERRO');
                 throw $error;
             }
         }
+
+        return 0;
     }
 }

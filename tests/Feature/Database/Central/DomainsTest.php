@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Central;
 
 class DomainsTest extends CentralBase
 {
-    protected $table = 'domains';
+    protected string $table = 'domains';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint'],
         'domain' => ['type' => 'varchar', 'length' => 255],
         'tenant_id' => ['type' => 'varchar', 'length' => 255],
@@ -14,15 +14,15 @@ class DomainsTest extends CentralBase
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id'];
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    protected static array $autoIncrements = ['id'];
 
-    public static $foreignKeys = [
+    protected static array $foreignKeys = [
         'domains_tenant_id_foreign',
-    ]; // Define as chaves estrangeiras
+    ];
 
-    public static $uniqueKeys = [
+    protected static array $uniqueKeys = [
         'domains_domain_unique',
-    ]; // Define as chaves únicas
+    ];
 }

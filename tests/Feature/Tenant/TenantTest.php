@@ -3,6 +3,7 @@
 namespace Tests\Feature\Tenant;
 
 use App\Models\Central\ExternalAccessToken;
+use App\Models\Tenant;
 use Tests\TestCase;
 
 class TenantTest extends TestCase
@@ -29,6 +30,35 @@ class TenantTest extends TestCase
             $data['token'] = 'test';
         } else {
             $data['token'] = ExternalAccessToken::first()->token;
+        }
+
+        if (
+            $expectedMessage === 'TenantCreate.tenantId.unique'
+        ) {
+            // Garante que o tenantId 'test' exista no banco
+            Tenant::updateOrCreate(['id' => 'test'], [
+                'email' => 'tenant-existente@test.com',
+                'name' => 'Tenant Existente',
+            ]);
+        
+            $data['tenantId'] = 'test';
+        }
+        elseif (
+            $expectedMessage === 'TenantCreate.tenantId.string'
+        ) {
+            $data['tenantId'] = 1;
+        }
+        elseif (
+            $expectedMessage !== 'TenantCreate.tenantId.required'
+        ) {
+            // Gera um tenantId único, apenas se o teste não exige que esteja ausente
+            while (true) {
+                $randomTenantId = 'tenant-test-' . rand(1, 1000);
+                if (!Tenant::where('id', $randomTenantId)->exists()) {
+                    $data['tenantId'] = $randomTenantId;
+                    break;
+                }
+            }
         }
 
         $response = $this->postJson(

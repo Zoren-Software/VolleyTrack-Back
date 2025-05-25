@@ -43,7 +43,7 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
     public function envelope()
     {
         return new Envelope(
-            subject: env('APP_NAME') .
+            subject: config('app.name') .
             ' - ' . 'Confirme seu e-mail e crie sua senha'
         );
     }

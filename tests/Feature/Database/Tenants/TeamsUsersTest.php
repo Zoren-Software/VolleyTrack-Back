@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Tenants;
 
 class TeamsUsersTest extends TenantBase
 {
-    protected $table = 'teams_users';
+    protected string $table = 'teams_users';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'team_id' => ['type' => 'bigint', 'unsigned' => true],
         'user_id' => ['type' => 'bigint', 'unsigned' => true],
@@ -16,14 +16,14 @@ class TeamsUsersTest extends TenantBase
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define o campo auto_increment
+    protected static array $autoIncrements = ['id']; // Define o campo auto_increment
 
-    public static $foreignKeys = [
+    protected static array $foreignKeys = [
         'teams_users_user_id_foreign',
         'teams_users_team_id_foreign',
     ]; // Define as chaves estrangeiras
 
-    public static $uniqueKeys = []; // Nenhuma chave única
+    protected static array $uniqueKeys = []; // Nenhuma chave única
 }

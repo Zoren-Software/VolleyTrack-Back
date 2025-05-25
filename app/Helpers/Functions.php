@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\DB;
 
-function appHost()
+function appHost(): string
 {
-    return env('APP_HOST', 'volleytrack.com');
+    return config('app.host');
 }
 
 function appVersion()

@@ -183,9 +183,9 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @codeCoverageIgnore
      */
-    public function me()
+    public function scopeMe(Builder $query)
     {
-        return $this->with(
+        return $query->with(
             'positions',
             'teams',
         )

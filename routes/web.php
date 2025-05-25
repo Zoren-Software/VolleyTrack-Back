@@ -45,9 +45,27 @@ if (app()->environment('local') && config('app.debug')) {
         tenancy()->initialize('test');
 
         $training = App\Models\Training::find(1);
-        $user = App\Models\User::find(3);
+        if (!$training) {
+            $team = App\Models\Team::factory()
+            ->hasPlayers(10)
+            ->create();
 
-        return new App\Mail\Training\ConfirmationNotificationTrainingMail($training, $user);
+            $training = App\Models\Training::factory()
+                ->setTeamId($team->id)
+                ->setStatus(true)
+                ->create();
+        }
+
+        $user = App\Models\User::find(3);
+        if (!$user) {
+            $user = App\Models\User::factory()->create();
+        }
+
+        if (!$user) {
+            return 'User not found';
+        }
+
+        return new App\Mail\Training\ConfirmationTrainingMail($training, $user);
     });
 
     Route::get('/test-cancellation-notification-training-mail', function () {

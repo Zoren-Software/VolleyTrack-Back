@@ -4,9 +4,9 @@ namespace Tests\Feature\Database\Central;
 
 class UsersTest extends CentralBase
 {
-    protected $table = 'users';
+    protected string $table = 'users';
 
-    public static $fieldTypes = [
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint'],
         'name' => ['type' => 'varchar', 'length' => 255],
         'email' => ['type' => 'varchar', 'length' => 255],
@@ -21,13 +21,13 @@ class UsersTest extends CentralBase
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = []; // Nenhuma chave estrangeira definida
+    protected static array $foreignKeys = []; // Nenhuma chave estrangeira definida
 
-    public static $uniqueKeys = [
+    protected static array $uniqueKeys = [
         'users_email_unique',
     ]; // Define as chaves únicas
 }

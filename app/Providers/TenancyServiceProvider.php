@@ -23,9 +23,9 @@ class TenancyServiceProvider extends ServiceProvider
      *
      * @codeCoverageIgnore
      *
-     * @return void
+     * @return array<string, array<int, class-string|JobPipeline>>
      */
-    public function events()
+    public function events(): array
     {
         return [
             // Tenant events

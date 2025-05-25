@@ -17,7 +17,7 @@ class DomainsDevTableSeeder extends Seeder
         /**
          * NOTE - Criando token se já não existir
          */
-        if (env('APP_ENV') !== 'production') {
+        if (config('app.env') !== 'production') {
             $domains = Domain::all();
             foreach ($domains as $domain) {
                 if (strpos($domain->domain, '.volleytrack.com') !== false) {
