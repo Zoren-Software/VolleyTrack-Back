@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\App\Mail\Training;
 
-use App\Mail\Training\ConfirmationNotificationTrainingMail;
+use App\Mail\Training\ConfirmationTrainingMail;
 use App\Models\Training;
 use App\Models\User;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Tests\TestCase;
 
-class ConfirmationNotificationTrainingMailTest extends TestCase
+class ConfirmationTrainingMailTest extends TestCase
 {
     public $dateStart = '2020-01-01 00:00:00';
 
@@ -34,7 +34,7 @@ class ConfirmationNotificationTrainingMailTest extends TestCase
         });
 
         $userMock = $this->createMock(User::class);
-        $mail = new ConfirmationNotificationTrainingMail($trainingMock, $userMock);
+        $mail = new ConfirmationTrainingMail($trainingMock, $userMock);
         $envelope = $mail->envelope();
 
         $this->assertInstanceOf(Envelope::class, $envelope);
@@ -61,7 +61,7 @@ class ConfirmationNotificationTrainingMailTest extends TestCase
         });
 
         $userMock = $this->createMock(User::class);
-        $mail = new ConfirmationNotificationTrainingMail($trainingMock, $userMock);
+        $mail = new ConfirmationTrainingMail($trainingMock, $userMock);
         $content = $mail->content();
 
         $this->assertInstanceOf(Content::class, $content);

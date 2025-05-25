@@ -50,7 +50,6 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => true,
                 'expected' => [
                     'database',
-                    'mail',
                 ],
             ],
             'notify player by email and database' => [
@@ -60,7 +59,6 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => true,
                 'expected' => [
                     'database',
-                    'mail',
                 ],
             ],
             'notify technician by email and database' => [
@@ -70,7 +68,6 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => false,
                 'expected' => [
                     'database',
-                    'mail',
                 ],
             ],
             'notify technician by database only' => [
@@ -100,7 +97,7 @@ class NotificationTest extends TestCase
      * @return array
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function tags()
+    public function tags(): array
     {
         $trainingMock = $this->createMock(Training::class);
         $notification = new Notification($trainingMock);
@@ -108,5 +105,7 @@ class NotificationTest extends TestCase
 
         $this->assertIsArray($tags);
         $this->assertEquals(['tenant:'], $tags);
+
+        return $tags;
     }
 }

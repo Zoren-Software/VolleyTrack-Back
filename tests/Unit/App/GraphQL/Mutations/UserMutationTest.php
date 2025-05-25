@@ -18,8 +18,8 @@ class UserMutationTest extends TestCase
      *
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('userProvider')]
-    #[\PHPUnit\Framework\Attributes\Test]
+    // #[\PHPUnit\Framework\Attributes\DataProvider('userProvider')]
+    // #[\PHPUnit\Framework\Attributes\Test]
     // public function userMake($data)
     // {
     //     $graphQLContext = $this->createMock(GraphQLContext::class);
