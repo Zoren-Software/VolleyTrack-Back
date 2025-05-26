@@ -15,7 +15,6 @@ final class NotificationMutation
     }
 
     /**
-     * @param  null  $_
      * @param  array<string, mixed>  $args
      */
     public function notificationsRead($rootValue, array $args, GraphQLContext $context)

@@ -19,12 +19,18 @@ final class TeamMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
     public function make($rootValue, array $args, GraphQLContext $context)
     {
-        $args['user_id'] = $context->user()->id;
+        $user = $context->user();
+
+        if (! $user instanceof User) {
+            throw new \Exception('User not authenticated.');
+        }
+
+        $args['user_id'] = $user->id;
 
         if (isset($args['id'])) {
             $this->team = $this->team->find($args['id']);
@@ -108,7 +114,7 @@ final class TeamMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
     public function delete($rootValue, array $args, GraphQLContext $context)

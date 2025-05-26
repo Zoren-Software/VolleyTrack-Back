@@ -13,7 +13,7 @@ class ConfigPermissionLoaded extends Exception
      */
     public function report()
     {
-        //
+        return null;
     }
 
     /**

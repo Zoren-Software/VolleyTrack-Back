@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * NOTE - Apagavel após release
      *
-     * @return [type]
+     * @return void
      */
     public function up()
     {

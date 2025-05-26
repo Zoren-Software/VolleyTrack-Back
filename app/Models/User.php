@@ -24,6 +24,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $unreadNotifications
  * @property \App\Models\UserInformation $information
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\NotificationSetting[] $notificationSettings
  */
 class User extends Authenticatable implements HasApiTokensContract
 {

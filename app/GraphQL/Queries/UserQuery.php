@@ -7,7 +7,7 @@ use App\Models\User;
 class UserQuery
 {
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array{}  $args
      */
     public function list($_, array $args)

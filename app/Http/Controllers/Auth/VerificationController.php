@@ -12,7 +12,7 @@ class VerificationController extends Controller
      * @codeCoverageIgnore
      *
      * @param  null  $token
-     * @return [type]
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function verify($tenant = null, $token = null)
     {

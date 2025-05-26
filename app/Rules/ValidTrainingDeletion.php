@@ -20,7 +20,7 @@ class ValidTrainingDeletion implements InvokableRule
      * @codeCoverageIgnore
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  mixed  $trainingIds
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      * @return void
      */

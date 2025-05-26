@@ -13,7 +13,7 @@ class ConfigPermissionLoadedForDrop extends Exception
      */
     public function report()
     {
-        //
+        return null;
     }
 
     /**

@@ -16,7 +16,7 @@ class TenantController extends Controller
      * @responseFile 200 scenario="response" scribe/responses/tenant/create.json
      * @responseFile 422 scenario="erro" scribe/errors/tenant/create.json
      *
-     * @return [type]
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create(TenantRequest $request)
     {

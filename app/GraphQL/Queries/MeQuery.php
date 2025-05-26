@@ -7,7 +7,7 @@ use App\Models\User;
 class MeQuery
 {
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array{}  $args
      */
     public function me($_, array $args)

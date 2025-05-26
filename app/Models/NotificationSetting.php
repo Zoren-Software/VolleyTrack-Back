@@ -99,7 +99,7 @@ class NotificationSetting extends Model
     }
 
     /**
-     * @return [type]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function notificationType()
     {
@@ -107,7 +107,7 @@ class NotificationSetting extends Model
     }
 
     /**
-     * @return [type]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {

@@ -31,8 +31,8 @@ final class DiscordService extends Model
     }
 
     /**
-     * @param  Throwable  $exception
-     * @param  string  $message
+     * @param  \Throwable  $error
+     * @param  string  $author
      *
      * @codeCoverageIgnore
      */

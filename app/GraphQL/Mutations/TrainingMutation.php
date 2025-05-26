@@ -15,7 +15,7 @@ final class TrainingMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
     public function make($rootValue, array $args, GraphQLContext $context)
@@ -39,7 +39,7 @@ final class TrainingMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
     public function delete($rootValue, array $args, GraphQLContext $context)

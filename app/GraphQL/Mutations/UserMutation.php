@@ -18,7 +18,7 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @return [type]
+     * @return User
      */
     public function make($rootValue, array $args, GraphQLContext $context)
     {
@@ -59,7 +59,7 @@ final class UserMutation
      * @param  mixed  $user
      * @param  mixed  $args
      * @param  mixed  $context
-     * @return [type]
+     * @return void
      */
     private function relationTeams($user, $args, $context)
     {
@@ -98,7 +98,7 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @return [type]
+     * @return array
      */
     public function delete($rootValue, array $args, GraphQLContext $context)
     {
@@ -114,7 +114,7 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @return [type]
+     * @return User
      */
     public function setPassword($rootValue, array $args, GraphQLContext $context)
     {
@@ -131,6 +131,13 @@ final class UserMutation
         return $this->user;
     }
 
+    /**
+     * @param mixed $rootValue
+     * @param array $args
+     * @param GraphQLContext $context
+     *
+     * @return array
+     */
     public function forgotPassword($rootValue, array $args, GraphQLContext $context)
     {
         $this->user = new User;

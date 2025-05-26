@@ -25,7 +25,7 @@ class HorizonRoutesTest extends TestCase
     }
 
     /**
-     * @return [type]
+     * @return array
      */
     public static function routesProvider()
     {

@@ -7,7 +7,7 @@ use App\Models\Training;
 class TrainingQuery
 {
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array{}  $args
      */
     public function list($_, array $args)

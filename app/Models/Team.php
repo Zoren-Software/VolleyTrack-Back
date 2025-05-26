@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $players
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $technicians
+ */
 class Team extends Model
 {
     use HasFactory;

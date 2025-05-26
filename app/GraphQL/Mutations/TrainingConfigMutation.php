@@ -15,7 +15,7 @@ final class TrainingConfigMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
     public function make($rootValue, array $args, GraphQLContext $context)

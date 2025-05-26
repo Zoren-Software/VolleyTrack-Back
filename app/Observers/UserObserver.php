@@ -19,7 +19,7 @@ class UserObserver
      * NOTE Create notification settings default for the user
      *
      *
-     * @return [type]
+     * @return void
      */
     public function created(User $user)
     {
@@ -40,6 +40,11 @@ class UserObserver
         }
     }
 
+    /**
+     * @param User $user
+     *
+     * @return void
+     */
     public function updating(User $user)
     {
         if (!$user->isDirty('user_id')) {

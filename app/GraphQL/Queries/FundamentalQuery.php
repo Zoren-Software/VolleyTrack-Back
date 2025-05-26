@@ -7,7 +7,7 @@ use App\Models\Fundamental;
 class FundamentalQuery
 {
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array{}  $args
      */
     public function list($_, array $args)

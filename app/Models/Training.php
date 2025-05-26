@@ -151,6 +151,34 @@ class Training extends Model
         });
     }
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @param  null  $daysNotification
+     */
+    public function sendNotificationPlayers(?int $daysNotification = null): void
+    {
+        $this->team->players()->each(function ($player) use ($daysNotification) {
+            if (
+                $player->email_verified_at &&
+                $this->rangeDateNotification(
+                    $this->date_start->format($this->format),
+                    now()->format($this->format),
+                    now()->addDays($daysNotification)->format($this->format)
+                )
+            ) {
+                if ($player->canReceiveNotification('training_created', 'system')) {
+                    $player->notify(new TrainingNotification($this, null));
+                }
+
+                if ($player->canReceiveNotification('training_created', 'email')) {
+                    \Mail::to($player->email)
+                        ->send(new TrainingMail($this, $player));
+                }
+            }
+        });
+    }
+
     public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit): bool
     {
         $startDate = Carbon::createFromFormat($this->format, $startDate);

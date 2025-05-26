@@ -15,14 +15,13 @@ final class ConfigMutation
     }
 
     /**
-     * @param  null  $_
-     * @param  array<string, mixed>  $args
+     * @param array<string, mixed> $args
      */
     public function make($rootValue, array $args, GraphQLContext $context)
     {
         $this->config = $this->config->find(1);
 
-        $args['user_id'] = $context->user()->id;
+        $args['user_id'] = $context->user()->getAuthIdentifier();
 
         $this->config->update($args);
 

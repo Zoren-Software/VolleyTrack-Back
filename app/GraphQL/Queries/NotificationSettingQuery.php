@@ -7,7 +7,7 @@ use App\Models\NotificationSetting;
 class NotificationSettingQuery
 {
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array{}  $args
      */
     public function list($_, array $args)
