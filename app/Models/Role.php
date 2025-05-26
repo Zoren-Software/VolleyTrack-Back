@@ -65,7 +65,7 @@ class Role extends SpatieRole
 
     public function scopeFilterName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('roles.name', 'like', $search);
         });
     }

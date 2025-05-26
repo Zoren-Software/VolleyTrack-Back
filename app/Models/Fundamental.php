@@ -79,14 +79,14 @@ class Fundamental extends Model
 
     public function scopeFilterName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('fundamentals.name', 'like', $search);
         });
     }
 
     public function scopeFilterUserName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('user', function ($query) use ($search) {
                 $query->filterName($search);
             });
@@ -116,7 +116,7 @@ class Fundamental extends Model
 
     public function scopeFilterIds(Builder $query, array $ids)
     {
-        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+        $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('fundamentals.id', $ids);
         });
     }

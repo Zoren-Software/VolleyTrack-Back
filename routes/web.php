@@ -47,8 +47,8 @@ if (app()->environment('local') && config('app.debug')) {
         $training = App\Models\Training::find(1);
         if (!$training) {
             $team = App\Models\Team::factory()
-            ->hasPlayers(10)
-            ->create();
+                ->hasPlayers(10)
+                ->create();
 
             $training = App\Models\Training::factory()
                 ->setTeamId($team->id)

@@ -150,7 +150,6 @@ class PermissionTableSeeder extends Seeder
         User::whereEmail(config('mail.from.address'))->first()?->assignRole('admin');
         User::whereEmail(config('mail.from_admin'))->first()?->assignRole('admin');
 
-
         /**
          * Definir user como perfil de técnico
          */

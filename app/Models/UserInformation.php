@@ -33,7 +33,7 @@ class UserInformation extends Model
 
     public function scopeFilter(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where(function ($subQuery) use ($search) {
                 $subQuery->filterCPF($search)
                     ->filterRG($search)

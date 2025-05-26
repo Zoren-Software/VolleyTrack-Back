@@ -33,14 +33,14 @@ class Language extends Model
 
     public function scopeFilterName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('languages.name', 'like', $search);
         });
     }
 
     public function scopeFilterSlug(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('languages.slug', 'like', $search);
         });
     }

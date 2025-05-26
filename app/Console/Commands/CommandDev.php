@@ -25,8 +25,6 @@ class CommandDev extends CommandBase
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle(): int
     {
@@ -35,11 +33,13 @@ class CommandDev extends CommandBase
 
         if ($env === 'production') {
             $this->error('It is not possible to run this command in the production environment');
+
             return 1;
         }
 
         if (!$debug || $env === 'staging') {
             $this->error('It is not possible to run this command in this environment');
+
             return 1;
         }
 

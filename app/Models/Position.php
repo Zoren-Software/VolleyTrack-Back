@@ -73,14 +73,14 @@ class Position extends Model
 
     public function scopeFilterName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('positions.name', 'like', $search);
         });
     }
 
     public function scopeFilterIds(Builder $query, array $ids)
     {
-        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+        $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('positions.id', $ids);
         });
     }

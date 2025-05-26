@@ -22,8 +22,6 @@ class CommandBase extends Command
 
     /**
      * Nome do processo utilizado em mensagens de progresso
-     *
-     * @var string
      */
     protected string $nomeProcesso = 'default';
 

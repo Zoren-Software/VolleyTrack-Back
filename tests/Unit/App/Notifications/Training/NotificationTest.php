@@ -93,8 +93,6 @@ class NotificationTest extends TestCase
 
     /**
      * A test method tags.
-     *
-     * @return array
      */
     #[\PHPUnit\Framework\Attributes\Test]
     public function tags(): array

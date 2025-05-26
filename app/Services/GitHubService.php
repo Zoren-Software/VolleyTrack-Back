@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 final class GitHubService extends Model
 {
     protected $client;
+
     protected $accessToken;
 
     /**
@@ -27,8 +28,6 @@ final class GitHubService extends Model
     /**
      * @codeCoverageIgnore
      * Verifica se o usuário tem permissão para acessar o repositório.
-     *
-     * @return bool
      */
     public function verifyPermissionUser(string $nickName): bool
     {

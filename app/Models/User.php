@@ -23,6 +23,7 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $unreadNotifications
+ * @property \App\Models\UserInformation $information
  */
 class User extends Authenticatable implements HasApiTokensContract
 {
@@ -266,21 +267,21 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function scopeFilterName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('users.name', 'like', $search);
         });
     }
 
     public function scopeFilterEmail(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhere('users.email', 'like', $search);
         });
     }
 
     public function scopeFilterUserInformation(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('information', function ($query) use ($search) {
                 $query->filter($search);
             });
@@ -289,7 +290,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function scopeFilterPositionName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('positions', function ($query) use ($search) {
                 $query->filterName($search);
             });
@@ -298,7 +299,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function scopeFilterTeamName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('teams', function ($query) use ($search) {
                 $query->filterName($search);
             });
@@ -335,7 +336,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     public function scopeFilterIds(Builder $query, array $ids)
     {
-        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+        $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('users.id', $ids);
         });
     }

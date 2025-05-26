@@ -40,15 +40,13 @@ class TenantTest extends TestCase
                 'email' => 'tenant-existente@test.com',
                 'name' => 'Tenant Existente',
             ]);
-        
+
             $data['tenantId'] = 'test';
-        }
-        elseif (
+        } elseif (
             $expectedMessage === 'TenantCreate.tenantId.string'
         ) {
             $data['tenantId'] = 1;
-        }
-        elseif (
+        } elseif (
             $expectedMessage !== 'TenantCreate.tenantId.required'
         ) {
             // Gera um tenantId único, apenas se o teste não exige que esteja ausente

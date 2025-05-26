@@ -20,8 +20,6 @@ class AdicionaTenantDev extends CommandDev
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle(): int
     {

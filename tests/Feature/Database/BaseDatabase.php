@@ -18,9 +18,13 @@ abstract class BaseDatabase extends TestCase
     protected string $table = ''; // cada classe filha sobrescreve
 
     protected static array $primaryKey = [];
+
     protected static array $autoIncrements = [];
+
     protected static array $foreignKeys = [];
+
     protected static array $uniqueKeys = [];
+
     protected static array $fieldTypes = [];
 
     /**

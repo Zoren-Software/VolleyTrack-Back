@@ -86,14 +86,14 @@ class SpecificFundamental extends Model
 
     public function scopeFilterName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('specific_fundamentals.name', 'like', $search);
         });
     }
 
     public function scopeFilterUserName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('user', function ($query) use ($search) {
                 $query->filterName($search);
             });

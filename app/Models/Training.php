@@ -13,13 +13,16 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @property \App\Models\Team $team
+ */
 class Training extends Model
 {
     use HasFactory;
@@ -206,7 +209,7 @@ class Training extends Model
 
                 if ($player->canReceiveNotification('training_created', 'email')) {
                     \Mail::to($player->email)
-                        ->send(new TrainingMail($this, $player, $confirmationTraining));
+                        ->send(new TrainingMail($this, $player));
                 }
             }
         });
@@ -224,8 +227,6 @@ class Training extends Model
 
     /**
      * @codeCoverageIgnore
-     *
-     * @return void
      */
     public function sendNotificationPlayersTrainingCancelled(): void
     {
@@ -254,8 +255,6 @@ class Training extends Model
 
     /**
      * @codeCoverageIgnore
-     *
-     * @return array
      */
     public function metrics(): array
     {
@@ -306,14 +305,14 @@ class Training extends Model
 
     public function scopeFilterName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('trainings.name', 'like', $search);
         });
     }
 
     public function scopeFilterTeamName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('team', function ($query) use ($search) {
                 $query->filterName($search);
             });
@@ -322,7 +321,7 @@ class Training extends Model
 
     public function scopeFilterUserName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('user', function ($query) use ($search) {
                 $query->filterName($search);
             });

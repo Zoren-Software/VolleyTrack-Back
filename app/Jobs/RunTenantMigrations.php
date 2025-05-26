@@ -44,7 +44,7 @@ class RunTenantMigrations implements ShouldQueue
             ]);
 
             $tenant->domains()->create([
-                'domain' => $this->tenantId . '.' . config('app.host')
+                'domain' => $this->tenantId . '.' . config('app.host'),
             ]);
 
             tenancy()->initialize($this->tenantId);

@@ -125,6 +125,7 @@ abstract class TestCase extends BaseTestCase
         bool $input,
         bool $parametrosEntrada = false
     ): object {
+        $post = [];
         $objectString = $this->converteDadosEmStringGraphQL($nomeQueryGraphQL, $dadosEntrada, $dadosSaida, $input, $type, $parametrosEntrada);
 
         switch ($type) {

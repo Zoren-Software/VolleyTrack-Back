@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\TeamCategory;
-use App\Models\TeamLevel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -111,14 +109,14 @@ class Team extends Model
 
     public function scopeFilterName(Builder $query, string $search)
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('teams.name', 'like', $search);
         });
     }
 
     public function scopeFilterIds(Builder $query, array $ids)
     {
-        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+        $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('teams.id', $ids);
         });
     }

@@ -1325,7 +1325,7 @@ class UserTest extends TestCase
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('setPasswordProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function set_password($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    public function set_password(array $parameters, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
         $this->setPermissions($hasPermission);
 
@@ -1333,29 +1333,36 @@ class UserTest extends TestCase
             ->has(Position::factory()->count(3))
             ->create();
 
-        if ($data['email']) {
+        if (($parameters['email']) == true) {
             $parameters['email'] = $user->email;
-        }
-        if ($data['email'] === 'not_valid') {
+        } elseif (($parameters['email']) == false) {
+            unset($parameters['email']);
+        } elseif ($parameters['email'] === 'not_valid') {
             $parameters['email'] = 'notemail.com';
         }
-        if ($data['token']) {
+
+        if ($parameters['token']) {
             $parameters['token'] = $user->set_password_token;
-        }
-        if ($data['token'] === 'not_find_user_invalid_token') {
+        } elseif ($parameters['token'] === 'not_find_user_invalid_token') {
             $parameters['token'] = 'not_find_user_invalid_token';
+        } else {
+            unset($parameters['token']);
         }
-        if ($data['password']) {
+
+        if ($parameters['password']) {
             $parameters['password'] = config('testing.password_test');
-        }
-        if ($data['password'] === 'min_6') {
+        } elseif ($parameters['password'] === 'min_6') {
             $parameters['password'] = '1234';
+        } else {
+            unset($parameters['password']);
         }
-        if ($data['passwordConfirmation']) {
+
+        if ($parameters['passwordConfirmation']) {
             $parameters['passwordConfirmation'] = config('testing.password_test');
-        }
-        if ($data['passwordConfirmation'] === 'not_match') {
+        } elseif ($parameters['passwordConfirmation'] === 'not_match') {
             $parameters['passwordConfirmation'] = '12345678';
+        } else {
+            unset($parameters['passwordConfirmation']);
         }
 
         $response = $this->graphQL(
@@ -1384,7 +1391,6 @@ class UserTest extends TestCase
         return [
             'set password a user, success' => [
                 [
-                    'error' => null,
                     'email' => true,
                     'token' => true,
                     'password' => true,
@@ -1408,7 +1414,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not send email, error' => [
                 [
-                    'error' => true,
                     'email' => false,
                     'token' => true,
                     'password' => true,
@@ -1423,7 +1428,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not valid email, error' => [
                 [
-                    'error' => true,
                     'email' => 'not_valid',
                     'token' => true,
                     'password' => true,
@@ -1438,7 +1442,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not send token, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => false,
                     'password' => true,
@@ -1453,7 +1456,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not token string, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => 'not_find_user_invalid_token',
                     'password' => true,
@@ -1468,7 +1470,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not send password, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => true,
                     'password' => false,
@@ -1483,7 +1484,6 @@ class UserTest extends TestCase
             ],
             'set password a user, send password min 6 characters, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => true,
                     'password' => 'min_6',
@@ -1498,7 +1498,6 @@ class UserTest extends TestCase
             ],
             'set password a user, send password does not match, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => true,
                     'password' => true,
@@ -1513,7 +1512,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not send passwordConfirmation, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => true,
                     'password' => true,
