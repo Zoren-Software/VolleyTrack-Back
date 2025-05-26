@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Fundamental[] $fundamentals
+ */
 class SpecificFundamental extends Model
 {
     use HasFactory;

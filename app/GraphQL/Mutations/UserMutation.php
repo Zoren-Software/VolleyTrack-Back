@@ -22,6 +22,12 @@ final class UserMutation
      */
     public function make($rootValue, array $args, GraphQLContext $context)
     {
+        $userLogged = $context->user();
+
+        if (! $userLogged instanceof User) {
+            throw new \Exception('User not authenticated.');
+        }
+
         if (isset($args['id'])) {
             $this->user = $this->user->findOrFail($args['id']);
         }
@@ -47,7 +53,7 @@ final class UserMutation
 
         $this->relationTeams($this->user, $args, $context);
 
-        $this->user->user_id = $context->user()->id;
+        $this->user->user_id = $userLogged->id;
 
         $this->user->touch();
 
@@ -63,6 +69,12 @@ final class UserMutation
      */
     private function relationTeams($user, $args, $context)
     {
+        $userLogged = $context->user();
+
+        if (! $userLogged instanceof User) {
+            throw new \Exception('User not authenticated.');
+        }
+
         // NOTE - Obtém os IDs dos times atualmente associados ao usuário
         $currentTeamsIds = $user->teams()->pluck('teams.id')->toArray();
 
@@ -80,7 +92,7 @@ final class UserMutation
             $team = Team::find($teamId);
             if ($team) {
                 $team->touch();
-                $team->user_id = $context->user()->id;
+                $team->user_id = $userLogged->id;
                 $team->save();
             }
         }
@@ -90,7 +102,7 @@ final class UserMutation
             $team = Team::find($teamId);
             if ($team) {
                 $team->touch();
-                $team->user_id = $context->user()->id;
+                $team->user_id = $userLogged->id;
                 $team->save();
             }
         }
@@ -140,7 +152,7 @@ final class UserMutation
      */
     public function forgotPassword($rootValue, array $args, GraphQLContext $context)
     {
-        $this->user = new User;
+        $this->user = new User();
 
         if ($this->user) {
             $this->user->sendForgotPasswordNotification($args);

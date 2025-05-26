@@ -23,7 +23,7 @@ class PermissionAssignment implements ImplicitRule
      * @codeCoverageIgnore
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  mixed  $values
      * @return bool
      */
     public function passes($attribute, $values)

@@ -363,7 +363,7 @@ class User extends Authenticatable implements HasApiTokensContract
         );
     }
 
-    public function saveLastUserChange()
+    public function saveLastUserChange(): void
     {
         $this->user_id = auth()->user()->id ?? null;
         $this->save();

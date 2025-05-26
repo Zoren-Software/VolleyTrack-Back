@@ -20,7 +20,7 @@ class RelationshipSpecificFundamental implements InvokableRule
      * @codeCoverageIgnore
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  mixed  $specificFundamentalIds
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      * @return void
      */
