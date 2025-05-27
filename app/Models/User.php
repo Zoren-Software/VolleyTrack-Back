@@ -28,6 +28,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $unreadNotifications
  * @property \App\Models\UserInformation $information
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\NotificationSetting[] $notificationSettings
+ * @property string|null $remember_token
  */
 class User extends Authenticatable implements HasApiTokensContract
 {
@@ -41,7 +42,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -54,7 +55,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -190,8 +191,11 @@ class User extends Authenticatable implements HasApiTokensContract
      */
     public function scopeMe(Builder $query): ?self
     {
-        return $query->with('positions', 'teams')
+        /** @var self|null $user */
+        $user = $query->with('positions', 'teams')
             ->find(auth()->id());
+
+        return $user;
     }
 
     public function information(): HasOne

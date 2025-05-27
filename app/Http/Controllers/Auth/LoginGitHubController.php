@@ -14,7 +14,7 @@ class LoginGitHubController extends Controller
     /**
      * @codeCoverageIgnore
      *
-     * @return Socialite
+     *  @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function githubRedirect()
     {

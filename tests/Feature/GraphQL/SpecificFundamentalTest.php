@@ -548,7 +548,7 @@ class SpecificFundamentalTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return void
+     * @return array
      */
     public static function specificFundamentalDeleteProvider()
     {

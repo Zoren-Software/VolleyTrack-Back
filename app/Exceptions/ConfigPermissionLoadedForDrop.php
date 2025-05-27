@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Response;
 
 class ConfigPermissionLoadedForDrop extends Exception
 {
@@ -21,8 +22,11 @@ class ConfigPermissionLoadedForDrop extends Exception
      *
      * @return \Illuminate\Http\Response
      */
-    public function render()
+    public function render(): Response
     {
-        return 'Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.';
+        return response(
+            'Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.',
+            500
+        );
     }
 }

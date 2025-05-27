@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Response;
 
 class ConfigPermissionLoaded extends Exception
 {
@@ -21,8 +22,8 @@ class ConfigPermissionLoaded extends Exception
      *
      * @return \Illuminate\Http\Response
      */
-    public function render()
+    public function render(): Response
     {
-        return 'Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.';
+        return response('Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.', 500);
     }
 }
