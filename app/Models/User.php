@@ -187,12 +187,11 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @codeCoverageIgnore
-     * @return \App\Models\User|null
      */
     public function scopeMe(Builder $query): ?self
     {
         return $query->with('positions', 'teams')
-                    ->find(auth()->id());
+            ->find(auth()->id());
     }
 
     public function information(): HasOne
@@ -204,7 +203,6 @@ class User extends Authenticatable implements HasApiTokensContract
      * @codeCoverageIgnore
      *
      * @param  mixed  $args
-     * @return void
      */
     public function updateOrNewInformation($args): void
     {
@@ -293,7 +291,6 @@ class User extends Authenticatable implements HasApiTokensContract
             });
         });
     }
-
 
     public function scopeFilterPositionName(Builder $query, string $search): void
     {

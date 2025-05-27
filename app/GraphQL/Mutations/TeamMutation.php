@@ -26,7 +26,7 @@ final class TeamMutation
     {
         $user = $context->user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             throw new \Exception('User not authenticated.');
         }
 

@@ -24,7 +24,7 @@ final class UserMutation
     {
         $userLogged = $context->user();
 
-        if (! $userLogged instanceof User) {
+        if (!$userLogged instanceof User) {
             throw new \Exception('User not authenticated.');
         }
 
@@ -71,7 +71,7 @@ final class UserMutation
     {
         $userLogged = $context->user();
 
-        if (! $userLogged instanceof User) {
+        if (!$userLogged instanceof User) {
             throw new \Exception('User not authenticated.');
         }
 
@@ -144,15 +144,12 @@ final class UserMutation
     }
 
     /**
-     * @param mixed $rootValue
-     * @param array $args
-     * @param GraphQLContext $context
-     *
+     * @param  mixed  $rootValue
      * @return array
      */
     public function forgotPassword($rootValue, array $args, GraphQLContext $context)
     {
-        $this->user = new User();
+        $this->user = new User;
 
         if ($this->user) {
             $this->user->sendForgotPasswordNotification($args);

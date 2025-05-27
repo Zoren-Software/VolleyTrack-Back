@@ -64,7 +64,7 @@ class LoginGitHubController extends Controller
      */
     public function logout()
     {
-         /** @var StatefulGuard $guard */
+        /** @var StatefulGuard $guard */
         $guard = auth()->guard('web');
         $guard->logout();
 

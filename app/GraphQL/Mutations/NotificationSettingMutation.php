@@ -16,14 +16,14 @@ final class NotificationSettingMutation
     }
 
     /**
-     * @param mixed $rootValue
-     * @param array<string, mixed> $args
+     * @param  mixed  $rootValue
+     * @param  array<string, mixed>  $args
      */
     public function notificationEdit($rootValue, array $args, GraphQLContext $context)
     {
         $user = $context->user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             throw new \Exception('User not authenticated.');
         }
 

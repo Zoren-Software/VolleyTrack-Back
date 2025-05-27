@@ -11,7 +11,6 @@ class ConfirmationTrainingNotification extends Notification
      *
      * @codeCoverageIgnore
      *
-     * @param  \App\Models\User  $notifiable
      * @return array
      */
     public function toArray(User $notifiable)

@@ -369,7 +369,7 @@ class Training extends Model
             !empty($args['filter']['teamsIds']),
             function ($query) use ($args) {
                 $query->whereHas('team', function ($query) use ($args) {
-                    // @phpstan-ignore-next-line    
+                    // @phpstan-ignore-next-line
                     $query->filterIds($args['filter']['teamsIds']);
                 });
             }

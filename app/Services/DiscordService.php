@@ -31,9 +31,6 @@ final class DiscordService extends Model
     }
 
     /**
-     * @param  \Throwable  $error
-     * @param  string  $author
-     *
      * @codeCoverageIgnore
      */
     public function sendError(\Throwable $error, string $author): void

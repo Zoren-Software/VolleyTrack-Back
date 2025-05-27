@@ -65,15 +65,15 @@ class NotificationSetting extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting> $query
+     * @param  \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting>  $query
      * @return \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting>
      */
     public function scopeFilter(Builder $query, array $args): Builder
     {
         return $query->filterIsActive($args)
-                ->filterViaEmail($args)
-                ->filterViaSystem($args)
-                ->orderBy('created_at', 'desc');
+            ->filterViaEmail($args)
+            ->filterViaSystem($args)
+            ->orderBy('created_at', 'desc');
     }
 
     public function scopeFilterIsActive(Builder $query, array $args)

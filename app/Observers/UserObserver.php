@@ -41,8 +41,6 @@ class UserObserver
     }
 
     /**
-     * @param User $user
-     *
      * @return void
      */
     public function updating(User $user)

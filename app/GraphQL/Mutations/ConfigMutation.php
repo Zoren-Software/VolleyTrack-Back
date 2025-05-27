@@ -15,7 +15,7 @@ final class ConfigMutation
     }
 
     /**
-     * @param array<string, mixed> $args
+     * @param  array<string, mixed>  $args
      */
     public function make($rootValue, array $args, GraphQLContext $context)
     {

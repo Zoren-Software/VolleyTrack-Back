@@ -11,8 +11,7 @@ class CancelTrainingNotification extends Notification
      *
      * @codeCoverageIgnore
      *
-     * @param  \App\Models\User  $notifiable
-     * @return array    
+     * @return array
      */
     public function toArray(User $notifiable)
     {

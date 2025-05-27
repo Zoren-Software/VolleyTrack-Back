@@ -24,7 +24,7 @@ class SessionTimeoutMiddleware
         if ($lastActivity && time() - $lastActivity > $maxIdleTime) {
             auth()->logout(); // <-- já é StatefulGuard
             session()->flush();
-        
+
             return redirect()->route('welcome-horizon');
         }
 
