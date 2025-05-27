@@ -12,6 +12,6 @@ class MeQuery
      */
     public function me($_, array $args)
     {
-        return User::me(); // sem new e sem argumento
+        return User::query()->me();
     }
 }

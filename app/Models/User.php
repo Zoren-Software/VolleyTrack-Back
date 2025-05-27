@@ -187,14 +187,12 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @codeCoverageIgnore
+     * @return \App\Models\User|null
      */
-    public function scopeMe(Builder $query): Builder
+    public function scopeMe(Builder $query): ?self
     {
-        return $query->with(
-            'positions',
-            'teams',
-        )
-            ->find(auth()->user()->id);
+        return $query->with('positions', 'teams')
+                    ->find(auth()->id());
     }
 
     public function information(): HasOne

@@ -79,7 +79,10 @@ class NotificationSettingTest extends TestCase
                     ],
                 ],
             ],
-        ])->assertStatus(200);
+        ]);
+
+
+        $response->assertStatus(200);
     }
 
     /**

@@ -65,7 +65,7 @@
     <testsuite name="ConfirmationTraining">
       <file>./tests/Feature/GraphQL/ConfirmationTrainingTest.php</file>
     </testsuite>
-    <testsuite name="NotificationsSettings">
+    <testsuite name="NotificationSettings">
       <file>./tests/Feature/GraphQL/NotificationSettingTest.php</file>
     </testsuite>
     <testsuite name="Database">

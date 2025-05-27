@@ -12,8 +12,6 @@ class NotificationSettingQuery
      */
     public function list($_, array $args)
     {
-        $notificationSetting = new NotificationSetting;
-
-        return $notificationSetting->list($args);
+        return NotificationSetting::query()->list($args);
     }
 }

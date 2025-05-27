@@ -39,13 +39,11 @@ class NotificationSetting extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function scopeList(Builder $query, array $args): Builder
+    public function scopeList(Builder $query, array $args)
     {
         // @phpstan-ignore-next-line
-        return $query
-            ->where('user_id', auth()->user()->id)
-            ->notificationSettings()
-            ->whereHas('notificationType', function (Builder $query) {
+        return $query->where('user_id', auth()->id())
+            ->whereHas('notificationType', function ($query) {
                 // NOTE - Para não mostrar os tipos de notificação que não são editáveis
                 // ou que não são mostrados na lista de configurações
                 $query->where('show_list', true);
