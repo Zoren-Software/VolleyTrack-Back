@@ -66,7 +66,9 @@ class Position extends Model
 
     public function scopeFilterSearch(Builder $query, array $args)
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+        $query->when(isset($args['filter']) && 
+            isset($args['filter']['search']), function ($query) use ($args) {
+            // @phpstan-ignore-next-line
             $query->filterName($args['filter']['search']);
         });
     }
@@ -95,6 +97,7 @@ class Position extends Model
             function ($query) use ($args) {
                 $query->whereHas('users', function ($query) use ($args) {
                     $query->whereHas('teams', function ($query) use ($args) {
+                        // @phpstan-ignore-next-line
                         $query->filterIds($args['filter']['teamsIds']);
                     });
                 });

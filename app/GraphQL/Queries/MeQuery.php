@@ -7,13 +7,11 @@ use App\Models\User;
 class MeQuery
 {
     /**
-     * @param  mixed  $rootValue
+     * @param  mixed  $_
      * @param  array{}  $args
      */
     public function me($_, array $args)
     {
-        $user = new User;
-
-        return $user->me($args);
+        return User::me(); // sem new e sem argumento
     }
 }

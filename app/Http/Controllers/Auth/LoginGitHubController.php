@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Central\User;
 use App\Services\GitHubService;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -24,7 +25,7 @@ class LoginGitHubController extends Controller
     /**
      * @codeCoverageIgnore
      *
-     * @return redirect
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function githubCallback()
     {
@@ -49,7 +50,9 @@ class LoginGitHubController extends Controller
             ]
         );
 
-        auth()->guard('web')->login($user);
+        /** @var StatefulGuard $guard */
+        $guard = auth()->guard('web');
+        $guard->login($user);
 
         return redirect()->route('horizon.index');
     }
@@ -57,11 +60,13 @@ class LoginGitHubController extends Controller
     /**
      * @codeCoverageIgnore
      *
-     * @return redirect
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function logout()
     {
-        auth()->guard('web')->logout();
+         /** @var StatefulGuard $guard */
+        $guard = auth()->guard('web');
+        $guard->logout();
 
         return redirect()->route('welcome-horizon');
     }

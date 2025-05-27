@@ -7,7 +7,7 @@ use App\Models\TeamLevel;
 class TeamLevelQuery
 {
     /**
-     * @param  mixed  $rootValue
+     * @param  mixed  $_
      * @param  array{}  $args
      */
     public function list($_, array $args)

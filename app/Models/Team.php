@@ -84,6 +84,7 @@ class Team extends Model
 
     public function scopeList(Builder $query, array $args)
     {
+        // @phpstan-ignore-next-line
         return $query
             ->with([
                 'teamCategory:id,name,updated_at',
@@ -99,14 +100,19 @@ class Team extends Model
 
     public function scopeFilterIgnores(Builder $query, array $args)
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
+        $query->when(
+            isset($args['filter']) &&
+            isset($args['filter']['ignoreIds']),
+            function ($query) use ($args) {
             $query->whereNotIn('teams.id', $args['filter']['ignoreIds']);
         });
     }
 
     public function scopeFilterSearch(Builder $query, array $args)
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+        $query->when(isset($args['filter']) && 
+            isset($args['filter']['search']), function ($query) use ($args) {
+            // @phpstan-ignore-next-line
             $query->filterName($args['filter']['search']);
         });
     }
@@ -134,6 +140,7 @@ class Team extends Model
             function ($query) use ($args) {
                 $query->whereHas('players', function ($query) use ($args) {
                     $query->whereHas('positions', function ($query) use ($args) {
+                        // @phpstan-ignore-next-line
                         $query->filterIds($args['filter']['positionsIds']);
                     });
                 });
@@ -149,6 +156,7 @@ class Team extends Model
             !empty($args['filter']['playersIds']),
             function ($query) use ($args) {
                 $query->whereHas('players', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query->filterIds($args['filter']['playersIds']);
                 });
             }
@@ -163,6 +171,7 @@ class Team extends Model
             !empty($args['filter']['playersIds']),
             function ($query) use ($args) {
                 $query->whereHas('players', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query->filterIds($args['filter']['playersIds']);
                 });
             }

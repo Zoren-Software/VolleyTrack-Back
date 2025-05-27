@@ -6,7 +6,10 @@ use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
 use App\Mail\User\ForgotPasswordMail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -74,7 +77,7 @@ class User extends Authenticatable implements HasApiTokensContract
         return in_array($namePermission, $permissions);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -99,7 +102,7 @@ class User extends Authenticatable implements HasApiTokensContract
             ->where(fn ($q) => $q->whereNull($teamField)->orWhere($teamField, getPermissionsTeamId()));
     }
 
-    public function positions()
+    public function positions(): BelongsToMany
     {
         return $this->belongsToMany(Position::class, 'positions_users')
             ->using(PositionsUsers::class)
@@ -139,7 +142,7 @@ class User extends Authenticatable implements HasApiTokensContract
             ->dontSubmitEmptyLogs();
     }
 
-    public function teams()
+    public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, 'teams_users')
             ->using(TeamsUsers::class)
@@ -172,12 +175,12 @@ class User extends Authenticatable implements HasApiTokensContract
         return $this->hasRole('admin');
     }
 
-    public function playerConfirmationsTraining()
+    public function playerConfirmationsTraining(): HasMany
     {
         return $this->hasMany(ConfirmationTraining::class, 'player_id');
     }
 
-    public function userConfirmationsTraining()
+    public function userConfirmationsTraining(): HasMany
     {
         return $this->hasMany(ConfirmationTraining::class, 'user_id');
     }
@@ -185,7 +188,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @codeCoverageIgnore
      */
-    public function scopeMe(Builder $query)
+    public function scopeMe(Builder $query): Builder
     {
         return $query->with(
             'positions',
@@ -194,7 +197,7 @@ class User extends Authenticatable implements HasApiTokensContract
             ->find(auth()->user()->id);
     }
 
-    public function information()
+    public function information(): HasOne
     {
         return $this->hasOne(UserInformation::class);
     }
@@ -205,7 +208,7 @@ class User extends Authenticatable implements HasApiTokensContract
      * @param  mixed  $args
      * @return void
      */
-    public function updateOrNewInformation($args)
+    public function updateOrNewInformation($args): void
     {
         $attributes = [];
 
@@ -238,7 +241,7 @@ class User extends Authenticatable implements HasApiTokensContract
         }
     }
 
-    public function list(array $args)
+    public function list(array $args): Builder
     {
         return $this
             ->whereDoesntHave('roles', function ($query) {
@@ -251,11 +254,13 @@ class User extends Authenticatable implements HasApiTokensContract
             ->filterRoles($args);
     }
 
-    public function scopeFilterSearch(Builder $query, array $args)
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
-            $query
-                ->where(function ($query) use ($args) {
+        $query->when(
+            isset($args['filter']) && isset($args['filter']['search']),
+            function (Builder $query) use ($args) {
+                $query->where(function (Builder $query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query
                         ->filterName($args['filter']['search'])
                         ->filterEmail($args['filter']['search'])
@@ -263,51 +268,56 @@ class User extends Authenticatable implements HasApiTokensContract
                         ->filterPositionName($args['filter']['search'])
                         ->filterTeamName($args['filter']['search']);
                 });
-        });
+            }
+        );
     }
 
-    public function scopeFilterName(Builder $query, string $search)
+    public function scopeFilterName(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->where('users.name', 'like', $search);
         });
     }
 
-    public function scopeFilterEmail(Builder $query, string $search)
+    public function scopeFilterEmail(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhere('users.email', 'like', $search);
         });
     }
 
-    public function scopeFilterUserInformation(Builder $query, string $search)
+    public function scopeFilterUserInformation(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('information', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filter($search);
             });
         });
     }
 
-    public function scopeFilterPositionName(Builder $query, string $search)
+
+    public function scopeFilterPositionName(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('positions', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filterName($search);
             });
         });
     }
 
-    public function scopeFilterTeamName(Builder $query, string $search)
+    public function scopeFilterTeamName(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('teams', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filterName($search);
             });
         });
     }
 
-    public function scopeFilterPosition(Builder $query, array $args)
+    public function scopeFilterPosition(Builder $query, array $args): void
     {
         $query->when(
             isset($args['filter']) &&
@@ -315,13 +325,14 @@ class User extends Authenticatable implements HasApiTokensContract
             !empty($args['filter']['positionsIds']),
             function ($query) use ($args) {
                 $query->whereHas('positions', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query->filterIds($args['filter']['positionsIds']);
                 });
             }
         );
     }
 
-    public function scopeFilterTeam(Builder $query, array $args)
+    public function scopeFilterTeam(Builder $query, array $args): void
     {
         $query->when(
             isset($args['filter']) &&
@@ -329,27 +340,28 @@ class User extends Authenticatable implements HasApiTokensContract
             !empty($args['filter']['teamsIds']),
             function ($query) use ($args) {
                 $query->whereHas('teams', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query->filterIds($args['filter']['teamsIds']);
                 });
             }
         );
     }
 
-    public function scopeFilterIds(Builder $query, array $ids)
+    public function scopeFilterIds(Builder $query, array $ids): void
     {
         $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('users.id', $ids);
         });
     }
 
-    public function scopeFilterIgnores(Builder $query, array $args)
+    public function scopeFilterIgnores(Builder $query, array $args): void
     {
         $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
             $query->whereNotIn('users.id', $args['filter']['ignoreIds']);
         });
     }
 
-    public function scopeFilterRoles(Builder $query, array $args)
+    public function scopeFilterRoles(Builder $query, array $args): void
     {
         $query->when(
             isset($args['filter']) &&
@@ -369,7 +381,7 @@ class User extends Authenticatable implements HasApiTokensContract
         $this->save();
     }
 
-    public function sendConfirmEmailAndCreatePasswordNotification(string $tenant, $admin = false)
+    public function sendConfirmEmailAndCreatePasswordNotification(string $tenant, $admin = false): void
     {
         $this->set_password_token = Str::random(60);
         $this->save();
@@ -377,7 +389,7 @@ class User extends Authenticatable implements HasApiTokensContract
         Mail::to($this->email)->send(new ConfirmEmailAndCreatePasswordMail($this, $tenant, $admin));
     }
 
-    public function sendForgotPasswordNotification(array $args)
+    public function sendForgotPasswordNotification(array $args): void
     {
         $user = $this->whereEmail($args['email'])->first();
 
@@ -411,7 +423,7 @@ class User extends Authenticatable implements HasApiTokensContract
             ->exists();
     }
 
-    public function notificationSettings()
+    public function notificationSettings(): HasMany
     {
         return $this->hasMany(NotificationSetting::class);
     }

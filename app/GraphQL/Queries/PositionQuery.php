@@ -7,7 +7,7 @@ use App\Models\Position;
 class PositionQuery
 {
     /**
-     * @param  mixed  $rootValue
+     * @param  mixed  $_
      * @param  array{}  $args
      */
     public function list($_, array $args)

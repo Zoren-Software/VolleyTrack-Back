@@ -37,35 +37,29 @@ class UserInformation extends Model
     public function scopeFilter(Builder $query, string $search)
     {
         $query->when(!empty($search), function ($query) use ($search) {
-            $query->where(function ($subQuery) use ($search) {
-                $subQuery->filterCPF($search)
-                    ->filterRG($search)
-                    ->filterPhone($search);
+            $query->where(function ($query) use ($search) {
+                $this->applyCPF($query, $search);
+                $this->applyRG($query, $search);
+                $this->applyPhone($query, $search);
             });
         });
     }
 
-    public function scopeFilterCPF(Builder $query, string $cpf)
+    private function applyCPF(Builder $query, string $search): void
     {
-        $cleanCpf = preg_replace('/\D/', '', $cpf);
-        $query->when(isset($cleanCpf), function ($query) use ($cleanCpf) {
-            $query->where('cpf', 'like', "%$cleanCpf%");
-        });
+        $cleanCpf = preg_replace('/\D/', '', $search);
+        $query->where('cpf', 'like', "%$cleanCpf%");
     }
 
-    public function scopeFilterRG(Builder $query, string $rg)
+    private function applyRG(Builder $query, string $search): void
     {
-        $cleanRg = preg_replace('/\D/', '', $rg);
-        $query->when(isset($cleanRg), function ($query) use ($cleanRg) {
-            $query->orWhere('user_information.rg', 'like', "%$cleanRg%");
-        });
+        $cleanRg = preg_replace('/\D/', '', $search);
+        $query->orWhere('user_information.rg', 'like', "%$cleanRg%");
     }
 
-    public function scopeFilterPhone(Builder $query, string $phone)
+    private function applyPhone(Builder $query, string $search): void
     {
-        $cleanPhone = preg_replace('/\D/', '', $phone);
-        $query->when(isset($cleanPhone), function ($query) use ($cleanPhone) {
-            $query->orWhere('user_information.phone', 'like', "%$cleanPhone%");
-        });
+        $cleanPhone = preg_replace('/\D/', '', $search);
+        $query->orWhere('user_information.phone', 'like', "%$cleanPhone%");
     }
 }

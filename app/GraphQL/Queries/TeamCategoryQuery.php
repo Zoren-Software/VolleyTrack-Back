@@ -7,7 +7,7 @@ use App\Models\TeamCategory;
 class TeamCategoryQuery
 {
     /**
-     * @param  mixed  $rootValue
+     * @param  mixed  $_
      * @param  array{}  $args
      */
     public function list($_, array $args)

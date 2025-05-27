@@ -7,7 +7,7 @@ use App\Models\SpecificFundamental;
 class SpecificFundamentalQuery
 {
     /**
-     * @param  mixed  $rootValue
+     * @param  mixed  $_
      * @param  array{}  $args
      */
     public function list($_, array $args)

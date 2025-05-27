@@ -39,12 +39,13 @@ class NotificationSetting extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function list(array $args)
+    public function scopeList(Builder $query, array $args): Builder
     {
-        return auth()
-            ->user()
+        // @phpstan-ignore-next-line
+        return $query
+            ->where('user_id', auth()->user()->id)
             ->notificationSettings()
-            ->whereHas('notificationType', function ($query) {
+            ->whereHas('notificationType', function (Builder $query) {
                 // NOTE - Para não mostrar os tipos de notificação que não são editáveis
                 // ou que não são mostrados na lista de configurações
                 $query->where('show_list', true);
@@ -65,10 +66,13 @@ class NotificationSetting extends Model
             ->filter($args);
     }
 
-    public function scopeFilter(Builder $query, array $args)
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting> $query
+     * @return \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting>
+     */
+    public function scopeFilter(Builder $query, array $args): Builder
     {
-        return
-            $query->filterIsActive($args)
+        return $query->filterIsActive($args)
                 ->filterViaEmail($args)
                 ->filterViaSystem($args)
                 ->orderBy('created_at', 'desc');

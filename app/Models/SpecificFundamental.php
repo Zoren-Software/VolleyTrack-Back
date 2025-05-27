@@ -77,7 +77,9 @@ class SpecificFundamental extends Model
 
     public function scopeFilterSearch(Builder $query, array $args)
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+        $query->when(isset($args['filter']) && 
+            isset($args['filter']['search']), function ($query) use ($args) {
+            // @phpstan-ignore-next-line
             $query
                 ->filterName($args['filter']['search'])
                 ->orWhere(function ($query) use ($args) {
@@ -98,6 +100,7 @@ class SpecificFundamental extends Model
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('user', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filterName($search);
             });
         });
@@ -111,6 +114,7 @@ class SpecificFundamental extends Model
             !empty($args['filter']['usersIds']),
             function ($query) use ($args) {
                 $query->whereHas('user', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query->filterIds($args['filter']['usersIds']);
                 });
             }
@@ -132,6 +136,7 @@ class SpecificFundamental extends Model
             !empty($args['filter']['fundamentalsIds']),
             function ($query) use ($args) {
                 $query->whereHas('fundamentals', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query->filterIds($args['filter']['fundamentalsIds']);
                 });
             }

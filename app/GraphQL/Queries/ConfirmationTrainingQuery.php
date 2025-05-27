@@ -8,7 +8,7 @@ use App\Models\Training;
 class ConfirmationTrainingQuery
 {
     /**
-     * @param  mixed  $rootValue
+     * @param  mixed  $_
      * @param  array{}  $args
      */
     public function list($_, array $args)

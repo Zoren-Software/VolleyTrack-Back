@@ -286,11 +286,12 @@ class Training extends Model
      */
     public function metrics(): array
     {
-        $confirmed = $this->confirmationsTraining()->status('confirmed')->count() ?? 0;
-        $pending = $this->confirmationsTraining()->status('pending')->count() ?? 0;
-        $rejected = $this->confirmationsTraining()->status('rejected')->count() ?? 0;
-        $presence = $this->confirmationsTraining()->presence(true)->count() ?? 0;
-        $absence = $this->confirmationsTraining()->presence(false)->count() ?? 0;
+        $confirmed = $this->confirmationsTraining()->where('status', 'confirmed')->count() ?? 0;
+        $pending = $this->confirmationsTraining()->where('status', 'pending')->count() ?? 0;
+        $rejected = $this->confirmationsTraining()->where('status', 'rejected')->count() ?? 0;
+        $presence = $this->confirmationsTraining()->where('presence', true)->count() ?? 0;
+        $absence = $this->confirmationsTraining()->where('presence', false)->count() ?? 0;
+
         $total = $confirmed + $pending + $rejected;
 
         return [
@@ -310,6 +311,7 @@ class Training extends Model
 
     public function scopeList(Builder $query, array $args)
     {
+        // @phpstan-ignore-next-line
         return $query
             ->filterSearch($args)
             ->filterIgnores($args)
@@ -321,6 +323,7 @@ class Training extends Model
     public function scopeFilterSearch(Builder $query, array $args)
     {
         $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+            // @phpstan-ignore-next-line
             $query
                 ->filterName($args['filter']['search'])
                 ->orWhere(function ($query) use ($args) {
@@ -342,6 +345,7 @@ class Training extends Model
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('team', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filterName($search);
             });
         });
@@ -351,6 +355,7 @@ class Training extends Model
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('user', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filterName($search);
             });
         });
@@ -364,6 +369,7 @@ class Training extends Model
             !empty($args['filter']['teamsIds']),
             function ($query) use ($args) {
                 $query->whereHas('team', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line    
                     $query->filterIds($args['filter']['teamsIds']);
                 });
             }
@@ -373,6 +379,7 @@ class Training extends Model
             !empty($args['filter']['playersIds']),
             function ($query) use ($args) {
                 $query->whereHas('team', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query->filterByTeamPlayer($args);
                 });
             }
@@ -388,6 +395,7 @@ class Training extends Model
             !empty($args['filter']['usersIds']),
             function ($query) use ($args) {
                 $query->whereHas('user', function ($query) use ($args) {
+                    // @phpstan-ignore-next-line
                     $query->filterIds($args['filter']['usersIds']);
                 });
             }
