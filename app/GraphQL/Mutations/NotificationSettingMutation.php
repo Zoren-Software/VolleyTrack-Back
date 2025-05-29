@@ -8,13 +8,6 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class NotificationSettingMutation
 {
-    private ?User $user;
-
-    public function __construct(?User $user = null)
-    {
-        $this->user = $user;
-    }
-
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args

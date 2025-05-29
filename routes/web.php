@@ -61,10 +61,6 @@ if (app()->environment('local') && config('app.debug')) {
             $user = App\Models\User::factory()->create();
         }
 
-        if (!$user) {
-            return 'User not found';
-        }
-
         return new App\Mail\Training\ConfirmationTrainingMail($training, $user);
     });
 

@@ -37,9 +37,7 @@ trait DatabaseAssertions
 
         // Se a tabela não deve ter uma primary key, o teste deve passar
         if (empty(static::$primaryKey)) {
-            $this->assertTrue(true, "No primary key expected for table '{$this->table}'.");
-
-            return;
+            $this->markTestSkipped("No primary key expected for table '{$this->table}'.");
         }
 
         $primaryKeyColumns = getPrimaryKeyColumns($this->table);
@@ -61,9 +59,7 @@ trait DatabaseAssertions
 
         // Se a tabela não deve ter auto_increment, o teste deve passar sem erro
         if (empty(static::$autoIncrements)) {
-            $this->assertTrue(true, "No auto_increment expected for table '{$this->table}'.");
-
-            return;
+            $this->markTestSkipped("No auto_increment expected for table '{$this->table}'.");
         }
 
         foreach (static::$autoIncrements as $column) {
@@ -82,9 +78,7 @@ trait DatabaseAssertions
         $this->ensureTableExists();
 
         if (empty(static::$foreignKeys)) {
-            $this->assertTrue(true, "No foreign keys expected for table '{$this->table}'.");
-
-            return;
+            $this->markTestSkipped("No foreign keys expected for table '{$this->table}'.");
         }
 
         $missingForeignKeys = [];
@@ -206,7 +200,7 @@ trait DatabaseAssertions
     private function assertCountForeignKeysMatch(array $foreignKeys): void
     {
         $totalForeignKeysArray = count($foreignKeys);
-        $totalForeignKeysTable = count(getForeignKeys($this->table) ?? []);
+        $totalForeignKeysTable = count(getForeignKeys($this->table));
 
         $this->assertEquals(
             $totalForeignKeysArray,
@@ -218,7 +212,7 @@ trait DatabaseAssertions
     private function assertCountUniqueKeysMatch(array $uniqueKeys): void
     {
         $totalUniqueKeysArray = count($uniqueKeys);
-        $totalUniqueKeysTable = count(getUniqueKeys($this->table) ?? []);
+        $totalUniqueKeysTable = count(getUniqueKeys($this->table));
 
         $this->assertEquals(
             $totalUniqueKeysArray,

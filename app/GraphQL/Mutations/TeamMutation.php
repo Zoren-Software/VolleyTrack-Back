@@ -56,7 +56,7 @@ final class TeamMutation
             foreach ($args['player_id'] as $playerId) {
                 $user = $this->user->findOrFail($playerId);
 
-                if ($this->user->findOrFail($playerId) && $this->user->findOrFail($playerId)->hasRole('technician')) {
+                if ($user->hasRole('technician')) {
                     $technicians[] = $playerId;
                 } else {
                     $players[] = $playerId;

@@ -1333,33 +1333,33 @@ class UserTest extends TestCase
             ->has(Position::factory()->count(3))
             ->create();
 
-        if (($parameters['email']) == true) {
+        if (isset($parameters['email']) && $parameters['email'] === true) {
             $parameters['email'] = $user->email;
-        } elseif (($parameters['email']) == false) {
+        } elseif (isset($parameters['email']) && $parameters['email'] === false) {
             unset($parameters['email']);
-        } elseif ($parameters['email'] === 'not_valid') {
+        } elseif (isset($parameters['email']) && $parameters['email'] === 'not_valid') {
             $parameters['email'] = 'notemail.com';
         }
 
-        if ($parameters['token']) {
+        if (isset($parameters['token']) && $parameters['token'] === true) {
             $parameters['token'] = $user->set_password_token;
-        } elseif ($parameters['token'] === 'not_find_user_invalid_token') {
+        } elseif (isset($parameters['token']) && $parameters['token'] === 'not_find_user_invalid_token') {
             $parameters['token'] = 'not_find_user_invalid_token';
         } else {
             unset($parameters['token']);
         }
 
-        if ($parameters['password']) {
+        if (isset($parameters['password']) && $parameters['password'] === true) {
             $parameters['password'] = config('testing.password_test');
-        } elseif ($parameters['password'] === 'min_6') {
+        } elseif (isset($parameters['password']) && $parameters['password'] === 'min_6') {
             $parameters['password'] = '1234';
         } else {
             unset($parameters['password']);
         }
 
-        if ($parameters['passwordConfirmation']) {
+        if (isset($parameters['passwordConfirmation']) && $parameters['passwordConfirmation'] === true) {
             $parameters['passwordConfirmation'] = config('testing.password_test');
-        } elseif ($parameters['passwordConfirmation'] === 'not_match') {
+        } elseif (isset($parameters['passwordConfirmation']) && $parameters['passwordConfirmation'] === 'not_match') {
             $parameters['passwordConfirmation'] = '12345678';
         } else {
             unset($parameters['passwordConfirmation']);

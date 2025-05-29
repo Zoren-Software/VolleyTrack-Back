@@ -52,8 +52,6 @@ class TeamCategory extends Model
         return $query->when(isset($args['search']), function ($query) use ($args) {
             $query->where('team_categories.name', 'like', '%' . $args['search'] . '%');
         });
-
-        return $query;
     }
 
     public function scopeFilterIgnores($query, array $args)

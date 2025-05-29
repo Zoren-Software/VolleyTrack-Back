@@ -25,8 +25,8 @@ class AdicionaTenantDev extends CommandDev
     {
         $handle = parent::handle();
 
-        if ($handle === false) {
-            return 1;
+        if ($handle !== 0) {
+            return $handle;
         }
 
         if (!$this->option('tenants')) {

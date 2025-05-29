@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Rules;
 
 use App\Models\Training;
@@ -7,26 +6,19 @@ use Illuminate\Contracts\Validation\InvokableRule;
 
 class ValidTrainingDeletion implements InvokableRule
 {
-    private $trainingIds;
-
-    public function __construct($trainingIds)
-    {
-        $this->trainingIds = $trainingIds;
-    }
-
     /**
      * Run the validation rule.
      *
      * @codeCoverageIgnore
      *
      * @param  string  $attribute
-     * @param  mixed  $trainingIds
+     * @param  mixed  $value
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      * @return void
      */
-    public function __invoke($attribute, $trainingIds, $fail)
+    public function __invoke($attribute, $value, $fail)
     {
-        foreach ($trainingIds as $id) {
+        foreach ($value as $id) {
             $training = Training::with(['confirmationsTraining' => function ($query) {
                 $query->where('presence', true);
             }])->find($id);

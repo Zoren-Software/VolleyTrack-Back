@@ -286,11 +286,11 @@ class Training extends Model
      */
     public function metrics(): array
     {
-        $confirmed = $this->confirmationsTraining()->where('status', 'confirmed')->count() ?? 0;
-        $pending = $this->confirmationsTraining()->where('status', 'pending')->count() ?? 0;
-        $rejected = $this->confirmationsTraining()->where('status', 'rejected')->count() ?? 0;
-        $presence = $this->confirmationsTraining()->where('presence', true)->count() ?? 0;
-        $absence = $this->confirmationsTraining()->where('presence', false)->count() ?? 0;
+        $confirmed = $this->confirmationsTraining()->where('status', 'confirmed')->count();
+        $pending = $this->confirmationsTraining()->where('status', 'pending')->count();
+        $rejected = $this->confirmationsTraining()->where('status', 'rejected')->count();
+        $presence = $this->confirmationsTraining()->where('presence', true)->count();
+        $absence = $this->confirmationsTraining()->where('presence', false)->count();
 
         $total = $confirmed + $pending + $rejected;
 

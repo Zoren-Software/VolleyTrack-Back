@@ -35,7 +35,7 @@ final class UserMutation
         $this->user->name = $args['name'];
         $this->user->email = $args['email'];
 
-        if (isset($args['password']) && $args['password'] !== null && $args['password'] !== '') {
+        if (!empty($args['password'])) {
             $this->user->makePassword($args['password']);
         }
 
@@ -151,9 +151,7 @@ final class UserMutation
     {
         $this->user = new User;
 
-        if ($this->user) {
-            $this->user->sendForgotPasswordNotification($args);
-        }
+        $this->user->sendForgotPasswordNotification($args);
 
         return [
             'status' => 'success',
