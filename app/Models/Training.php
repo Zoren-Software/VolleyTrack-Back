@@ -223,6 +223,7 @@ class Training extends Model
                 ]);
             }
 
+            /** @var \App\Models\ConfirmationTraining $confirmationTraining */
             if (
                 $player->email_verified_at &&
                 $this->rangeDateNotification(
