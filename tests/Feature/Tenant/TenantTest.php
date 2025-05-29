@@ -8,12 +8,22 @@ use Tests\TestCase;
 
 class TenantTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var string
+     */
     protected $tenant = 'graphql';
 
     /**
      * A basic test route horizon for login.
+     *
+     * @param array<string, mixed> $data
+     * @param string $expectedMessage
+     * @param int $expectedStatus
      *
      * @return void
      */
@@ -71,6 +81,9 @@ class TenantTest extends TestCase
         $response->assertStatus($expectedStatus);
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public static function createTenantDataProvider()
     {
         return [

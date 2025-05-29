@@ -6,6 +6,9 @@ use Tests\TestCase;
 
 class PingTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
     /**
