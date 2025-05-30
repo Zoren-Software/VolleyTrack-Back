@@ -14,7 +14,7 @@ class NotificationFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'id' => $this->faker->uuid,
@@ -23,7 +23,12 @@ class NotificationFactory extends Factory
         ];
     }
 
-    public function setNotifiableId($notifiableId)
+    /**
+     * @param int $notifiableId
+     * 
+     * @return Factory<\App\Models\Notification>
+     */
+    public function setNotifiableId(int $notifiableId): Factory
     {
         return $this->state(function () use ($notifiableId) {
             return [
@@ -32,7 +37,12 @@ class NotificationFactory extends Factory
         });
     }
 
-    public function setTypeNotification($type)
+    /**
+     * @param string $type
+     * 
+     * @return Factory<\App\Models\Notification>
+     */
+    public function setTypeNotification(string $type): Factory
     {
         if ($type == 'TrainingNotification') {
             return $this->state(function () {
@@ -159,5 +169,11 @@ class NotificationFactory extends Factory
                 ];
             });
         }
+
+        return $this->state(function () use ($type) {
+            return [
+                'type' => $type,
+            ];
+        });
     }
 }

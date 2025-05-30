@@ -12,6 +12,10 @@ final class TeamMutation
 
     private User $user;
 
+    /**
+     * @param Team $team
+     * @param User $user
+     */
     public function __construct(Team $team, User $user)
     {
         $this->team = $team;
@@ -21,8 +25,11 @@ final class TeamMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @param GraphQLContext $context
+     * 
+     * @return Team
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): Team
     {
         $user = $context->user();
 
@@ -44,7 +51,13 @@ final class TeamMutation
         return $this->team;
     }
 
-    private function relationUsers($args, $context)
+    /**
+     * @param array<string, mixed> $args
+     * @param GraphQLContext $context
+     * 
+     * @return Team
+     */
+    private function relationUsers(array $args, GraphQLContext $context): Team
     {
         if (isset($args['player_id']) && count($args['player_id']) > 0) {
 
@@ -84,7 +97,15 @@ final class TeamMutation
         return $this->team;
     }
 
-    private function alteracoesModificacao($args, $currentUsersIds, $changes, $context)
+    /**
+     * @param array<string, mixed> $args
+     * @param array<int, int> $currentUsersIds
+     * @param array<string, mixed> $changes
+     * @param GraphQLContext $context
+     * 
+     * @return void
+     */
+    private function alteracoesModificacao(array $args, array $currentUsersIds, array $changes, GraphQLContext $context): void
     {
         // NOTE - IDs dos times que foram removidos
         $removedUsersIds = array_diff($currentUsersIds, $args['player_id']);
@@ -93,21 +114,22 @@ final class TeamMutation
         $addedUsersIds = $changes['attached'];
 
         // NOTE - Atualiza o 'updated_at' dos usuários removidos
-        foreach ($removedUsersIds as $userId) {
-            $user = User::find($userId);
-            if ($user) {
+        $userId = $context->user()?->getAuthIdentifier();
+
+        foreach ($removedUsersIds as $id) {
+            $user = User::find($id);
+            if ($user && $userId) {
                 $user->touch();
-                $user->user_id = $context->user()->id;
+                $user->user_id = $userId;
                 $user->save();
             }
         }
 
-        // NOTE - Atualiza o 'updated_at' dos times adicionados
-        foreach ($addedUsersIds as $userId) {
-            $user = User::find($userId);
-            if ($user) {
+        foreach ($addedUsersIds as $id) {
+            $user = User::find($id);
+            if ($user && $userId) {
                 $user->touch();
-                $user->user_id = $context->user()->id;
+                $user->user_id = $userId;
                 $user->save();
             }
         }
@@ -116,8 +138,11 @@ final class TeamMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @param  GraphQLContext  $context
+     * 
+     * @return Team[]
      */
-    public function delete($rootValue, array $args, GraphQLContext $context)
+    public function delete($rootValue, array $args, GraphQLContext $context): array
     {
         $teams = [];
         foreach ($args['id'] as $id) {

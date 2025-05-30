@@ -9,12 +9,24 @@ use Tests\TestCase;
 
 class NotificationSettingTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'userId',
@@ -26,12 +38,18 @@ class NotificationSettingTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
+    /**
+     * @return void
+     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -39,6 +57,9 @@ class NotificationSettingTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * @return void
+     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -89,6 +110,12 @@ class NotificationSettingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     *
      * TODO - Falta criar os cenários de erro do request e mensagens traduzidas
      *
      * @return void
@@ -100,11 +127,11 @@ class NotificationSettingTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingRequiredParametersEditError')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function notification_setting_edit(
-        $data,
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $data,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
     ) {
         $user = User::factory()->create();
 
@@ -153,7 +180,10 @@ class NotificationSettingTest extends TestCase
             ->assertStatus(200);
     }
 
-    public static function notificationSettingActiveEmailAndSystemEditSuccess()
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function notificationSettingActiveEmailAndSystemEditSuccess(): array
     {
         return [
             'notification setting edit, active email and system notification type account confirmation' => [
@@ -216,7 +246,10 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingActiveEmailEditSuccess()
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function notificationSettingActiveEmailEditSuccess(): array
     {
         return [
             'notification setting edit, active email notification type account confirmation' => [
@@ -279,7 +312,10 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingActiveSystemEditSuccess()
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function notificationSettingActiveSystemEditSuccess(): array
     {
         return [
             'notification setting edit, active system notification type account confirmation' => [
@@ -342,7 +378,10 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingDesactiveEmailAndSystemEditSuccess()
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function notificationSettingDesactiveEmailAndSystemEditSuccess(): array
     {
         return [
             'notification setting edit, desactive email and system notification type account confirmation' => [
@@ -405,6 +444,9 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
     public static function notificationSettingRequiredParametersEditError(): array
     {
         return [

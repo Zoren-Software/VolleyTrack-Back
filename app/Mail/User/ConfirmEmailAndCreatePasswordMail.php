@@ -15,10 +15,17 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
      */
     public $title;
 
+    /**
+     * @var bool
+     */
     private $admin;
 
     /**
      * Create a new message instance.
+     *
+     * @param \App\Models\User $user
+     * @param string $tenant
+     * @param bool $admin
      *
      * @return void
      */

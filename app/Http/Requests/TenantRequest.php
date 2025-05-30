@@ -66,6 +66,9 @@ class TenantRequest extends FormRequest implements ScribeInterface
         ];
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     public function bodyParameters(): array
     {
         return [

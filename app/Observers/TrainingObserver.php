@@ -44,6 +44,11 @@ class TrainingObserver
         }
     }
 
+    /**
+     * @param Training $training
+     * 
+     * @return void
+     */
     public function creating(Training $training)
     {
         if (!$training->isDirty('user_id')) {
@@ -51,6 +56,11 @@ class TrainingObserver
         }
     }
 
+    /**
+     * @param Training $training
+     * 
+     * @return void
+     */
     public function updating(Training $training)
     {
         if (!$training->isDirty('user_id')) {

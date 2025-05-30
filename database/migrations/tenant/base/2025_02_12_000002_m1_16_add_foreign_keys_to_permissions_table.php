@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * @return void
+     */
     public function up(): void
     {
         $tableNames = config('permission.table_names');
@@ -16,6 +19,9 @@ return new class extends Migration
         $this->recreateForeignKeys($tableNames);
     }
 
+    /**
+     * @return void
+     */
     public function down(): void
     {
         $tableNames = config('permission.table_names');
@@ -25,6 +31,11 @@ return new class extends Migration
         $this->recreateForeignKeys($tableNames);
     }
 
+    /**
+     * @param array<string, string> $tableNames
+     * 
+     * @return void
+     */
     private function removeForeignKeys(array $tableNames): void
     {
         $foreignKeys = [
@@ -43,6 +54,11 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param array<string, string> $tableNames
+     * 
+     * @return void
+     */
     private function modifyPermissionsTable(array $tableNames): void
     {
         if (!Schema::hasTable($tableNames['permissions'])) {
@@ -60,6 +76,11 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @param array<string, string> $tableNames
+     * 
+     * @return void
+     */
     private function removeIndexes(array $tableNames): void
     {
         if (!Schema::hasTable($tableNames['permissions'])) {
@@ -73,6 +94,11 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @param array<string, string> $tableNames
+     * 
+     * @return void
+     */
     private function recreateForeignKeys(array $tableNames): void
     {
         $foreignKeys = [

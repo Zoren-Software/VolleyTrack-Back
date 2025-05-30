@@ -9,29 +9,56 @@ abstract class BaseDatabase extends TestCase
 {
     use DatabaseAssertions;
 
+    /**
+     * @var bool
+     */
     protected $graphql = false;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = false;
 
+    /**
+     * @var bool
+     */
     protected $login = false;
 
+    /**
+     * @var string
+     */
     protected string $table = ''; // cada classe filha sobrescreve
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $primaryKey = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $autoIncrements = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $foreignKeys = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $uniqueKeys = [];
 
+    /**
+     * @var array<string, mixed>
+     */
     protected static array $fieldTypes = [];
 
     /**
      * Verificar se os campos estão corretamente definidos.
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function database_verify_fields()
+    public function database_verify_fields(): void
     {
         $this->verifyFields();
     }
@@ -40,7 +67,7 @@ abstract class BaseDatabase extends TestCase
      * Verificar se a chave primária está corretamente definida.
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function database_verify_primary_key()
+    public function database_verify_primary_key(): void
     {
         $this->verifyPrimaryKey();
     }
@@ -49,7 +76,7 @@ abstract class BaseDatabase extends TestCase
      * Verificar se as chaves estrangeiras estão corretamente definidas.
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function database_verify_foreign_keys()
+    public function database_verify_foreign_keys(): void
     {
         $this->verifyForeignKeys();
     }
@@ -58,7 +85,7 @@ abstract class BaseDatabase extends TestCase
      * Verificar se os campos auto_increment estão corretamente definidos.
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function database_verify_auto_increments()
+    public function database_verify_auto_increments(): void
     {
         $this->verifyAutoIncrements();
     }
@@ -67,7 +94,7 @@ abstract class BaseDatabase extends TestCase
      * Verificar se as chaves únicas estão corretamente definidas.
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function database_verify_unique_keys()
+    public function database_verify_unique_keys(): void
     {
         $this->verifyUniqueKeys();
     }
@@ -76,7 +103,7 @@ abstract class BaseDatabase extends TestCase
      * Verificar número total de campos na tabela.
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function database_verify_total_fields()
+    public function database_verify_total_fields(): void
     {
         $this->verifyTotalFields();
     }
@@ -85,7 +112,7 @@ abstract class BaseDatabase extends TestCase
      * Verificar o total de chaves estrangeiras no array de chaves estrangeiras e na tabela.
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function database_verify_total_foreign_keys()
+    public function database_verify_total_foreign_keys(): void
     {
         $this->verifyTotalForeignKeys();
     }
@@ -94,7 +121,7 @@ abstract class BaseDatabase extends TestCase
      * Verificar se o total de unique keys está correto.
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function database_verify_total_unique_keys()
+    public function database_verify_total_unique_keys(): void
     {
         $this->verifyTotalUniqueKeys();
     }

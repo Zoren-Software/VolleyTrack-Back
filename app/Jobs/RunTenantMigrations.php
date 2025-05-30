@@ -20,12 +20,26 @@ class RunTenantMigrations implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /**
+     * @var string
+     */
     protected $tenantId;
 
+    /**
+     * @var string
+     */
     protected $email;
 
+    /**
+     * @var string
+     */
     protected $name;
 
+    /**
+     * @param string $tenantId
+     * @param string $email
+     * @param string $name
+     */
     public function __construct(string $tenantId, string $email, string $name)
     {
         $this->tenantId = $tenantId;

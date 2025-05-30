@@ -25,6 +25,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Training extends Model
 {
+    /**
+     * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\TrainingFactory>
+     */
     use HasFactory;
     use LogsActivity;
     use SoftDeletes;
@@ -44,20 +47,41 @@ class Training extends Model
         'date_end' => 'datetime:Y-m-d H:i:s',
     ];
 
+    /**
+     * @var string
+     */
     private $format = 'd/m/Y';
 
+    /**
+     * @phpstan-return BelongsTo<User, Training>
+     * 
+     * @return BelongsTo<User, Training>
+     */
     public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @phpstan-return BelongsTo<Team, Training>
+     * 
+     * @return BelongsTo<Team, Training>
+     */
     public function team()
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(Team::class);
     }
 
+    /**
+     * @phpstan-return BelongsToMany<Fundamental, Training, FundamentalsTrainings>
+     * 
+     * @return BelongsToMany<Fundamental, Training, FundamentalsTrainings>
+     */
     public function fundamentals(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(Fundamental::class, 'fundamentals_trainings')
             ->using(FundamentalsTrainings::class)
             ->as('fundamentals')
@@ -65,8 +89,14 @@ class Training extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
+    /**
+     * @phpstan-return BelongsToMany<SpecificFundamental, Training, SpecificFundamentalsTrainings>
+     * 
+     * @return BelongsToMany<SpecificFundamental, Training, SpecificFundamentalsTrainings>
+     */
     public function specificFundamentals(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(SpecificFundamental::class, 'specific_fundamentals_trainings')
             ->using(SpecificFundamentalsTrainings::class)
             ->as('specific_fundamentals')
@@ -74,11 +104,21 @@ class Training extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
+    /**
+     * @phpstan-return HasMany<ConfirmationTraining, Training>
+     * 
+     * @return HasMany<ConfirmationTraining, Training>
+     */
     public function confirmationsTraining(): HasMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->hasMany(ConfirmationTraining::class);
     }
 
+    /**
+     * 
+     * @return LogOptions
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -95,8 +135,17 @@ class Training extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public static function rules($fundamentalIds)
+    /**
+     * @param array<string> $fundamentalIds
+     * @return array<string, list<Rule|string>>
+     * @phpstan-ignore-next-line
+     */
+    public static function rules(array $fundamentalIds): array
     {
+        // Convertendo para array<int>
+        $numericFundamentalIds = array_map('intval', $fundamentalIds);
+
+        /** @phpstan-ignore-next-line */
         return [
             'name' => [
                 'required',
@@ -106,7 +155,7 @@ class Training extends Model
                 'required',
             ],
             'specificFundamentalId' => [
-                new RelationshipSpecificFundamental($fundamentalIds),
+                new RelationshipSpecificFundamental($numericFundamentalIds),
             ],
             'dateStart' => [
                 'required',
@@ -126,7 +175,9 @@ class Training extends Model
     /**
      * @codeCoverageIgnore
      *
-     * @param  null  $daysNotification
+     * @param int|null $daysNotification
+     * 
+     * @return void
      */
     public function sendNotificationTechnicians(?int $daysNotification = null): void
     {
@@ -155,6 +206,8 @@ class Training extends Model
      * @codeCoverageIgnore
      *
      * @param  null  $daysNotification
+     * 
+     * @return void
      */
     public function sendNotificationPlayers(?int $daysNotification = null): void
     {
@@ -179,6 +232,13 @@ class Training extends Model
         });
     }
 
+    /**
+     * @param string $startDate
+     * @param string $dateToday
+     * @param string $dateLimit
+     * 
+     * @return bool
+     */
     public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit): bool
     {
         $startDate = Carbon::createFromFormat($this->format, $startDate);
@@ -191,6 +251,9 @@ class Training extends Model
     /**
      * @codeCoverageIgnore
      *
+     * @param int|null $trainingId
+     * @param int|null $daysNotification
+     * 
      * @return void
      */
     public function confirmationsPlayers(?int $trainingId = null, ?int $daysNotification = null)
@@ -246,6 +309,11 @@ class Training extends Model
         $this->sendNotificationTechnicians($daysNotification);
     }
 
+    /**
+     * @param int $teamId
+     * 
+     * @return void
+     */
     public function deleteConfirmationsPlayersOld(int $teamId): void
     {
         $this->confirmationsTraining()
@@ -269,6 +337,9 @@ class Training extends Model
         });
     }
 
+    /**
+     * @return void
+     */
     public function sendEmailPlayersTrainingCancelled(): void
     {
         $this->team->players()->each(function ($player) {
@@ -284,6 +355,8 @@ class Training extends Model
 
     /**
      * @codeCoverageIgnore
+     * 
+     * @return array<string, int|float>
      */
     public function metrics(): array
     {
@@ -310,9 +383,14 @@ class Training extends Model
         ];
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<Training>
+     */
     public function scopeList(Builder $query, array $args)
     {
-        // @phpstan-ignore-next-line
         return $query
             ->filterSearch($args)
             ->filterIgnores($args)
@@ -321,10 +399,15 @@ class Training extends Model
             ->filterDate($args);
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterSearch(Builder $query, array $args)
     {
         $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
-            // @phpstan-ignore-next-line
             $query
                 ->filterName($args['filter']['search'])
                 ->orWhere(function ($query) use ($args) {
@@ -335,6 +418,12 @@ class Training extends Model
         });
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param string $search
+     * 
+     * @return void
+     */
     public function scopeFilterName(Builder $query, string $search)
     {
         $query->when(!empty($search), function ($query) use ($search) {
@@ -342,6 +431,12 @@ class Training extends Model
         });
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param string $search
+     * 
+     * @return void
+     */
     public function scopeFilterTeamName(Builder $query, string $search)
     {
         $query->when(!empty($search), function ($query) use ($search) {
@@ -352,6 +447,12 @@ class Training extends Model
         });
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param string $search
+     * 
+     * @return void
+     */
     public function scopeFilterUserName(Builder $query, string $search)
     {
         $query->when(!empty($search), function ($query) use ($search) {
@@ -362,6 +463,12 @@ class Training extends Model
         });
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterTeam(Builder $query, array $args)
     {
         $query->when(
@@ -388,6 +495,12 @@ class Training extends Model
 
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterUser(Builder $query, array $args)
     {
         $query->when(
@@ -403,6 +516,12 @@ class Training extends Model
         );
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterIgnores(Builder $query, array $args)
     {
         $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
@@ -410,6 +529,12 @@ class Training extends Model
         });
     }
 
+    /**
+     * @param Builder<Training> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterDate(Builder $query, array $args)
     {
         $query->when(

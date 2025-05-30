@@ -4,21 +4,29 @@ namespace App\GraphQL\Queries;
 
 use App\Models\ConfirmationTraining;
 use App\Models\Training;
+use Illuminate\Database\Eloquent\Builder;
 
 class ConfirmationTrainingQuery
 {
     /**
      * @param  mixed  $_
      * @param  array{}  $args
+     * 
+     * @return Builder<ConfirmationTraining>
      */
-    public function list($_, array $args)
+    public function list($_, array $args): Builder
     {
         $confirmationTraining = new ConfirmationTraining;
 
         return $confirmationTraining->list($args);
     }
 
-    public function metrics(Training $training)
+    /**
+     * @param Training $training
+     * 
+     * @return array<string, mixed>
+     */
+    public function metrics(Training $training): array
     {
         return $training->metrics();
     }

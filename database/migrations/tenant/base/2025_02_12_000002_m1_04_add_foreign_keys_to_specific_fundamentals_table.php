@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * @return void
+     */
+    public function up(): void
     {
         if (Schema::hasTable('specific_fundamentals')) {
             Schema::table('specific_fundamentals', function (Blueprint $table) {
@@ -25,7 +28,10 @@ return new class extends Migration
         }
     }
 
-    public function down()
+    /**
+     * @return void
+     */
+    public function down(): void
     {
         if (Schema::hasTable('specific_fundamentals')) {
             Schema::table('specific_fundamentals', function (Blueprint $table) {

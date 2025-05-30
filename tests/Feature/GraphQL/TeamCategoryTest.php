@@ -6,14 +6,29 @@ use Tests\TestCase;
 
 class TeamCategoryTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -24,6 +39,11 @@ class TeamCategoryTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @param bool $hasPermission
+     * 
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'view-team-categories');
@@ -32,6 +52,11 @@ class TeamCategoryTest extends TestCase
     /**
      * Listagem de todos os times.
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @author Maicon Cerutti
      *
      * @return void
@@ -39,9 +64,9 @@ class TeamCategoryTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function team_categories_list(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -75,9 +100,9 @@ class TeamCategoryTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -109,6 +134,11 @@ class TeamCategoryTest extends TestCase
     /**
      * Listagem de um time
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @author Maicon Cerutti
      *
      * @return void
@@ -116,9 +146,9 @@ class TeamCategoryTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function team_category_info(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -147,9 +177,9 @@ class TeamCategoryTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [

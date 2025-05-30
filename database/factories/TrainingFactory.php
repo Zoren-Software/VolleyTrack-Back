@@ -14,7 +14,7 @@ class TrainingFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         $dateStart = $this->faker
             ->dateTimeBetween('now', '+2 days')
@@ -35,7 +35,12 @@ class TrainingFactory extends Factory
         ];
     }
 
-    public function setTeamId(int $teamId)
+    /**
+     * @param int $teamId
+     * 
+     * @return Factory<\App\Models\Training>
+     */
+    public function setTeamId(int $teamId): Factory
     {
         return $this->state(function () use ($teamId) {
             return [
@@ -44,7 +49,12 @@ class TrainingFactory extends Factory
         });
     }
 
-    public function setStatus(bool $status)
+    /**
+     * @param bool $status
+     * 
+     * @return Factory<\App\Models\Training>
+     */
+    public function setStatus(bool $status): Factory
     {
         return $this->state(function () use ($status) {
             return [

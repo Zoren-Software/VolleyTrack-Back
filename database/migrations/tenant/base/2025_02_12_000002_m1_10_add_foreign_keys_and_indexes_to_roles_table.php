@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * @return void
+     */
     public function up(): void
     {
         $tableNames = config('permission.table_names');
@@ -17,12 +20,20 @@ return new class extends Migration
         $this->recreateForeignKeys($tableNames);
     }
 
+    /**
+     * @return void
+     */
     public function down(): void
     {
         $tableNames = config('permission.table_names');
         $this->removeIndexesAndForeignKeys($tableNames);
     }
 
+    /**
+     * @param array<string, string> $tableNames
+     * 
+     * @return void
+     */
     private function removeForeignKeys(array $tableNames): void
     {
         $foreignKeys = [
@@ -41,6 +52,12 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param array<string, string> $tableNames
+     * @param bool $teams
+     * 
+     * @return void
+     */
     private function modifyRolesTable(array $tableNames, bool $teams): void
     {
         if (!Schema::hasTable($tableNames['roles'])) {
@@ -61,6 +78,11 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @param Blueprint $table
+     * 
+     * @return void
+     */
     private function addTeamForeignKey(Blueprint $table): void
     {
         if (!Schema::hasTable('teams')) {
@@ -79,6 +101,11 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param array<string, string> $tableNames
+     * 
+     * @return void
+     */
     private function recreateForeignKeys(array $tableNames): void
     {
         $foreignKeys = [
@@ -100,6 +127,11 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param array<string, string> $tableNames
+     * 
+     * @return void
+     */
     private function removeIndexesAndForeignKeys(array $tableNames): void
     {
         if (Schema::hasTable($tableNames['roles'])) {

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -15,10 +18,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Team extends Model
 {
+    /**
+     * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\TeamFactory>
+     */
     use HasFactory;
+
     use LogsActivity;
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'name',
         'user_id',
@@ -26,18 +36,30 @@ class Team extends Model
         'team_level_id',
     ];
 
-    public function user()
+    /**
+     * @return BelongsTo<User, Team>
+     */
+    public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 
-    public function confirmationsTraining()
+    /**
+     * @return HasMany<ConfirmationTraining, Team>
+     */
+    public function confirmationsTraining(): HasMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->hasMany(ConfirmationTraining::class);
     }
 
-    public function technicians()
+    /**
+     * @return BelongsToMany<User, Team, TeamsUsers>
+     */
+    public function technicians(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(User::class, 'teams_users')
             ->using(TeamsUsers::class)
             ->as('technicians')
@@ -46,8 +68,12 @@ class Team extends Model
             ->withPivot('created_at', 'updated_at', 'role');
     }
 
-    public function players()
+    /**
+     * @return BelongsToMany<User, Team, TeamsUsers>
+     */
+    public function players(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(User::class, 'teams_users')
             ->using(TeamsUsers::class)
             ->as('players')
@@ -56,6 +82,9 @@ class Team extends Model
             ->withPivot('created_at', 'updated_at', 'role');
     }
 
+    /**
+     * @return LogOptions
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -72,19 +101,32 @@ class Team extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function teamCategory()
+    /**
+     * @return BelongsTo<TeamCategory, Team>
+     */
+    public function teamCategory(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(TeamCategory::class, 'team_category_id');
     }
 
-    public function teamLevel()
+    /**
+     * @return BelongsTo<TeamLevel, Team>
+     */
+    public function teamLevel(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(TeamLevel::class, 'team_level_id');
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<Team>
+     */
     public function scopeList(Builder $query, array $args)
     {
-        // @phpstan-ignore-next-line
         return $query
             ->with([
                 'teamCategory:id,name,updated_at',
@@ -98,6 +140,12 @@ class Team extends Model
             ->filterUsers($args);
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterIgnores(Builder $query, array $args)
     {
         $query->when(
@@ -108,15 +156,26 @@ class Team extends Model
             });
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterSearch(Builder $query, array $args)
     {
         $query->when(isset($args['filter']) &&
             isset($args['filter']['search']), function ($query) use ($args) {
-                // @phpstan-ignore-next-line
                 $query->filterName($args['filter']['search']);
             });
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param string $search
+     * 
+     * @return void
+     */
     public function scopeFilterName(Builder $query, string $search)
     {
         $query->when(!empty($search), function ($query) use ($search) {
@@ -124,6 +183,12 @@ class Team extends Model
         });
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param array<string> $ids
+     * 
+     * @return void
+     */
     public function scopeFilterIds(Builder $query, array $ids)
     {
         $query->when(!empty($ids), function ($query) use ($ids) {
@@ -131,6 +196,12 @@ class Team extends Model
         });
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterPosition(Builder $query, array $args)
     {
         $query->when(
@@ -148,6 +219,12 @@ class Team extends Model
         );
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterByTeamPlayer(Builder $query, array $args)
     {
         $query->when(
@@ -163,6 +240,12 @@ class Team extends Model
         );
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterPlayers(Builder $query, array $args)
     {
         $query->when(
@@ -178,6 +261,12 @@ class Team extends Model
         );
     }
 
+    /**
+     * @param Builder<Team> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterUsers(Builder $query, array $args)
     {
         $query->when(

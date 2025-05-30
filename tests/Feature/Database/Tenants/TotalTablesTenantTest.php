@@ -7,10 +7,19 @@ use Tests\TestCase;
 
 class TotalTablesTenantTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = false;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = false;
 
     /**
@@ -19,7 +28,7 @@ class TotalTablesTenantTest extends TestCase
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function verify_total_tables()
+    public function verify_total_tables(): void
     {
         $tables = DB::select('SHOW TABLES');
         $totalTables = count($tables);

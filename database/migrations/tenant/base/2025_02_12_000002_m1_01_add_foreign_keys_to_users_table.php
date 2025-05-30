@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * @return void
+     */
+    public function up(): void
     {
         // 🚀 Alterando a coluna ID da tabela users
         if (
@@ -30,7 +33,10 @@ return new class extends Migration
         }
     }
 
-    public function down()
+    /**
+     * @return void
+     */
+    public function down(): void
     {
         // 🚀 Alterando a coluna ID da tabela users
         if (

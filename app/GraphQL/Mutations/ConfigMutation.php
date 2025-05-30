@@ -9,15 +9,22 @@ final class ConfigMutation
 {
     private Config $config;
 
+    /**
+     * @param Config $config
+     */
     public function __construct(Config $config)
     {
         $this->config = $config;
     }
 
     /**
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @param GraphQLContext $context
+     * 
+     * @return Config
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): Config
     {
         $this->config = $this->config->find(1);
 

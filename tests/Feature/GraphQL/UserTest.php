@@ -18,16 +18,34 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $otherUser = false;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -70,7 +88,12 @@ class UserTest extends TestCase
         ]);
     }
 
-    private function setPermissions(bool $hasPermission)
+    /**
+     * @param bool $hasPermission
+     * 
+     * @return void
+     */
+    private function setPermissions(bool $hasPermission): void
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-user');
         $this->checkPermission($hasPermission, $this->role, 'view-user');
@@ -80,17 +103,22 @@ class UserTest extends TestCase
      * Listagem de todos os usuários.
      *
      * @author Maicon Cerutti
+     * 
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function users_list(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
-    ) {
+    ): void {
         $this->setPermissions($hasPermission);
 
         User::factory()
@@ -126,9 +154,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -162,14 +190,19 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function user_info(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -203,9 +236,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -233,16 +266,23 @@ class UserTest extends TestCase
      * Método de criação de um usuário.
      *
      * @author Maicon Cerutti
+     * 
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasTeam
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('userCreateProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function user_create(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasTeam,
         bool $hasPermission
     ) {
@@ -309,9 +349,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function userCreateProvider()
+    public static function userCreateProvider(): array
     {
         $faker = Faker::create();
         $emailExistent = $faker->email;
@@ -705,19 +745,26 @@ class UserTest extends TestCase
      * Método de edição de um usuário.
      *
      * @author Maicon Cerutti
+     * 
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasTeam
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('userEditProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function user_edit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasTeam,
         bool $hasPermission
-    ) {
+    ): void {
         $this->setPermissions($hasPermission);
 
         $user = User::find($this->user->id);
@@ -780,9 +827,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function userEditProvider()
+    public static function userEditProvider(): array
     {
         $faker = Faker::create();
 
@@ -1135,12 +1182,24 @@ class UserTest extends TestCase
      * Método de deletar um usuário.
      *
      * @author Maicon Cerutti
+     * 
+     * @param array<string, mixed> $data
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('userDeleteProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function delete_user($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    public function delete_user(
+        array $data,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission
+    ): void
     {
         $this->setPermissions($hasPermission);
 
@@ -1179,9 +1238,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function userDeleteProvider()
+    public static function userDeleteProvider(): array
     {
         $userDelete = ['userDelete'];
 
@@ -1240,15 +1299,20 @@ class UserTest extends TestCase
      * Listar informações de usuário logado.
      *
      * @author Maicon Cerutti
+     * 
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('meProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function me(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -1292,9 +1356,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function meProvider()
+    public static function meProvider(): array
     {
         return [
             'with auth' => [
@@ -1320,12 +1384,24 @@ class UserTest extends TestCase
      * Método de criar senha para um usuário.
      *
      * @author Maicon Cerutti
+     * 
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('setPasswordProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function set_password(array $parameters, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    public function set_password(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission
+    ): void
     {
         $this->setPermissions($hasPermission);
 
@@ -1382,9 +1458,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function setPasswordProvider()
+    public static function setPasswordProvider(): array
     {
         $userSetPassword = ['userSetPassword'];
 

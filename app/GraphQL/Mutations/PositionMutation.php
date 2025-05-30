@@ -9,6 +9,9 @@ final class PositionMutation
 {
     private Position $position;
 
+    /**
+     * @param Position $position
+     */
     public function __construct(Position $position)
     {
         $this->position = $position;
@@ -17,8 +20,11 @@ final class PositionMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @param GraphQLContext $context
+     * 
+     * @return Position
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): Position
     {
         if (isset($args['id'])) {
             $this->position = $this->position->find($args['id']);
@@ -33,8 +39,11 @@ final class PositionMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @param GraphQLContext $context
+     * 
+     * @return array<Position>
      */
-    public function delete($rootValue, array $args, GraphQLContext $context)
+    public function delete($rootValue, array $args, GraphQLContext $context): array
     {
         $positions = [];
         foreach ($args['id'] as $id) {

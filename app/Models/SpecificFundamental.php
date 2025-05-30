@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -14,10 +16,16 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class SpecificFundamental extends Model
 {
+    /**
+     * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\SpecificFundamentalFactory>
+     */
     use HasFactory;
     use LogsActivity;
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'name',
         'user_id',
@@ -25,13 +33,21 @@ class SpecificFundamental extends Model
         'updated_at',
     ];
 
-    public function user()
+    /**
+     * @return BelongsTo<User, SpecificFundamental>
+     */
+    public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 
-    public function fundamentals()
+    /**
+     * @return BelongsToMany<Fundamental, SpecificFundamental>
+     */
+    public function fundamentals(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(Fundamental::class)
             ->using(FundamentalsSpecificFundamentals::class)
             ->as('fundamentals')
@@ -50,6 +66,9 @@ class SpecificFundamental extends Model
         return $specificFundamental;
     }
 
+    /**
+     * @return LogOptions
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -66,6 +85,11 @@ class SpecificFundamental extends Model
             ->dontSubmitEmptyLogs();
     }
 
+    /**
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<SpecificFundamental>
+     */
     public function list(array $args)
     {
         return $this
@@ -75,11 +99,16 @@ class SpecificFundamental extends Model
             ->filterFundamentals($args);
     }
 
+    /**
+     * @param Builder<SpecificFundamental> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterSearch(Builder $query, array $args)
     {
         $query->when(isset($args['filter']) &&
             isset($args['filter']['search']), function ($query) use ($args) {
-                // @phpstan-ignore-next-line
                 $query
                     ->filterName($args['filter']['search'])
                     ->orWhere(function ($query) use ($args) {
@@ -89,6 +118,12 @@ class SpecificFundamental extends Model
             });
     }
 
+    /**
+     * @param Builder<SpecificFundamental> $query
+     * @param string $search
+     * 
+     * @return void
+     */
     public function scopeFilterName(Builder $query, string $search)
     {
         $query->when(!empty($search), function ($query) use ($search) {
@@ -96,6 +131,12 @@ class SpecificFundamental extends Model
         });
     }
 
+    /**
+     * @param Builder<SpecificFundamental> $query
+     * @param string $search
+     * 
+     * @return void
+     */
     public function scopeFilterUserName(Builder $query, string $search)
     {
         $query->when(!empty($search), function ($query) use ($search) {
@@ -106,6 +147,12 @@ class SpecificFundamental extends Model
         });
     }
 
+    /**
+     * @param Builder<SpecificFundamental> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterUser(Builder $query, array $args)
     {
         $query->when(
@@ -121,6 +168,12 @@ class SpecificFundamental extends Model
         );
     }
 
+    /**
+     * @param Builder<SpecificFundamental> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterIgnores(Builder $query, array $args)
     {
         $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
@@ -128,6 +181,12 @@ class SpecificFundamental extends Model
         });
     }
 
+    /**
+     * @param Builder<SpecificFundamental> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
     public function scopeFilterFundamentals(Builder $query, array $args)
     {
         $query->when(

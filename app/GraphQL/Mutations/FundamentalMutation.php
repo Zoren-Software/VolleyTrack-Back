@@ -9,15 +9,22 @@ final class FundamentalMutation
 {
     private Fundamental $fundamental;
 
+    /**
+     * @param Fundamental $fundamental
+     */
     public function __construct(Fundamental $fundamental)
     {
         $this->fundamental = $fundamental;
     }
 
     /**
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @param GraphQLContext $context
+     * 
+     * @return Fundamental
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): Fundamental
     {
         if (isset($args['id'])) {
             $this->fundamental = $this->fundamental->find($args['id']);
@@ -30,9 +37,13 @@ final class FundamentalMutation
     }
 
     /**
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @param GraphQLContext $context
+     * 
+     * @return array<Fundamental>
      */
-    public function delete($rootValue, array $args, GraphQLContext $context)
+    public function delete($rootValue, array $args, GraphQLContext $context): array
     {
         $fundamentals = [];
         foreach ($args['id'] as $id) {

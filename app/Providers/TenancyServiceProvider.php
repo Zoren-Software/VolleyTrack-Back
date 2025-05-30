@@ -15,7 +15,11 @@ use Stancl\Tenancy\Middleware;
 
 class TenancyServiceProvider extends ServiceProvider
 {
-    // By default, no namespace is used to support the callable array syntax.
+    /**
+     * By default, no namespace is used to support the callable array syntax.
+     * 
+     * @var string
+     */
     public static string $controllerNamespace = '';
 
     /**
@@ -104,6 +108,9 @@ class TenancyServiceProvider extends ServiceProvider
         //
     }
 
+    /**
+     * @return void
+     */
     public function boot()
     {
         $this->bootEvents();
@@ -112,7 +119,10 @@ class TenancyServiceProvider extends ServiceProvider
         $this->makeTenancyMiddlewareHighestPriority();
     }
 
-    protected function bootEvents()
+    /**
+     * @return void
+     */
+    protected function bootEvents(): void
     {
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {
@@ -130,7 +140,7 @@ class TenancyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapRoutes()
+    protected function mapRoutes(): void
     {
         if (file_exists(base_path('routes/tenant.php'))) {
             Route::namespace(static::$controllerNamespace)
@@ -138,7 +148,10 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
-    protected function makeTenancyMiddlewareHighestPriority()
+    /**
+     * @return void
+     */
+    protected function makeTenancyMiddlewareHighestPriority(): void
     {
         $tenancyMiddleware = [
             // Even higher priority than the initialization middleware

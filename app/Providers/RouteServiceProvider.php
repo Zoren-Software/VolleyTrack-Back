@@ -36,7 +36,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
@@ -53,14 +53,17 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 
-    protected function mapWebRoutes()
+    /**
+     * @return void
+     */
+    protected function mapWebRoutes(): void
     {
         Route::middleware([
             'web',
@@ -92,7 +95,10 @@ class RouteServiceProvider extends ServiceProvider
         }
     }
 
-    protected function mapApiRoutes()
+    /**
+     * @return void
+     */
+    protected function mapApiRoutes(): void
     {
         foreach ($this->centralDomains() as $domain) {
             Route::prefix('api')
@@ -103,11 +109,17 @@ class RouteServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * @return array<string>
+     */
     protected function centralDomains(): array
     {
         return config('tenancy.central_domains');
     }
 
+    /**
+     * @return array<string>
+     */
     private function rotasWeb(): array
     {
         return array_diff(scandir(base_path('routes/v1/web')), ['.', '..']);

@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class NotificationSetting extends Model
 {
-    use HasFactory;
     use LogsActivity;
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'user_id',
         'notification_type_id',
@@ -23,6 +25,9 @@ class NotificationSetting extends Model
         'is_active',
     ];
 
+    /**
+     * @return LogOptions
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -39,9 +44,14 @@ class NotificationSetting extends Model
             ->dontSubmitEmptyLogs();
     }
 
+    /**
+     * @param Builder<NotificationSetting> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<NotificationSetting>
+     */
     public function scopeList(Builder $query, array $args)
     {
-        // @phpstan-ignore-next-line
         return $query->where('user_id', auth()->id())
             ->whereHas('notificationType', function ($query) {
                 // NOTE - Para não mostrar os tipos de notificação que não são editáveis
@@ -66,6 +76,7 @@ class NotificationSetting extends Model
 
     /**
      * @param  \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting>  $query
+     * @param array<string, mixed> $args
      * @return \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting>
      */
     public function scopeFilter(Builder $query, array $args): Builder
@@ -76,6 +87,12 @@ class NotificationSetting extends Model
             ->orderBy('created_at', 'desc');
     }
 
+    /**
+     * @param Builder<NotificationSetting> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<NotificationSetting>
+     */
     public function scopeFilterIsActive(Builder $query, array $args)
     {
         return
@@ -84,6 +101,12 @@ class NotificationSetting extends Model
             });
     }
 
+    /**
+     * @param Builder<NotificationSetting> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<NotificationSetting>
+     */
     public function scopeFilterViaEmail(Builder $query, array $args)
     {
         return
@@ -92,6 +115,12 @@ class NotificationSetting extends Model
             });
     }
 
+    /**
+     * @param Builder<NotificationSetting> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<NotificationSetting>
+     */
     public function scopeFilterViaSystem(Builder $query, array $args)
     {
         return
@@ -101,18 +130,20 @@ class NotificationSetting extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo<NotificationType, NotificationSetting>
      */
-    public function notificationType()
+    public function notificationType(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(NotificationType::class, 'notification_type_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo<User, NotificationSetting>
      */
-    public function user()
+    public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class, 'user_id');
     }
 }

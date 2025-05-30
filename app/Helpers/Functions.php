@@ -7,14 +7,14 @@ function appHost(): string
     return config('app.host');
 }
 
-function appVersion()
+function appVersion(): string
 {
     $composerJson = file_get_contents(base_path('composer.json'));
 
     return trim(json_decode($composerJson, true)['version'] ?? '');
 }
 
-function hasForeignKeyExist($table, $nameForeignKey)
+function hasForeignKeyExist(string $table, string $nameForeignKey): bool
 {
     $databaseName = DB::getDatabaseName();
     $result = DB::select('
@@ -28,7 +28,7 @@ function hasForeignKeyExist($table, $nameForeignKey)
     return !empty($result);
 }
 
-function hasIndexExist($table, $nameIndex)
+function hasIndexExist(string $table, string $nameIndex): bool
 {
     $databaseName = DB::getDatabaseName();
     $result = DB::select('
@@ -42,7 +42,7 @@ function hasIndexExist($table, $nameIndex)
     return !empty($result);
 }
 
-function hasEventExist($eventName)
+function hasEventExist(string $eventName): bool
 {
     $dbName = DB::connection()->getDatabaseName();
     $result = DB::select('
@@ -55,7 +55,7 @@ function hasEventExist($eventName)
     return !empty($result);
 }
 
-function hasAutoIncrement($table, $column = 'id')
+function hasAutoIncrement(string $table, string $column = 'id'): bool
 {
     $databaseName = DB::getDatabaseName();
     $result = DB::select("
@@ -72,6 +72,10 @@ function hasAutoIncrement($table, $column = 'id')
 
 /**
  * Obtém as chaves estrangeiras de uma tabela.
+ * 
+ * @param string $table
+ * 
+ * @return array<string>
  */
 function getForeignKeys(string $table): array
 {
@@ -92,9 +96,10 @@ function getForeignKeys(string $table): array
  * Retorna uma lista de unique keys de uma tabela no banco de dados.
  *
  * @param  string  $table  Nome da tabela
- * @return array Lista de unique keys
+ * 
+ * @return array<string>
  */
-function getUniqueKeys($table)
+function getUniqueKeys(string $table): array
 {
     $databaseName = DB::getDatabaseName();
 
@@ -113,9 +118,10 @@ function getUniqueKeys($table)
  * Retorna uma lista de chaves primárias de uma tabela no banco de dados.
  *
  * @param  string  $table  Nome da tabela
- * @return array Lista de unique keys
+ * 
+ * @return array<string>
  */
-function getPrimaryKeyColumns($table): array
+function getPrimaryKeyColumns(string $table): array
 {
     $databaseName = DB::getDatabaseName();
 

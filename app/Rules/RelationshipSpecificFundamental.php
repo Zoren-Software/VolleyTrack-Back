@@ -7,8 +7,14 @@ use Illuminate\Contracts\Validation\InvokableRule;
 
 class RelationshipSpecificFundamental implements InvokableRule
 {
+    /**
+     * @var array<int>
+     */
     private $fundamentalIds;
 
+    /**
+     * @param array<int> $fundamentalIds
+     */
     public function __construct($fundamentalIds)
     {
         $this->fundamentalIds = $fundamentalIds;
@@ -22,9 +28,10 @@ class RelationshipSpecificFundamental implements InvokableRule
      * @param  string  $attribute
      * @param  mixed  $specificFundamentalIds
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * 
      * @return void
      */
-    public function __invoke($attribute, $specificFundamentalIds, $fail)
+    public function __invoke(string $attribute, mixed $specificFundamentalIds, \Closure $fail): void
     {
         $specificFundamentals = SpecificFundamental::whereIn('id', $specificFundamentalIds)->get();
 

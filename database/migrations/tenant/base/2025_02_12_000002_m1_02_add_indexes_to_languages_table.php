@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * @return void
+     */
+    public function up(): void
     {
         if (!Schema::hasTable('languages')) {
             return;
@@ -19,7 +22,10 @@ return new class extends Migration
         });
     }
 
-    public function down()
+    /**
+     * @return void
+     */
+    public function down(): void
     {
         if (!Schema::hasTable('languages')) {
             return;
@@ -30,6 +36,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @return void
+     */
     private function modifyAutoIncrement(): void
     {
         if (!hasAutoIncrement('languages')) {
@@ -37,6 +46,11 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * 
+     * @return void
+     */
     private function addIndexes(Blueprint $table): void
     {
         $indexes = [
@@ -57,6 +71,11 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * 
+     * @return void
+     */
     private function removeIndexes(Blueprint $table): void
     {
         $indexes = ['languages_slug_index', 'languages_name_index', 'languages_slug_unique', 'languages_name_unique'];

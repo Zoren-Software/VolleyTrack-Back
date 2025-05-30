@@ -7,14 +7,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Fundamental extends Model
 {
+    /**
+     * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\FundamentalFactory>
+     */
     use HasFactory;
     use LogsActivity;
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'name',
         'user_id',
@@ -22,18 +31,30 @@ class Fundamental extends Model
         'updated_at',
     ];
 
-    public function user()
+    /**
+     * @return BelongsTo<User, Fundamental>
+     */
+    public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 
-    public function specificFundamental()
+    /**
+     * @return HasMany<SpecificFundamental, Fundamental>
+     */
+    public function specificFundamental(): HasMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->hasMany(SpecificFundamental::class);
     }
 
-    public function trainings()
+    /**
+     * @return BelongsToMany<Training, Fundamental, FundamentalsTrainings>
+     */
+    public function trainings(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(Training::class, 'fundamentals_trainings')
             ->using(FundamentalsTrainings::class)
             ->as('trainings')
@@ -41,6 +62,9 @@ class Fundamental extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
+    /**
+     * @return LogOptions
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -57,7 +81,12 @@ class Fundamental extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function list(array $args)
+    /**
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<Fundamental>
+     */
+    public function list(array $args): Builder
     {
         return $this
             ->filterSearch($args)
@@ -65,11 +94,16 @@ class Fundamental extends Model
             ->filterUser($args);
     }
 
-    public function scopeFilterSearch(Builder $query, array $args)
+    /**
+     * @param Builder<Fundamental> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
         $query->when(isset($args['filter']) &&
             isset($args['filter']['search']), function ($query) use ($args) {
-                // @phpstan-ignore-next-line
                 $query
                     ->filterName($args['filter']['search'])
                     ->orWhere(function ($query) use ($args) {
@@ -79,14 +113,26 @@ class Fundamental extends Model
             });
     }
 
-    public function scopeFilterName(Builder $query, string $search)
+    /**
+     * @param Builder<Fundamental> $query
+     * @param string $search
+     * 
+     * @return void
+     */
+    public function scopeFilterName(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->where('fundamentals.name', 'like', $search);
         });
     }
 
-    public function scopeFilterUserName(Builder $query, string $search)
+    /**
+     * @param Builder<Fundamental> $query
+     * @param string $search
+     * 
+     * @return void
+     */
+    public function scopeFilterUserName(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('user', function ($query) use ($search) {
@@ -96,7 +142,13 @@ class Fundamental extends Model
         });
     }
 
-    public function scopeFilterUser(Builder $query, array $args)
+    /**
+     * @param Builder<Fundamental> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
+    public function scopeFilterUser(Builder $query, array $args): void
     {
         $query->when(
             isset($args['filter']) &&
@@ -111,14 +163,26 @@ class Fundamental extends Model
         );
     }
 
-    public function scopeFilterIgnores(Builder $query, array $args)
+    /**
+     * @param Builder<Fundamental> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
+    public function scopeFilterIgnores(Builder $query, array $args): void
     {
         $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
             $query->whereNotIn('fundamentals.id', $args['filter']['ignoreIds']);
         });
     }
 
-    public function scopeFilterIds(Builder $query, array $ids)
+    /**
+     * @param Builder<Fundamental> $query
+     * @param array<string> $ids
+     * 
+     * @return void
+     */
+    public function scopeFilterIds(Builder $query, array $ids): void
     {
         $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('fundamentals.id', $ids);

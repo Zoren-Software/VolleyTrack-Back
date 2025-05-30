@@ -10,10 +10,19 @@ class TeamsUsers extends Pivot
 {
     use LogsActivity;
 
+    /**
+     * @var User
+     */
     protected $user;
 
+    /**
+     * @var string
+     */
     protected $table = 'teams_users';
 
+    /**
+     * @param User|null $user
+     */
     public function __construct(?User $user = null)
     {
         $this->user = $user ?? new User;
@@ -42,6 +51,9 @@ class TeamsUsers extends Pivot
             ->dontSubmitEmptyLogs();
     }
 
+    /**
+     * @return void
+     */
     public function updateRoleInRelationship()
     {
         if ($this->user->find($this->user_id)->hasRole('technician')) {

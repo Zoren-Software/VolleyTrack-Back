@@ -2,33 +2,47 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Config extends Model
 {
-    use HasFactory;
     use SoftDeletes;
-
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'user_id',
         'name_tenant',
         'language_id',
     ];
 
-    public function language()
+    /**
+     * @return BelongsTo<Language, Config>
+     */
+    public function language(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(Language::class);
     }
 
-    public function trainingConfig()
+    /**
+     * @return HasOne<TrainingConfig, Config>
+     */
+    public function trainingConfig(): HasOne
     {
+        /** @phpstan-ignore-next-line */
         return $this->hasOne(TrainingConfig::class);
     }
 
-    public function user()
+    /**
+     * @return BelongsTo<User, Config>
+     */
+    public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 }

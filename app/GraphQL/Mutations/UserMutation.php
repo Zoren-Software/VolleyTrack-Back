@@ -11,6 +11,9 @@ final class UserMutation
 {
     private User $user;
 
+    /**
+     * @param User $user
+     */
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -18,9 +21,12 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
+     * @param array<string, mixed> $args
+     * @param GraphQLContext $context
+     * 
      * @return User
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): User
     {
         $userLogged = $context->user();
 
@@ -62,12 +68,13 @@ final class UserMutation
     }
 
     /**
-     * @param  mixed  $user
-     * @param  mixed  $args
-     * @param  mixed  $context
+     * @param User $user
+     * @param array<string, mixed> $args
+     * @param GraphQLContext $context
+     * 
      * @return void
      */
-    private function relationTeams($user, $args, $context)
+    private function relationTeams(User $user, array $args, GraphQLContext $context): void
     {
         $userLogged = $context->user();
 
@@ -110,9 +117,12 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @return array
+     * @param array<string, mixed> $args
+     * @param GraphQLContext $context
+     * 
+     * @return array<User>
      */
-    public function delete($rootValue, array $args, GraphQLContext $context)
+    public function delete($rootValue, array $args, GraphQLContext $context): array
     {
         $users = [];
         foreach ($args['id'] as $id) {
@@ -126,9 +136,12 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
+     * @param array<string, mixed> $args
+     * @param GraphQLContext $context
+     * 
      * @return User
      */
-    public function setPassword($rootValue, array $args, GraphQLContext $context)
+    public function setPassword($rootValue, array $args, GraphQLContext $context): User
     {
         $this->user = User::where([
             'set_password_token' => $args['token'],
@@ -145,9 +158,12 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @return array
+     * @param array<string, mixed> $args
+     * @param GraphQLContext $context
+     * 
+     * @return array<string, string>
      */
-    public function forgotPassword($rootValue, array $args, GraphQLContext $context)
+    public function forgotPassword($rootValue, array $args, GraphQLContext $context): array
     {
         $this->user = new User;
 

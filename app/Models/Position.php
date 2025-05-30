@@ -5,27 +5,43 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Position extends Model
 {
+    /**
+     * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\PositionFactory>
+     */
     use HasFactory;
     use LogsActivity;
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'name',
         'user_id',
     ];
 
-    public function user()
+    /**
+     * @return BelongsTo<User, Position>
+     */
+    public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 
-    public function users()
+    /**
+     * @return BelongsToMany
+     * @phpstan-ignore-next-line
+     */
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'positions_users')
             ->using(PositionsUsers::class)
@@ -33,6 +49,9 @@ class Position extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
+    /**
+     * @return LogOptions
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -49,7 +68,12 @@ class Position extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function list(array $args)
+    /**
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<Position>
+     */
+    public function list(array $args): Builder
     {
         return $this
             ->filterSearch($args)
@@ -57,37 +81,66 @@ class Position extends Model
             ->filterTeam($args);
     }
 
-    public function scopeFilterIgnores(Builder $query, array $args)
+    /**
+     * @param Builder<Position> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
+    public function scopeFilterIgnores(Builder $query, array $args): void
     {
         $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
             $query->whereNotIn('positions.id', $args['filter']['ignoreIds']);
         });
     }
 
-    public function scopeFilterSearch(Builder $query, array $args)
+    /**
+     * @param Builder<Position> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
         $query->when(isset($args['filter']) &&
             isset($args['filter']['search']), function ($query) use ($args) {
-                // @phpstan-ignore-next-line
                 $query->filterName($args['filter']['search']);
             });
     }
 
-    public function scopeFilterName(Builder $query, string $search)
+    /**
+     * @param Builder<Position> $query
+     * @param string $search
+     * 
+     * @return void
+     */
+    public function scopeFilterName(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->where('positions.name', 'like', $search);
         });
     }
 
-    public function scopeFilterIds(Builder $query, array $ids)
+    /**
+     * @param Builder<Position> $query
+     * @param array<string> $ids
+     * 
+     * @return void
+     */
+    public function scopeFilterIds(Builder $query, array $ids): void
     {
         $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('positions.id', $ids);
         });
     }
 
-    public function scopeFilterTeam(Builder $query, array $args)
+    /**
+     * @param Builder<Position> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
+    public function scopeFilterTeam(Builder $query, array $args): void
     {
         $query->when(
             isset($args['filter']) &&

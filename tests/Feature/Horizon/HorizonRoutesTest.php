@@ -6,8 +6,14 @@ use Tests\TestCase;
 
 class HorizonRoutesTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var string
+     */
     protected $tenant = 'horizon';
 
     /**
@@ -25,9 +31,9 @@ class HorizonRoutesTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int, string>>
      */
-    public static function routesProvider()
+    public static function routesProvider(): array
     {
         return [
             'home dashboard horizon redirect' => [

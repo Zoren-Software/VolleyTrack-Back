@@ -7,12 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 final class GitHubService extends Model
 {
+    /**
+     * @var GuzzleClient
+     */
     protected $client;
 
+    /**
+     * @var string
+     */
     protected $accessToken;
 
     /**
+     * @param GuzzleClient|null $client
+     * 
      * @codeCoverageIgnore
+     * @throws \RuntimeException
      */
     public function __construct(?GuzzleClient $client = null)
     {
@@ -28,6 +37,10 @@ final class GitHubService extends Model
     /**
      * @codeCoverageIgnore
      * Verifica se o usuário tem permissão para acessar o repositório.
+     * 
+     * @param string $nickName
+     * 
+     * @return bool
      */
     public function verifyPermissionUser(string $nickName): bool
     {

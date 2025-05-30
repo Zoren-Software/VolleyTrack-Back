@@ -8,6 +8,8 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * 
+     * @return void
      */
     public function up(): void
     {
@@ -25,7 +27,12 @@ return new class extends Migration
         }
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     * 
+     * @return void
+     */
+    public function down(): void
     {
         Schema::dropIfExists('notification_settings');
     }

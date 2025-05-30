@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * @return void
+     */
     public function up(): void
     {
         $tableNames = config('permission.table_names');
@@ -22,6 +25,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @return void
+     */
     public function down(): void
     {
         $tableNames = config('permission.table_names');
@@ -37,6 +43,12 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @param Blueprint $table
+     * @param array<string, string> $columnNames
+     * 
+     * @return void
+     */
     private function addIndexes(Blueprint $table, array $columnNames): void
     {
         if (!hasIndexExist($table->getTable(), 'model_has_permissions_model_id_model_type_index')) {
@@ -49,6 +61,14 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * @param array<string, string> $tableNames
+     * @param array<string, string> $columnNames
+     * @param bool $teams
+     * 
+     * @return void
+     */
     private function addForeignKeys(Blueprint $table, array $tableNames, array $columnNames, bool $teams): void
     {
         $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';
@@ -69,6 +89,12 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * @param bool $teams
+     * 
+     * @return void
+     */
     private function removeIndexes(Blueprint $table, bool $teams): void
     {
         if (hasIndexExist($table->getTable(), 'model_has_permissions_model_id_model_type_index')) {
@@ -80,6 +106,12 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * @param bool $teams
+     * 
+     * @return void
+     */
     private function removeForeignKeys(Blueprint $table, bool $teams): void
     {
         if (hasForeignKeyExist($table->getTable(), 'model_has_permissions_permission_id_foreign')) {

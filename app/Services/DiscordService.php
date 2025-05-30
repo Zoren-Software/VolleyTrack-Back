@@ -9,14 +9,26 @@ use Illuminate\Support\Facades\Log;
 
 final class DiscordService extends Model
 {
+    /**
+     * @var string
+     */
     private $webhookErrors;
 
+    /**
+     * @var string
+     */
     private $webhookPayments;
 
+    /**
+     * @var GuzzleClient
+     */
     private $client;
 
     /**
      * @codeCoverageIgnore
+     * @param GuzzleClient $client
+     * 
+     * @throws \RuntimeException
      */
     public function __construct(GuzzleClient $client)
     {
@@ -32,6 +44,11 @@ final class DiscordService extends Model
 
     /**
      * @codeCoverageIgnore
+     * 
+     * @param \Throwable $error
+     * @param string $author
+     * 
+     * @return void
      */
     public function sendError(\Throwable $error, string $author): void
     {

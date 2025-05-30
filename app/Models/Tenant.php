@@ -12,5 +12,4 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 {
     use HasDatabase;
     use HasDomains;
-    use HasFactory;
 }

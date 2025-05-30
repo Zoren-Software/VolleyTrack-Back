@@ -4,12 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Models\Role as SpatieRole;
 
 class Role extends SpatieRole
 {
-    use HasFactory;
+
+    /**
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'guard_name',
+    ];
 
     /**
      * The "booted" method of the model.
@@ -42,35 +48,60 @@ class Role extends SpatieRole
         });
     }
 
-    public function list(array $args)
+    /**
+     * @param array<string, mixed> $args
+     * 
+     * @return Builder<Role>
+     */
+    public function list(array $args): Builder
     {
         return $this
             ->filterSearch($args)
             ->filterIgnores($args);
     }
 
-    public function scopeFilterIgnores(Builder $query, array $args)
+    /**
+     * @param Builder<Role> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
+    public function scopeFilterIgnores(Builder $query, array $args): void
     {
         $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
             $query->whereNotIn('roles.id', $args['filter']['ignoreIds']);
         });
     }
 
-    public function scopeFilterSearch(Builder $query, array $args)
+    /**
+     * @param Builder<Role> $query
+     * @param array<string, mixed> $args
+     * 
+     * @return void
+     */
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
         $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
-            // @phpstan-ignore-next-line
             $query->filterName($args['filter']['search']);
         });
     }
 
-    public function scopeFilterName(Builder $query, string $search)
+    /**
+     * @param Builder<Role> $query
+     * @param string $search
+     * 
+     * @return void
+     */
+    public function scopeFilterName(Builder $query, string $search): void
     {
         $query->when(!empty($search), function ($query) use ($search) {
             $query->where('roles.name', 'like', $search);
         });
     }
 
+    /**
+     * @return Attribute<string, string>
+     */
     protected function name(): Attribute
     {
         return Attribute::make(

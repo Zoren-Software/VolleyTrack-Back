@@ -2,20 +2,24 @@
 
 namespace App\Models\Central;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property \App\Models\Config $config
+ */
 class User extends Authenticatable implements HasApiTokensContract
 {
     use HasApiTokens;
-    use HasFactory;
     use Notifiable;
     use SoftDeletes;
 
+    /**
+     * @var string
+     */
     protected $table = 'users';
 
     /**
@@ -42,13 +46,15 @@ class User extends Authenticatable implements HasApiTokensContract
     ];
 
     /**
-     * The attributes that should be cast.
-     *
      * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
+
+    /**
+     * @var string
+     */
     protected $guard_name = 'sanctum';
 }

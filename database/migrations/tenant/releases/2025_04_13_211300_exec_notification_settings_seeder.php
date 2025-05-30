@@ -11,13 +11,18 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         (new NotificationTypesSeeder)->run();
         (new NotificationSettingsSeeder)->run();
     }
 
-    public function down()
+    /**
+     * NOTE - Apagável na próxima versão
+     *
+     * @return void
+     */
+    public function down(): void
     {
         // NOTE - Irreversible migration
     }

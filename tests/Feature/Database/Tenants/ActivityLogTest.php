@@ -4,8 +4,14 @@ namespace Tests\Feature\Database\Tenants;
 
 class ActivityLogTest extends TenantBase
 {
+    /**
+     * @var string
+     */
     protected string $table = 'activity_log';
 
+    /**
+     * @var array<string, mixed>
+     */
     protected static array $fieldTypes = [
         'id' => ['type' => 'bigint'],
         'log_name' => ['type' => 'varchar', 'length' => 255, 'nullable' => true],
@@ -21,13 +27,24 @@ class ActivityLogTest extends TenantBase
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $primaryKey = ['id']; // Define a chave primária
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    protected static array $foreignKeys = [
-    ];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $foreignKeys = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $uniqueKeys = [
     ];
 }

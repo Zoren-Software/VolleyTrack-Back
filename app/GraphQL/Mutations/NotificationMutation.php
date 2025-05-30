@@ -8,9 +8,13 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 final class NotificationMutation
 {
     /**
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @param GraphQLContext $context
+     * 
+     * @return array<string, string>
      */
-    public function notificationsRead($rootValue, array $args, GraphQLContext $context)
+    public function notificationsRead($rootValue, array $args, GraphQLContext $context): array
     {
         $user = $context->user();
 

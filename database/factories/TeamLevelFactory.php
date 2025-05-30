@@ -14,7 +14,7 @@ class TeamLevelFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->name() . ' TEAM LEVEL',
@@ -22,7 +22,12 @@ class TeamLevelFactory extends Factory
         ];
     }
 
-    public function setAttributes(array $attributes)
+    /**
+     * @param array<string, mixed> $attributes
+     * 
+     * @return Factory<\App\Models\TeamLevel>
+     */
+    public function setAttributes(array $attributes): Factory
     {
         return $this->state(function (array $attributesOriginal) use ($attributes) {
             return array_merge($attributesOriginal, $attributes);

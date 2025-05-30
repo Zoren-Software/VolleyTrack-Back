@@ -12,30 +12,69 @@ use Tests\TestCase;
 
 class TrainingTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var string
+     */
     public static $trainingText = ' TRAINING';
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var string
+     */
     public static $dateStart = '2022-10-23 13:50:00';
 
+    /**
+     * @var string
+     */
     public static $dateEnd = '2022-10-22 13:45:00';
 
+    /**
+     * @var string
+     */
     public static $dateStartError = '08/10/2022 13:50:00';
 
+    /**
+     * @var string
+     */
     public static $dateEndError = '08/10/2022 13:55:00';
 
+    /**
+     * @var string
+     */
     public static $twoHours = ' +2 hours';
 
+    /**
+     * @var string
+     */
     public static $treeHours = ' +3 hours';
 
+    /**
+     * @var string
+     */
     public static $moreTwoDays = '+2 days';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -49,18 +88,29 @@ class TrainingTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @param bool $hasPermission
+     * 
+     * @return void
+     */
     private function setPermissions(bool $hasPermission): void
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-training');
         $this->checkPermission($hasPermission, $this->role, 'view-training');
     }
 
+    /**
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
+    /**
+     * @return void
+     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -68,6 +118,9 @@ class TrainingTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * @return void
+     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -83,15 +136,20 @@ class TrainingTest extends TestCase
      * Listagem de todos os treinos.
      *
      * @author Maicon Cerutti
+     * 
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function training_list(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->be(User::find(3));
@@ -134,9 +192,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -170,14 +228,19 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function training_info(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->be(User::find(3));
@@ -215,9 +278,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -246,16 +309,22 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateSuccessProvider')]
     #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateErrorProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function training_create(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -330,9 +399,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingCreateSuccessProvider()
+    public static function trainingCreateSuccessProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -507,9 +576,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingCreateErrorProvider()
+    public static function trainingCreateErrorProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -646,6 +715,13 @@ class TrainingTest extends TestCase
      * Método de edição de um treino.
      *
      * @author Maicon Cerutti
+     * 
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * @param bool $cancellation
      *
      * @return void
      */
@@ -653,10 +729,10 @@ class TrainingTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('trainingEditErrorProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function training_edit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission,
         bool $cancellation
     ) {
@@ -711,9 +787,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingEditSuccessProvider()
+    public static function trainingEditSuccessProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -868,9 +944,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingEditErrorProvider()
+    public static function trainingEditErrorProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -1023,16 +1099,22 @@ class TrainingTest extends TestCase
      * Método de exclusão de um treino.
      *
      * @author Maicon Cerutti
+     * 
+     * @param array<string, mixed> $data
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('trainingDeleteProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function training_delete(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $data,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -1068,9 +1150,9 @@ class TrainingTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingDeleteProvider()
+    public static function trainingDeleteProvider(): array
     {
         $trainingDelete = ['trainingDelete'];
 

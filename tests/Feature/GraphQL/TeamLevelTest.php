@@ -6,14 +6,29 @@ use Tests\TestCase;
 
 class TeamLevelTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -22,6 +37,11 @@ class TeamLevelTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @param bool $hasPermission
+     * 
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'view-team-levels');
@@ -30,6 +50,11 @@ class TeamLevelTest extends TestCase
     /**
      * Listagem de todos os times.
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @author Maicon Cerutti
      *
      * @return void
@@ -37,9 +62,9 @@ class TeamLevelTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function team_levels_list(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -73,9 +98,9 @@ class TeamLevelTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -107,6 +132,11 @@ class TeamLevelTest extends TestCase
     /**
      * Listagem de um time
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @author Maicon Cerutti
      *
      * @return void
@@ -114,9 +144,9 @@ class TeamLevelTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function team_level_info(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -145,9 +175,9 @@ class TeamLevelTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [

@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable('teams')) {
             Schema::table('teams', function (Blueprint $table) {
@@ -26,7 +26,12 @@ return new class extends Migration
         }
     }
 
-    public function down()
+    /**
+     * NOTE - Apagável na próxima versão
+     *
+     * @return void
+     */
+    public function down(): void
     {
         if (Schema::hasTable('teams')) {
             Schema::table('teams', function (Blueprint $table) {

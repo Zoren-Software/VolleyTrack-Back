@@ -10,14 +10,29 @@ use Tests\TestCase;
 
 class ConfirmationTrainingTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'userId',
@@ -30,6 +45,9 @@ class ConfirmationTrainingTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,6 +55,9 @@ class ConfirmationTrainingTest extends TestCase
         $this->limparAmbiente();
     }
 
+    /**
+     * @return void
+     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -44,6 +65,9 @@ class ConfirmationTrainingTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * @return void
+     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -55,6 +79,11 @@ class ConfirmationTrainingTest extends TestCase
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
+    /**
+     * @param bool $hasPermission
+     * 
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'view-confirmation-training');
@@ -64,15 +93,20 @@ class ConfirmationTrainingTest extends TestCase
      * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
+     * 
+     * @param string $typeMessageError
+     * @param string $expectedMessage
+     * @param array<int, string> $expected
+     * @param bool $hasPermission
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function confirmations_trainings_list(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string $typeMessageError,
+        string $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -115,7 +149,7 @@ class ConfirmationTrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
     public static function listProvider()
     {
@@ -150,16 +184,24 @@ class ConfirmationTrainingTest extends TestCase
      * Método de confirmação de Treino.
      *
      * @author Maicon Cerutti
+     * 
+     * @param array<string, mixed> $data
+     * @param string $typeMessageError
+     * @param string $expectedMessage
+     * @param array<int, string> $expected
+     * @param bool $hasPermission
+     * @param bool $trainingCancelled
+     * 
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('confirmPresenceProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function confirm_presence(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $data,
+        string $typeMessageError,
+        string $expectedMessage,
+        array $expected,
         bool $hasPermission,
         bool $trainingCancelled
     ) {
@@ -213,9 +255,9 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function confirmPresenceProvider()
+    public static function confirmPresenceProvider(): array
     {
         $confirmationTraining = ['confirmTraining'];
 
@@ -331,15 +373,22 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param array<string, mixed> $data
+     * @param bool $typeMessageError
+     * @param bool $expectedMessage
+     * @param array<int, string> $expected
+     * @param bool $hasPermission
+     * @param bool $trainingCancelled
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('confirmTrainingProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function confirm_training(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $data,
+        bool $typeMessageError,
+        bool $expectedMessage,
+        array $expected,
         bool $hasPermission,
         bool $trainingCancelled
     ) {
@@ -396,9 +445,9 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function confirmTrainingProvider()
+    public static function confirmTrainingProvider(): array
     {
         $confirmationTraining = ['confirmTraining'];
 

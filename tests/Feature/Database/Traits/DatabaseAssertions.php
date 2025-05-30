@@ -12,7 +12,7 @@ trait DatabaseAssertions
      *
      * @return void
      */
-    private function ensureTableExists()
+    private function ensureTableExists(): void
     {
         if (!Schema::hasTable($this->table)) {
             $this->fail("The table '{$this->table}' does not exist.");
@@ -22,7 +22,7 @@ trait DatabaseAssertions
     /**
      * Verifica se todos os campos definidos existem na tabela.
      */
-    public function verifyFields()
+    public function verifyFields(): void
     {
         $this->ensureTableExists();
         $this->checkMissingFields();
@@ -31,7 +31,7 @@ trait DatabaseAssertions
     /**
      * Verifica se a chave primária está corretamente definida.
      */
-    public function verifyPrimaryKey()
+    public function verifyPrimaryKey(): void
     {
         $this->ensureTableExists();
 
@@ -53,7 +53,7 @@ trait DatabaseAssertions
     /**
      * Verifica se os campos auto_increment estão corretamente definidos.
      */
-    public function verifyAutoIncrements()
+    public function verifyAutoIncrements(): void
     {
         $this->ensureTableExists();
 
@@ -73,7 +73,7 @@ trait DatabaseAssertions
     /**
      * Verifica se as chaves estrangeiras estão corretamente definidas.
      */
-    public function verifyForeignKeys()
+    public function verifyForeignKeys(): void
     {
         $this->ensureTableExists();
 
@@ -98,7 +98,7 @@ trait DatabaseAssertions
     /**
      * Verifica se as chaves únicas estão corretamente definidas.
      */
-    public function verifyUniqueKeys()
+    public function verifyUniqueKeys(): void
     {
         $this->ensureTableExists();
         $this->checkUniqueKeys(static::$uniqueKeys ?? []);
@@ -107,7 +107,7 @@ trait DatabaseAssertions
     /**
      * Verifica o total de campos na tabela e no array de definição.
      */
-    public function verifyTotalFields()
+    public function verifyTotalFields(): void
     {
         $this->ensureTableExists();
         $this->assertCountFieldsMatch(static::$fieldTypes ?? []);
@@ -116,7 +116,7 @@ trait DatabaseAssertions
     /**
      * Verifica o total de chaves estrangeiras no array e na tabela.
      */
-    public function verifyTotalForeignKeys()
+    public function verifyTotalForeignKeys(): void
     {
         $this->ensureTableExists();
         $this->assertCountForeignKeysMatch(static::$foreignKeys ?? []);
@@ -125,7 +125,7 @@ trait DatabaseAssertions
     /**
      * Verifica o total de unique keys no array e na tabela.
      */
-    public function verifyTotalUniqueKeys()
+    public function verifyTotalUniqueKeys(): void
     {
         $this->ensureTableExists();
         $this->assertCountUniqueKeysMatch(static::$uniqueKeys ?? []);
@@ -134,7 +134,7 @@ trait DatabaseAssertions
     /**
      * Verifica se os campos da tabela possuem os tipos e atributos esperados.
      */
-    public function verifyFieldTypes()
+    public function verifyFieldTypes(): void
     {
         $this->ensureTableExists();
         $this->checkFieldTypes(static::$fieldTypes ?? []);
@@ -152,6 +152,11 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param array<int, string> $foreignKeys
+     * 
+     * @return void
+     */
     private function checkForeignKeys(array $foreignKeys): void
     {
         $missingForeignKeys = [];
@@ -168,6 +173,11 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param array<int, string> $uniqueKeys
+     * 
+     * @return void
+     */
     private function checkUniqueKeys(array $uniqueKeys): void
     {
         $missingUniqueKeys = [];
@@ -184,6 +194,11 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param array<string, mixed> $fieldTypes
+     * 
+     * @return void
+     */
     private function assertCountFieldsMatch(array $fieldTypes): void
     {
         $columns = Schema::getColumnListing($this->table);
@@ -197,6 +212,11 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param array<int, string> $foreignKeys
+     * 
+     * @return void
+     */
     private function assertCountForeignKeysMatch(array $foreignKeys): void
     {
         $totalForeignKeysArray = count($foreignKeys);
@@ -209,6 +229,11 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param array<int, string> $uniqueKeys
+     * 
+     * @return void
+     */
     private function assertCountUniqueKeysMatch(array $uniqueKeys): void
     {
         $totalUniqueKeysArray = count($uniqueKeys);
@@ -221,6 +246,11 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param array<string, mixed> $fieldTypes
+     * 
+     * @return void
+     */
     private function checkFieldTypes(array $fieldTypes): void
     {
         $databaseName = DB::getDatabaseName();

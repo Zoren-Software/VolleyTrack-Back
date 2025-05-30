@@ -14,16 +14,34 @@ use Tests\TestCase;
 
 class TeamTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var string
+     */
     public static $teamText = ' TEAM';
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -34,12 +52,18 @@ class TeamTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
+    /**
+     * @return void
+     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -47,6 +71,9 @@ class TeamTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * @return void
+     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -64,6 +91,11 @@ class TeamTest extends TestCase
         ]);
     }
 
+    /**
+     * @param bool $hasPermission
+     * 
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-team');
@@ -73,6 +105,11 @@ class TeamTest extends TestCase
     /**
      * Listagem de todos os times.
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @author Maicon Cerutti
      *
      * @return void
@@ -128,9 +165,9 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -163,15 +200,20 @@ class TeamTest extends TestCase
      * Listagem de um time
      *
      * @author Maicon Cerutti
-     *
+     * 
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function team_info(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -212,9 +254,9 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -243,15 +285,21 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('teamCreateProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function team_create(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -302,9 +350,9 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function teamCreateProvider()
+    public static function teamCreateProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -415,15 +463,21 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('teamEditProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function team_edit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -480,9 +534,9 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function teamEditProvider()
+    public static function teamEditProvider(): array
     {
         $faker = Faker::create();
         $userId = 2;
@@ -586,6 +640,12 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param array<string, mixed> $data
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('teamDeleteProvider')]
@@ -622,9 +682,9 @@ class TeamTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function teamDeleteProvider()
+    public static function teamDeleteProvider(): array
     {
         $teamDelete = ['teamDelete'];
 

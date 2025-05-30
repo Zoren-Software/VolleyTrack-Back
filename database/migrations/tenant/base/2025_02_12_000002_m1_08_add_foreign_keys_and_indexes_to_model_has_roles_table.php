@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * @return void
+     */
     public function up(): void
     {
         $tableNames = config('permission.table_names');
@@ -23,6 +26,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @return void
+     */
     public function down(): void
     {
         $tableNames = config('permission.table_names');
@@ -38,6 +44,12 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @param Blueprint $table
+     * @param array<string, string> $columnNames
+     * 
+     * @return void
+     */
     private function addIndexes(Blueprint $table, array $columnNames): void
     {
         if (!hasIndexExist($table->getTable(), 'model_has_roles_model_id_model_type_index')) {
@@ -50,6 +62,15 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * @param array<string, string> $tableNames
+     * @param array<string, string> $columnNames
+     * @param string $pivotRole
+     * @param bool $teams
+     * 
+     * @return void
+     */
     private function addForeignKeys(Blueprint $table, array $tableNames, array $columnNames, string $pivotRole, bool $teams): void
     {
         if (!hasForeignKeyExist($table->getTable(), 'model_has_roles_role_id_foreign')) {
@@ -68,6 +89,12 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * @param bool $teams
+     * 
+     * @return void
+     */
     private function removeIndexes(Blueprint $table, bool $teams): void
     {
         if (hasIndexExist($table->getTable(), 'model_has_roles_model_id_model_type_index')) {
@@ -79,6 +106,12 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * @param bool $teams
+     * 
+     * @return void
+     */
     private function removeForeignKeys(Blueprint $table, bool $teams): void
     {
         if (hasForeignKeyExist($table->getTable(), 'model_has_roles_role_id_foreign')) {

@@ -11,14 +11,29 @@ use Tests\TestCase;
 
 class SpecificFundamentalTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -27,12 +42,18 @@ class SpecificFundamentalTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
+    /**
+     * @return void
+     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -40,6 +61,9 @@ class SpecificFundamentalTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * @return void
+     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -54,6 +78,11 @@ class SpecificFundamentalTest extends TestCase
         ]);
     }
 
+    /**
+     * @param bool $hasPermission
+     * 
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-specific-fundamental');
@@ -63,6 +92,11 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Listagem de todos os fundamentos especificos.
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @author Maicon Cerutti
      *
      * @return void
@@ -70,9 +104,9 @@ class SpecificFundamentalTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function specific_fundamentals_list(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -108,9 +142,9 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -142,6 +176,11 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Listagem de um fundamento especifico.
      *
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @author Maicon Cerutti
      *
      * @return void
@@ -149,9 +188,9 @@ class SpecificFundamentalTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function specific_fundamental_info(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -183,9 +222,9 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -214,17 +253,24 @@ class SpecificFundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * @param bool $addRelationship
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalCreateProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function specific_fundamental_create(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
-        $hasPermission,
-        $addRelationship
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission,
+        bool $addRelationship
     ) {
         $this->setPermissions($hasPermission);
 
@@ -257,9 +303,9 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function specificFundamentalCreateProvider()
+    public static function specificFundamentalCreateProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -360,18 +406,26 @@ class SpecificFundamentalTest extends TestCase
      * Método de edição de um fundamento especifico.
      *
      * @author Maicon Cerutti
+     * 
+     * @param array<string, mixed> $parameters
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * @param bool $addRelationship
+     * 
      *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalEditProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function specific_fundamental_edit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
-        $hasPermission,
-        $addRelationship
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission,
+        bool $addRelationship
     ) {
         $this->setPermissions($hasPermission);
 
@@ -410,9 +464,9 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function specificFundamentalEditProvider()
+    public static function specificFundamentalEditProvider(): array
     {
         $faker = Faker::create();
         $userId = 2;
@@ -511,12 +565,24 @@ class SpecificFundamentalTest extends TestCase
      * Método de exclusão de um time.
      *
      * @author Maicon Cerutti
-     *
+     * 
+     * @param array<string, mixed> $data
+     * @param string|bool $typeMessageError
+     * @param string|bool $expectedMessage
+     * @param array<string, mixed> $expected
+     * @param bool $hasPermission
+     * 
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalDeleteProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function specific_fundamental_delete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    public function specific_fundamental_delete(
+        array $data,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission
+    )
     {
         $this->setPermissions($hasPermission);
 
@@ -548,7 +614,7 @@ class SpecificFundamentalTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
     public static function specificFundamentalDeleteProvider()
     {

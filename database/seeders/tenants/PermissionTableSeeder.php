@@ -14,7 +14,7 @@ class PermissionTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
@@ -159,7 +159,16 @@ class PermissionTableSeeder extends Seeder
         }
     }
 
-    public function sync($role, $permissions)
+    /**
+     * @param Role $role
+     * @param array<int, Permission> $permissions
+     * 
+     * @return void
+     */
+    public function sync(
+        Role $role,
+        array $permissions
+    ): void
     {
         foreach ($permissions as $permission) {
             $role->givePermissionTo($permission);
