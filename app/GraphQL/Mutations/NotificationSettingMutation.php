@@ -25,6 +25,7 @@ final class NotificationSettingMutation
 
         $args['user_id'] = $user->id;
 
+        /** @var NotificationSetting $notificationSetting */
         $notificationSetting = NotificationSetting::findOrFail($args['id']);
         $notificationSetting->fill($args);
         $notificationSetting->save();

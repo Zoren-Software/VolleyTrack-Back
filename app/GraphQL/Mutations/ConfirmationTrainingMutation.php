@@ -50,7 +50,9 @@ final class ConfirmationTrainingMutation
     public function confirm($parameterSave, array $args): ConfirmationTraining
     {
         if (isset($args['id'])) {
-            $this->confirmationTraining = $this->confirmationTraining->find($args['id']);
+            /** @var ConfirmationTraining $confirmationTraining */
+            $confirmationTraining = $this->confirmationTraining->find($args['id']);
+            $this->confirmationTraining = $confirmationTraining;
         } elseif (isset($args['training_id']) && isset($args['player_id'])) {
             $this->confirmationTraining = $this->confirmationTraining
                 ->where('training_id', $args['training_id'])

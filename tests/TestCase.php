@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
+use Illuminate\Testing\TestResponse;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -30,7 +31,7 @@ abstract class TestCase extends BaseTestCase
 
     protected $token = '';
 
-    protected $user = null;
+    protected ?\App\Models\User $user = null;
 
     protected $otherUser = false;
 
@@ -117,6 +118,18 @@ abstract class TestCase extends BaseTestCase
         tenancy()->initialize($tenantId);
     }
 
+    /**
+     * Executa uma requisição GraphQL personalizada.
+     *
+     * @param string $nomeQueryGraphQL
+     * @param array $dadosEntrada
+     * @param array $dadosSaida
+     * @param string $type
+     * @param bool $input
+     * @param bool $parametrosEntrada
+     *
+     * @return TestResponse
+     */
     public function graphQL(
         string $nomeQueryGraphQL,
         array $dadosEntrada,
@@ -124,7 +137,7 @@ abstract class TestCase extends BaseTestCase
         string $type,
         bool $input,
         bool $parametrosEntrada = false
-    ): object {
+    ): TestResponse {
         $post = [];
         $objectString = $this->converteDadosEmStringGraphQL($nomeQueryGraphQL, $dadosEntrada, $dadosSaida, $input, $type, $parametrosEntrada);
 

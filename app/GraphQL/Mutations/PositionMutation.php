@@ -27,13 +27,17 @@ final class PositionMutation
     public function make($rootValue, array $args, GraphQLContext $context): Position
     {
         if (isset($args['id'])) {
-            $this->position = $this->position->find($args['id']);
-            $this->position->update($args);
-        } else {
-            $this->position = $this->position->create($args);
+            $found = $this->position->find($args['id']);
+
+            if (! $found instanceof Position) {
+                throw new \Exception("Position not found.");
+            }
+
+            $found->update($args);
+            return $found;
         }
 
-        return $this->position;
+        return $this->position->create($args);
     }
 
     /**
@@ -46,10 +50,12 @@ final class PositionMutation
     public function delete($rootValue, array $args, GraphQLContext $context): array
     {
         $positions = [];
+
         foreach ($args['id'] as $id) {
-            $this->position = $this->position->findOrFail($id);
-            $positions[] = $this->position;
-            $this->position->delete();
+            /** @var Position $position */
+            $position = Position::findOrFail($id);
+            $positions[] = $position;
+            $position->delete();
         }
 
         return $positions;

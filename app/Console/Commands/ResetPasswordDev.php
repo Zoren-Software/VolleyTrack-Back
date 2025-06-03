@@ -44,8 +44,7 @@ class ResetPasswordDev extends CommandDev
             $this->processoComando('update_passwords', $tenant, 'INICIO');
 
             try {
-                $total = User::count();
-                $total = max(1, ceil($total / 100));
+                $total = (int) max(1, ceil(User::count() / 100));
                 $bar = $this->output->createProgressBar($total);
                 $bar->start();
 

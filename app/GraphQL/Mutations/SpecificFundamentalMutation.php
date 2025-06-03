@@ -27,16 +27,16 @@ final class SpecificFundamentalMutation
     public function make($rootValue, array $args, GraphQLContext $context): SpecificFundamental
     {
         if (isset($args['id'])) {
-            $this->specificFundamental = $this->specificFundamental->find(
-                $args['id']
-            );
-            $this->specificFundamental->update(
-                $args
-            );
+            $found = $this->specificFundamental->find($args['id']);
+        
+            if (! $found instanceof SpecificFundamental) {
+                throw new \Exception("SpecificFundamental not found.");
+            }
+        
+            $this->specificFundamental = $found;
+            $this->specificFundamental->update($args);
         } else {
-            $this->specificFundamental = $this->specificFundamental->create(
-                $args
-            );
+            $this->specificFundamental = $this->specificFundamental->create($args);
         }
 
         if (isset($args['fundamental_id'])) {
@@ -57,9 +57,10 @@ final class SpecificFundamentalMutation
     {
         $specificFundamentals = [];
         foreach ($args['id'] as $id) {
-            $this->specificFundamental = $this->specificFundamental->findOrFail($id);
-            $specificFundamentals[] = $this->specificFundamental;
-            $this->specificFundamental->delete();
+            /** @var SpecificFundamental $specificFundamental */
+            $specificFundamental = SpecificFundamental::findOrFail($id);
+            $specificFundamentals[] = $specificFundamental;
+            $specificFundamental->delete();
         }
 
         return $specificFundamentals;

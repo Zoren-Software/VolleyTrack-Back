@@ -27,7 +27,9 @@ final class TrainingMutation
     public function make($rootValue, array $args, GraphQLContext $context): Training
     {
         if (isset($args['id'])) {
-            $this->training = $this->training->find($args['id']);
+            /** @var Training $training */
+            $training = Training::find($args['id']);
+            $this->training = $training;
             $this->training->update($args);
         } else {
             $this->training = $this->training->create($args);
@@ -55,7 +57,9 @@ final class TrainingMutation
     {
         $trainings = [];
         foreach ($args['id'] as $id) {
-            $this->training = $this->training->findOrFail($id);
+            /** @var Training $training */
+            $training = Training::findOrFail($id);
+            $this->training = $training;
             $trainings[] = $this->training;
             $this->training->delete();
         }

@@ -9,9 +9,21 @@ function appHost(): string
 
 function appVersion(): string
 {
-    $composerJson = file_get_contents(base_path('composer.json'));
+    $path = base_path('composer.json');
 
-    return trim(json_decode($composerJson, true)['version'] ?? '');
+    if (!file_exists($path)) {
+        return '';
+    }
+
+    $composerJson = file_get_contents($path);
+
+    if (!is_string($composerJson)) {
+        return '';
+    }
+
+    $data = json_decode($composerJson, true);
+
+    return trim($data['version'] ?? '');
 }
 
 function hasForeignKeyExist(string $table, string $nameForeignKey): bool

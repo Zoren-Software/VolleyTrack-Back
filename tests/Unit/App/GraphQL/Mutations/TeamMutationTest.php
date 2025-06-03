@@ -41,7 +41,7 @@ class TeamMutationTest extends TestCase
 
         $user = $this->createMock(User::class);
 
-        $teamMutation = new TeamMutation($team, $user);
+        $teamMutation = new TeamMutation($team);
         $teamMutation->delete(
             null,
             [

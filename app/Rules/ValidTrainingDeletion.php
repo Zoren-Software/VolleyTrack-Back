@@ -19,6 +19,7 @@ class ValidTrainingDeletion implements InvokableRule
     public function __invoke($attribute, $value, $fail)
     {
         foreach ($value as $id) {
+            /** @var \App\Models\Training|null $training */
             $training = Training::with(['confirmationsTraining' => function ($query) {
                 $query->where('presence', true);
             }])->find($id);

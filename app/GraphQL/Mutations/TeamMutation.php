@@ -8,18 +8,17 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class TeamMutation
 {
+    /**
+     * @var Team
+     */
     private Team $team;
-
-    private User $user;
 
     /**
      * @param Team $team
-     * @param User $user
      */
-    public function __construct(Team $team, User $user)
+    public function __construct(Team $team)
     {
         $this->team = $team;
-        $this->user = $user;
     }
 
     /**
@@ -31,16 +30,18 @@ final class TeamMutation
      */
     public function make($rootValue, array $args, GraphQLContext $context): Team
     {
-        $user = $context->user();
+        $userLogged = $context->user();
 
-        if (!$user instanceof User) {
+        if (!$userLogged instanceof User) {
             throw new \Exception('User not authenticated.');
         }
 
-        $args['user_id'] = $user->id;
+        $args['user_id'] = $userLogged->id;
 
         if (isset($args['id'])) {
-            $this->team = $this->team->find($args['id']);
+            /** @var Team $team */
+            $team = Team::find($args['id']);
+            $this->team = $team;
             $this->team->update($args);
         } else {
             $this->team = $this->team->create($args);
@@ -67,7 +68,8 @@ final class TeamMutation
             $technicians = [];
 
             foreach ($args['player_id'] as $playerId) {
-                $user = $this->user->findOrFail($playerId);
+                /** @var User $user */
+                $user = User::findOrFail($playerId);
 
                 if ($user->hasRole('technician')) {
                     $technicians[] = $playerId;
@@ -118,7 +120,7 @@ final class TeamMutation
 
         foreach ($removedUsersIds as $id) {
             $user = User::find($id);
-            if ($user && $userId) {
+            if ($user instanceof User && $userId) {
                 $user->touch();
                 $user->user_id = $userId;
                 $user->save();
@@ -127,7 +129,7 @@ final class TeamMutation
 
         foreach ($addedUsersIds as $id) {
             $user = User::find($id);
-            if ($user && $userId) {
+            if ($user instanceof User && $userId) {
                 $user->touch();
                 $user->user_id = $userId;
                 $user->save();
@@ -146,7 +148,9 @@ final class TeamMutation
     {
         $teams = [];
         foreach ($args['id'] as $id) {
-            $this->team = $this->team->findOrFail($id);
+            /** @var Team $team */
+            $team = Team::findOrFail($id);
+            $this->team = $team;
             $teams[] = $this->team;
             $this->team->delete();
         }

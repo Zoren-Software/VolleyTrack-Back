@@ -165,7 +165,7 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            app(\Illuminate\Contracts\Http\Kernel::class)->prependToMiddlewarePriority($middleware);
         }
     }
 }

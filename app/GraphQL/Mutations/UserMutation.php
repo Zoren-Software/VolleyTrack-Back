@@ -9,6 +9,9 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class UserMutation
 {
+    /**
+     * @var User
+     */
     private User $user;
 
     /**
@@ -35,7 +38,9 @@ final class UserMutation
         }
 
         if (isset($args['id'])) {
-            $this->user = $this->user->findOrFail($args['id']);
+            /** @var User $user */
+            $user = User::findOrFail($args['id']);
+            $this->user = $user;
         }
 
         $this->user->name = $args['name'];
@@ -97,7 +102,7 @@ final class UserMutation
         // NOTE - Atualiza o 'updated_at' dos times removidos
         foreach ($removedTeamsIds as $teamId) {
             $team = Team::find($teamId);
-            if ($team) {
+            if ($team instanceof Team) {
                 $team->touch();
                 $team->user_id = $userLogged->id;
                 $team->save();
@@ -107,7 +112,7 @@ final class UserMutation
         // NOTE - Atualiza o 'updated_at' dos times adicionados
         foreach ($addedTeamsIds as $teamId) {
             $team = Team::find($teamId);
-            if ($team) {
+            if ($team instanceof Team) {
                 $team->touch();
                 $team->user_id = $userLogged->id;
                 $team->save();
@@ -126,7 +131,10 @@ final class UserMutation
     {
         $users = [];
         foreach ($args['id'] as $id) {
-            $this->user = $this->user->findOrFail($id);
+            /** @var User $user */
+            $user = User::findOrFail($id);
+            
+            $this->user = $user;
             $users[] = $this->user;
             $this->user->delete();
         }
