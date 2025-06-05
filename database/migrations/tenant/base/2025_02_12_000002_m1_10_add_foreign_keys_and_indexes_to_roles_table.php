@@ -12,6 +12,20 @@ return new class extends Migration
         $tableNames = config('permission.table_names');
         $teams = config('permission.teams');
 
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_bool($teams)) {
+            throw new \RuntimeException('Config "permission.teams" deve ser um booleano.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var bool $teams */
+        $teams = $teams;
+
         $this->removeForeignKeys($tableNames);
         $this->modifyRolesTable($tableNames, $teams);
         $this->recreateForeignKeys($tableNames);
@@ -20,6 +34,14 @@ return new class extends Migration
     public function down(): void
     {
         $tableNames = config('permission.table_names');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
         $this->removeIndexesAndForeignKeys($tableNames);
     }
 

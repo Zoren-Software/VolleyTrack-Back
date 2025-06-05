@@ -10,8 +10,30 @@ return new class extends Migration
     {
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
-        $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
         $teams = config('permission.teams');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_array($columnNames)) {
+            throw new \RuntimeException('Config "permission.column_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_bool($teams)) {
+            throw new \RuntimeException('Config "permission.teams" deve ser um booleano.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var array<string, string> $columnNames */
+        $columnNames = $columnNames;
+
+        /** @var bool $teams */
+        $teams = $teams;
+
+        $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
 
         if (!Schema::hasTable($tableNames['model_has_roles'])) {
             return;
@@ -27,6 +49,20 @@ return new class extends Migration
     {
         $tableNames = config('permission.table_names');
         $teams = config('permission.teams');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_bool($teams)) {
+            throw new \RuntimeException('Config "permission.teams" deve ser um booleano.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var bool $teams */
+        $teams = $teams;
 
         if (!Schema::hasTable($tableNames['model_has_roles'])) {
             return;

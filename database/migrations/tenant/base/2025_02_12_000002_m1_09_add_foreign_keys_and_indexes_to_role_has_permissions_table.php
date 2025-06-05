@@ -6,10 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * @return void
+     */
     public function up(): void
     {
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_array($columnNames)) {
+            throw new \RuntimeException('Config "permission.column_names" deve ser um array<string, string>.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var array<string, string> $columnNames */
+        $columnNames = $columnNames;
 
         if (!Schema::hasTable($tableNames['role_has_permissions'])) {
             return;
@@ -20,9 +37,19 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @return void
+     */
     public function down(): void
     {
         $tableNames = config('permission.table_names');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
 
         if (!Schema::hasTable($tableNames['role_has_permissions'])) {
             return;
@@ -54,6 +81,11 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param Blueprint $table
+     * 
+     * @return void
+     */
     private function removeForeignKeys(Blueprint $table): void
     {
         if (hasForeignKeyExist($table->getTable(), 'role_has_permissions_permission_id_foreign')) {

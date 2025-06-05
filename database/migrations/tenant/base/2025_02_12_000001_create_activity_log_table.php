@@ -6,10 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * @return void
+     */
     public function up(): void
     {
-        $connection = config('activitylog.database_connection');
+        $connectionRaw = config('activitylog.database_connection');
+        $connection = is_string($connectionRaw) || is_null($connectionRaw)
+            ? $connectionRaw
+            : throw new \RuntimeException('Config "activitylog.database_connection" must be string|null.');
+
         $tableName = config('activitylog.table_name');
+
+        if (!is_string($tableName)) {
+            throw new \RuntimeException('Config "activitylog.table_name" must be a string.');
+        }
 
         if (!Schema::connection($connection)->hasTable($tableName)) {
             Schema::connection($connection)->create($tableName, function (Blueprint $table) {
@@ -26,10 +37,21 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @return void
+     */
     public function down(): void
     {
-        $connection = config('activitylog.database_connection');
+        $connectionRaw = config('activitylog.database_connection');
+        $connection = is_string($connectionRaw) || is_null($connectionRaw)
+            ? $connectionRaw
+            : throw new \RuntimeException('Config "activitylog.database_connection" must be string|null.');
+
         $tableName = config('activitylog.table_name');
+
+        if (!is_string($tableName)) {
+            throw new \RuntimeException('Config "activitylog.table_name" must be a string.');
+        }
 
         Schema::connection($connection)->dropIfExists($tableName);
     }

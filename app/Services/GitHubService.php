@@ -26,11 +26,12 @@ final class GitHubService extends Model
     {
         $this->client = $client ?? new GuzzleClient;
 
-        $this->accessToken = config('services.github.access_token');
-
-        if (!$this->accessToken) {
-            throw new \RuntimeException('Variáveis de conexão do GitHub não declaradas');
+        $accessToken = config('services.github.access_token');
+        if (!is_string($accessToken)) {
+            throw new \RuntimeException('Variáveis de conexão do GitHub não declaradas ou inválidas');
         }
+
+        $this->accessToken = $accessToken;
     }
 
     /**
@@ -44,7 +45,7 @@ final class GitHubService extends Model
                 "https://api.github.com/repos/Zoren-Software/VoleiClub/collaborators/$nickName",
                 [
                     'headers' => [
-                        'Authorization' => 'Bearer ' . config('services.github.access_token'),
+                        'Authorization' => 'Bearer ' . $this->accessToken,
                     ],
                 ]
             );

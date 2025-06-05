@@ -17,6 +17,7 @@ final class DiscordService extends Model
     /**
      * @var string
      */
+    /** @phpstan-ignore-next-line */
     private $webhookPayments;
 
     /**
@@ -33,12 +34,16 @@ final class DiscordService extends Model
     {
         $this->client = $client;
 
-        $this->webhookErrors = config('services.discord.webhook_errors');
-        $this->webhookPayments = config('services.discord.webhook_payments');
+        $webhookErrors = config('services.discord.webhook_errors');
+        $webhookPayments = config('services.discord.webhook_payments');
 
-        if (!$this->webhookErrors || !$this->webhookPayments) {
-            Log::error('Discord webhooks not configured');
+        if (!is_string($webhookErrors) || !is_string($webhookPayments)) {
+            Log::error('Discord webhooks not configured properly');
+            throw new \RuntimeException('Discord webhooks must be strings');
         }
+
+        $this->webhookErrors = $webhookErrors;
+        $this->webhookPayments = $webhookPayments;
     }
 
     /**
