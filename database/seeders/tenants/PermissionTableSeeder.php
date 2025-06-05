@@ -11,8 +11,6 @@ class PermissionTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -160,16 +158,12 @@ class PermissionTableSeeder extends Seeder
     }
 
     /**
-     * @param Role $role
-     * @param array<int, Permission> $permissions
-     * 
-     * @return void
+     * @param  array<int, Permission>  $permissions
      */
     public function sync(
         Role $role,
         array $permissions
-    ): void
-    {
+    ): void {
         foreach ($permissions as $permission) {
             $role->givePermissionTo($permission);
         }

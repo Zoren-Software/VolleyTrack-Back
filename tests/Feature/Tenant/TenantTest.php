@@ -21,10 +21,7 @@ class TenantTest extends TestCase
     /**
      * A basic test route horizon for login.
      *
-     * @param array<string, mixed> $data
-     * @param string $expectedMessage
-     * @param int $expectedStatus
-     *
+     * @param  array<string, mixed>  $data
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('createTenantDataProvider')]
@@ -41,7 +38,7 @@ class TenantTest extends TestCase
         } else {
             $externalToken = ExternalAccessToken::first();
 
-            if (! $externalToken) {
+            if (!$externalToken) {
                 $this->fail('Nenhum token de acesso externo encontrado para o teste.');
             }
 

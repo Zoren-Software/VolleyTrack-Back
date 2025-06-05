@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class NotificationSettingsTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'notification_settings';
 
     /**

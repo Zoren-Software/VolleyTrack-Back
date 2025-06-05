@@ -88,11 +88,6 @@ class UserTest extends TestCase
         ]);
     }
 
-    /**
-     * @param bool $hasPermission
-     *
-     * @return void
-     */
     private function setPermissions(bool $hasPermission): void
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-user');
@@ -104,12 +99,7 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     *
-     * @return void
+     * @param  array<string, mixed>  $expected
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
@@ -190,11 +180,7 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
@@ -267,13 +253,8 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasTeam
-     * @param bool $hasPermission
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('userCreateProvider')]
@@ -746,14 +727,8 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasTeam
-     * @param bool $hasPermission
-     *
-     * @return void
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('userEditProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
@@ -1186,13 +1161,8 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $data
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     *
-     * @return void
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('userDeleteProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
@@ -1224,7 +1194,8 @@ class UserTest extends TestCase
         }
 
         if ($expectedMessage == 'UserDelete.ids_exists') {
-            $parameters['id'] = User::max('id') + 1;
+            $maxId = User::max('id');
+            $parameters['id'] = (is_int($maxId) ? $maxId : 0) + 1;
         }
 
         $response = $this->graphQL(
@@ -1306,11 +1277,7 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('meProvider')]
@@ -1391,13 +1358,8 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     *
-     * @return void
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('setPasswordProvider')]
     #[\PHPUnit\Framework\Attributes\Test]

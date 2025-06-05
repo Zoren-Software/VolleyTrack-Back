@@ -38,18 +38,12 @@ class NotificationTest extends TestCase
         'updatedAt',
     ];
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -57,9 +51,6 @@ class NotificationTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return void
-     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -111,14 +102,10 @@ class NotificationTest extends TestCase
      * Método de leitura de notificação.
      *
      * @author Maicon Cerutti
-     * 
-     * @param array<string, mixed> $data
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasLogin
      *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('notificationReadProvider')]

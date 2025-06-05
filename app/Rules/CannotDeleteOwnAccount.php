@@ -12,7 +12,7 @@ class CannotDeleteOwnAccount implements Rule
     private $userIds;
 
     /**
-     * @param array<int> $userIds
+     * @param  array<int>  $userIds
      */
     public function __construct($userIds)
     {
@@ -20,9 +20,8 @@ class CannotDeleteOwnAccount implements Rule
     }
 
     /**
-     * @param string $attribute
-     * @param mixed $value
-     * 
+     * @param  string  $attribute
+     * @param  mixed  $value
      * @return bool
      */
     public function passes($attribute, $value)

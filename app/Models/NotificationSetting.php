@@ -25,9 +25,6 @@ class NotificationSetting extends Model
         'is_active',
     ];
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -45,9 +42,8 @@ class NotificationSetting extends Model
     }
 
     /**
-     * @param Builder<NotificationSetting> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<NotificationSetting>  $query
+     * @param  array<string, mixed>  $args
      * @return Builder<NotificationSetting>
      */
     public function scopeList(Builder $query, array $args)
@@ -76,7 +72,7 @@ class NotificationSetting extends Model
 
     /**
      * @param  \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting>  $query
-     * @param array<string, mixed> $args
+     * @param  array<string, mixed>  $args
      * @return \Illuminate\Database\Eloquent\Builder<\App\Models\NotificationSetting>
      */
     public function scopeFilter(Builder $query, array $args): Builder
@@ -88,9 +84,8 @@ class NotificationSetting extends Model
     }
 
     /**
-     * @param Builder<NotificationSetting> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<NotificationSetting>  $query
+     * @param  array<string, mixed>  $args
      * @return Builder<NotificationSetting>
      */
     public function scopeFilterIsActive(Builder $query, array $args)
@@ -102,9 +97,8 @@ class NotificationSetting extends Model
     }
 
     /**
-     * @param Builder<NotificationSetting> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<NotificationSetting>  $query
+     * @param  array<string, mixed>  $args
      * @return Builder<NotificationSetting>
      */
     public function scopeFilterViaEmail(Builder $query, array $args)
@@ -116,9 +110,8 @@ class NotificationSetting extends Model
     }
 
     /**
-     * @param Builder<NotificationSetting> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<NotificationSetting>  $query
+     * @param  array<string, mixed>  $args
      * @return Builder<NotificationSetting>
      */
     public function scopeFilterViaSystem(Builder $query, array $args)

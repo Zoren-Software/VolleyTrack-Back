@@ -8,10 +8,10 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\TestResponse;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
-use Illuminate\Testing\TestResponse;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -120,15 +120,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Executa uma requisição GraphQL personalizada.
-     *
-     * @param string $nomeQueryGraphQL
-     * @param array $dadosEntrada
-     * @param array $dadosSaida
-     * @param string $type
-     * @param bool $input
-     * @param bool $parametrosEntrada
-     *
-     * @return TestResponse
      */
     public function graphQL(
         string $nomeQueryGraphQL,

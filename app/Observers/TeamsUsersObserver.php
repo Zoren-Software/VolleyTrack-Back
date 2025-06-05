@@ -7,8 +7,6 @@ use App\Models\TeamsUsers;
 class TeamsUsersObserver
 {
     /**
-     * @param TeamsUsers $teamsUsers
-     * 
      * @return void
      */
     public function created(TeamsUsers $teamsUsers)
@@ -17,8 +15,6 @@ class TeamsUsersObserver
     }
 
     /**
-     * @param TeamsUsers $teamsUsers
-     * 
      * @return void
      */
     public function updated(TeamsUsers $teamsUsers)

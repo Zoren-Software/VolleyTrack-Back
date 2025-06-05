@@ -10,7 +10,6 @@ class UserQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<User>
      */
     public function list($_, array $args): Builder

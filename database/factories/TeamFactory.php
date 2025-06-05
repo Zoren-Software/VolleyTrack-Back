@@ -43,8 +43,7 @@ class TeamFactory extends Factory
     }
 
     /**
-     * @param array<string, mixed> $attributes
-     * 
+     * @param  array<string, mixed>  $attributes
      * @return Factory<\App\Models\Team>
      */
     public function setAttributes(array $attributes): Factory

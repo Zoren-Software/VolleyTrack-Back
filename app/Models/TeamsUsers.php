@@ -20,9 +20,6 @@ class TeamsUsers extends Pivot
      */
     protected $table = 'teams_users';
 
-    /**
-     * @param User|null $user
-     */
     public function __construct(?User $user = null)
     {
         $this->user = $user ?? new User;
@@ -51,13 +48,10 @@ class TeamsUsers extends Pivot
             ->dontSubmitEmptyLogs();
     }
 
-    /**
-     * @return void
-     */
     public function updateRoleInRelationship(): void
     {
         $user = $this->user->find($this->user_id);
-    
+
         if ($user instanceof \App\Models\User && $user->hasRole('technician')) {
             $this->role = 'technician';
         }

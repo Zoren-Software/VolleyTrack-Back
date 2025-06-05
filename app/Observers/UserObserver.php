@@ -9,8 +9,6 @@ use App\Models\User;
 class UserObserver
 {
     /**
-     * @param User $user
-     * 
      * @return void
      */
     public function creating(User $user)
@@ -23,8 +21,7 @@ class UserObserver
     /**
      * NOTE Create notification settings default for the user
      *
-     * @param User $user
-     * 
+     *
      * @return void
      */
     public function created(User $user)
@@ -47,8 +44,6 @@ class UserObserver
     }
 
     /**
-     * @param User $user
-     * 
      * @return void
      */
     public function updating(User $user)

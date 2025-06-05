@@ -23,8 +23,7 @@ class TeamLevelFactory extends Factory
     }
 
     /**
-     * @param array<string, mixed> $attributes
-     * 
+     * @param  array<string, mixed>  $attributes
      * @return Factory<\App\Models\TeamLevel>
      */
     public function setAttributes(array $attributes): Factory

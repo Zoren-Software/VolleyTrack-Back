@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class RoleHasPermissionsTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'role_has_permissions';
 
     /**

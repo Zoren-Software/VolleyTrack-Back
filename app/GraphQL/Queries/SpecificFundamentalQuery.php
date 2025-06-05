@@ -10,7 +10,6 @@ class SpecificFundamentalQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<SpecificFundamental>
      */
     public function list($_, array $args): Builder

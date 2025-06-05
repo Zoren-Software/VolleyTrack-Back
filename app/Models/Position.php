@@ -17,6 +17,7 @@ class Position extends Model
      * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\PositionFactory>
      */
     use HasFactory;
+
     use LogsActivity;
     use SoftDeletes;
 
@@ -38,7 +39,6 @@ class Position extends Model
     }
 
     /**
-     * @return BelongsToMany
      * @phpstan-ignore-next-line
      */
     public function users(): BelongsToMany
@@ -49,9 +49,6 @@ class Position extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -69,8 +66,7 @@ class Position extends Model
     }
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<Position>
      */
     public function list(array $args): Builder
@@ -82,10 +78,8 @@ class Position extends Model
     }
 
     /**
-     * @param Builder<Position> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Position>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterIgnores(Builder $query, array $args): void
     {
@@ -95,10 +89,8 @@ class Position extends Model
     }
 
     /**
-     * @param Builder<Position> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Position>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {
@@ -109,10 +101,7 @@ class Position extends Model
     }
 
     /**
-     * @param Builder<Position> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<Position>  $query
      */
     public function scopeFilterName(Builder $query, string $search): void
     {
@@ -122,10 +111,8 @@ class Position extends Model
     }
 
     /**
-     * @param Builder<Position> $query
-     * @param array<string> $ids
-     * 
-     * @return void
+     * @param  Builder<Position>  $query
+     * @param  array<string>  $ids
      */
     public function scopeFilterIds(Builder $query, array $ids): void
     {
@@ -135,10 +122,8 @@ class Position extends Model
     }
 
     /**
-     * @param Builder<Position> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Position>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterTeam(Builder $query, array $args): void
     {

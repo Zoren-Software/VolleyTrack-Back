@@ -82,9 +82,6 @@ class Team extends Model
             ->withPivot('created_at', 'updated_at', 'role');
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -120,9 +117,8 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Team>  $query
+     * @param  array<string, mixed>  $args
      * @return Builder<Team>
      */
     public function scopeList(Builder $query, array $args)
@@ -141,9 +137,8 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Team>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterIgnores(Builder $query, array $args)
@@ -157,9 +152,8 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Team>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterSearch(Builder $query, array $args)
@@ -171,9 +165,7 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param string $search
-     * 
+     * @param  Builder<Team>  $query
      * @return void
      */
     public function scopeFilterName(Builder $query, string $search)
@@ -184,9 +176,8 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param array<string> $ids
-     * 
+     * @param  Builder<Team>  $query
+     * @param  array<string>  $ids
      * @return void
      */
     public function scopeFilterIds(Builder $query, array $ids)
@@ -197,9 +188,8 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Team>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterPosition(Builder $query, array $args)
@@ -220,9 +210,8 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Team>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterByTeamPlayer(Builder $query, array $args)
@@ -241,9 +230,8 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Team>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterPlayers(Builder $query, array $args)
@@ -262,9 +250,8 @@ class Team extends Model
     }
 
     /**
-     * @param Builder<Team> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Team>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterUsers(Builder $query, array $args)

@@ -8,14 +8,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class TeamMutation
 {
-    /**
-     * @var Team
-     */
     private Team $team;
 
-    /**
-     * @param Team $team
-     */
     public function __construct(Team $team)
     {
         $this->team = $team;
@@ -24,9 +18,6 @@ final class TeamMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     * 
-     * @return Team
      */
     public function make($rootValue, array $args, GraphQLContext $context): Team
     {
@@ -53,10 +44,7 @@ final class TeamMutation
     }
 
     /**
-     * @param array<string, mixed> $args
-     * @param GraphQLContext $context
-     * 
-     * @return Team
+     * @param  array<string, mixed>  $args
      */
     private function relationUsers(array $args, GraphQLContext $context): Team
     {
@@ -100,12 +88,9 @@ final class TeamMutation
     }
 
     /**
-     * @param array<string, mixed> $args
-     * @param array<int, int> $currentUsersIds
-     * @param array<string, mixed> $changes
-     * @param GraphQLContext $context
-     * 
-     * @return void
+     * @param  array<string, mixed>  $args
+     * @param  array<int, int>  $currentUsersIds
+     * @param  array<string, mixed>  $changes
      */
     private function alteracoesModificacao(array $args, array $currentUsersIds, array $changes, GraphQLContext $context): void
     {
@@ -140,8 +125,6 @@ final class TeamMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param  GraphQLContext  $context
-     * 
      * @return Team[]
      */
     public function delete($rootValue, array $args, GraphQLContext $context): array

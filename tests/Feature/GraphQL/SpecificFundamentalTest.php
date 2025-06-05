@@ -42,18 +42,12 @@ class SpecificFundamentalTest extends TestCase
         'updatedAt',
     ];
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -61,9 +55,6 @@ class SpecificFundamentalTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return void
-     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -79,8 +70,6 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @param bool $hasPermission
-     * 
      * @return void
      */
     private function setPermissions(bool $hasPermission)
@@ -92,11 +81,8 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Listagem de todos os fundamentos especificos.
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -176,11 +162,8 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Listagem de um fundamento especifico.
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -253,13 +236,8 @@ class SpecificFundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * @param bool $addRelationship
-     * 
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalCreateProvider')]
@@ -406,15 +384,9 @@ class SpecificFundamentalTest extends TestCase
      * Método de edição de um fundamento especifico.
      *
      * @author Maicon Cerutti
-     * 
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * @param bool $addRelationship
-     * 
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalEditProvider')]
@@ -565,13 +537,9 @@ class SpecificFundamentalTest extends TestCase
      * Método de exclusão de um time.
      *
      * @author Maicon Cerutti
-     * 
-     * @param array<string, mixed> $data
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalDeleteProvider')]
@@ -582,8 +550,7 @@ class SpecificFundamentalTest extends TestCase
         string|bool $expectedMessage,
         array $expected,
         bool $hasPermission
-    )
-    {
+    ) {
         $this->setPermissions($hasPermission);
 
         $specificFundamental = SpecificFundamental::factory()->make();

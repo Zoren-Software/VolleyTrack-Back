@@ -10,7 +10,6 @@ class NotificationQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<Notification>
      */
     public function list($_, array $args): Builder

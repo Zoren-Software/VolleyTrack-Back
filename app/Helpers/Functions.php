@@ -84,9 +84,8 @@ function hasAutoIncrement(string $table, string $column = 'id'): bool
 
 /**
  * Obtém as chaves estrangeiras de uma tabela.
- * 
- * @param string $table
- * 
+ *
+ *
  * @return array<string>
  */
 function getForeignKeys(string $table): array
@@ -108,7 +107,6 @@ function getForeignKeys(string $table): array
  * Retorna uma lista de unique keys de uma tabela no banco de dados.
  *
  * @param  string  $table  Nome da tabela
- * 
  * @return array<string>
  */
 function getUniqueKeys(string $table): array
@@ -130,7 +128,6 @@ function getUniqueKeys(string $table): array
  * Retorna uma lista de chaves primárias de uma tabela no banco de dados.
  *
  * @param  string  $table  Nome da tabela
- * 
  * @return array<string>
  */
 function getPrimaryKeyColumns(string $table): array

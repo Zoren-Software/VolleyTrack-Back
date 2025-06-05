@@ -38,18 +38,12 @@ class NotificationSettingTest extends TestCase
         'updatedAt',
     ];
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -57,9 +51,6 @@ class NotificationSettingTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return void
-     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -110,14 +101,11 @@ class NotificationSettingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $data
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      *
      * TODO - Falta criar os cenários de erro do request e mensagens traduzidas
-     *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingActiveEmailAndSystemEditSuccess')]
@@ -140,7 +128,8 @@ class NotificationSettingTest extends TestCase
         if ($parameters['notificationTypeId'] === false) {
             unset($parameters['notificationTypeId']);
         } elseif ($parameters['notificationTypeId'] === 'notExists') {
-            $parameters['notificationTypeId'] = NotificationSetting::max('notification_type_id') + 1;
+            $maxId = NotificationSetting::max('notification_type_id');
+            $parameters['notificationTypeId'] = (is_int($maxId) ? $maxId : 0) + 1;
         } elseif ($parameters['notificationTypeId'] === 'test') {
             $parameters['notificationTypeId'] = 'test';
         } elseif (!is_numeric($parameters['notificationTypeId'])) {
@@ -154,7 +143,8 @@ class NotificationSettingTest extends TestCase
         } elseif ($parameters['id'] === 'test') {
 
         } elseif ($parameters['id'] === 'notExists') {
-            $parameters['id'] = NotificationSetting::max('id') + 1;
+            $maxId = NotificationSetting::max('id');
+            $parameters['id'] = (is_int($maxId) ? $maxId : 0) + 1;
         } else {
             $parameters['id'] = $user->notificationSettings
                 ->when(isset($parameters['notificationTypeId']), function ($query) use ($parameters) {

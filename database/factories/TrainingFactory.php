@@ -36,8 +36,6 @@ class TrainingFactory extends Factory
     }
 
     /**
-     * @param int $teamId
-     * 
      * @return Factory<\App\Models\Training>
      */
     public function setTeamId(int $teamId): Factory
@@ -50,8 +48,6 @@ class TrainingFactory extends Factory
     }
 
     /**
-     * @param bool $status
-     * 
      * @return Factory<\App\Models\Training>
      */
     public function setStatus(bool $status): Factory

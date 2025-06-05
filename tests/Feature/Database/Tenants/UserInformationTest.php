@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class UserInformationTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'user_information';
 
     /**

@@ -20,6 +20,7 @@ class SpecificFundamental extends Model
      * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\SpecificFundamentalFactory>
      */
     use HasFactory;
+
     use LogsActivity;
     use SoftDeletes;
 
@@ -66,9 +67,6 @@ class SpecificFundamental extends Model
         return $specificFundamental;
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -86,8 +84,7 @@ class SpecificFundamental extends Model
     }
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<SpecificFundamental>
      */
     public function list(array $args)
@@ -100,9 +97,8 @@ class SpecificFundamental extends Model
     }
 
     /**
-     * @param Builder<SpecificFundamental> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<SpecificFundamental>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterSearch(Builder $query, array $args)
@@ -119,9 +115,7 @@ class SpecificFundamental extends Model
     }
 
     /**
-     * @param Builder<SpecificFundamental> $query
-     * @param string $search
-     * 
+     * @param  Builder<SpecificFundamental>  $query
      * @return void
      */
     public function scopeFilterName(Builder $query, string $search)
@@ -132,9 +126,7 @@ class SpecificFundamental extends Model
     }
 
     /**
-     * @param Builder<SpecificFundamental> $query
-     * @param string $search
-     * 
+     * @param  Builder<SpecificFundamental>  $query
      * @return void
      */
     public function scopeFilterUserName(Builder $query, string $search)
@@ -148,9 +140,8 @@ class SpecificFundamental extends Model
     }
 
     /**
-     * @param Builder<SpecificFundamental> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<SpecificFundamental>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterUser(Builder $query, array $args)
@@ -169,9 +160,8 @@ class SpecificFundamental extends Model
     }
 
     /**
-     * @param Builder<SpecificFundamental> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<SpecificFundamental>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterIgnores(Builder $query, array $args)
@@ -182,9 +172,8 @@ class SpecificFundamental extends Model
     }
 
     /**
-     * @param Builder<SpecificFundamental> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<SpecificFundamental>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterFundamentals(Builder $query, array $args)

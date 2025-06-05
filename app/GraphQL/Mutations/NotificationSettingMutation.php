@@ -11,9 +11,6 @@ final class NotificationSettingMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     * 
-     * @return NotificationSetting
      */
     public function notificationEdit($rootValue, array $args, GraphQLContext $context): NotificationSetting
     {

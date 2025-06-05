@@ -78,7 +78,12 @@ if (app()->environment('local') && config('app.debug')) {
 
         $user = App\Models\User::findOrFail(3);
 
-        return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, tenant('id'), true);
+        $tenantId = tenant('id');
+        if (!is_string($tenantId)) {
+            abort(500, 'Tenant ID inválido');
+        }
+
+        return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, $tenantId, true);
     });
 
     Route::get('/test-forgot-password', function () {
@@ -86,6 +91,11 @@ if (app()->environment('local') && config('app.debug')) {
 
         $user = App\Models\User::findOrFail(3);
 
-        return new App\Mail\User\ForgotPasswordMail($user, tenant('id'));
+        $tenantId = tenant('id');
+        if (!is_string($tenantId)) {
+            abort(500, 'Tenant ID inválido');
+        }
+
+        return new App\Mail\User\ForgotPasswordMail($user, $tenantId);
     });
 }

@@ -10,7 +10,6 @@ class RoleQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<Role>
      */
     public function list($_, array $args): Builder

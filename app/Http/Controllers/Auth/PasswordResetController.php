@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Hash;
 class PasswordResetController extends Controller
 {
     /**
-     * @param string $tenant
-     * @param string $token
-     * 
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\JsonResponse
      */
     public function showSetPasswordForm(string $tenant, string $token)
@@ -24,7 +21,7 @@ class PasswordResetController extends Controller
             return response()->json(['message' => 'Token inválido ou expirado.'], 403);
         }
 
-        /** 
+        /**
          * @var view-string $view
          */
         $view = 'auth.set-password';
@@ -33,10 +30,6 @@ class PasswordResetController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param string $tenant
-     * @param string $token
-     * 
      * @return \Illuminate\Http\RedirectResponse
      */
     public function setPassword(Request $request, string $tenant, string $token)

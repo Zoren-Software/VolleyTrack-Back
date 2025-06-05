@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class ConfigsTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'configs';
 
     /**

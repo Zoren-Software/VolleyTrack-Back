@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * @return void
-     */
     public function up(): void
     {
         // 🚀 Alterando a coluna ID da tabela users
@@ -33,9 +30,6 @@ return new class extends Migration
         }
     }
 
-    /**
-     * @return void
-     */
     public function down(): void
     {
         // 🚀 Alterando a coluna ID da tabela users

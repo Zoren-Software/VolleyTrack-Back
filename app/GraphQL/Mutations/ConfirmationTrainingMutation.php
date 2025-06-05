@@ -10,9 +10,6 @@ final class ConfirmationTrainingMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     *
-     * @return ConfirmationTraining
      */
     public function confirmTraining($rootValue, array $args, GraphQLContext $context): ConfirmationTraining
     {
@@ -22,9 +19,6 @@ final class ConfirmationTrainingMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     *
-     * @return ConfirmationTraining
      */
     public function confirmPresence($rootValue, array $args, GraphQLContext $context): ConfirmationTraining
     {
@@ -32,10 +26,7 @@ final class ConfirmationTrainingMutation
     }
 
     /**
-     * @param string $parameterSave
-     * @param array<string, mixed> $args
-     *
-     * @return ConfirmationTraining
+     * @param  array<string, mixed>  $args
      */
     public function confirm(string $parameterSave, array $args): ConfirmationTraining
     {
@@ -49,7 +40,7 @@ final class ConfirmationTrainingMutation
                 ->first();
         }
 
-        if (! $confirmationTraining instanceof ConfirmationTraining) {
+        if (!$confirmationTraining instanceof ConfirmationTraining) {
             throw new \Exception('ConfirmationTraining not found.');
         }
 

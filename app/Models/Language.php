@@ -11,8 +11,7 @@ class Language extends Model
     use SoftDeletes;
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<Language>
      */
     public function list(array $args): Builder
@@ -23,10 +22,8 @@ class Language extends Model
     }
 
     /**
-     * @param Builder<Language> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Language>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {
@@ -42,10 +39,7 @@ class Language extends Model
     }
 
     /**
-     * @param Builder<Language> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<Language>  $query
      */
     public function scopeFilterName(Builder $query, string $search): void
     {
@@ -55,10 +49,7 @@ class Language extends Model
     }
 
     /**
-     * @param Builder<Language> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<Language>  $query
      */
     public function scopeFilterSlug(Builder $query, string $search): void
     {
@@ -68,10 +59,8 @@ class Language extends Model
     }
 
     /**
-     * @param Builder<Language> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Language>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterIgnores(Builder $query, array $args): void
     {

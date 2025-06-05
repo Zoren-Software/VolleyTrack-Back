@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class WebsocketsStatisticsEntriesTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'websockets_statistics_entries';
 
     /**

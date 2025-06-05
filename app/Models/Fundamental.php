@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Fundamental extends Model
@@ -18,6 +18,7 @@ class Fundamental extends Model
      * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\FundamentalFactory>
      */
     use HasFactory;
+
     use LogsActivity;
     use SoftDeletes;
 
@@ -62,9 +63,6 @@ class Fundamental extends Model
             ->withPivot('created_at', 'updated_at');
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -82,8 +80,7 @@ class Fundamental extends Model
     }
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<Fundamental>
      */
     public function list(array $args): Builder
@@ -95,10 +92,8 @@ class Fundamental extends Model
     }
 
     /**
-     * @param Builder<Fundamental> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Fundamental>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {
@@ -114,10 +109,7 @@ class Fundamental extends Model
     }
 
     /**
-     * @param Builder<Fundamental> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<Fundamental>  $query
      */
     public function scopeFilterName(Builder $query, string $search): void
     {
@@ -127,10 +119,7 @@ class Fundamental extends Model
     }
 
     /**
-     * @param Builder<Fundamental> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<Fundamental>  $query
      */
     public function scopeFilterUserName(Builder $query, string $search): void
     {
@@ -143,10 +132,8 @@ class Fundamental extends Model
     }
 
     /**
-     * @param Builder<Fundamental> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Fundamental>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterUser(Builder $query, array $args): void
     {
@@ -164,10 +151,8 @@ class Fundamental extends Model
     }
 
     /**
-     * @param Builder<Fundamental> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Fundamental>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterIgnores(Builder $query, array $args): void
     {
@@ -177,10 +162,8 @@ class Fundamental extends Model
     }
 
     /**
-     * @param Builder<Fundamental> $query
-     * @param array<string> $ids
-     * 
-     * @return void
+     * @param  Builder<Fundamental>  $query
+     * @param  array<string>  $ids
      */
     public function scopeFilterIds(Builder $query, array $ids): void
     {

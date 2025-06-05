@@ -11,9 +11,8 @@ class VerificationController extends Controller
     /**
      * @codeCoverageIgnore
      *
-     * @param string|null $tenant
-     * @param string|null $token
-     * 
+     * @param  string|null  $tenant
+     * @param  string|null  $token
      * @return \Illuminate\Http\RedirectResponse
      */
     public function verify($tenant = null, $token = null)

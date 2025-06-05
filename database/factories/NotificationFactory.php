@@ -24,8 +24,6 @@ class NotificationFactory extends Factory
     }
 
     /**
-     * @param int $notifiableId
-     * 
      * @return Factory<\App\Models\Notification>
      */
     public function setNotifiableId(int $notifiableId): Factory
@@ -38,8 +36,6 @@ class NotificationFactory extends Factory
     }
 
     /**
-     * @param string $type
-     * 
      * @return Factory<\App\Models\Notification>
      */
     public function setTypeNotification(string $type): Factory

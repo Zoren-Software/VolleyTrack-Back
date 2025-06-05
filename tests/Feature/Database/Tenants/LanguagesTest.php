@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class LanguagesTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'languages';
 
     /**

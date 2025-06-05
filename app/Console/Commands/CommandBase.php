@@ -40,28 +40,21 @@ class CommandBase extends Command
     }
 
     /**
-     * @param string $tenant
-     * 
-     * @return string
+     * @param  string  $tenant
      */
     public function formatProgress($tenant): string
     {
         return "cron - tenant($tenant): PROCESSO {$this->nomeProcesso} %current%/%max% [%bar%] %percent:3s%% estimated: %estimated:-6s% - current: %elapsed:-3s%\n";
     }
 
-    /**
-     * @return int
-     */
     public function handle(): int
     {
         return 0;
     }
 
     /**
-     * @param string $nomeComando
-     * @param string $mensagem
-     * 
-     * @return void
+     * @param  string  $nomeComando
+     * @param  string  $mensagem
      */
     protected function infoComando($nomeComando, $mensagem): void
     {
@@ -73,11 +66,9 @@ class CommandBase extends Command
     }
 
     /**
-     * @param string $nomeComando
-     * @param string $tenant
-     * @param string $mensagem
-     * 
-     * @return void
+     * @param  string  $nomeComando
+     * @param  string  $tenant
+     * @param  string  $mensagem
      */
     protected function processoComando($nomeComando, $tenant, $mensagem): void
     {
@@ -89,11 +80,9 @@ class CommandBase extends Command
     }
 
     /**
-     * @param string $nomeComando
-     * @param string $tenant
-     * @param string $mensagem
-     * 
-     * @return void
+     * @param  string  $nomeComando
+     * @param  string  $tenant
+     * @param  string  $mensagem
      */
     protected function processoComandoCancelado($nomeComando, $tenant, $mensagem): void
     {
@@ -105,11 +94,9 @@ class CommandBase extends Command
     }
 
     /**
-     * @param string $nomeComando
-     * @param string $tenant
-     * @param string $seeder
-     * 
-     * @return void
+     * @param  string  $nomeComando
+     * @param  string  $tenant
+     * @param  string  $seeder
      */
     protected function execSeederComando($nomeComando, $tenant, $seeder): void
     {

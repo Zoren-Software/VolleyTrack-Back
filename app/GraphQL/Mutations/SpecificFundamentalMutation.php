@@ -9,9 +9,6 @@ final class SpecificFundamentalMutation
 {
     private SpecificFundamental $specificFundamental;
 
-    /**
-     * @param SpecificFundamental $specificFundamental
-     */
     public function __construct(SpecificFundamental $specificFundamental)
     {
         $this->specificFundamental = $specificFundamental;
@@ -20,19 +17,16 @@ final class SpecificFundamentalMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     * 
-     * @return SpecificFundamental
      */
     public function make($rootValue, array $args, GraphQLContext $context): SpecificFundamental
     {
         if (isset($args['id'])) {
             $found = $this->specificFundamental->find($args['id']);
-        
-            if (! $found instanceof SpecificFundamental) {
-                throw new \Exception("SpecificFundamental not found.");
+
+            if (!$found instanceof SpecificFundamental) {
+                throw new \Exception('SpecificFundamental not found.');
             }
-        
+
             $this->specificFundamental = $found;
             $this->specificFundamental->update($args);
         } else {
@@ -49,8 +43,6 @@ final class SpecificFundamentalMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     * 
      * @return array<SpecificFundamental>
      */
     public function delete($rootValue, array $args, GraphQLContext $context): array

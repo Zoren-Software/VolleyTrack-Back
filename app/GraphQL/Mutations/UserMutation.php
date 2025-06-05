@@ -9,14 +9,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class UserMutation
 {
-    /**
-     * @var User
-     */
     private User $user;
 
-    /**
-     * @param User $user
-     */
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -24,10 +18,7 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @param array<string, mixed> $args
-     * @param GraphQLContext $context
-     * 
-     * @return User
+     * @param  array<string, mixed>  $args
      */
     public function make($rootValue, array $args, GraphQLContext $context): User
     {
@@ -73,11 +64,7 @@ final class UserMutation
     }
 
     /**
-     * @param User $user
-     * @param array<string, mixed> $args
-     * @param GraphQLContext $context
-     * 
-     * @return void
+     * @param  array<string, mixed>  $args
      */
     private function relationTeams(User $user, array $args, GraphQLContext $context): void
     {
@@ -122,9 +109,7 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @param array<string, mixed> $args
-     * @param GraphQLContext $context
-     * 
+     * @param  array<string, mixed>  $args
      * @return array<User>
      */
     public function delete($rootValue, array $args, GraphQLContext $context): array
@@ -133,7 +118,7 @@ final class UserMutation
         foreach ($args['id'] as $id) {
             /** @var User $user */
             $user = User::findOrFail($id);
-            
+
             $this->user = $user;
             $users[] = $this->user;
             $this->user->delete();
@@ -144,10 +129,7 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @param array<string, mixed> $args
-     * @param GraphQLContext $context
-     * 
-     * @return User
+     * @param  array<string, mixed>  $args
      */
     public function setPassword($rootValue, array $args, GraphQLContext $context): User
     {
@@ -155,26 +137,24 @@ final class UserMutation
             'set_password_token' => $args['token'],
             'email' => $args['email'],
         ])->first();
-        
+
         if (!$user) {
             throw new \Exception('Invalid token or email.');
         }
-        
+
         $this->user = $user;
-        
+
         $this->user->password = Hash::make($args['password']);
         $this->user->user_id = $this->user->id;
         $this->user->set_password_token = null;
         $this->user->save();
-        
+
         return $this->user;
     }
 
     /**
      * @param  mixed  $rootValue
-     * @param array<string, mixed> $args
-     * @param GraphQLContext $context
-     * 
+     * @param  array<string, mixed>  $args
      * @return array<string, string>
      */
     public function forgotPassword($rootValue, array $args, GraphQLContext $context): array

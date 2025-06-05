@@ -33,8 +33,6 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -50,8 +48,6 @@ class RouteServiceProvider extends ServiceProvider
      * Configure the rate limiters for the application.
      *
      * @codeCoverageIgnore
-     *
-     * @return void
      */
     protected function configureRateLimiting(): void
     {
@@ -60,9 +56,6 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * @return void
-     */
     protected function mapWebRoutes(): void
     {
         Route::middleware([
@@ -95,9 +88,6 @@ class RouteServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
     protected function mapApiRoutes(): void
     {
         foreach ($this->centralDomains() as $domain) {

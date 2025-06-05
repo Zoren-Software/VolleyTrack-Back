@@ -60,12 +60,10 @@ class ConfirmationTraining extends Model
     }
 
     /**
-     * @param Builder<ConfirmationTraining> $query
-     * @param string|null $status
-     * 
+     * @param  Builder<ConfirmationTraining>  $query
      * @return Builder<ConfirmationTraining>
      */
-    public function scopeStatus(Builder $query, string $status = null): Builder
+    public function scopeStatus(Builder $query, ?string $status = null): Builder
     {
         if ($status === null) {
             return $query;
@@ -75,12 +73,10 @@ class ConfirmationTraining extends Model
     }
 
     /**
-     * @param Builder<ConfirmationTraining> $query
-     * @param string|null $presenceId
-     * 
+     * @param  Builder<ConfirmationTraining>  $query
      * @return Builder<ConfirmationTraining>
      */
-    public function scopePresence(Builder $query, string $presenceId = null): Builder
+    public function scopePresence(Builder $query, ?string $presenceId = null): Builder
     {
         if ($presenceId === null) {
             return $query;
@@ -90,12 +86,10 @@ class ConfirmationTraining extends Model
     }
 
     /**
-     * @param Builder<ConfirmationTraining> $query
-     * @param string|null $playerId
-     * 
+     * @param  Builder<ConfirmationTraining>  $query
      * @return Builder<ConfirmationTraining>
      */
-    public function scopePlayer(Builder $query, string $playerId = null): Builder
+    public function scopePlayer(Builder $query, ?string $playerId = null): Builder
     {
         if ($playerId === null) {
             return $query;
@@ -105,12 +99,10 @@ class ConfirmationTraining extends Model
     }
 
     /**
-     * @param Builder<ConfirmationTraining> $query
-     * @param string|null $teamId
-     * 
+     * @param  Builder<ConfirmationTraining>  $query
      * @return Builder<ConfirmationTraining>
      */
-    public function scopeTeam(Builder $query, string $teamId = null): Builder
+    public function scopeTeam(Builder $query, ?string $teamId = null): Builder
     {
         if ($teamId === null) {
             return $query;
@@ -120,12 +112,10 @@ class ConfirmationTraining extends Model
     }
 
     /**
-     * @param Builder<ConfirmationTraining> $query
-     * @param string|null $trainingId
-     * 
+     * @param  Builder<ConfirmationTraining>  $query
      * @return Builder<ConfirmationTraining>
      */
-    public function scopeTraining(Builder $query, string $trainingId = null): Builder
+    public function scopeTraining(Builder $query, ?string $trainingId = null): Builder
     {
         if ($trainingId === null) {
             return $query;
@@ -135,12 +125,10 @@ class ConfirmationTraining extends Model
     }
 
     /**
-     * @param Builder<ConfirmationTraining> $query
-     * @param string|null $userId
-     * 
+     * @param  Builder<ConfirmationTraining>  $query
      * @return Builder<ConfirmationTraining>
      */
-    public function scopeUser(Builder $query, string $userId = null): Builder
+    public function scopeUser(Builder $query, ?string $userId = null): Builder
     {
         if ($userId === null) {
             return $query;
@@ -150,8 +138,7 @@ class ConfirmationTraining extends Model
     }
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<ConfirmationTraining>
      */
     public function list(array $args): Builder

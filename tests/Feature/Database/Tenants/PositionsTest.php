@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class PositionsTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'positions';
 
     /**

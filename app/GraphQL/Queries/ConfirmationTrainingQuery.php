@@ -11,7 +11,6 @@ class ConfirmationTrainingQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<ConfirmationTraining>
      */
     public function list($_, array $args): Builder
@@ -22,8 +21,6 @@ class ConfirmationTrainingQuery
     }
 
     /**
-     * @param Training $training
-     * 
      * @return array<string, mixed>
      */
     public function metrics(Training $training): array

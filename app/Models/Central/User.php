@@ -52,7 +52,6 @@ class User extends Authenticatable implements HasApiTokensContract
         'email_verified_at' => 'datetime',
     ];
 
-
     /**
      * @var string
      */

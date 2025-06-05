@@ -38,8 +38,6 @@ class TeamLevelTest extends TestCase
     ];
 
     /**
-     * @param bool $hasPermission
-     * 
      * @return void
      */
     private function setPermissions(bool $hasPermission)
@@ -50,11 +48,8 @@ class TeamLevelTest extends TestCase
     /**
      * Listagem de todos os times.
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -132,11 +127,8 @@ class TeamLevelTest extends TestCase
     /**
      * Listagem de um time
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
      *
      * @return void

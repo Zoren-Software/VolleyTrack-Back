@@ -12,7 +12,7 @@ class OwnsPassword implements Rule
     private $userId;
 
     /**
-     * @param int $userId
+     * @param  int  $userId
      */
     public function __construct($userId)
     {
@@ -20,9 +20,8 @@ class OwnsPassword implements Rule
     }
 
     /**
-     * @param string $attribute
-     * @param mixed $value
-     * 
+     * @param  string  $attribute
+     * @param  mixed  $value
      * @return bool
      */
     public function passes($attribute, $value)

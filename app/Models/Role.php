@@ -8,7 +8,6 @@ use Spatie\Permission\Models\Role as SpatieRole;
 
 class Role extends SpatieRole
 {
-
     /**
      * @var list<string>
      */
@@ -21,15 +20,13 @@ class Role extends SpatieRole
      * The "booted" method of the model.
      *
      * @codeCoverageIgnore
-     *
-     * @return void
      */
     protected static function booted(): void
     {
         static::addGlobalScope('permission', function (Builder $builder) {
             $user = auth()->user();
 
-            if (! $user) {
+            if (!$user) {
                 return $builder->where('id', '<', 0); // Garante query vazia se não houver usuário
             }
 
@@ -49,10 +46,8 @@ class Role extends SpatieRole
         });
     }
 
-
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<Role>
      */
     public function list(array $args): Builder
@@ -63,10 +58,8 @@ class Role extends SpatieRole
     }
 
     /**
-     * @param Builder<Role> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Role>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterIgnores(Builder $query, array $args): void
     {
@@ -76,10 +69,8 @@ class Role extends SpatieRole
     }
 
     /**
-     * @param Builder<Role> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<Role>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {
@@ -89,10 +80,7 @@ class Role extends SpatieRole
     }
 
     /**
-     * @param Builder<Role> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<Role>  $query
      */
     public function scopeFilterName(Builder $query, string $search): void
     {

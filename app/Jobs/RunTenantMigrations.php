@@ -35,11 +35,6 @@ class RunTenantMigrations implements ShouldQueue
      */
     protected $name;
 
-    /**
-     * @param string $tenantId
-     * @param string $email
-     * @param string $name
-     */
     public function __construct(string $tenantId, string $email, string $name)
     {
         $this->tenantId = $tenantId;

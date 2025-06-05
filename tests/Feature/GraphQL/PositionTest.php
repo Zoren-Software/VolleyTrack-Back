@@ -41,18 +41,12 @@ class PositionTest extends TestCase
         'updatedAt',
     ];
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -60,9 +54,6 @@ class PositionTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return void
-     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -77,8 +68,6 @@ class PositionTest extends TestCase
     }
 
     /**
-     * @param bool $hasPermission
-     * 
      * @return void
      */
     private function setPermissions(bool $hasPermission)
@@ -90,11 +79,8 @@ class PositionTest extends TestCase
     /**
      * Listagem de todos os fundamentos.
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -174,11 +160,8 @@ class PositionTest extends TestCase
     /**
      * Listagem de um fundamento
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -252,12 +235,8 @@ class PositionTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\Test]
@@ -374,14 +353,11 @@ class PositionTest extends TestCase
     /**
      * Método de edição de um fundamento.
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
-     * 
+     *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\Test]
@@ -503,12 +479,9 @@ class PositionTest extends TestCase
     /**
      * Método de exclusão de uma posição.
      *
-     * @param array<string, mixed> $data
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
      *
      * @return void

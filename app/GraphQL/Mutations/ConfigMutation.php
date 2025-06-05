@@ -17,16 +17,13 @@ final class ConfigMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param  GraphQLContext $context
-     * 
-     * @return Config
      */
     public function make($rootValue, array $args, GraphQLContext $context): Config
     {
         $this->config = $this->config->findOrFail(1);
 
         $user = $context->user();
-        if (! $user) {
+        if (!$user) {
             throw new \Exception('User not authenticated.');
         }
 

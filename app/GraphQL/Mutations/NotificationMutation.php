@@ -10,8 +10,6 @@ final class NotificationMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     *
      * @return array<string, string>
      */
     public function notificationsRead($rootValue, array $args, GraphQLContext $context): array
@@ -43,13 +41,12 @@ final class NotificationMutation
 
         $readCount = $args['recent_to_delete_count'] ?? 0;
 
-
         if ($user instanceof User) {
             $notificationsToRead = $user->notifications()
-            ->whereNull('read_at')
-            ->latest()
-            ->take($readCount)
-            ->get();
+                ->whereNull('read_at')
+                ->latest()
+                ->take($readCount)
+                ->get();
 
             $notificationsToRead->each(function ($notification) {
                 $notification->update(['read_at' => now()]);

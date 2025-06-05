@@ -12,14 +12,8 @@ class Notification extends IlluminateNotification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var Training
-     */
     public Training $training;
 
-    /**
-     * @var ConfirmationTraining
-     */
     public ?ConfirmationTraining $confirmationTraining = null;
 
     /**
@@ -30,9 +24,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @param Training $training
-     * @param ConfirmationTraining|null $confirmationTraining
-     * 
+     *
      * @return void
      */
     public function __construct(Training $training, ?ConfirmationTraining $confirmationTraining = null)
@@ -49,7 +41,6 @@ class Notification extends IlluminateNotification implements ShouldQueue
      * NOTE - Todas as notificações Training agora são apenas via sistema (database).
      *
      * @param  mixed  $notifiable
-     * 
      * @return array<string>
      */
     public function via($notifiable)

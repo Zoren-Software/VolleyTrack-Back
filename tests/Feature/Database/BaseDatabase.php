@@ -24,9 +24,6 @@ abstract class BaseDatabase extends TestCase
      */
     protected $login = false;
 
-    /**
-     * @var string
-     */
     protected string $table = ''; // cada classe filha sobrescreve
 
     /**

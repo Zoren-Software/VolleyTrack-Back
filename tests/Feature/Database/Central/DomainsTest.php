@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Central;
 
 class DomainsTest extends CentralBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'domains';
 
     /**

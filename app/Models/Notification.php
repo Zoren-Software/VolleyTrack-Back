@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
 
 class Notification extends Model
 {
@@ -33,8 +33,7 @@ class Notification extends Model
     ];
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<Notification>
      */
     public function list(array $args): Builder
@@ -45,8 +44,7 @@ class Notification extends Model
     }
 
     /**
-     * @param Builder<Notification> $query
-     * 
+     * @param  Builder<Notification>  $query
      * @return Builder<Notification>
      */
     public function scopeUserLogged(Builder $query): Builder
@@ -55,9 +53,7 @@ class Notification extends Model
     }
 
     /**
-     * @param Builder<Notification> $query
-     * @param bool $read
-     * 
+     * @param  Builder<Notification>  $query
      * @return Builder<Notification>
      */
     public function scopeFilterRead(Builder $query, bool $read): Builder

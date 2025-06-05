@@ -52,18 +52,12 @@ class TeamTest extends TestCase
         'updatedAt',
     ];
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -71,9 +65,6 @@ class TeamTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return void
-     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -92,8 +83,6 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @param bool $hasPermission
-     * 
      * @return void
      */
     private function setPermissions(bool $hasPermission)
@@ -105,11 +94,10 @@ class TeamTest extends TestCase
     /**
      * Listagem de todos os times.
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  string|bool  $typeMessageError
+     * @param  string|bool  $expectedMessage
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
      *
      * @return void
@@ -200,12 +188,8 @@ class TeamTest extends TestCase
      * Listagem de um time
      *
      * @author Maicon Cerutti
-     * 
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
@@ -285,12 +269,9 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('teamCreateProvider')]
@@ -334,9 +315,8 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
-        if (!empty($parameters['playerId'])) {
+        if (!empty($parameters['playerId']) && is_array($parameters['playerId'])) {
             foreach ($parameters['playerId'] as $playerId) {
-                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
                 $this->assertDatabaseHas('teams_users', [
                     'team_id' => $response->json('data.teamCreate.id'),
                     'user_id' => $playerId,
@@ -463,12 +443,9 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('teamEditProvider')]
@@ -518,9 +495,8 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
-        if (!empty($parameters['playerId'])) {
+        if (!empty($parameters['playerId']) && is_array($parameters['playerId'])) {
             foreach ($parameters['playerId'] as $playerId) {
-                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
                 $this->assertDatabaseHas('teams_users', [
                     'team_id' => $response->json('data.teamEdit.id'),
                     'user_id' => $playerId,
@@ -640,12 +616,11 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $data
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $data
+     * @param  string|bool  $typeMessageError
+     * @param  string|bool  $expectedMessage
+     * @param  array<string, mixed>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('teamDeleteProvider')]

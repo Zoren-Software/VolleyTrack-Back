@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class TeamsUsersTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'teams_users';
 
     /**

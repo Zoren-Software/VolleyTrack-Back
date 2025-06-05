@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class ConfirmationTrainingsTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'confirmation_trainings';
 
     /**

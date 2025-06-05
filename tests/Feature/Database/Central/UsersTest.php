@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Central;
 
 class UsersTest extends CentralBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'users';
 
     /**

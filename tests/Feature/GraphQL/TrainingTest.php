@@ -88,29 +88,18 @@ class TrainingTest extends TestCase
         'updatedAt',
     ];
 
-    /**
-     * @param bool $hasPermission
-     * 
-     * @return void
-     */
     private function setPermissions(bool $hasPermission): void
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-training');
         $this->checkPermission($hasPermission, $this->role, 'view-training');
     }
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -118,9 +107,6 @@ class TrainingTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return void
-     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -136,12 +122,8 @@ class TrainingTest extends TestCase
      * Listagem de todos os treinos.
      *
      * @author Maicon Cerutti
-     * 
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
      *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
@@ -228,11 +210,7 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
@@ -309,12 +287,8 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateSuccessProvider')]
@@ -343,7 +317,7 @@ class TrainingTest extends TestCase
                         $query->where('key', 'training_created');
                     })
                     ->first();
-        
+
                 if ($setting) {
                     $setting->via_email = true;
                     $setting->save();
@@ -360,7 +334,7 @@ class TrainingTest extends TestCase
                         $query->where('key', 'training_created');
                     })
                     ->first();
-        
+
                 if ($setting) {
                     $setting->via_email = true;
                     $setting->save();
@@ -719,14 +693,9 @@ class TrainingTest extends TestCase
      * Método de edição de um treino.
      *
      * @author Maicon Cerutti
-     * 
-     * @param array<string, mixed> $parameters
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
-     * @param bool $cancellation
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('trainingEditSuccessProvider')]
@@ -746,11 +715,14 @@ class TrainingTest extends TestCase
 
         $team = Team::factory()->hasPlayers(10)->create();
 
+        $status = isset($parameters['status']) ? (bool) $parameters['status'] : false;
+
         $training = Training::factory()
-            ->setStatus($parameters['status'])
+            ->setStatus($status)
             ->make([
                 'team_id' => $team->id,
             ]);
+
         $training->save();
 
         $parameters['id'] = $training->id;
@@ -1103,13 +1075,9 @@ class TrainingTest extends TestCase
      * Método de exclusão de um treino.
      *
      * @author Maicon Cerutti
-     * 
-     * @param array<string, mixed> $data
-     * @param string|bool $typeMessageError
-     * @param string|bool $expectedMessage
-     * @param array<string, mixed> $expected
-     * @param bool $hasPermission
      *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('trainingDeleteProvider')]

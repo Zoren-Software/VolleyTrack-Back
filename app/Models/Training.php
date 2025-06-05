@@ -29,6 +29,7 @@ class Training extends Model
      * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\TrainingFactory>
      */
     use HasFactory;
+
     use LogsActivity;
     use SoftDeletes;
 
@@ -54,7 +55,7 @@ class Training extends Model
 
     /**
      * @phpstan-return BelongsTo<User, Training>
-     * 
+     *
      * @return BelongsTo<User, Training>
      */
     public function user(): BelongsTo
@@ -65,7 +66,7 @@ class Training extends Model
 
     /**
      * @phpstan-return BelongsTo<Team, Training>
-     * 
+     *
      * @return BelongsTo<Team, Training>
      */
     public function team()
@@ -76,7 +77,7 @@ class Training extends Model
 
     /**
      * @phpstan-return BelongsToMany<Fundamental, Training, FundamentalsTrainings>
-     * 
+     *
      * @return BelongsToMany<Fundamental, Training, FundamentalsTrainings>
      */
     public function fundamentals(): BelongsToMany
@@ -91,7 +92,7 @@ class Training extends Model
 
     /**
      * @phpstan-return BelongsToMany<SpecificFundamental, Training, SpecificFundamentalsTrainings>
-     * 
+     *
      * @return BelongsToMany<SpecificFundamental, Training, SpecificFundamentalsTrainings>
      */
     public function specificFundamentals(): BelongsToMany
@@ -106,7 +107,7 @@ class Training extends Model
 
     /**
      * @phpstan-return HasMany<ConfirmationTraining, Training>
-     * 
+     *
      * @return HasMany<ConfirmationTraining, Training>
      */
     public function confirmationsTraining(): HasMany
@@ -115,10 +116,6 @@ class Training extends Model
         return $this->hasMany(ConfirmationTraining::class);
     }
 
-    /**
-     * 
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -136,8 +133,9 @@ class Training extends Model
     }
 
     /**
-     * @param array<string> $fundamentalIds
+     * @param  array<string>  $fundamentalIds
      * @return array<string, list<Rule|string>>
+     *
      * @phpstan-ignore-next-line
      */
     public static function rules(array $fundamentalIds): array
@@ -174,10 +172,6 @@ class Training extends Model
 
     /**
      * @codeCoverageIgnore
-     *
-     * @param int|null $daysNotification
-     * 
-     * @return void
      */
     public function sendNotificationTechnicians(?int $daysNotification = null): void
     {
@@ -206,8 +200,6 @@ class Training extends Model
      * @codeCoverageIgnore
      *
      * @param  null  $daysNotification
-     * 
-     * @return void
      */
     public function sendNotificationPlayers(?int $daysNotification = null): void
     {
@@ -232,13 +224,6 @@ class Training extends Model
         });
     }
 
-    /**
-     * @param string $startDate
-     * @param string $dateToday
-     * @param string $dateLimit
-     * 
-     * @return bool
-     */
     public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit): bool
     {
         $startDate = Carbon::createFromFormat($this->format, $startDate);
@@ -251,9 +236,6 @@ class Training extends Model
     /**
      * @codeCoverageIgnore
      *
-     * @param int|null $trainingId
-     * @param int|null $daysNotification
-     * 
      * @return void
      */
     public function confirmationsPlayers(?int $trainingId = null, ?int $daysNotification = null)
@@ -309,11 +291,6 @@ class Training extends Model
         $this->sendNotificationTechnicians($daysNotification);
     }
 
-    /**
-     * @param int $teamId
-     * 
-     * @return void
-     */
     public function deleteConfirmationsPlayersOld(int $teamId): void
     {
         $this->confirmationsTraining()
@@ -337,9 +314,6 @@ class Training extends Model
         });
     }
 
-    /**
-     * @return void
-     */
     public function sendEmailPlayersTrainingCancelled(): void
     {
         $this->team->players()->each(function ($player) {
@@ -355,7 +329,7 @@ class Training extends Model
 
     /**
      * @codeCoverageIgnore
-     * 
+     *
      * @return array<string, int|float>
      */
     public function metrics(): array
@@ -384,9 +358,8 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Training>  $query
+     * @param  array<string, mixed>  $args
      * @return Builder<Training>
      */
     public function scopeList(Builder $query, array $args)
@@ -400,9 +373,8 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Training>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterSearch(Builder $query, array $args)
@@ -419,9 +391,7 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param string $search
-     * 
+     * @param  Builder<Training>  $query
      * @return void
      */
     public function scopeFilterName(Builder $query, string $search)
@@ -432,9 +402,7 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param string $search
-     * 
+     * @param  Builder<Training>  $query
      * @return void
      */
     public function scopeFilterTeamName(Builder $query, string $search)
@@ -448,9 +416,7 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param string $search
-     * 
+     * @param  Builder<Training>  $query
      * @return void
      */
     public function scopeFilterUserName(Builder $query, string $search)
@@ -464,9 +430,8 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Training>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterTeam(Builder $query, array $args)
@@ -496,9 +461,8 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Training>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterUser(Builder $query, array $args)
@@ -517,9 +481,8 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Training>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterIgnores(Builder $query, array $args)
@@ -530,9 +493,8 @@ class Training extends Model
     }
 
     /**
-     * @param Builder<Training> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<Training>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterDate(Builder $query, array $args)

@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Central;
 
 class ExternalAccessTokensTest extends CentralBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'external_access_tokens';
 
     /**

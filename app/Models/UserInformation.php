@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * @property \App\Models\User $user
  */
@@ -17,6 +18,7 @@ class UserInformation extends Model
      * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\UserInformationFactory>
      */
     use HasFactory;
+
     use SoftDeletes;
 
     /**
@@ -48,9 +50,7 @@ class UserInformation extends Model
     }
 
     /**
-     * @param Builder<self> $query
-     * @param string $search
-     * 
+     * @param  Builder<self>  $query
      * @return void
      */
     public function scopeFilter(Builder $query, string $search)
@@ -65,10 +65,7 @@ class UserInformation extends Model
     }
 
     /**
-     * @param Builder<self> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<self>  $query
      */
     private function applyCPF(Builder $query, string $search): void
     {
@@ -77,10 +74,7 @@ class UserInformation extends Model
     }
 
     /**
-     * @param Builder<self> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<self>  $query
      */
     private function applyRG(Builder $query, string $search): void
     {
@@ -89,10 +83,7 @@ class UserInformation extends Model
     }
 
     /**
-     * @param Builder<self> $query
-     * @param string $search
-     * 
-     * @return void
+     * @param  Builder<self>  $query
      */
     private function applyPhone(Builder $query, string $search): void
     {

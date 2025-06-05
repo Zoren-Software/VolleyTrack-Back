@@ -24,9 +24,6 @@ class NotificationType extends Model
         'is_active',
     ];
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -44,8 +41,7 @@ class NotificationType extends Model
     }
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<NotificationType>
      */
     public function list(array $args): Builder
@@ -55,10 +51,8 @@ class NotificationType extends Model
     }
 
     /**
-     * @param Builder<NotificationType> $query
-     * @param array<string, mixed> $args
-     * 
-     * @return void
+     * @param  Builder<NotificationType>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {

@@ -10,7 +10,6 @@ class PositionQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<Position>
      */
     public function list($_, array $args): Builder

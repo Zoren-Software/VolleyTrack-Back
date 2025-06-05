@@ -10,7 +10,6 @@ class LanguageQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<Language>
      */
     public function list($_, array $args): Builder

@@ -10,7 +10,6 @@ class TeamLevelQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<TeamLevel>
      */
     public function list($_, array $args): Builder

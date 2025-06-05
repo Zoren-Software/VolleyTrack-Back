@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class PersonalAccessTokensTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'personal_access_tokens';
 
     /**

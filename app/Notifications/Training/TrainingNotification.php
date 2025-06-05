@@ -10,7 +10,6 @@ class TrainingNotification extends Notification
      * @codeCoverageIgnore
      *
      * @param  mixed  $notifiable
-     * 
      * @return array<string, mixed>
      */
     public function toArray($notifiable)

@@ -10,7 +10,6 @@ class TeamCategoryQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<TeamCategory>
      */
     public function list($_, array $args): Builder

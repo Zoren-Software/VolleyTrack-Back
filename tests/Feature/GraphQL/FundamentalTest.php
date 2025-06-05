@@ -41,18 +41,12 @@ class FundamentalTest extends TestCase
         'updatedAt',
     ];
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -60,9 +54,6 @@ class FundamentalTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return void
-     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -75,8 +66,6 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     * @param bool $hasPermission
-     * 
      * @return void
      */
     private function setPermissions(bool $hasPermission)
@@ -89,12 +78,8 @@ class FundamentalTest extends TestCase
      * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
-     * 
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * 
+     *
+     * @param  array<int, string>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\Test]
@@ -174,11 +159,7 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<int, string>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
@@ -249,12 +230,8 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $parameters
+     * @param  array<int, string>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalCreateProvider')]
@@ -373,14 +350,10 @@ class FundamentalTest extends TestCase
      * Método de edição de um fundamento.
      *
      * @author Maicon Cerutti
-     * 
-     * @param array<string, mixed> $parameters
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * 
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<int, string>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalEditProvider')]
@@ -504,12 +477,9 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $data
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $data
+     * @param  array<int, string>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalDeleteProvider')]

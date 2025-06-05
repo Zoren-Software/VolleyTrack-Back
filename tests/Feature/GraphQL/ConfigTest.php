@@ -39,8 +39,6 @@ class ConfigTest extends TestCase
     ];
 
     /**
-     * @param bool $hasPermission
-     * 
      * @return void
      */
     private function setPermissions(bool $hasPermission)
@@ -53,12 +51,8 @@ class ConfigTest extends TestCase
      * Listagem de configurações.
      *
      * @author Maicon Cerutti
-     * 
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * 
+     *
+     * @param  array<int, string>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
@@ -127,12 +121,8 @@ class ConfigTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $parameters
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * 
+     * @param  array<string, mixed>  $parameters
+     * @param  array<int, string>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('configEditProvider')]

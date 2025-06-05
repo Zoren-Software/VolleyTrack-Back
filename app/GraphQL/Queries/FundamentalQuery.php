@@ -10,7 +10,6 @@ class FundamentalQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<Fundamental>
      */
     public function list($_, array $args): Builder

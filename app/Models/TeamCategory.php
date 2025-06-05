@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\LogOptions;
 
 class TeamCategory extends Model
@@ -15,6 +15,7 @@ class TeamCategory extends Model
      * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\TeamCategoryFactory>
      */
     use HasFactory;
+
     use SoftDeletes;
 
     /**
@@ -36,9 +37,6 @@ class TeamCategory extends Model
         return $this->hasMany(Team::class);
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -56,8 +54,7 @@ class TeamCategory extends Model
     }
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<TeamCategory>
      */
     public function list(array $args)
@@ -68,9 +65,8 @@ class TeamCategory extends Model
     }
 
     /**
-     * @param Builder<TeamCategory> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<TeamCategory>  $query
+     * @param  array<string, mixed>  $args
      * @return Builder<TeamCategory>
      */
     public function scopeFilterSearch(Builder $query, array $args)
@@ -81,9 +77,8 @@ class TeamCategory extends Model
     }
 
     /**
-     * @param Builder<TeamCategory> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<TeamCategory>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterIgnores(Builder $query, array $args)

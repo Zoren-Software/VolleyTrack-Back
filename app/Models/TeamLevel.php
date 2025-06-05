@@ -32,8 +32,7 @@ class TeamLevel extends Model
     }
 
     /**
-     * @param array<string, mixed> $args
-     * 
+     * @param  array<string, mixed>  $args
      * @return Builder<TeamLevel>
      */
     public function list(array $args)
@@ -44,9 +43,8 @@ class TeamLevel extends Model
     }
 
     /**
-     * @param Builder<TeamLevel> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<TeamLevel>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterSearch(Builder $query, array $args)
@@ -58,9 +56,8 @@ class TeamLevel extends Model
     }
 
     /**
-     * @param Builder<TeamLevel> $query
-     * @param array<string, mixed> $args
-     * 
+     * @param  Builder<TeamLevel>  $query
+     * @param  array<string, mixed>  $args
      * @return void
      */
     public function scopeFilterIgnores(Builder $query, array $args)

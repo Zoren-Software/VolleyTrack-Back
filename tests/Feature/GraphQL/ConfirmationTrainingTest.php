@@ -45,9 +45,6 @@ class ConfirmationTrainingTest extends TestCase
         'updatedAt',
     ];
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -55,9 +52,6 @@ class ConfirmationTrainingTest extends TestCase
         $this->limparAmbiente();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->limparAmbiente();
@@ -65,9 +59,6 @@ class ConfirmationTrainingTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return void
-     */
     private function limparAmbiente(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -80,8 +71,6 @@ class ConfirmationTrainingTest extends TestCase
     }
 
     /**
-     * @param bool $hasPermission
-     * 
      * @return void
      */
     private function setPermissions(bool $hasPermission)
@@ -93,12 +82,8 @@ class ConfirmationTrainingTest extends TestCase
      * Listagem de todos os fundamentos.
      *
      * @author Maicon Cerutti
-     * 
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
      *
+     * @param  array<int, string>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
@@ -184,15 +169,9 @@ class ConfirmationTrainingTest extends TestCase
      * Método de confirmação de Treino.
      *
      * @author Maicon Cerutti
-     * 
-     * @param array<string, mixed> $data
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * @param bool $trainingCancelled
-     * 
      *
+     * @param  array<string, mixed>  $data
+     * @param  array<int, string>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('confirmPresenceProvider')]
@@ -224,10 +203,12 @@ class ConfirmationTrainingTest extends TestCase
                 'presence' => true,
             ];
         } else {
-            $parameters = $data['data_error'];
+            /** @var array<string, mixed> $parameters */
+            $parameters = $data['data_error']; // agora garantido como array
+
             if (
-                isset($data['data_error']['trainingId']) &&
-                $data['data_error']['trainingId'] == 'find'
+                isset($parameters['trainingId']) &&
+                $parameters['trainingId'] === 'find'
             ) {
                 $parameters['trainingId'] = $training->id;
             }
@@ -372,13 +353,8 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param array<string, mixed> $data
-     * @param bool|string $typeMessageError
-     * @param bool|string $expectedMessage
-     * @param array<int, string> $expected
-     * @param bool $hasPermission
-     * @param bool $trainingCancelled
-     * 
+     * @param  array<string, mixed>  $data
+     * @param  array<int, string>  $expected
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('confirmTrainingProvider')]
@@ -413,10 +389,12 @@ class ConfirmationTrainingTest extends TestCase
                 ],
             ];
         } else {
-            $parameters = $data['data_error'];
+            /** @var array<string, mixed> $parameters */
+            $parameters = $data['data_error']; // agora garantido como array
+
             if (
-                isset($data['data_error']['trainingId']) &&
-                $data['data_error']['trainingId'] == 'find'
+                isset($parameters['trainingId']) &&
+                $parameters['trainingId'] === 'find'
             ) {
                 $parameters['trainingId'] = $training->id;
             }

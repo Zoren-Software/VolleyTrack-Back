@@ -9,9 +9,6 @@ final class TrainingMutation
 {
     private Training $training;
 
-    /**
-     * @param Training $training
-     */
     public function __construct(Training $training)
     {
         $this->training = $training;
@@ -20,9 +17,6 @@ final class TrainingMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     * 
-     * @return Training
      */
     public function make($rootValue, array $args, GraphQLContext $context): Training
     {
@@ -49,8 +43,6 @@ final class TrainingMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
-     * 
      * @return array<Training>
      */
     public function delete($rootValue, array $args, GraphQLContext $context): array

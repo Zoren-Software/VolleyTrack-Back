@@ -9,8 +9,6 @@ trait DatabaseAssertions
 {
     /**
      * Verifica se a tabela existe antes de rodar os testes.
-     *
-     * @return void
      */
     private function ensureTableExists(): void
     {
@@ -153,9 +151,7 @@ trait DatabaseAssertions
     }
 
     /**
-     * @param array<int, string> $foreignKeys
-     * 
-     * @return void
+     * @param  array<int, string>  $foreignKeys
      */
     private function checkForeignKeys(array $foreignKeys): void
     {
@@ -174,9 +170,7 @@ trait DatabaseAssertions
     }
 
     /**
-     * @param array<int, string> $uniqueKeys
-     * 
-     * @return void
+     * @param  array<int, string>  $uniqueKeys
      */
     private function checkUniqueKeys(array $uniqueKeys): void
     {
@@ -195,9 +189,7 @@ trait DatabaseAssertions
     }
 
     /**
-     * @param array<string, mixed> $fieldTypes
-     * 
-     * @return void
+     * @param  array<string, mixed>  $fieldTypes
      */
     private function assertCountFieldsMatch(array $fieldTypes): void
     {
@@ -213,9 +205,7 @@ trait DatabaseAssertions
     }
 
     /**
-     * @param array<int, string> $foreignKeys
-     * 
-     * @return void
+     * @param  array<int, string>  $foreignKeys
      */
     private function assertCountForeignKeysMatch(array $foreignKeys): void
     {
@@ -230,9 +220,7 @@ trait DatabaseAssertions
     }
 
     /**
-     * @param array<int, string> $uniqueKeys
-     * 
-     * @return void
+     * @param  array<int, string>  $uniqueKeys
      */
     private function assertCountUniqueKeysMatch(array $uniqueKeys): void
     {
@@ -247,9 +235,7 @@ trait DatabaseAssertions
     }
 
     /**
-     * @param array<string, mixed> $fieldTypes
-     * 
-     * @return void
+     * @param  array<string, mixed>  $fieldTypes
      */
     private function checkFieldTypes(array $fieldTypes): void
     {
@@ -257,6 +243,9 @@ trait DatabaseAssertions
         $mismatchedTypes = [];
 
         foreach ($fieldTypes as $column => $expectedConfig) {
+            /** @var array{type: string} $expectedConfig */
+
+            /** @var object{DATA_TYPE: string}|null $columnInfo */
             $columnInfo = DB::selectOne('
                 SELECT COLUMN_TYPE, DATA_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, COLLATION_NAME, COLUMN_KEY, EXTRA
                 FROM INFORMATION_SCHEMA.COLUMNS

@@ -45,8 +45,6 @@ class TrainingObserver
     }
 
     /**
-     * @param Training $training
-     * 
      * @return void
      */
     public function creating(Training $training)
@@ -61,8 +59,6 @@ class TrainingObserver
     }
 
     /**
-     * @param Training $training
-     * 
      * @return void
      */
     public function updating(Training $training)

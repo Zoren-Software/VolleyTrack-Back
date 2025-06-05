@@ -6,12 +6,12 @@ use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
 use App\Mail\User\ForgotPasswordMail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,6 +40,7 @@ class User extends Authenticatable implements HasApiTokensContract
      * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\UserFactory>
      */
     use HasFactory;
+
     use HasRoles;
     use LogsActivity;
     use Notifiable;
@@ -83,10 +84,7 @@ class User extends Authenticatable implements HasApiTokensContract
     protected $guard_name = 'sanctum';
 
     /**
-     * @param string $namePermission
-     * @param array<string> $permissions
-     *
-     * @return bool
+     * @param  array<string>  $permissions
      */
     public function hasPermissionsViaRoles(string $namePermission, array $permissions): bool
     {
@@ -104,6 +102,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @return MorphToMany<Role, User, MorphPivot>
+     *
      * @phpstan-return MorphToMany<Role, User, MorphPivot>
      */
     public function rolesCustom(): MorphToMany
@@ -122,6 +121,7 @@ class User extends Authenticatable implements HasApiTokensContract
         }
 
         $teamField = config('permission.table_names.roles') . '.' . app(PermissionRegistrar::class)->teamsKey;
+
         /** @phpstan-ignore-next-line */
         return $relation->wherePivot(app(PermissionRegistrar::class)->teamsKey, getPermissionsTeamId())
             ->where(fn ($q) => $q->whereNull($teamField)->orWhere($teamField, getPermissionsTeamId()));
@@ -140,25 +140,18 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param string $password
-     *
-     * @return void
+     * @param  string  $password
      */
     public function makePassword($password): void
     {
         $this->password = Hash::make($password);
     }
 
-    /**
-     * @param string $namePermission
-     *
-     * @return bool
-     */
     public function hasPermissionRole(string $namePermission): bool
     {
         $user = auth()->user();
 
-        if (! $user) {
+        if (!$user) {
             return false;
         }
 
@@ -246,6 +239,7 @@ class User extends Authenticatable implements HasApiTokensContract
      * @codeCoverageIgnore
      *
      * @phpstan-param Builder<User> $query
+     *
      * @phpstan-return Builder<User>
      */
     public function scopeMe(Builder $query): Builder
@@ -301,8 +295,7 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param array<string, mixed> $args
-     *
+     * @param  array<string, mixed>  $args
      * @return Builder<User>
      */
     public function list(array $args): Builder
@@ -319,10 +312,8 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param array<string, mixed> $args
-     *
-     * @return void
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {
@@ -342,10 +333,7 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param string $search
-     *
-     * @return void
+     * @param  Builder<User>  $query
      */
     public function scopeFilterName(Builder $query, string $search): void
     {
@@ -355,10 +343,7 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param string $search
-     *
-     * @return void
+     * @param  Builder<User>  $query
      */
     public function scopeFilterEmail(Builder $query, string $search): void
     {
@@ -368,10 +353,7 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param string $search
-     *
-     * @return void
+     * @param  Builder<User>  $query
      */
     public function scopeFilterUserInformation(Builder $query, string $search): void
     {
@@ -384,10 +366,7 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param string $search
-     *
-     * @return void
+     * @param  Builder<User>  $query
      */
     public function scopeFilterPositionName(Builder $query, string $search): void
     {
@@ -400,10 +379,7 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param string $search
-     *
-     * @return void
+     * @param  Builder<User>  $query
      */
     public function scopeFilterTeamName(Builder $query, string $search): void
     {
@@ -416,10 +392,8 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param array<string, mixed> $args
-     *
-     * @return void
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterPosition(Builder $query, array $args): void
     {
@@ -437,10 +411,8 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param array<string, mixed> $args
-     *
-     * @return void
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterTeam(Builder $query, array $args): void
     {
@@ -458,10 +430,8 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param array<string> $ids
-     *
-     * @return void
+     * @param  Builder<User>  $query
+     * @param  array<string>  $ids
      */
     public function scopeFilterIds(Builder $query, array $ids): void
     {
@@ -471,10 +441,8 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param array<string, mixed> $args
-     *
-     * @return void
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterIgnores(Builder $query, array $args): void
     {
@@ -484,10 +452,8 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param Builder<User> $query
-     * @param array<string, mixed> $args
-     *
-     * @return void
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
      */
     public function scopeFilterRoles(Builder $query, array $args): void
     {
@@ -503,9 +469,6 @@ class User extends Authenticatable implements HasApiTokensContract
         );
     }
 
-    /**
-     * @return void
-     */
     public function saveLastUserChange(): void
     {
         $this->user_id = auth()->user()->id ?? null;
@@ -513,10 +476,7 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param string $tenant
-     * @param bool $admin
-     *
-     * @return void
+     * @param  bool  $admin
      */
     public function sendConfirmEmailAndCreatePasswordNotification(string $tenant, $admin = false): void
     {
@@ -527,9 +487,7 @@ class User extends Authenticatable implements HasApiTokensContract
     }
 
     /**
-     * @param array<string, mixed> $args
-     *
-     * @return void
+     * @param  array<string, mixed>  $args
      */
     public function sendForgotPasswordNotification(array $args): void
     {
@@ -543,12 +501,6 @@ class User extends Authenticatable implements HasApiTokensContract
         }
     }
 
-    /**
-     * @param string $typeKey
-     * @param string $channel
-     *
-     * @return bool
-     */
     public function canReceiveNotification(string $typeKey, string $channel = 'system'): bool
     {
         $channelColumn = match ($channel) {

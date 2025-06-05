@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Tenants;
 
 class TeamLevelsTest extends TenantBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'team_levels';
 
     /**

@@ -8,8 +8,6 @@ return new class extends Migration
 {
     /**
      * NOTE - Apagável na próxima versão
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -30,8 +28,6 @@ return new class extends Migration
 
     /**
      * NOTE - Apagável na próxima versão
-     *
-     * @return void
      */
     public function down(): void
     {

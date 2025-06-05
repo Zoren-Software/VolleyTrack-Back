@@ -11,10 +11,6 @@ class ConfirmationTrainingPolicy
 
     /**
      * View a training instance.
-     * 
-     * @param User $user
-     * 
-     * @return bool
      */
     public function view(User $user): bool
     {
@@ -23,11 +19,8 @@ class ConfirmationTrainingPolicy
 
     /**
      * ConfirmTraining a confirmation training instance.
-     * 
-     * @param User $user
-     * @param array<string, mixed> $args
-     * 
-     * @return bool
+     *
+     * @param  array<string, mixed>  $args
      */
     public function confirmTraining(User $user, array $args): bool
     {
@@ -36,10 +29,6 @@ class ConfirmationTrainingPolicy
 
     /**
      * ConfirmPresence confirmation training instance.
-     * 
-     * @param User $user
-     * 
-     * @return bool
      */
     public function confirmPresence(User $user): bool
     {

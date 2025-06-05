@@ -13,7 +13,7 @@ class RelationshipSpecificFundamental implements InvokableRule
     private $fundamentalIds;
 
     /**
-     * @param array<int> $fundamentalIds
+     * @param  array<int>  $fundamentalIds
      */
     public function __construct($fundamentalIds)
     {
@@ -25,11 +25,7 @@ class RelationshipSpecificFundamental implements InvokableRule
      *
      * @codeCoverageIgnore
      *
-     * @param  string  $attribute
-     * @param  mixed  $specificFundamentalIds
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     * 
-     * @return void
      */
     public function __invoke(string $attribute, mixed $specificFundamentalIds, \Closure $fail): void
     {

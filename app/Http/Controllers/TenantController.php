@@ -25,13 +25,6 @@ class TenantController extends Controller
         return response()->json(['message' => trans('TenantCreate.messageSuccess')], 200);
     }
 
-    /**
-     * @param string $tenantId
-     * @param string $email
-     * @param string $name
-     * 
-     * @return void
-     */
     protected function runTenantMigrations(string $tenantId, string $email, string $name): void
     {
         try {

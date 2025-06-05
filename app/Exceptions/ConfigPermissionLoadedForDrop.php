@@ -19,8 +19,6 @@ class ConfigPermissionLoadedForDrop extends Exception
 
     /**
      * Render the exception into an HTTP response.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function render(): Response
     {

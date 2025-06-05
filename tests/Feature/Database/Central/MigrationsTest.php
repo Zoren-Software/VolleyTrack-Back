@@ -4,9 +4,6 @@ namespace Tests\Feature\Database\Central;
 
 class MigrationsTest extends CentralBase
 {
-    /**
-     * @var string
-     */
     protected string $table = 'migrations';
 
     /**

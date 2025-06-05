@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TrainingConfig extends Model
 {
@@ -31,6 +31,7 @@ class TrainingConfig extends Model
 
     /**
      * @return BelongsTo<User, TrainingConfig>
+     *
      * @phpstan-return BelongsTo<User, TrainingConfig>
      */
     public function user()

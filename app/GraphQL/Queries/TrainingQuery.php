@@ -10,7 +10,6 @@ class TrainingQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
      * @return Builder<Training>
      */
     public function list($_, array $args): Builder
