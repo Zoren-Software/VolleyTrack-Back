@@ -4,10 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
-    /**
-     * @return void
-     */
+return new class extends Migration
+{
     public function up(): void
     {
         $tableNames = config('permission.table_names');

@@ -8,8 +8,6 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -26,13 +24,11 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
         $table = config('activitylog.table_name');
-        
+
         if (!is_string($table)) {
             throw new \RuntimeException('Invalid config for activitylog.table_name. Expected string.');
         }
