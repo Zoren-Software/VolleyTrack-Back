@@ -10,11 +10,11 @@ class MeQuery
     /**
      * @param  mixed  $_
      * @param  array{}  $args
-     * 
-     * @return Builder<User>
+     *
+     * @return User
      */
-    public function me($_, array $args): Builder
+    public function me($_, array $args): User
     {
-        return User::query()->me();
+        return User::query()->me()->firstOrFail();
     }
 }

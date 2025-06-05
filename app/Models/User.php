@@ -25,7 +25,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
 
-
 /**
  * @property \Illuminate\Notifications\DatabaseNotificationCollection<string, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property \Illuminate\Notifications\DatabaseNotificationCollection<string, \Illuminate\Notifications\DatabaseNotification> $unreadNotifications
@@ -86,7 +85,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param string $namePermission
      * @param array<string> $permissions
-     * 
+     *
      * @return bool
      */
     public function hasPermissionsViaRoles(string $namePermission, array $permissions): bool
@@ -142,7 +141,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @param string $password
-     * 
+     *
      * @return void
      */
     public function makePassword($password): void
@@ -152,7 +151,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @param string $namePermission
-     * 
+     *
      * @return bool
      */
     public function hasPermissionRole(string $namePermission): bool
@@ -245,17 +244,13 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @codeCoverageIgnore
-     * 
+     *
      * @phpstan-param Builder<User> $query
-     * @phpstan-return User|null
+     * @phpstan-return Builder<User>
      */
-    public function scopeMe(Builder $query): ?self
+    public function scopeMe(Builder $query): Builder
     {
-        /** @var self|null $user */
-        $user = $query->with('positions', 'teams')
-            ->find(auth()->id());
-
-        return $user;
+        return $query->with('positions', 'teams')->where('id', auth()->id());
     }
 
     /**
@@ -307,7 +302,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @param array<string, mixed> $args
-     * 
+     *
      * @return Builder<User>
      */
     public function list(array $args): Builder
@@ -326,7 +321,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param array<string, mixed> $args
-     * 
+     *
      * @return void
      */
     public function scopeFilterSearch(Builder $query, array $args): void
@@ -349,7 +344,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param string $search
-     * 
+     *
      * @return void
      */
     public function scopeFilterName(Builder $query, string $search): void
@@ -362,7 +357,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param string $search
-     * 
+     *
      * @return void
      */
     public function scopeFilterEmail(Builder $query, string $search): void
@@ -375,7 +370,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param string $search
-     * 
+     *
      * @return void
      */
     public function scopeFilterUserInformation(Builder $query, string $search): void
@@ -391,7 +386,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param string $search
-     * 
+     *
      * @return void
      */
     public function scopeFilterPositionName(Builder $query, string $search): void
@@ -407,7 +402,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param string $search
-     * 
+     *
      * @return void
      */
     public function scopeFilterTeamName(Builder $query, string $search): void
@@ -423,7 +418,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param array<string, mixed> $args
-     * 
+     *
      * @return void
      */
     public function scopeFilterPosition(Builder $query, array $args): void
@@ -444,7 +439,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param array<string, mixed> $args
-     * 
+     *
      * @return void
      */
     public function scopeFilterTeam(Builder $query, array $args): void
@@ -465,7 +460,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param array<string> $ids
-     * 
+     *
      * @return void
      */
     public function scopeFilterIds(Builder $query, array $ids): void
@@ -478,7 +473,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param array<string, mixed> $args
-     * 
+     *
      * @return void
      */
     public function scopeFilterIgnores(Builder $query, array $args): void
@@ -491,7 +486,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param Builder<User> $query
      * @param array<string, mixed> $args
-     * 
+     *
      * @return void
      */
     public function scopeFilterRoles(Builder $query, array $args): void
@@ -520,7 +515,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param string $tenant
      * @param bool $admin
-     * 
+     *
      * @return void
      */
     public function sendConfirmEmailAndCreatePasswordNotification(string $tenant, $admin = false): void
@@ -533,7 +528,7 @@ class User extends Authenticatable implements HasApiTokensContract
 
     /**
      * @param array<string, mixed> $args
-     * 
+     *
      * @return void
      */
     public function sendForgotPasswordNotification(array $args): void
@@ -551,7 +546,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * @param string $typeKey
      * @param string $channel
-     * 
+     *
      * @return bool
      */
     public function canReceiveNotification(string $typeKey, string $channel = 'system'): bool

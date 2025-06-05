@@ -90,8 +90,8 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      * 
-     * @param bool $typeMessageError
-     * @param bool $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * 
@@ -100,8 +100,8 @@ class FundamentalTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     public function fundamentals_list(
-        bool $typeMessageError,
-        bool $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         bool $hasPermission
     ) {
@@ -174,8 +174,8 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @param bool $typeMessageError
-     * @param bool $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * 
@@ -184,8 +184,8 @@ class FundamentalTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function fundamental_info(
-        bool $typeMessageError,
-        bool $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         bool $hasPermission
     ) {
@@ -250,8 +250,8 @@ class FundamentalTest extends TestCase
      * @author Maicon Cerutti
      *
      * @param array<string, mixed> $parameters
-     * @param bool $typeMessageError
-     * @param bool $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * 
@@ -261,8 +261,8 @@ class FundamentalTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function fundamental_create(
         array $parameters,
-        bool $typeMessageError,
-        bool $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         bool $hasPermission
     ) {
@@ -375,8 +375,8 @@ class FundamentalTest extends TestCase
      * @author Maicon Cerutti
      * 
      * @param array<string, mixed> $parameters
-     * @param bool $typeMessageError
-     * @param bool $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * 
@@ -387,8 +387,8 @@ class FundamentalTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function fundamental_edit(
         array $parameters,
-        bool $typeMessageError,
-        bool $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         $hasPermission
     ) {
@@ -505,8 +505,8 @@ class FundamentalTest extends TestCase
      * @author Maicon Cerutti
      *
      * @param array<string, mixed> $data
-     * @param bool $typeMessageError
-     * @param bool $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * 
@@ -516,8 +516,8 @@ class FundamentalTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function fundamental_delete(
         array $data,
-        bool $typeMessageError,
-        bool $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         $hasPermission
     ) {

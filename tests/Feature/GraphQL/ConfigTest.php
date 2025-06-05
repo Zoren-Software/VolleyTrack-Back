@@ -54,8 +54,8 @@ class ConfigTest extends TestCase
      *
      * @author Maicon Cerutti
      * 
-     * @param bool $typeMessageError
-     * @param bool $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * 
@@ -64,8 +64,8 @@ class ConfigTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function config_info(
-        bool $typeMessageError,
-        bool $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         bool $hasPermission
     ) {
@@ -128,8 +128,8 @@ class ConfigTest extends TestCase
      * @author Maicon Cerutti
      *
      * @param array<string, mixed> $parameters
-     * @param bool $typeMessageError
-     * @param bool $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * 
@@ -139,8 +139,8 @@ class ConfigTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function config_edit(
         array $parameters,
-        bool $typeMessageError,
-        bool $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         bool $hasPermission
     ) {

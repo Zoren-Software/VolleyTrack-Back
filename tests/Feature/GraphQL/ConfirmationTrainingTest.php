@@ -94,8 +94,8 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      * 
-     * @param string $typeMessageError
-     * @param string $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      *
@@ -104,8 +104,8 @@ class ConfirmationTrainingTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
     public function confirmations_trainings_list(
-        string $typeMessageError,
-        string $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         bool $hasPermission
     ) {
@@ -186,8 +186,8 @@ class ConfirmationTrainingTest extends TestCase
      * @author Maicon Cerutti
      * 
      * @param array<string, mixed> $data
-     * @param string $typeMessageError
-     * @param string $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * @param bool $trainingCancelled
@@ -199,8 +199,8 @@ class ConfirmationTrainingTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function confirm_presence(
         array $data,
-        string $typeMessageError,
-        string $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         bool $hasPermission,
         bool $trainingCancelled
@@ -373,8 +373,8 @@ class ConfirmationTrainingTest extends TestCase
      * @author Maicon Cerutti
      *
      * @param array<string, mixed> $data
-     * @param bool $typeMessageError
-     * @param bool $expectedMessage
+     * @param bool|string $typeMessageError
+     * @param bool|string $expectedMessage
      * @param array<int, string> $expected
      * @param bool $hasPermission
      * @param bool $trainingCancelled
@@ -385,8 +385,8 @@ class ConfirmationTrainingTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function confirm_training(
         array $data,
-        bool $typeMessageError,
-        bool $expectedMessage,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
         array $expected,
         bool $hasPermission,
         bool $trainingCancelled
