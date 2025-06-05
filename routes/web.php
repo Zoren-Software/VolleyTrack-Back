@@ -35,8 +35,8 @@ if (app()->environment('local') && config('app.debug')) {
     Route::get('/test-notification-training-mail', function () {
         tenancy()->initialize('test');
 
-        $training = App\Models\Training::find(1);
-        $user = App\Models\User::find(1);
+        $training = App\Models\Training::findOrFail(1);
+        $user = App\Models\User::findOrFail(1);
 
         return new App\Mail\Training\TrainingMail($training, $user);
     });
@@ -67,8 +67,8 @@ if (app()->environment('local') && config('app.debug')) {
     Route::get('/test-cancellation-notification-training-mail', function () {
         tenancy()->initialize('test');
 
-        $training = App\Models\Training::find(1);
-        $user = App\Models\User::find(3);
+        $training = App\Models\Training::findOrFail(1);
+        $user = App\Models\User::findOrFail(3);
 
         return new App\Mail\Training\CancellationTrainingMail($training, $user);
     });
@@ -76,7 +76,7 @@ if (app()->environment('local') && config('app.debug')) {
     Route::get('/test-confirm-email-and-create-password', function () {
         tenancy()->initialize('test');
 
-        $user = App\Models\User::find(3);
+        $user = App\Models\User::findOrFail(3);
 
         return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, tenant('id'), true);
     });
@@ -84,7 +84,7 @@ if (app()->environment('local') && config('app.debug')) {
     Route::get('/test-forgot-password', function () {
         tenancy()->initialize('test');
 
-        $user = App\Models\User::find(3);
+        $user = App\Models\User::findOrFail(3);
 
         return new App\Mail\User\ForgotPasswordMail($user, tenant('id'));
     });

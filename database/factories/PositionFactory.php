@@ -19,7 +19,7 @@ class PositionFactory extends Factory
     {
         return [
             'name' => $this->faker->name() . ' Position',
-            'user_id' => User::first()->id,
+            'user_id' => User::firstOrFail()->id,
         ];
     }
 }

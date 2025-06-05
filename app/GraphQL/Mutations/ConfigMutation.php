@@ -9,9 +9,6 @@ final class ConfigMutation
 {
     private Config $config;
 
-    /**
-     * @param Config $config
-     */
     public function __construct(Config $config)
     {
         $this->config = $config;
@@ -20,15 +17,20 @@ final class ConfigMutation
     /**
      * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
-     * @param GraphQLContext $context
+     * @param  GraphQLContext $context
      * 
      * @return Config
      */
     public function make($rootValue, array $args, GraphQLContext $context): Config
     {
-        $this->config = $this->config->find(1);
+        $this->config = $this->config->findOrFail(1);
 
-        $args['user_id'] = $context->user()->getAuthIdentifier();
+        $user = $context->user();
+        if (! $user) {
+            throw new \Exception('User not authenticated.');
+        }
+
+        $args['user_id'] = $user->getAuthIdentifier();
 
         $this->config->update($args);
 

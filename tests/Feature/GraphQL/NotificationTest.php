@@ -155,7 +155,7 @@ class NotificationTest extends TestCase
         }
 
         if ($parameters['id'] && $hasLogin) {
-            $notification = $user->notifications()->first();
+            $notification = $user->notifications()->firstOrFail();
             $parameters['id'] = [$notification->id];
         } else {
             unset($parameters['id']);

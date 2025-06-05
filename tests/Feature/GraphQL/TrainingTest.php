@@ -152,7 +152,7 @@ class TrainingTest extends TestCase
         array $expected,
         bool $hasPermission
     ) {
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $this->setPermissions($hasPermission);
 
@@ -243,7 +243,7 @@ class TrainingTest extends TestCase
         array $expected,
         bool $hasPermission
     ) {
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $this->setPermissions($hasPermission);
 
@@ -329,7 +329,7 @@ class TrainingTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $team = Team::factory()
             ->create();
@@ -337,34 +337,38 @@ class TrainingTest extends TestCase
         if ($parameters['sendEmailPlayer']) {
             $player = $team->players()->first();
 
-            $setting = $player->notificationSettings()
-                ->whereHas('notificationType', function ($query) {
-                    $query->where('key', 'training_created');
-                })
-                ->first();
-
-            if ($setting) {
-                $setting->via_email = true;
-                $setting->save();
+            if ($player) {
+                $setting = $player->notificationSettings()
+                    ->whereHas('notificationType', function ($query) {
+                        $query->where('key', 'training_created');
+                    })
+                    ->first();
+        
+                if ($setting) {
+                    $setting->via_email = true;
+                    $setting->save();
+                }
             }
         }
 
         if ($parameters['sendEmailTechnician']) {
             $technician = $team->technicians()->first();
 
-            $setting = $technician->notificationSettings()
-                ->whereHas('notificationType', function ($query) {
-                    $query->where('key', 'training_created');
-                })
-                ->first();
-
-            if ($setting) {
-                $setting->via_email = true;
-                $setting->save();
+            if ($technician) {
+                $setting = $technician->notificationSettings()
+                    ->whereHas('notificationType', function ($query) {
+                        $query->where('key', 'training_created');
+                    })
+                    ->first();
+        
+                if ($setting) {
+                    $setting->via_email = true;
+                    $setting->save();
+                }
             }
         }
 
-        $user = $team->players->first();
+        $user = $team->players->firstOrFail();
 
         $user->roles()->sync(2);
 
@@ -738,7 +742,7 @@ class TrainingTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $team = Team::factory()->hasPlayers(10)->create();
 
@@ -751,7 +755,7 @@ class TrainingTest extends TestCase
 
         $parameters['id'] = $training->id;
 
-        $user = $team->players->first();
+        $user = $team->players->firstOrFail();
 
         $user->roles()->sync(2);
 

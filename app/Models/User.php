@@ -157,9 +157,15 @@ class User extends Authenticatable implements HasApiTokensContract
      */
     public function hasPermissionRole(string $namePermission): bool
     {
+        $user = auth()->user();
+
+        if (! $user) {
+            return false;
+        }
+
         return $this->hasPermissionsViaRoles(
             $namePermission,
-            auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray()
+            $user->getPermissionsViaRoles()->pluck('name')->toArray()
         );
     }
 

@@ -150,6 +150,8 @@ class SanctumTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function resend_email_verification()
     {
+        $this->assertNotNull($this->user);
+
         $this->graphQL(
             'resendEmailVerification',
             [
@@ -175,6 +177,8 @@ class SanctumTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function forgot_password()
     {
+        $this->assertNotNull($this->user);
+
         $this->login = true;
 
         $this->graphQL(

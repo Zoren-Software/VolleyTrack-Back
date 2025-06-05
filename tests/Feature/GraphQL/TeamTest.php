@@ -124,9 +124,9 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $teamCategory = TeamCategory::where('id', 1)->first();
+        $teamCategory = TeamCategory::where('id', 1)->firstOrFail();
 
-        $teamLevel = TeamLevel::where('id', 1)->first();
+        $teamLevel = TeamLevel::where('id', 1)->firstOrFail();
 
         Team::factory()
             ->hasPlayers(10)
@@ -218,9 +218,9 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $teamCategory = TeamCategory::where('id', 1)->first();
+        $teamCategory = TeamCategory::where('id', 1)->firstOrFail();
 
-        $teamLevel = TeamLevel::where('id', 1)->first();
+        $teamLevel = TeamLevel::where('id', 1)->firstOrFail();
 
         $team = Team::factory()
             ->hasPlayers(10)

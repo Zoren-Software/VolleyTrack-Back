@@ -90,7 +90,7 @@ class UserTest extends TestCase
 
     /**
      * @param bool $hasPermission
-     * 
+     *
      * @return void
      */
     private function setPermissions(bool $hasPermission): void
@@ -103,7 +103,7 @@ class UserTest extends TestCase
      * Listagem de todos os usuários.
      *
      * @author Maicon Cerutti
-     * 
+     *
      * @param string|bool $typeMessageError
      * @param string|bool $expectedMessage
      * @param array<string, mixed> $expected
@@ -194,7 +194,7 @@ class UserTest extends TestCase
      * @param string|bool $expectedMessage
      * @param array<string, mixed> $expected
      * @param bool $hasPermission
-     * 
+     *
      * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
@@ -266,7 +266,7 @@ class UserTest extends TestCase
      * Método de criação de um usuário.
      *
      * @author Maicon Cerutti
-     * 
+     *
      * @param array<string, mixed> $parameters
      * @param string|bool $typeMessageError
      * @param string|bool $expectedMessage
@@ -326,7 +326,7 @@ class UserTest extends TestCase
 
         if ($expectedMessage === false) {
             // NOTE - Verifica se o usuário foi criado no banc o de dados
-            $user = User::where('email', $parameters['email'])->first();
+            $user = User::where('email', $parameters['email'])->firstOrFail();
             $this->assertDatabaseHas('users', [
                 'id' => $user->id,
                 'name' => $parameters['name'],
@@ -745,7 +745,7 @@ class UserTest extends TestCase
      * Método de edição de um usuário.
      *
      * @author Maicon Cerutti
-     * 
+     *
      * @param array<string, mixed> $parameters
      * @param string|bool $typeMessageError
      * @param string|bool $expectedMessage
@@ -767,7 +767,10 @@ class UserTest extends TestCase
     ): void {
         $this->setPermissions($hasPermission);
 
-        $user = User::find($this->user->id);
+        $this->assertNotNull($this->user);
+
+        /** @var User $user */
+        $user = User::findOrFail($this->user->id);
 
         if ($parameters['password'] == 'testing.password_test') {
             $parameters['password'] = config('testing.password_test');
@@ -1182,7 +1185,7 @@ class UserTest extends TestCase
      * Método de deletar um usuário.
      *
      * @author Maicon Cerutti
-     * 
+     *
      * @param array<string, mixed> $data
      * @param string|bool $typeMessageError
      * @param string|bool $expectedMessage
@@ -1199,8 +1202,7 @@ class UserTest extends TestCase
         string|bool $expectedMessage,
         array $expected,
         bool $hasPermission
-    ): void
-    {
+    ): void {
         $this->setPermissions($hasPermission);
 
         $user = User::factory()
@@ -1211,6 +1213,10 @@ class UserTest extends TestCase
 
         if ($data['error'] != null) {
             $parameters['id'] = $data['error'];
+        }
+
+        if (!$this->user) {
+            $this->fail('User não inicializado');
         }
 
         if ($expectedMessage == 'UserDelete.cannot_delete_own_account') {
@@ -1299,7 +1305,7 @@ class UserTest extends TestCase
      * Listar informações de usuário logado.
      *
      * @author Maicon Cerutti
-     * 
+     *
      * @param string|bool $typeMessageError
      * @param string|bool $expectedMessage
      * @param array<string, mixed> $expected
@@ -1384,7 +1390,7 @@ class UserTest extends TestCase
      * Método de criar senha para um usuário.
      *
      * @author Maicon Cerutti
-     * 
+     *
      * @param array<string, mixed> $parameters
      * @param string|bool $typeMessageError
      * @param string|bool $expectedMessage
@@ -1401,8 +1407,7 @@ class UserTest extends TestCase
         string|bool $expectedMessage,
         array $expected,
         bool $hasPermission
-    ): void
-    {
+    ): void {
         $this->setPermissions($hasPermission);
 
         $user = User::factory()

@@ -33,7 +33,7 @@ class LoginGitHubController extends Controller
 
         $githubService = new GitHubService;
 
-        $login = $githubService->verifyPermissionUser($githubUser->getNickname());
+        $login = $githubService->verifyPermissionUser($githubUser->getNickname() ?? '');
 
         if (!$login) {
             return redirect()->route('welcome-horizon', ['error' => 'Você não tem permissão para acessar o Horizon']);

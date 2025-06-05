@@ -187,7 +187,7 @@ class Training extends Model
                 $this->rangeDateNotification(
                     $this->date_start->format($this->format),
                     now()->format($this->format),
-                    now()->addDays($daysNotification)->format($this->format)
+                    now()->addDays($daysNotification ?? 0)->format($this->format)
                 )
             ) {
                 if ($technician->canReceiveNotification('training_created', 'system')) {
@@ -217,7 +217,7 @@ class Training extends Model
                 $this->rangeDateNotification(
                     $this->date_start->format($this->format),
                     now()->format($this->format),
-                    now()->addDays($daysNotification)->format($this->format)
+                    now()->addDays($daysNotification ?? 0)->format($this->format)
                 )
             ) {
                 if ($player->canReceiveNotification('training_created', 'system')) {
@@ -258,7 +258,7 @@ class Training extends Model
      */
     public function confirmationsPlayers(?int $trainingId = null, ?int $daysNotification = null)
     {
-        $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification;
+        $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification ?? 0;
 
         $this->team->players()->each(function ($player) use ($trainingId, $daysNotification) {
             $confirmationTraining = $this->confirmationsTraining()

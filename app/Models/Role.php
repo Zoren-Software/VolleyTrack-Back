@@ -24,29 +24,31 @@ class Role extends SpatieRole
      *
      * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope('permission', function (Builder $builder) {
-            // Se o usuário for um administrador, não fazemos nenhuma restrição
-            if (auth()->user()->hasPermissionTo('view-role-admin')) {
+            $user = auth()->user();
+
+            if (! $user) {
+                return $builder->where('id', '<', 0); // Garante query vazia se não houver usuário
+            }
+
+            if ($user->hasPermissionTo('view-role-admin')) {
                 return $builder;
             }
 
-            // Se o usuário for um técnico, removemos a permissão de administrador da consulta
-            if (auth()->user()->hasPermissionTo('view-role-technician')) {
-                return $builder->whereNotIn('id', [1]); // Remove admin (id: 1)
+            if ($user->hasPermissionTo('view-role-technician')) {
+                return $builder->whereNotIn('id', [1]); // Remove admin
             }
 
-            // Se o usuário for um jogador, removemos as permissões de administrador e técnico da consulta
-            if (auth()->user()->hasPermissionTo('view-role-player')) {
-                return $builder->whereNotIn('id', [1, 2]); // Remove admin (id: 1) and technician (id: 2)
+            if ($user->hasPermissionTo('view-role-player')) {
+                return $builder->whereNotIn('id', [1, 2]); // Remove admin e técnico
             }
 
-            // Se chegamos até aqui, significa que o usuário não tem permissão para ver nenhum dos roles
-            // Aqui você pode decidir o que fazer nesse caso, talvez retornar um builder que sempre retorna uma query vazia
-            return $builder->where('id', '<', 0); // Isso retornará uma query vazia
+            return $builder->where('id', '<', 0); // Caso o usuário não tenha permissão alguma
         });
     }
+
 
     /**
      * @param array<string, mixed> $args

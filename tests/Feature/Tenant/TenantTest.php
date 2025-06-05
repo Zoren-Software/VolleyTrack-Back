@@ -39,7 +39,13 @@ class TenantTest extends TestCase
         if ($data['token'] === false) {
             $data['token'] = 'test';
         } else {
-            $data['token'] = ExternalAccessToken::first()->token;
+            $externalToken = ExternalAccessToken::first();
+
+            if (! $externalToken) {
+                $this->fail('Nenhum token de acesso externo encontrado para o teste.');
+            }
+
+            $data['token'] = $externalToken->token;
         }
 
         if (

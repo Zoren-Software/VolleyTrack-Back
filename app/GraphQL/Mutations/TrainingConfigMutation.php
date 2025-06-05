@@ -26,7 +26,7 @@ final class TrainingConfigMutation
      */
     public function make($rootValue, array $args, GraphQLContext $context): TrainingConfig
     {
-        $this->trainingConfig = $this->trainingConfig->find(1);
+        $this->trainingConfig = $this->trainingConfig->findOrFail(1);
         $this->trainingConfig->update($args);
 
         return $this->trainingConfig;

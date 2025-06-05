@@ -20,7 +20,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
     /**
      * @var ConfirmationTraining
      */
-    public ConfirmationTraining $confirmationTraining;
+    public ?ConfirmationTraining $confirmationTraining = null;
 
     /**
      * @var int

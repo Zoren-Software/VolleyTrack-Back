@@ -69,7 +69,7 @@ final class UserMutation
         $this->user->touch();
 
         // Recarrega o usuário com todos os campos necessários
-        return $this->user->fresh();
+        return $this->user->fresh() ?? $this->user;
     }
 
     /**
@@ -151,16 +151,22 @@ final class UserMutation
      */
     public function setPassword($rootValue, array $args, GraphQLContext $context): User
     {
-        $this->user = User::where([
+        $user = User::where([
             'set_password_token' => $args['token'],
             'email' => $args['email'],
         ])->first();
-
+        
+        if (!$user) {
+            throw new \Exception('Invalid token or email.');
+        }
+        
+        $this->user = $user;
+        
         $this->user->password = Hash::make($args['password']);
         $this->user->user_id = $this->user->id;
         $this->user->set_password_token = null;
         $this->user->save();
-
+        
         return $this->user;
     }
 

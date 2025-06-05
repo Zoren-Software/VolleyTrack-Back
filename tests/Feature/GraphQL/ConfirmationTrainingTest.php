@@ -214,8 +214,7 @@ class ConfirmationTrainingTest extends TestCase
             ->setStatus(!$trainingCancelled)
             ->create();
 
-        /** @var \App\Models\ConfirmationTraining|null $confirmationTraining */
-        $confirmationTraining = $training->confirmationsTraining->first();
+        $confirmationTraining = $training->confirmationsTraining->firstOrFail();
 
         if ($data['error'] === null) {
             $parameters = [
@@ -401,8 +400,7 @@ class ConfirmationTrainingTest extends TestCase
             ->setStatus(!$trainingCancelled)
             ->create();
 
-        /** @var \App\Models\ConfirmationTraining|null $confirmationTraining */
-        $confirmationTraining = $training->confirmationsTraining->first();
+        $confirmationTraining = $training->confirmationsTraining->firstOrFail();
 
         if ($data['error'] !== true) {
             $parameters = [

@@ -52,7 +52,11 @@ class TrainingObserver
     public function creating(Training $training)
     {
         if (!$training->isDirty('user_id')) {
-            $training->user_id = auth()->user()->id ?? null;
+            $user = auth()->user();
+
+            if ($user instanceof \App\Models\User) {
+                $training->user_id = $user->id;
+            }
         }
     }
 
@@ -64,7 +68,11 @@ class TrainingObserver
     public function updating(Training $training)
     {
         if (!$training->isDirty('user_id')) {
-            $training->user_id = auth()->user()->id ?? null;
+            $user = auth()->user();
+
+            if ($user instanceof \App\Models\User) {
+                $training->user_id = $user->id;
+            }
         }
     }
 }
