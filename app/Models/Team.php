@@ -139,29 +139,30 @@ class Team extends Model
     /**
      * @param  Builder<Team>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterIgnores(Builder $query, array $args)
+    public function scopeFilterIgnores(Builder $query, array $args): void
     {
-        $query->when(
-            isset($args['filter']) &&
-            isset($args['filter']['ignoreIds']),
-            function ($query) use ($args) {
-                $query->whereNotIn('teams.id', $args['filter']['ignoreIds']);
-            });
+        /** @var array{ignoreIds?: array<int>} $filter */
+        $filter = is_array($args['filter'] ?? null) ? $args['filter'] : [];
+
+        if (isset($filter['ignoreIds'])) {
+            $ignoreIds = $filter['ignoreIds'];
+            $query->whereNotIn('teams.id', $ignoreIds);
+        }
     }
 
     /**
      * @param  Builder<Team>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterSearch(Builder $query, array $args)
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) &&
-            isset($args['filter']['search']), function ($query) use ($args) {
-                $query->filterName($args['filter']['search']);
-            });
+        /** @var array{search?: string} $filter */
+        $filter = is_array($args['filter'] ?? null) ? $args['filter'] : [];
+
+        if (isset($filter['search'])) {
+            $query->filterName($filter['search']);
+        }
     }
 
     /**
@@ -190,79 +191,67 @@ class Team extends Model
     /**
      * @param  Builder<Team>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterPosition(Builder $query, array $args)
+    public function scopeFilterPosition(Builder $query, array $args): void
     {
-        $query->when(
-            isset($args['filter']) &&
-            isset($args['filter']['positionsIds']) &&
-            !empty($args['filter']['positionsIds']),
-            function ($query) use ($args) {
-                $query->whereHas('players', function ($query) use ($args) {
-                    $query->whereHas('positions', function ($query) use ($args) {
-                        // @phpstan-ignore-next-line
-                        $query->filterIds($args['filter']['positionsIds']);
-                    });
-                });
-            }
-        );
-    }
+        /** @var array{positionsIds?: array<array-key, int>} $filter */
+        $filter = is_array($args['filter'] ?? null) ? $args['filter'] : [];
 
-    /**
-     * @param  Builder<Team>  $query
-     * @param  array<string, mixed>  $args
-     * @return void
-     */
-    public function scopeFilterByTeamPlayer(Builder $query, array $args)
-    {
-        $query->when(
-            isset($args['filter']) &&
-            isset($args['filter']['playersIds']) &&
-            !empty($args['filter']['playersIds']),
-            function ($query) use ($args) {
-                $query->whereHas('players', function ($query) use ($args) {
+        if (isset($filter['positionsIds']) && !empty($filter['positionsIds'])) {
+            $query->whereHas('players', function ($query) use ($filter) {
+                $query->whereHas('positions', function ($query) use ($filter) {
                     // @phpstan-ignore-next-line
-                    $query->filterIds($args['filter']['playersIds']);
+                    $query->filterIds($filter['positionsIds']);
                 });
-            }
-        );
+            });
+        }
     }
 
     /**
      * @param  Builder<Team>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterPlayers(Builder $query, array $args)
+    public function scopeFilterByTeamPlayer(Builder $query, array $args): void
     {
-        $query->when(
-            isset($args['filter']) &&
-            isset($args['filter']['playersIds']) &&
-            !empty($args['filter']['playersIds']),
-            function ($query) use ($args) {
-                $query->whereHas('players', function ($query) use ($args) {
-                    // @phpstan-ignore-next-line
-                    $query->filterIds($args['filter']['playersIds']);
-                });
-            }
-        );
+        /** @var array{playersIds?: array<array-key, int>} $filter */
+        $filter = is_array($args['filter'] ?? null) ? $args['filter'] : [];
+
+        if (!empty($filter['playersIds'])) {
+            $query->whereHas('players', function ($query) use ($filter) {
+                // @phpstan-ignore-next-line
+                $query->filterIds($filter['playersIds']);
+            });
+        }
     }
 
     /**
      * @param  Builder<Team>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterUsers(Builder $query, array $args)
+    public function scopeFilterPlayers(Builder $query, array $args): void
     {
-        $query->when(
-            isset($args['filter']) &&
-            isset($args['filter']['usersIds']) &&
-            !empty($args['filter']['usersIds']),
-            function ($query) use ($args) {
-                $query->where('teams.user_id', $args['filter']['usersIds']);
-            }
-        );
+        /** @var array{playersIds?: array<array-key, int>} $filter */
+        $filter = is_array($args['filter'] ?? null) ? $args['filter'] : [];
+
+        if (!empty($filter['playersIds'])) {
+            $query->whereHas('players', function ($query) use ($filter) {
+                // @phpstan-ignore-next-line
+                $query->filterIds($filter['playersIds']);
+            });
+        }
+    }
+
+    /**
+     * @param  Builder<Team>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterUsers(Builder $query, array $args): void
+    {
+        /** @var array{usersIds?: int|array<array-key, int>} $filter */
+        $filter = is_array($args['filter'] ?? null) ? $args['filter'] : [];
+
+        if (isset($filter['usersIds'])) {
+            $query->where('teams.user_id', $filter['usersIds']);
+        }
     }
 }

@@ -17,7 +17,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
     public ?ConfirmationTraining $confirmationTraining = null;
 
     /**
-     * @var int
+     * @var string
      */
     public $tenant;
 
@@ -31,7 +31,15 @@ class Notification extends IlluminateNotification implements ShouldQueue
     {
         $this->training = $training;
         $this->confirmationTraining = $confirmationTraining;
-        $this->tenant = tenant('id');
+
+        $tenantId = tenant('id');
+
+        if (!is_string($tenantId)) {
+            throw new \RuntimeException('Tenant ID must be a string');
+        }
+
+        $this->tenant = $tenantId;
+
         $this->afterCommit();
     }
 

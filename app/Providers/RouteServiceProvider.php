@@ -104,7 +104,19 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function centralDomains(): array
     {
-        return config('tenancy.central_domains');
+        $domains = config('tenancy.central_domains');
+
+        if (!is_array($domains)) {
+            throw new \RuntimeException('Config "tenancy.central_domains" must be an array.');
+        }
+
+        return array_map(function ($value): string {
+            if (!is_string($value) && !is_int($value) && !is_float($value)) {
+                throw new \RuntimeException('Each central domain must be a string, int, or float.');
+            }
+
+            return (string) $value;
+        }, $domains);
     }
 
     /**

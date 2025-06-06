@@ -69,10 +69,13 @@ class TeamCategory extends Model
      * @param  array<string, mixed>  $args
      * @return Builder<TeamCategory>
      */
-    public function scopeFilterSearch(Builder $query, array $args)
+    public function scopeFilterSearch(Builder $query, array $args): Builder
     {
-        return $query->when(isset($args['search']), function ($query) use ($args) {
-            $query->where('team_categories.name', 'like', '%' . $args['search'] . '%');
+        /** @var string|null $search */
+        $search = $args['search'] ?? null;
+
+        return $query->when(is_string($search), function ($query) use ($search) {
+            $query->where('team_categories.name', 'like', '%' . $search . '%');
         });
     }
 

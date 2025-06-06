@@ -99,19 +99,19 @@ class SpecificFundamental extends Model
     /**
      * @param  Builder<SpecificFundamental>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterSearch(Builder $query, array $args)
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) &&
-            isset($args['filter']['search']), function ($query) use ($args) {
-                $query
-                    ->filterName($args['filter']['search'])
-                    ->orWhere(function ($query) use ($args) {
-                        $query
-                            ->filterUserName($args['filter']['search']);
-                    });
-            });
+        /** @var array{search?: string} $filter */
+        $filter = is_array($args['filter'] ?? null) ? $args['filter'] : [];
+
+        if (isset($filter['search'])) {
+            $query
+                ->filterName($filter['search'])
+                ->orWhere(function ($query) use ($filter) {
+                    $query->filterUserName($filter['search']);
+                });
+        }
     }
 
     /**
@@ -142,18 +142,18 @@ class SpecificFundamental extends Model
     /**
      * @param  Builder<SpecificFundamental>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterUser(Builder $query, array $args)
+    public function scopeFilterUser(Builder $query, array $args): void
     {
+        /** @var array{usersIds?: array<array-key, int>}|null $filter */
+        $filter = $args['filter'] ?? null;
+
         $query->when(
-            isset($args['filter']) &&
-            isset($args['filter']['usersIds']) &&
-            !empty($args['filter']['usersIds']),
-            function ($query) use ($args) {
-                $query->whereHas('user', function ($query) use ($args) {
+            is_array($filter) && isset($filter['usersIds']) && !empty($filter['usersIds']),
+            function ($query) use ($filter) {
+                $query->whereHas('user', function ($query) use ($filter) {
                     // @phpstan-ignore-next-line
-                    $query->filterIds($args['filter']['usersIds']);
+                    $query->filterIds($filter['usersIds']);
                 });
             }
         );
@@ -162,30 +162,40 @@ class SpecificFundamental extends Model
     /**
      * @param  Builder<SpecificFundamental>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterIgnores(Builder $query, array $args)
+    public function scopeFilterIgnores(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
-            $query->whereNotIn('specific_fundamentals.id', $args['filter']['ignoreIds']);
-        });
+        $filter = $args['filter'] ?? [];
+
+        /** @var array<int>|null $ignoreIds */
+        $ignoreIds = is_array($filter) && array_key_exists('ignoreIds', $filter) && is_array($filter['ignoreIds'])
+            ? $filter['ignoreIds']
+            : null;
+
+        if ($ignoreIds !== null) {
+            $query->whereNotIn('specific_fundamentals.id', $ignoreIds);
+        }
     }
 
     /**
      * @param  Builder<SpecificFundamental>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterFundamentals(Builder $query, array $args)
+    public function scopeFilterFundamentals(Builder $query, array $args): void
     {
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
         $query->when(
-            isset($args['filter']) &&
-            isset($args['filter']['fundamentalsIds']) &&
-            !empty($args['filter']['fundamentalsIds']),
-            function ($query) use ($args) {
-                $query->whereHas('fundamentals', function ($query) use ($args) {
+            is_array($filter) &&
+            array_key_exists('fundamentalsIds', $filter) &&
+            is_array($filter['fundamentalsIds']),
+            function (Builder $query) use ($filter): void {
+                /** @var array<int> $fundamentalsIds */
+                $fundamentalsIds = $filter['fundamentalsIds'] ?? [];
+                $query->whereHas('fundamentals', function ($query) use ($fundamentalsIds) {
                     // @phpstan-ignore-next-line
-                    $query->filterIds($args['filter']['fundamentalsIds']);
+                    $query->filterIds($fundamentalsIds);
                 });
             }
         );

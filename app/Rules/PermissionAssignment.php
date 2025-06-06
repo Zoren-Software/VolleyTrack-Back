@@ -28,6 +28,10 @@ class PermissionAssignment implements ImplicitRule
      */
     public function passes($attribute, $values)
     {
+        if (!is_iterable($values)) {
+            return false;
+        }
+
         foreach ($values as $value) {
             if (!Role::find($value)) {
                 return false;

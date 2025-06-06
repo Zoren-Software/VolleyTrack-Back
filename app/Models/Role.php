@@ -26,7 +26,8 @@ class Role extends SpatieRole
         static::addGlobalScope('permission', function (Builder $builder) {
             $user = auth()->user();
 
-            if (!$user) {
+            /** @var User|null $user */
+            if ($user === null) {
                 return $builder->where('id', '<', 0); // Garante query vazia se não houver usuário
             }
 
@@ -63,9 +64,18 @@ class Role extends SpatieRole
      */
     public function scopeFilterIgnores(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
-            $query->whereNotIn('roles.id', $args['filter']['ignoreIds']);
-        });
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        $query->when(
+            is_array($filter) &&
+            array_key_exists('ignoreIds', $filter) &&
+            is_array($filter['ignoreIds']),
+            function (Builder $query) use ($filter): void {
+                assert(isset($filter['ignoreIds']) && is_array($filter['ignoreIds']));
+                $query->whereNotIn('roles.id', $filter['ignoreIds']);
+            }
+        );
     }
 
     /**
@@ -74,9 +84,12 @@ class Role extends SpatieRole
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
-            $query->filterName($args['filter']['search']);
-        });
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        if (is_array($filter) && isset($filter['search']) && is_string($filter['search'])) {
+            $query->filterName($filter['search']);
+        }
     }
 
     /**
@@ -95,7 +108,9 @@ class Role extends SpatieRole
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => trans('RoleRegister.' . $value)
+            get: function (mixed $value, array $attributes): string {
+                return trans('RoleRegister.' . (is_scalar($value) ? (string) $value : 'unknown'));
+            }
         );
     }
 }

@@ -19,6 +19,12 @@ class ValidTrainingDeletion implements InvokableRule
      */
     public function __invoke($attribute, $value, $fail)
     {
+        if (!is_iterable($value)) {
+            $fail('O valor informado para exclusão de treinos deve ser uma lista de IDs.');
+
+            return;
+        }
+
         foreach ($value as $id) {
             /** @var \App\Models\Training|null $training */
             $training = Training::with(['confirmationsTraining' => function ($query) {
@@ -26,7 +32,7 @@ class ValidTrainingDeletion implements InvokableRule
             }])->find($id);
 
             if ($training && $training->confirmationsTraining->isNotEmpty()) {
-                $fail("O treino com ID $id não pode ser deletado pois possui confirmações de presença neste treino.");
+                $fail('O treino com ID ' . (string) $id . ' não pode ser deletado pois possui confirmações de presença neste treino.');
             }
         }
     }

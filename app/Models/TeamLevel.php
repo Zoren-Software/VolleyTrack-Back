@@ -45,14 +45,15 @@ class TeamLevel extends Model
     /**
      * @param  Builder<TeamLevel>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterSearch(Builder $query, array $args)
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['search']), function ($query) use ($args) {
-            $query->where('team_levels.name', 'like', '%' . $args['search'] . '%');
-        });
+        /** @var string|null $search */
+        $search = $args['search'] ?? null;
 
+        $query->when(is_string($search), function ($query) use ($search) {
+            $query->where('team_levels.name', 'like', '%' . $search . '%');
+        });
     }
 
     /**

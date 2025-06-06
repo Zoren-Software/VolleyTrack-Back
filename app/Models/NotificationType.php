@@ -56,10 +56,17 @@ class NotificationType extends Model
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) &&
-            isset($args['filter']['search']), function ($query) use ($args) {
-                // @phpstan-ignore-next-line
-                $query->filterName($args['filter']['search']);
-            });
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        /** @var string|null $search */
+        $search = (is_array($filter) && isset($filter['search']) && is_string($filter['search']))
+            ? $filter['search']
+            : null;
+
+        $query->when($search !== null, function (Builder $query) use ($search): void {
+            // @phpstan-ignore-next-line
+            $query->filterName($search);
+        });
     }
 }

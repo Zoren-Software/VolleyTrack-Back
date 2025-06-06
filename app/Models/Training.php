@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -189,7 +190,7 @@ class Training extends Model
                 }
 
                 if ($technician->canReceiveNotification('training_created', 'email')) {
-                    \Mail::to($technician->email)
+                    Mail::to($technician->email)
                         ->send(new ConfirmationTrainingMail($this, $technician));
                 }
             }
@@ -217,7 +218,7 @@ class Training extends Model
                 }
 
                 if ($player->canReceiveNotification('training_created', 'email')) {
-                    \Mail::to($player->email)
+                    Mail::to($player->email)
                         ->send(new TrainingMail($this, $player));
                 }
             }
@@ -282,7 +283,7 @@ class Training extends Model
                 }
 
                 if ($player->canReceiveNotification('training_created', 'email')) {
-                    \Mail::to($player->email)
+                    Mail::to($player->email)
                         ->send(new TrainingMail($this, $player));
                 }
             }
@@ -321,7 +322,7 @@ class Training extends Model
                 $player->email_verified_at &&
                 $player->canReceiveNotification('training_cancelled', 'email')
             ) {
-                \Mail::to($player->email)
+                Mail::to($player->email)
                     ->send(new CancellationTrainingMail($this, $player));
             }
         });
@@ -375,19 +376,27 @@ class Training extends Model
     /**
      * @param  Builder<Training>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterSearch(Builder $query, array $args)
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
-            $query
-                ->filterName($args['filter']['search'])
-                ->orWhere(function ($query) use ($args) {
-                    $query
-                        ->filterUserName($args['filter']['search'])
-                        ->filterTeamName($args['filter']['search']);
-                });
-        });
+        if (
+            isset($args['filter']) &&
+            is_array($args['filter']) &&
+            isset($args['filter']['search']) &&
+            is_string($args['filter']['search'])
+        ) {
+            $filter = $args['filter'];
+
+            $query->where(function (Builder $query) use ($filter) {
+                $query
+                    ->filterName($filter['search'])
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query
+                            ->filterUserName($filter['search'])
+                            ->filterTeamName($filter['search']);
+                    });
+            });
+        }
     }
 
     /**
@@ -432,87 +441,112 @@ class Training extends Model
     /**
      * @param  Builder<Training>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterTeam(Builder $query, array $args)
+    public function scopeFilterTeam(Builder $query, array $args): void
     {
-        $query->when(
+        if (
             isset($args['filter']) &&
-            isset($args['filter']['teamsIds']) &&
-            !empty($args['filter']['teamsIds']),
-            function ($query) use ($args) {
-                $query->whereHas('team', function ($query) use ($args) {
+            is_array($args['filter'])
+        ) {
+            $filter = $args['filter'];
+
+            if (
+                isset($filter['teamsIds']) &&
+                is_array($filter['teamsIds']) &&
+                !empty($filter['teamsIds'])
+            ) {
+                $query->whereHas('team', function ($query) use ($filter) {
                     // @phpstan-ignore-next-line
-                    $query->filterIds($args['filter']['teamsIds']);
+                    $query->filterIds($filter['teamsIds']);
                 });
             }
-        )->when(
-            isset($args['filter']) &&
-            isset($args['filter']['playersIds']) &&
-            !empty($args['filter']['playersIds']),
-            function ($query) use ($args) {
+
+            if (
+                isset($filter['playersIds']) &&
+                is_array($filter['playersIds']) &&
+                !empty($filter['playersIds'])
+            ) {
                 $query->whereHas('team', function ($query) use ($args) {
                     // @phpstan-ignore-next-line
                     $query->filterByTeamPlayer($args);
                 });
             }
-        );
-
+        }
     }
 
     /**
      * @param  Builder<Training>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterUser(Builder $query, array $args)
+    public function scopeFilterUser(Builder $query, array $args): void
     {
-        $query->when(
+        if (
             isset($args['filter']) &&
-            isset($args['filter']['usersIds']) &&
-            !empty($args['filter']['usersIds']),
-            function ($query) use ($args) {
-                $query->whereHas('user', function ($query) use ($args) {
+            is_array($args['filter'])
+        ) {
+            /** @var array<string, mixed> $filter */
+            $filter = $args['filter'];
+
+            if (
+                isset($filter['usersIds']) &&
+                is_array($filter['usersIds']) &&
+                !empty($filter['usersIds'])
+            ) {
+                $query->whereHas('user', function ($query) use ($filter) {
                     // @phpstan-ignore-next-line
-                    $query->filterIds($args['filter']['usersIds']);
+                    $query->filterIds($filter['usersIds']);
                 });
             }
-        );
+        }
     }
 
     /**
      * @param  Builder<Training>  $query
      * @param  array<string, mixed>  $args
-     * @return void
      */
-    public function scopeFilterIgnores(Builder $query, array $args)
+    public function scopeFilterIgnores(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
-            $query->whereNotIn('trainings.id', $args['filter']['ignoreIds']);
-        });
-    }
-
-    /**
-     * @param  Builder<Training>  $query
-     * @param  array<string, mixed>  $args
-     * @return void
-     */
-    public function scopeFilterDate(Builder $query, array $args)
-    {
-        $query->when(
+        if (
             isset($args['filter']) &&
+            is_array($args['filter']) &&
+            isset($args['filter']['ignoreIds']) &&
+            is_array($args['filter']['ignoreIds'])
+        ) {
+            /** @var array<string, mixed> $filter */
+            $filter = $args['filter'];
+
+            $query->whereNotIn('trainings.id', $filter['ignoreIds']);
+        }
+    }
+
+    /**
+     * @param  Builder<Training>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterDate(Builder $query, array $args): void
+    {
+        if (
+            isset($args['filter']) &&
+            is_array($args['filter']) &&
             isset($args['filter']['dateStart']) &&
-            !empty($args['filter']['dateStart']),
-            function ($query) use ($args) {
-                $query->whereDate('trainings.date_start', '>=', $args['filter']['dateStart']);
-            }
-        )->when(
+            is_string($args['filter']['dateStart']) &&
+            !empty($args['filter']['dateStart'])
+        ) {
+            /** @var array{dateStart: string} $filter */
+            $filter = $args['filter'];
+            $query->whereDate('trainings.date_start', '>=', $filter['dateStart']);
+        }
+
+        if (
             isset($args['filter']) &&
+            is_array($args['filter']) &&
             isset($args['filter']['dateEnd']) &&
-            !empty($args['filter']['dateEnd']),
-            function ($query) use ($args) {
-                $query->whereDate('trainings.date_end', '<=', $args['filter']['dateEnd']);
-            }
-        );
+            is_string($args['filter']['dateEnd']) &&
+            !empty($args['filter']['dateEnd'])
+        ) {
+            /** @var array{dateEnd: string} $filter */
+            $filter = $args['filter'];
+            $query->whereDate('trainings.date_end', '<=', $filter['dateEnd']);
+        }
     }
 }
