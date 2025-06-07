@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class TeamLevelSeederTest extends DataAbstract
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -21,10 +21,8 @@ class TeamLevelSeederTest extends DataAbstract
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function teamLevelsAreSeeded(): void
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_levels_are_seeded(): void
     {
         $expectedLevels = [
             'Bronze',

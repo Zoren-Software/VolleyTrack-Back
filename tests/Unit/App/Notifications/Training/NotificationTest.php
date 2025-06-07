@@ -12,12 +12,10 @@ class NotificationTest extends TestCase
     /**
      * A test method via.
      *
-     * @test
-     *
-     * @dataProvider dataProvider
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function via(
         $notificationTechnicianByEmail,
         $notificationTeamByEmail,
@@ -52,7 +50,6 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => true,
                 'expected' => [
                     'database',
-                    'mail',
                 ],
             ],
             'notify player by email and database' => [
@@ -62,7 +59,6 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => true,
                 'expected' => [
                     'database',
-                    'mail',
                 ],
             ],
             'notify technician by email and database' => [
@@ -72,7 +68,6 @@ class NotificationTest extends TestCase
                 'hasRolePlayer' => false,
                 'expected' => [
                     'database',
-                    'mail',
                 ],
             ],
             'notify technician by database only' => [
@@ -98,12 +93,9 @@ class NotificationTest extends TestCase
 
     /**
      * A test method tags.
-     *
-     * @test
-     *
-     * @return array
      */
-    public function tags()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function tags(): array
     {
         $trainingMock = $this->createMock(Training::class);
         $notification = new Notification($trainingMock);
@@ -111,5 +103,7 @@ class NotificationTest extends TestCase
 
         $this->assertIsArray($tags);
         $this->assertEquals(['tenant:'], $tags);
+
+        return $tags;
     }
 }

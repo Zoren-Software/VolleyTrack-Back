@@ -22,10 +22,10 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        //NOTE - Verificar manualmente se o email faker gerado é único, se não for, gerar outro
-        $email = $this->faker->unique()->safeEmail('users', 'email');
+        // NOTE - Verificar manualmente se o email faker gerado é único, se não for, gerar outro
+        $email = $this->faker->unique()->safeEmail();
         while (User::where('email', $email)->exists()) {
-            $email = $this->faker->unique()->safeEmail('users', 'email');
+            $email = $this->faker->unique()->safeEmail();
         }
 
         return [

@@ -19,7 +19,7 @@ class SpecificFundamentalFactory extends Factory
     {
         return [
             'name' => $this->faker->name() . ' Specific Fundamental',
-            'user_id' => User::first()->id,
+            'user_id' => User::firstOrFail()->id,
         ];
     }
 }

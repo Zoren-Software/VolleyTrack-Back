@@ -12,6 +12,27 @@ return new class extends Migration
         $columnNames = config('permission.column_names');
         $teams = config('permission.teams');
 
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_array($columnNames)) {
+            throw new \RuntimeException('Config "permission.column_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_bool($teams)) {
+            throw new \RuntimeException('Config "permission.teams" deve ser boolean.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var array<string, string> $columnNames */
+        $columnNames = $columnNames;
+
+        /** @var bool $teams */
+        $teams = $teams;
+
         if (!Schema::hasTable($tableNames['roles'])) {
             Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
                 $table->bigIncrements('id');
@@ -31,6 +52,14 @@ return new class extends Migration
     public function down(): void
     {
         $tableNames = config('permission.table_names');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
         Schema::dropIfExists($tableNames['roles']);
     }
 };

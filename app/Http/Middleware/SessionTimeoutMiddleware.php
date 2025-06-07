@@ -21,8 +21,8 @@ class SessionTimeoutMiddleware
 
         $lastActivity = session('last_activity');
 
-        if ($lastActivity && time() - $lastActivity > $maxIdleTime) {
-            auth()->guard('web')->logout();
+        if (is_int($lastActivity) && time() - $lastActivity > $maxIdleTime) {
+            auth()->logout();
             session()->flush();
 
             return redirect()->route('welcome-horizon');

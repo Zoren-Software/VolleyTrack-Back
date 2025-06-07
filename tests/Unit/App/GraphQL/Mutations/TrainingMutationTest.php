@@ -22,13 +22,11 @@ class TrainingMutationTest extends TestCase
     /**
      * A basic unit test create and edit training.
      *
-     * @dataProvider trainingProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function trainingMake($data, $method)
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_make($data, $method)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $trainingMock = $this->mock(Training::class, function (MockInterface $mock) use ($data, $method) {
@@ -137,13 +135,11 @@ class TrainingMutationTest extends TestCase
     /**
      * A basic unit test delete training.
      *
-     * @dataProvider trainingDeleteProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function trainingDelete($data, $numberFind, $numberDelete)
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingDeleteProvider')]
+    public function training_delete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $trainingMock = $this->mock(

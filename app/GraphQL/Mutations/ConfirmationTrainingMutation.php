@@ -7,36 +7,46 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class ConfirmationTrainingMutation
 {
-    private ConfirmationTraining $confirmationTraining;
-
-    public function __construct(ConfirmationTraining $confirmationTraining)
-    {
-        $this->confirmationTraining = $confirmationTraining;
-    }
-
+    /**
+     * @param  mixed  $rootValue
+     * @param  array<string, mixed>  $args
+     */
     public function confirmTraining($rootValue, array $args, GraphQLContext $context): ConfirmationTraining
     {
         return $this->confirm('status', $args);
     }
 
+    /**
+     * @param  mixed  $rootValue
+     * @param  array<string, mixed>  $args
+     */
     public function confirmPresence($rootValue, array $args, GraphQLContext $context): ConfirmationTraining
     {
         return $this->confirm('presence', $args);
     }
 
-    public function confirm($parameterSave, array $args): ConfirmationTraining
+    /**
+     * @param  array<string, mixed>  $args
+     */
+    public function confirm(string $parameterSave, array $args): ConfirmationTraining
     {
+        $confirmationTraining = null;
+
         if (isset($args['id'])) {
-            $this->confirmationTraining = $this->confirmationTraining->find($args['id']);
-        } elseif (isset($args['training_id']) && isset($args['player_id'])) {
-            $this->confirmationTraining = $this->confirmationTraining
-                ->where('training_id', $args['training_id'])
-                ->where('player_id', $args['player_id'])->first();
+            $confirmationTraining = ConfirmationTraining::find($args['id']);
+        } elseif (isset($args['training_id'], $args['player_id'])) {
+            $confirmationTraining = ConfirmationTraining::where('training_id', $args['training_id'])
+                ->where('player_id', $args['player_id'])
+                ->first();
         }
 
-        $this->confirmationTraining->$parameterSave = $args[$parameterSave];
-        $this->confirmationTraining->save();
+        if (!$confirmationTraining instanceof ConfirmationTraining) {
+            throw new \Exception('ConfirmationTraining not found.');
+        }
 
-        return $this->confirmationTraining;
+        $confirmationTraining->{$parameterSave} = $args[$parameterSave];
+        $confirmationTraining->save();
+
+        return $confirmationTraining;
     }
 }

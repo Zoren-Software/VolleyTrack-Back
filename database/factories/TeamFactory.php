@@ -16,15 +16,18 @@ class TeamFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->name() . ' TEAM',
-            'user_id' => User::first()->id,
+            'user_id' => User::firstOrFail()->id,
         ];
     }
 
-    public function configure()
+    /**
+     * @return Factory<\App\Models\Team>
+     */
+    public function configure(): Factory
     {
         return $this->afterCreating(function (Team $team) {
             $team->players()->syncWithPivotValues(
@@ -39,7 +42,11 @@ class TeamFactory extends Factory
         });
     }
 
-    public function setAttributes(array $attributes)
+    /**
+     * @param  array<string, mixed>  $attributes
+     * @return Factory<\App\Models\Team>
+     */
+    public function setAttributes(array $attributes): Factory
     {
         return $this->state(function (array $attributesOriginal) use ($attributes) {
             return array_merge($attributesOriginal, $attributes);

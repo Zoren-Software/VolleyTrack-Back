@@ -12,10 +12,9 @@ class CheckPlayerIsInTrainingTest extends TestCase
     /**
      * A basic unit test message.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function message()
     {
         $playerId = 1;
@@ -29,12 +28,10 @@ class CheckPlayerIsInTrainingTest extends TestCase
     /**
      * A basic unit test passes.
      *
-     * @test
-     *
-     * @dataProvider passesProvider
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('passesProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function passes($passes)
     {
         $playerId = 1;

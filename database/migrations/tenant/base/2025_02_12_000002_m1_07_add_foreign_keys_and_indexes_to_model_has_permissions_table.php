@@ -12,6 +12,27 @@ return new class extends Migration
         $columnNames = config('permission.column_names');
         $teams = config('permission.teams');
 
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_array($columnNames)) {
+            throw new \RuntimeException('Config "permission.column_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_bool($teams)) {
+            throw new \RuntimeException('Config "permission.teams" deve ser boolean.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var array<string, string> $columnNames */
+        $columnNames = $columnNames;
+
+        /** @var bool $teams */
+        $teams = $teams;
+
         if (!Schema::hasTable($tableNames['model_has_permissions'])) {
             return;
         }
@@ -27,6 +48,20 @@ return new class extends Migration
         $tableNames = config('permission.table_names');
         $teams = config('permission.teams');
 
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_bool($teams)) {
+            throw new \RuntimeException('Config "permission.teams" deve ser boolean.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var bool $teams */
+        $teams = $teams;
+
         if (!Schema::hasTable($tableNames['model_has_permissions'])) {
             return;
         }
@@ -37,6 +72,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @param  array<string, string>  $columnNames
+     */
     private function addIndexes(Blueprint $table, array $columnNames): void
     {
         if (!hasIndexExist($table->getTable(), 'model_has_permissions_model_id_model_type_index')) {
@@ -49,6 +87,10 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param  array<string, string>  $tableNames
+     * @param  array<string, string>  $columnNames
+     */
     private function addForeignKeys(Blueprint $table, array $tableNames, array $columnNames, bool $teams): void
     {
         $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';

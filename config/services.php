@@ -42,5 +42,4 @@ return [
         'redirect' => env('GITHUB_REDIRECT_URI'),
         'access_token' => env('GITHUB_ACCESS_TOKEN'),
     ],
-
 ];

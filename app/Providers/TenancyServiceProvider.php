@@ -15,7 +15,9 @@ use Stancl\Tenancy\Middleware;
 
 class TenancyServiceProvider extends ServiceProvider
 {
-    // By default, no namespace is used to support the callable array syntax.
+    /**
+     * By default, no namespace is used to support the callable array syntax.
+     */
     public static string $controllerNamespace = '';
 
     /**
@@ -23,9 +25,9 @@ class TenancyServiceProvider extends ServiceProvider
      *
      * @codeCoverageIgnore
      *
-     * @return void
+     * @return array<string, array<int, class-string|JobPipeline>>
      */
-    public function events()
+    public function events(): array
     {
         return [
             // Tenant events
@@ -104,15 +106,18 @@ class TenancyServiceProvider extends ServiceProvider
         //
     }
 
+    /**
+     * @return void
+     */
     public function boot()
     {
         $this->bootEvents();
-        //$this->mapRoutes();
+        // $this->mapRoutes();
 
         $this->makeTenancyMiddlewareHighestPriority();
     }
 
-    protected function bootEvents()
+    protected function bootEvents(): void
     {
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {
@@ -127,10 +132,8 @@ class TenancyServiceProvider extends ServiceProvider
 
     /**
      * @codeCoverageIgnore
-     *
-     * @return void
      */
-    protected function mapRoutes()
+    protected function mapRoutes(): void
     {
         if (file_exists(base_path('routes/tenant.php'))) {
             Route::namespace(static::$controllerNamespace)
@@ -138,7 +141,7 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
-    protected function makeTenancyMiddlewareHighestPriority()
+    protected function makeTenancyMiddlewareHighestPriority(): void
     {
         $tenancyMiddleware = [
             // Even higher priority than the initialization middleware
@@ -152,7 +155,7 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            app(\Illuminate\Contracts\Http\Kernel::class)->prependToMiddlewarePriority($middleware);
         }
     }
 }

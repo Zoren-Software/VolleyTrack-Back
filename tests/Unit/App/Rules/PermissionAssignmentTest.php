@@ -10,13 +10,12 @@ class PermissionAssignmentTest extends TestCase
     /**
      * A basic unit test message.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function message()
     {
-        $permissionAssignment = new PermissionAssignment();
+        $permissionAssignment = new PermissionAssignment;
         $this->assertIsString($permissionAssignment->message());
     }
 }

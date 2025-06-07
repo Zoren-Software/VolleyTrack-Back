@@ -11,13 +11,11 @@ class PositionsUsersTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
-     * @test
-     *
      * @return void
      */
     public function getActivitylogOptions()
     {
-        $positionsUsers = new PositionsUsers();
+        $positionsUsers = new PositionsUsers;
         $this->assertInstanceOf(LogOptions::class, $positionsUsers->getActivitylogOptions());
     }
 }

@@ -11,11 +11,9 @@ class FundamentalPolicyTest extends TestCase
 {
     /**
      * A basic unit test create.
-     *
-     * @test
-     *
-     * @dataProvider permissionProvider
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function create(bool $expected): void
     {
         $user = $this->createMock(User::class);
@@ -24,18 +22,16 @@ class FundamentalPolicyTest extends TestCase
             ->with('edit-fundamental')
             ->willReturn($expected);
 
-        $fundamentalPolicy = new FundamentalPolicy();
+        $fundamentalPolicy = new FundamentalPolicy;
         $fundamentalPolicy->create($user);
     }
 
     /**
      * A basic unit test edit.
-     *
-     * @test
-     *
-     * @dataProvider permissionProvider
      */
-    public function permissionEdit(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_edit(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -43,18 +39,16 @@ class FundamentalPolicyTest extends TestCase
             ->with('edit-fundamental')
             ->willReturn($expected);
 
-        $fundamentalPolicy = new FundamentalPolicy();
+        $fundamentalPolicy = new FundamentalPolicy;
         $fundamentalPolicy->edit($user);
     }
 
     /**
      * A basic unit test delete.
-     *
-     * @dataProvider permissionProvider
-     *
-     * @test
      */
-    public function permissionDelete(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_delete(bool $expected): void
     {
         $user = $this->createMock(User::class);
         $user->expects($this->once())
@@ -62,18 +56,16 @@ class FundamentalPolicyTest extends TestCase
             ->with('edit-fundamental')
             ->willReturn($expected);
 
-        $fundamentalPolicy = new FundamentalPolicy();
+        $fundamentalPolicy = new FundamentalPolicy;
         $fundamentalPolicy->delete($user);
     }
 
     /**
      * A basic unit test view.
-     *
-     * @dataProvider permissionProvider
-     *
-     * @test
      */
-    public function permissionView(bool $expected): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('permissionProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function permission_view(bool $expected): void
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($expected) {
             $mock->shouldReceive('hasPermissionTo')
@@ -85,7 +77,7 @@ class FundamentalPolicyTest extends TestCase
                 ->andReturn($expected);
         });
 
-        $fundamentalPolicy = new FundamentalPolicy();
+        $fundamentalPolicy = new FundamentalPolicy;
         $return = $fundamentalPolicy->view($userMock);
 
         $this->assertEquals($expected, $return);

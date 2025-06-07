@@ -9,31 +9,44 @@ use Illuminate\Support\Facades\Log;
 
 final class DiscordService extends Model
 {
+    /**
+     * @var string
+     */
     private $webhookErrors;
 
+    /**
+     * @var string
+     */
+    /** @phpstan-ignore-next-line */
     private $webhookPayments;
 
+    /**
+     * @var GuzzleClient
+     */
     private $client;
 
     /**
      * @codeCoverageIgnore
+     *
+     * @throws \RuntimeException
      */
     public function __construct(GuzzleClient $client)
     {
         $this->client = $client;
 
-        $this->webhookErrors = config('services.discord.webhook_errors');
-        $this->webhookPayments = config('services.discord.webhook_payments');
+        $webhookErrors = config('services.discord.webhook_errors');
+        $webhookPayments = config('services.discord.webhook_payments');
 
-        if (!$this->webhookErrors || !$this->webhookPayments) {
-            Log::error('Discord webhooks not configured');
+        if (!is_string($webhookErrors) || !is_string($webhookPayments)) {
+            Log::error('Discord webhooks not configured properly');
+            throw new \RuntimeException('Discord webhooks must be strings');
         }
+
+        $this->webhookErrors = $webhookErrors;
+        $this->webhookPayments = $webhookPayments;
     }
 
     /**
-     * @param  Throwable  $exception
-     * @param  string  $message
-     *
      * @codeCoverageIgnore
      */
     public function sendError(\Throwable $error, string $author): void

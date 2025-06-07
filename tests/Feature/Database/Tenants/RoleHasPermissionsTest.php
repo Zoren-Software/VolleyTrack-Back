@@ -4,24 +4,39 @@ namespace Tests\Feature\Database\Tenants;
 
 class RoleHasPermissionsTest extends TenantBase
 {
-    protected $table = 'role_has_permissions';
+    protected string $table = 'role_has_permissions';
 
-    public static $fieldTypes = [
+    /**
+     * @var array<string, mixed>
+     */
+    protected static array $fieldTypes = [
         'permission_id' => ['type' => 'bigint', 'unsigned' => true],
         'role_id' => ['type' => 'bigint', 'unsigned' => true],
     ];
 
-    public static $primaryKey = [
+    /**
+     * @var array<int, string>
+     */
+    protected static array $primaryKey = [
         'permission_id',
         'role_id',
     ]; // Define a chave primária composta
 
-    public static $autoIncrements = []; // Nenhum campo auto_increment
+    /**
+     * @var array<int, string>
+     */
+    protected static array $autoIncrements = []; // Nenhum campo auto_increment
 
-    public static $foreignKeys = [
+    /**
+     * @var array<int, string>
+     */
+    protected static array $foreignKeys = [
         'role_has_permissions_role_id_foreign',
         'role_has_permissions_permission_id_foreign',
     ];
 
-    public static $uniqueKeys = []; // Nenhuma chave única
+    /**
+     * @var array<int, string>
+     */
+    protected static array $uniqueKeys = []; // Nenhuma chave única
 }

@@ -9,10 +9,8 @@ trait DatabaseAssertions
 {
     /**
      * Verifica se a tabela existe antes de rodar os testes.
-     *
-     * @return void
      */
-    private function ensureTableExists()
+    private function ensureTableExists(): void
     {
         if (!Schema::hasTable($this->table)) {
             $this->fail("The table '{$this->table}' does not exist.");
@@ -22,7 +20,7 @@ trait DatabaseAssertions
     /**
      * Verifica se todos os campos definidos existem na tabela.
      */
-    public function verifyFields()
+    public function verifyFields(): void
     {
         $this->ensureTableExists();
         $this->checkMissingFields();
@@ -31,15 +29,13 @@ trait DatabaseAssertions
     /**
      * Verifica se a chave primária está corretamente definida.
      */
-    public function verifyPrimaryKey()
+    public function verifyPrimaryKey(): void
     {
         $this->ensureTableExists();
 
         // Se a tabela não deve ter uma primary key, o teste deve passar
         if (empty(static::$primaryKey)) {
-            $this->assertTrue(true, "No primary key expected for table '{$this->table}'.");
-
-            return;
+            $this->markTestSkipped("No primary key expected for table '{$this->table}'.");
         }
 
         $primaryKeyColumns = getPrimaryKeyColumns($this->table);
@@ -55,15 +51,13 @@ trait DatabaseAssertions
     /**
      * Verifica se os campos auto_increment estão corretamente definidos.
      */
-    public function verifyAutoIncrements()
+    public function verifyAutoIncrements(): void
     {
         $this->ensureTableExists();
 
         // Se a tabela não deve ter auto_increment, o teste deve passar sem erro
         if (empty(static::$autoIncrements)) {
-            $this->assertTrue(true, "No auto_increment expected for table '{$this->table}'.");
-
-            return;
+            $this->markTestSkipped("No auto_increment expected for table '{$this->table}'.");
         }
 
         foreach (static::$autoIncrements as $column) {
@@ -77,14 +71,12 @@ trait DatabaseAssertions
     /**
      * Verifica se as chaves estrangeiras estão corretamente definidas.
      */
-    public function verifyForeignKeys()
+    public function verifyForeignKeys(): void
     {
         $this->ensureTableExists();
 
         if (empty(static::$foreignKeys)) {
-            $this->assertTrue(true, "No foreign keys expected for table '{$this->table}'.");
-
-            return;
+            $this->markTestSkipped("No foreign keys expected for table '{$this->table}'.");
         }
 
         $missingForeignKeys = [];
@@ -104,7 +96,7 @@ trait DatabaseAssertions
     /**
      * Verifica se as chaves únicas estão corretamente definidas.
      */
-    public function verifyUniqueKeys()
+    public function verifyUniqueKeys(): void
     {
         $this->ensureTableExists();
         $this->checkUniqueKeys(static::$uniqueKeys ?? []);
@@ -113,7 +105,7 @@ trait DatabaseAssertions
     /**
      * Verifica o total de campos na tabela e no array de definição.
      */
-    public function verifyTotalFields()
+    public function verifyTotalFields(): void
     {
         $this->ensureTableExists();
         $this->assertCountFieldsMatch(static::$fieldTypes ?? []);
@@ -122,7 +114,7 @@ trait DatabaseAssertions
     /**
      * Verifica o total de chaves estrangeiras no array e na tabela.
      */
-    public function verifyTotalForeignKeys()
+    public function verifyTotalForeignKeys(): void
     {
         $this->ensureTableExists();
         $this->assertCountForeignKeysMatch(static::$foreignKeys ?? []);
@@ -131,7 +123,7 @@ trait DatabaseAssertions
     /**
      * Verifica o total de unique keys no array e na tabela.
      */
-    public function verifyTotalUniqueKeys()
+    public function verifyTotalUniqueKeys(): void
     {
         $this->ensureTableExists();
         $this->assertCountUniqueKeysMatch(static::$uniqueKeys ?? []);
@@ -140,7 +132,7 @@ trait DatabaseAssertions
     /**
      * Verifica se os campos da tabela possuem os tipos e atributos esperados.
      */
-    public function verifyFieldTypes()
+    public function verifyFieldTypes(): void
     {
         $this->ensureTableExists();
         $this->checkFieldTypes(static::$fieldTypes ?? []);
@@ -158,6 +150,9 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param  array<int, string>  $foreignKeys
+     */
     private function checkForeignKeys(array $foreignKeys): void
     {
         $missingForeignKeys = [];
@@ -174,6 +169,9 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param  array<int, string>  $uniqueKeys
+     */
     private function checkUniqueKeys(array $uniqueKeys): void
     {
         $missingUniqueKeys = [];
@@ -190,6 +188,9 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param  array<string, mixed>  $fieldTypes
+     */
     private function assertCountFieldsMatch(array $fieldTypes): void
     {
         $columns = Schema::getColumnListing($this->table);
@@ -203,10 +204,13 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param  array<int, string>  $foreignKeys
+     */
     private function assertCountForeignKeysMatch(array $foreignKeys): void
     {
         $totalForeignKeysArray = count($foreignKeys);
-        $totalForeignKeysTable = count(getForeignKeys($this->table) ?? []);
+        $totalForeignKeysTable = count(getForeignKeys($this->table));
 
         $this->assertEquals(
             $totalForeignKeysArray,
@@ -215,10 +219,13 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param  array<int, string>  $uniqueKeys
+     */
     private function assertCountUniqueKeysMatch(array $uniqueKeys): void
     {
         $totalUniqueKeysArray = count($uniqueKeys);
-        $totalUniqueKeysTable = count(getUniqueKeys($this->table) ?? []);
+        $totalUniqueKeysTable = count(getUniqueKeys($this->table));
 
         $this->assertEquals(
             $totalUniqueKeysArray,
@@ -227,12 +234,18 @@ trait DatabaseAssertions
         );
     }
 
+    /**
+     * @param  array<string, mixed>  $fieldTypes
+     */
     private function checkFieldTypes(array $fieldTypes): void
     {
         $databaseName = DB::getDatabaseName();
         $mismatchedTypes = [];
 
         foreach ($fieldTypes as $column => $expectedConfig) {
+            /** @var array{type: string} $expectedConfig */
+
+            /** @var object{DATA_TYPE: string}|null $columnInfo */
             $columnInfo = DB::selectOne('
                 SELECT COLUMN_TYPE, DATA_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, COLLATION_NAME, COLUMN_KEY, EXTRA
                 FROM INFORMATION_SCHEMA.COLUMNS

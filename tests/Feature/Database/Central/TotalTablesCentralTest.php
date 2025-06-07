@@ -2,14 +2,24 @@
 
 namespace Tests\Feature\Database\Central;
 
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TotalTablesCentralTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = false;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = false;
 
+    /**
+     * @var bool
+     */
     protected $login = false;
 
     /**
@@ -19,17 +29,21 @@ class TotalTablesCentralTest extends TestCase
      *
      * @return void
      */
-    public function verifyTotalTables()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function verify_total_tables()
     {
-        $tables = \DB::select('SHOW TABLES');
+        $tables = DB::select('SHOW TABLES');
         $totalTables = count($tables);
+
+        $databaseName = config('database.connections.mysql.database');
+        $databaseString = is_scalar($databaseName) || $databaseName === null ? (string) $databaseName : 'desconhecido';
 
         $this->assertEquals(
             6,
             $totalTables,
             PHP_EOL . PHP_EOL .
             'O número total de tabelas está incorreto.' . PHP_EOL .
-            '    Verifique o tenant central: ' . env('DB_DATABASE') . '.' . PHP_EOL .
+            '    Verifique o tenant central: ' . $databaseString . '.' . PHP_EOL .
             '    Verifique se todas as tabelas estão corretamente definidas.' . PHP_EOL .
             '    Ou se foram criadas mais tabelas e não foram consideradas.' . PHP_EOL .
             '    Este valor deve ser alterado manualmente no desenvolvimento.'

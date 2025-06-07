@@ -4,14 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     /**
      * NOTE - Apagável na próxima versão
-     *
-     * @return [type]
      */
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable('teams')) {
             Schema::table('teams', function (Blueprint $table) {
@@ -26,7 +24,10 @@ return new class() extends Migration
         }
     }
 
-    public function down()
+    /**
+     * NOTE - Apagável na próxima versão
+     */
+    public function down(): void
     {
         if (Schema::hasTable('teams')) {
             Schema::table('teams', function (Blueprint $table) {

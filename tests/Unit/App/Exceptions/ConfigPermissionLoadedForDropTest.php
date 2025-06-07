@@ -10,26 +10,24 @@ class ConfigPermissionLoadedForDropTest extends TestCase
     /**
      * A basic unit test example.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function example()
     {
-        $exception = new ConfigPermissionLoadedForDrop();
+        $exception = new ConfigPermissionLoadedForDrop;
         $this->assertIsString($exception->render());
     }
 
     /**
      * A basic test method report.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function report()
     {
-        $exception = new ConfigPermissionLoadedForDrop();
+        $exception = new ConfigPermissionLoadedForDrop;
         $this->assertNull($exception->report());
     }
 }

@@ -9,11 +9,10 @@ class ExampleTest extends TestCase
     /**
      * A basic test example.
      *
-     * @test
-     *
      * @return void
      */
-    public function thatTrueIsTrue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function that_true_is_true()
     {
         $this->assertTrue(true);
     }

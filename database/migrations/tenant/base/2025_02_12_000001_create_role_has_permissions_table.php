@@ -10,6 +10,21 @@ return new class extends Migration
     {
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        if (!is_array($columnNames)) {
+            throw new \RuntimeException('Config "permission.column_names" deve ser um array<string, string>.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var array<string, string> $columnNames */
+        $columnNames = $columnNames;
+
         $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';
         $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
 
@@ -26,6 +41,14 @@ return new class extends Migration
     public function down(): void
     {
         $tableNames = config('permission.table_names');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Config "permission.table_names" deve ser um array<string, string>.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
         Schema::dropIfExists($tableNames['role_has_permissions']);
     }
 };

@@ -10,14 +10,29 @@ use Tests\TestCase;
 
 class FundamentalTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -26,13 +41,13 @@ class FundamentalTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -50,6 +65,9 @@ class FundamentalTest extends TestCase
         ]);
     }
 
+    /**
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-fundamental');
@@ -61,16 +79,15 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
+     * @param  array<int, string>  $expected
      * @return void
      */
-    public function fundamentalsList(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    public function fundamentals_list(
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -106,7 +123,7 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     public static function listProvider()
     {
@@ -142,16 +159,15 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
+     * @param  array<int, string>  $expected
      * @return void
      */
-    public function fundamentalInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function fundamental_info(
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -183,7 +199,7 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     public static function infoProvider()
     {
@@ -212,20 +228,28 @@ class FundamentalTest extends TestCase
     /**
      * Método de criação de um fundamento.
      *
-     * @dataProvider fundamentalCreateProvider
-     *
      * @author Maicon Cerutti
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<int, string>  $expected
      * @return void
      */
-    public function fundamentalCreate(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
-        $hasPermission
+    #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function fundamental_create(
+        array $parameters,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
+        bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
+
+        if ($expectedMessage == 'FundamentalCreate.name_unique') {
+            $fundamental = Fundamental::factory()->make();
+            $fundamental->save();
+            $parameters['name'] = $fundamental->name;
+        }
 
         $response = $this->graphQL(
             'fundamentalCreate',
@@ -244,19 +268,18 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function fundamentalCreateProvider()
+    public static function fundamentalCreateProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
-        $nameExistent = $faker->name;
         $fundamentalCreate = ['fundamentalCreate'];
 
         return [
             'create fundamental, success' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => $faker->name,
                     'userId' => $userId,
                 ],
                 'typeMessageError' => false,
@@ -283,7 +306,7 @@ class FundamentalTest extends TestCase
             ],
             'name field is not unique, expected error' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => 'FundamentalCreate.name_unique',
                     'userId' => $userId,
                 ],
                 'typeMessageError' => 'name',
@@ -326,19 +349,20 @@ class FundamentalTest extends TestCase
     /**
      * Método de edição de um fundamento.
      *
-     * @dataProvider fundamentalEditProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<int, string>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
-    public function fundamentalEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function fundamental_edit(
+        array $parameters,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -371,9 +395,9 @@ class FundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function fundamentalEditProvider()
+    public static function fundamentalEditProvider(): array
     {
         $faker = Faker::create();
         $userId = 2;
@@ -453,17 +477,18 @@ class FundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider fundamentalDeleteProvider
-     *
-     * @test
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<int, string>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
-    public function fundamentalDelete(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('fundamentalDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function fundamental_delete(
+        array $data,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -496,9 +521,9 @@ class FundamentalTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function fundamentalDeleteProvider()
+    public static function fundamentalDeleteProvider(): array
     {
         $fundamentalDelete = ['fundamentalDelete'];
 

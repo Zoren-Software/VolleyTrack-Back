@@ -13,39 +13,36 @@ class SpecificFundamentalTest extends TestCase
     /**
      * A basic unit test relation users.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user()
     {
-        $specificFundamental = new SpecificFundamental();
+        $specificFundamental = new SpecificFundamental;
         $this->assertInstanceOf(BelongsTo::class, $specificFundamental->user());
     }
 
     /**
      * A basic unit test relation users.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function fundamentals()
     {
-        $specificFundamental = new SpecificFundamental();
+        $specificFundamental = new SpecificFundamental;
         $this->assertInstanceOf(BelongsToMany::class, $specificFundamental->fundamentals());
     }
 
     /**
      * A basic unit test relation getActivitylogOptions.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function get_activitylog_options()
     {
-        $specificFundamental = new SpecificFundamental();
+        $specificFundamental = new SpecificFundamental;
         $this->assertInstanceOf(LogOptions::class, $specificFundamental->getActivitylogOptions());
     }
 }

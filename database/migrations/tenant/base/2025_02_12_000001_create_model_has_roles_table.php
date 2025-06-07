@@ -10,8 +10,19 @@ return new class extends Migration
     {
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
-        $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
         $teams = config('permission.teams');
+
+        if (!is_array($tableNames) || !is_array($columnNames)) {
+            throw new \RuntimeException('Permission table_names or column_names not properly configured.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
+        /** @var array<string, string> $columnNames */
+        $columnNames = $columnNames;
+
+        $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
 
         if (!Schema::hasTable($tableNames['model_has_roles'])) {
             Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($pivotRole, $columnNames, $teams) {
@@ -44,6 +55,14 @@ return new class extends Migration
     public function down(): void
     {
         $tableNames = config('permission.table_names');
+
+        if (!is_array($tableNames)) {
+            throw new \RuntimeException('Permission table_names not properly configured.');
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
         Schema::dropIfExists($tableNames['model_has_roles']);
     }
 };

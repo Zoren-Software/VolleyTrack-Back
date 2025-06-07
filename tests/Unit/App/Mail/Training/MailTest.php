@@ -12,10 +12,9 @@ class MailTest extends TestCase
     /**
      * A basic unit test example.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function attachments()
     {
         $trainingMock = $this->createMock(Training::class);

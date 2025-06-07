@@ -12,67 +12,61 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * A basic unit test relation user.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user()
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $this->assertInstanceOf(BelongsTo::class, $confirmationTraining->user());
     }
 
     /**
      * A basic unit test relation player.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function player()
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $this->assertInstanceOf(BelongsTo::class, $confirmationTraining->player());
     }
 
     /**
      * A basic unit test relation training.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function training()
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $this->assertInstanceOf(BelongsTo::class, $confirmationTraining->training());
     }
 
     /**
      * A basic unit test relation team.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function team()
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $this->assertInstanceOf(BelongsTo::class, $confirmationTraining->team());
     }
 
     /**
      * A basic unit test relation scopeStatus.
      *
-     * @test
-     *
-     * @dataProvider scopeFilterProvider
-     *
      * @return void
      */
-    public function scopeStatus($parameter)
+    #[\PHPUnit\Framework\Attributes\DataProvider('scopeFilterProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function scope_status($parameter)
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
         $this->assertInstanceOf($class, $confirmationTraining->scopeStatus($confirmationTraining, $parameter));
@@ -81,15 +75,13 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * A basic unit test relation scopePresence.
      *
-     * @test
-     *
-     * @dataProvider scopeFilterProvider
-     *
      * @return void
      */
-    public function scopePresence($parameter)
+    #[\PHPUnit\Framework\Attributes\DataProvider('scopeFilterProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function scope_presence($parameter)
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
         $this->assertInstanceOf($class, $confirmationTraining->scopePresence($confirmationTraining, $parameter));
@@ -98,15 +90,13 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * A basic unit test relation scopePlayer.
      *
-     * @test
-     *
-     * @dataProvider scopeFilterProvider
-     *
      * @return void
      */
-    public function scopePlayer($parameter)
+    #[\PHPUnit\Framework\Attributes\DataProvider('scopeFilterProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function scope_player($parameter)
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
         $this->assertInstanceOf($class, $confirmationTraining->scopePlayer($confirmationTraining, $parameter));
@@ -115,15 +105,13 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * A basic unit test relation scopeTeam.
      *
-     * @test
-     *
-     * @dataProvider scopeFilterProvider
-     *
      * @return void
      */
-    public function scopeTeam($parameter)
+    #[\PHPUnit\Framework\Attributes\DataProvider('scopeFilterProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function scope_team($parameter)
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
         $this->assertInstanceOf($class, $confirmationTraining->scopeTeam($confirmationTraining, $parameter));
@@ -132,15 +120,13 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * A basic unit test relation scopeTraining.
      *
-     * @test
-     *
-     * @dataProvider scopeFilterProvider
-     *
      * @return void
      */
-    public function scopeTraining($parameter)
+    #[\PHPUnit\Framework\Attributes\DataProvider('scopeFilterProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function scope_training($parameter)
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
         $this->assertInstanceOf($class, $confirmationTraining->scopeTraining($confirmationTraining, $parameter));
@@ -149,15 +135,13 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * A basic unit test relation scopeUser.
      *
-     * @test
-     *
-     * @dataProvider scopeFilterProvider
-     *
      * @return void
      */
-    public function scopeUser($parameter)
+    #[\PHPUnit\Framework\Attributes\DataProvider('scopeFilterProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function scope_user($parameter)
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
         $class = $parameter === null ? ConfirmationTraining::class : Builder::class;
 
         $this->assertInstanceOf($class, $confirmationTraining->scopeUser($confirmationTraining, $parameter));
@@ -183,15 +167,13 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * A basic unit test method list.
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function list($args)
     {
-        $confirmationTraining = new ConfirmationTraining();
+        $confirmationTraining = new ConfirmationTraining;
 
         $this->assertInstanceOf(Builder::class, $confirmationTraining->list($args));
     }

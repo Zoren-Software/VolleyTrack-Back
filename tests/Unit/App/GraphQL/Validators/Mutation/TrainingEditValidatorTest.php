@@ -12,13 +12,12 @@ class TrainingEditValidatorTest extends TestCase
     /**
      * A basic unit test messages.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function messages()
     {
-        $validator = new TrainingEditValidator();
+        $validator = new TrainingEditValidator;
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
@@ -27,13 +26,12 @@ class TrainingEditValidatorTest extends TestCase
     /**
      * A basic unit test rules.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function rules()
     {
-        $validator = new TrainingEditValidator();
+        $validator = new TrainingEditValidator;
         $validator->setArgs($this->mock(ArgumentSet::class, function (MockInterface $mock) {
             $mock->shouldReceive('toArray')->andReturn([
                 'fundamentalId' => [1, 2, 3],

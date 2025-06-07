@@ -14,93 +14,85 @@ class TrainingTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
-     * @test
-     *
      * @return void
      */
-    public function getActivitylogOptions()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function get_activitylog_options()
     {
-        $training = new Training();
+        $training = new Training;
         $this->assertInstanceOf(LogOptions::class, $training->getActivitylogOptions());
     }
 
     /**
      * A basic unit test relation user.
      *
-     * @test
-     *
      * @return void
      */
-    public function relationUser()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function relation_user()
     {
-        $training = new Training();
+        $training = new Training;
         $this->assertInstanceOf(BelongsTo::class, $training->user());
     }
 
     /**
      * A basic unit test relation team.
      *
-     * @test
-     *
      * @return void
      */
-    public function relationTeam()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function relation_team()
     {
-        $training = new Training();
+        $training = new Training;
         $this->assertInstanceOf(BelongsTo::class, $training->team());
     }
 
     /**
      * A basic unit test relation fundamentals.
      *
-     * @test
-     *
      * @return void
      */
-    public function relationFundamentals()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function relation_fundamentals()
     {
-        $training = new Training();
+        $training = new Training;
         $this->assertInstanceOf(BelongsToMany::class, $training->fundamentals());
     }
 
     /**
      * A basic unit test relation specificFundamentals.
      *
-     * @test
-     *
      * @return void
      */
-    public function relationSpecificFundamentals()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function relation_specific_fundamentals()
     {
-        $training = new Training();
+        $training = new Training;
         $this->assertInstanceOf(BelongsToMany::class, $training->specificFundamentals());
     }
 
     /**
      * A basic unit test relation confirmationsTraining.
      *
-     * @test
-     *
      * @return void
      */
-    public function relationConfirmationsTraining()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function relation_confirmations_training()
     {
-        $training = new Training();
+        $training = new Training;
         $this->assertInstanceOf(HasMany::class, $training->confirmationsTraining());
     }
 
     /**
      * A basic unit test range date notification.
      *
-     * @dataProvider rangeDateNotificationProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function rangeDateNotification(string $startDate, string $dateToday, string $dateLimit, bool $expected)
+    #[\PHPUnit\Framework\Attributes\DataProvider('rangeDateNotificationProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function range_date_notification(string $startDate, string $dateToday, string $dateLimit, bool $expected)
     {
-        $training = new Training();
+        $training = new Training;
         $this->assertEquals($expected, $training->rangeDateNotification($startDate, $dateToday, $dateLimit));
     }
 

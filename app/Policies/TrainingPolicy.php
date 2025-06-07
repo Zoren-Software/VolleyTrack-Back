@@ -11,8 +11,6 @@ class TrainingPolicy
 
     /**
      * Create a new training instance.
-     *
-     * @return void
      */
     public function create(User $user): bool
     {

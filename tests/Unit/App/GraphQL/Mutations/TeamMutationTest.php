@@ -14,13 +14,11 @@ class TeamMutationTest extends TestCase
     /**
      * A basic unit test in delete team.
      *
-     * @dataProvider teamDeleteProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function teamDelete($data, $numberFind, $numberDelete)
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_delete($data, $numberFind, $numberDelete)
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);
         $team = $this->mock(Team::class, function (MockInterface $mock) use ($numberFind, $numberDelete, $data) {
@@ -43,7 +41,7 @@ class TeamMutationTest extends TestCase
 
         $user = $this->createMock(User::class);
 
-        $teamMutation = new TeamMutation($team, $user);
+        $teamMutation = new TeamMutation($team);
         $teamMutation->delete(
             null,
             [

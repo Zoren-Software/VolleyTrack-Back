@@ -14,65 +14,60 @@ class TeamTest extends TestCase
     /**
      * A basic unit test relation user.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user()
     {
-        $team = new Team();
+        $team = new Team;
         $this->assertInstanceOf(BelongsTo::class, $team->user());
     }
 
     /**
      * A basic unit test relation confirmationsTraining.
      *
-     * @test
-     *
      * @return void
      */
-    public function confirmationsTraining()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function confirmations_training()
     {
-        $team = new Team();
+        $team = new Team;
         $this->assertInstanceOf(HasMany::class, $team->confirmationsTraining());
     }
 
     /**
      * A basic unit test relation technicians.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function technicians()
     {
-        $team = new Team();
+        $team = new Team;
         $this->assertInstanceOf(BelongsToMany::class, $team->technicians());
     }
 
     /**
      * A basic unit test relation players.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function players()
     {
-        $team = new Team();
+        $team = new Team;
         $this->assertInstanceOf(BelongsToMany::class, $team->players());
     }
 
     /**
      * A basic unit test relation getActivitylogOptions.
      *
-     * @test
-     *
      * @return void
      */
-    public function getActivitylogOptions()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function get_activitylog_options()
     {
-        $team = new Team();
+        $team = new Team;
         $this->assertInstanceOf(LogOptions::class, $team->getActivitylogOptions());
     }
 }

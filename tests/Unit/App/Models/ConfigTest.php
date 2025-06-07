@@ -12,39 +12,36 @@ class ConfigTest extends TestCase
     /**
      * A basic unit test relation language.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function language()
     {
-        $config = new Config();
+        $config = new Config;
         $this->assertInstanceOf(BelongsTo::class, $config->language());
     }
 
     /**
      * A basic unit test relation trainingConfig.
      *
-     * @test
-     *
      * @return void
      */
-    public function trainingConfig()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_config()
     {
-        $config = new Config();
+        $config = new Config;
         $this->assertInstanceOf(HasOne::class, $config->trainingConfig());
     }
 
     /**
      * A basic unit test relation user.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user()
     {
-        $config = new Config();
+        $config = new Config;
         $this->assertInstanceOf(BelongsTo::class, $config->user());
     }
 }

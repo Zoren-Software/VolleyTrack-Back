@@ -29,14 +29,13 @@ class ForgotPasswordMail extends Mail
 
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
+        $appName = config('app.name');
+
         return new Envelope(
-            subject: env('APP_NAME') .
-            ' - ' . 'Recuperação de senha'
+            subject: (is_string($appName) ? $appName : '') . ' - Recuperação de senha'
         );
     }
 

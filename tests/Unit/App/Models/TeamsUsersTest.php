@@ -13,26 +13,23 @@ class TeamsUsersTest extends TestCase
     /**
      * A basic unit test relation getActivitylogOptions.
      *
-     * @test
-     *
      * @return void
      */
-    public function getActivitylogOptions()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function get_activitylog_options()
     {
-        $teamsUsers = new TeamsUsers();
+        $teamsUsers = new TeamsUsers;
         $this->assertInstanceOf(LogOptions::class, $teamsUsers->getActivitylogOptions());
     }
 
     /**
      * A basic unit test update role in relationship.
      *
-     * @dataProvider updateRoleInRelationshipProvider
-     *
-     * @test
-     *
      * @return void
      */
-    public function updateRoleInRelationship($data)
+    #[\PHPUnit\Framework\Attributes\DataProvider('updateRoleInRelationshipProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function update_role_in_relationship($data)
     {
         $userMock = $this->mock(User::class, function (MockInterface $mock) use ($data) {
             $mock->shouldReceive('find')

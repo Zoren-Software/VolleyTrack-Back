@@ -12,13 +12,12 @@ class ConfirmPresenceValidatorTest extends TestCase
     /**
      * A basic unit test messages.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function messages()
     {
-        $validator = new ConfirmPresenceValidator();
+        $validator = new ConfirmPresenceValidator;
 
         $this->assertIsArray($validator->messages());
         $this->assertNotEmpty($validator->messages());
@@ -27,13 +26,12 @@ class ConfirmPresenceValidatorTest extends TestCase
     /**
      * A basic unit test rules.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function rules()
     {
-        $validator = new ConfirmPresenceValidator();
+        $validator = new ConfirmPresenceValidator;
         $validator->setArgs($this->mock(ArgumentSet::class, function (MockInterface $mock) {
             $mock->shouldReceive('toArray')->andReturn([
                 'playerId' => 1,

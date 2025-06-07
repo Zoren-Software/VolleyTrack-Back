@@ -15,14 +15,19 @@ final class ConfigMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): Config
     {
-        $this->config = $this->config->find(1);
+        $this->config = $this->config->findOrFail(1);
 
-        $args['user_id'] = $context->user()->id;
+        $user = $context->user();
+        if (!$user) {
+            throw new \Exception('User not authenticated.');
+        }
+
+        $args['user_id'] = $user->getAuthIdentifier();
 
         $this->config->update($args);
 

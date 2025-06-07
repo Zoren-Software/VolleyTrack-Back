@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ConfirmationTraining extends Model
 {
-    use HasFactory;
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'user_id',
         'player_id',
@@ -20,27 +23,47 @@ class ConfirmationTraining extends Model
         'presence',
     ];
 
-    public function user()
+    /**
+     * @return BelongsTo<User, ConfirmationTraining>
+     */
+    public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 
-    public function player()
+    /**
+     * @return BelongsTo<User, ConfirmationTraining>
+     */
+    public function player(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 
-    public function training()
+    /**
+     * @return BelongsTo<Training, ConfirmationTraining>
+     */
+    public function training(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(Training::class);
     }
 
-    public function team()
+    /**
+     * @return BelongsTo<Team, ConfirmationTraining>
+     */
+    public function team(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(Team::class);
     }
 
-    public function scopeStatus($query, $status = null)
+    /**
+     * @param  Builder<ConfirmationTraining>  $query
+     * @return Builder<ConfirmationTraining>
+     */
+    public function scopeStatus(Builder $query, ?string $status = null): Builder
     {
         if ($status === null) {
             return $query;
@@ -49,7 +72,11 @@ class ConfirmationTraining extends Model
         return $query->where('status', $status);
     }
 
-    public function scopePresence($query, $presenceId)
+    /**
+     * @param  Builder<ConfirmationTraining>  $query
+     * @return Builder<ConfirmationTraining>
+     */
+    public function scopePresence(Builder $query, ?string $presenceId = null): Builder
     {
         if ($presenceId === null) {
             return $query;
@@ -58,7 +85,11 @@ class ConfirmationTraining extends Model
         return $query->where('presence', $presenceId);
     }
 
-    public function scopePlayer($query, $playerId)
+    /**
+     * @param  Builder<ConfirmationTraining>  $query
+     * @return Builder<ConfirmationTraining>
+     */
+    public function scopePlayer(Builder $query, ?string $playerId = null): Builder
     {
         if ($playerId === null) {
             return $query;
@@ -67,7 +98,11 @@ class ConfirmationTraining extends Model
         return $query->where('player_id', $playerId);
     }
 
-    public function scopeTeam($query, $teamId)
+    /**
+     * @param  Builder<ConfirmationTraining>  $query
+     * @return Builder<ConfirmationTraining>
+     */
+    public function scopeTeam(Builder $query, ?string $teamId = null): Builder
     {
         if ($teamId === null) {
             return $query;
@@ -76,7 +111,11 @@ class ConfirmationTraining extends Model
         return $query->where('team_id', $teamId);
     }
 
-    public function scopeTraining($query, $trainingId)
+    /**
+     * @param  Builder<ConfirmationTraining>  $query
+     * @return Builder<ConfirmationTraining>
+     */
+    public function scopeTraining(Builder $query, ?string $trainingId = null): Builder
     {
         if ($trainingId === null) {
             return $query;
@@ -85,7 +124,11 @@ class ConfirmationTraining extends Model
         return $query->where('training_id', $trainingId);
     }
 
-    public function scopeUser($query, $userId)
+    /**
+     * @param  Builder<ConfirmationTraining>  $query
+     * @return Builder<ConfirmationTraining>
+     */
+    public function scopeUser(Builder $query, ?string $userId = null): Builder
     {
         if ($userId === null) {
             return $query;
@@ -94,14 +137,18 @@ class ConfirmationTraining extends Model
         return $query->where('user_id', $userId);
     }
 
-    public function list(array $args)
+    /**
+     * @param  array<string, mixed>  $args
+     * @return Builder<ConfirmationTraining>
+     */
+    public function list(array $args): Builder
     {
-        return $this->status($args['status'] ?? null)
-            ->presence($args['presence'] ?? null)
-            ->player($args['player_id'] ?? null)
-            ->team($args['team_id'] ?? null)
-            ->training($args['training_id'] ?? null)
-            ->user($args['user_id'] ?? null)
+        return $this->status(is_string($args['status'] ?? null) ? $args['status'] : null)
+            ->presence(is_string($args['presence'] ?? null) ? $args['presence'] : null)
+            ->player(is_string($args['player_id'] ?? null) ? $args['player_id'] : null)
+            ->team(is_string($args['team_id'] ?? null) ? $args['team_id'] : null)
+            ->training(is_string($args['training_id'] ?? null) ? $args['training_id'] : null)
+            ->user(is_string($args['user_id'] ?? null) ? $args['user_id'] : null)
             ->orderBy('created_at', 'desc');
     }
 }

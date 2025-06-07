@@ -9,12 +9,24 @@ use Tests\TestCase;
 
 class NotificationSettingTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     protected $graphql = true;
 
+    /**
+     * @var bool
+     */
     protected $tenancy = true;
 
+    /**
+     * @var bool
+     */
     protected $login = true;
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'userId',
@@ -26,13 +38,13 @@ class NotificationSettingTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -51,11 +63,10 @@ class NotificationSettingTest extends TestCase
     /**
      * Listagem de configurações de notificação
      *
-     * @test
-     *
      * @return void
      */
-    public function notificationSettingsList()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_settings_list()
     {
         $response = $this->graphQL(
             'notificationsSettings',
@@ -80,7 +91,9 @@ class NotificationSettingTest extends TestCase
                     ],
                 ],
             ],
-        ])->assertStatus(200);
+        ]);
+
+        $response->assertStatus(200);
     }
 
     /**
@@ -88,24 +101,25 @@ class NotificationSettingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider notificationSettingActiveEmailAndSystemEditSuccess
-     * @dataProvider notificationSettingDesactiveEmailAndSystemEditSuccess
-     * @dataProvider notificationSettingActiveEmailEditSuccess
-     * @dataProvider notificationSettingActiveSystemEditSuccess
-     * @dataProvider notificationSettingRequiredParametersEditError
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      *
      * TODO - Falta criar os cenários de erro do request e mensagens traduzidas
-     *
      * @return void
      */
-    public function notificationSettingEdit(
-        $data,
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingActiveEmailAndSystemEditSuccess')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingDesactiveEmailAndSystemEditSuccess')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingActiveEmailEditSuccess')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingActiveSystemEditSuccess')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationSettingRequiredParametersEditError')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_setting_edit(
+        array $data,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
     ) {
         $user = User::factory()->create();
 
@@ -114,7 +128,8 @@ class NotificationSettingTest extends TestCase
         if ($parameters['notificationTypeId'] === false) {
             unset($parameters['notificationTypeId']);
         } elseif ($parameters['notificationTypeId'] === 'notExists') {
-            $parameters['notificationTypeId'] = NotificationSetting::max('notification_type_id') + 1;
+            $maxId = NotificationSetting::max('notification_type_id');
+            $parameters['notificationTypeId'] = (is_int($maxId) ? $maxId : 0) + 1;
         } elseif ($parameters['notificationTypeId'] === 'test') {
             $parameters['notificationTypeId'] = 'test';
         } elseif (!is_numeric($parameters['notificationTypeId'])) {
@@ -128,7 +143,8 @@ class NotificationSettingTest extends TestCase
         } elseif ($parameters['id'] === 'test') {
 
         } elseif ($parameters['id'] === 'notExists') {
-            $parameters['id'] = NotificationSetting::max('id') + 1;
+            $maxId = NotificationSetting::max('id');
+            $parameters['id'] = (is_int($maxId) ? $maxId : 0) + 1;
         } else {
             $parameters['id'] = $user->notificationSettings
                 ->when(isset($parameters['notificationTypeId']), function ($query) use ($parameters) {
@@ -154,7 +170,10 @@ class NotificationSettingTest extends TestCase
             ->assertStatus(200);
     }
 
-    public static function notificationSettingActiveEmailAndSystemEditSuccess()
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function notificationSettingActiveEmailAndSystemEditSuccess(): array
     {
         return [
             'notification setting edit, active email and system notification type account confirmation' => [
@@ -217,7 +236,10 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingActiveEmailEditSuccess()
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function notificationSettingActiveEmailEditSuccess(): array
     {
         return [
             'notification setting edit, active email notification type account confirmation' => [
@@ -280,7 +302,10 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingActiveSystemEditSuccess()
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function notificationSettingActiveSystemEditSuccess(): array
     {
         return [
             'notification setting edit, active system notification type account confirmation' => [
@@ -343,7 +368,10 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
-    public static function notificationSettingDesactiveEmailAndSystemEditSuccess()
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function notificationSettingDesactiveEmailAndSystemEditSuccess(): array
     {
         return [
             'notification setting edit, desactive email and system notification type account confirmation' => [
@@ -406,6 +434,9 @@ class NotificationSettingTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
     public static function notificationSettingRequiredParametersEditError(): array
     {
         return [

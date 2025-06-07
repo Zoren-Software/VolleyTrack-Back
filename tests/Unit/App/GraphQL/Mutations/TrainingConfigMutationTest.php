@@ -13,10 +13,9 @@ class TrainingConfigMutationTest extends TestCase
     /**
      * A basic unit test make.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function make()
     {
         $graphQLContext = $this->createMock(GraphQLContext::class);

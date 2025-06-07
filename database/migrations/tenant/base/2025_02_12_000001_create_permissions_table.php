@@ -11,10 +11,12 @@ return new class extends Migration
     {
         $tableNames = config('permission.table_names');
 
-        if (empty($tableNames)) {
-            // Lançando a exceção personalizada
-            throw new PermissionConfigNotLoadedException();
+        if (!is_array($tableNames)) {
+            throw new PermissionConfigNotLoadedException;
         }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
 
         if (!Schema::hasTable($tableNames['permissions'])) {
             Schema::create($tableNames['permissions'], function (Blueprint $table) use ($tableNames) {
@@ -33,6 +35,14 @@ return new class extends Migration
     public function down(): void
     {
         $tableNames = config('permission.table_names');
+
+        if (!is_array($tableNames)) {
+            throw new PermissionConfigNotLoadedException;
+        }
+
+        /** @var array<string, string> $tableNames */
+        $tableNames = $tableNames;
+
         Schema::dropIfExists($tableNames['permissions']);
     }
 };

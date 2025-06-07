@@ -4,21 +4,22 @@ use Database\Seeders\Tenants\NotificationSettingsSeeder;
 use Database\Seeders\Tenants\NotificationTypesSeeder;
 use Illuminate\Database\Migrations\Migration;
 
-return new class() extends Migration
+return new class extends Migration
 {
     /**
      * NOTE - Apagavel após release
-     *
-     * @return [type]
      */
-    public function up()
+    public function up(): void
     {
-        (new NotificationTypesSeeder())->run();
-        (new NotificationSettingsSeeder())->run();
+        (new NotificationTypesSeeder)->run();
+        (new NotificationSettingsSeeder)->run();
     }
 
-    public function down()
+    /**
+     * NOTE - Apagável na próxima versão
+     */
+    public function down(): void
     {
-        //NOTE - Irreversible migration
+        // NOTE - Irreversible migration
     }
 };

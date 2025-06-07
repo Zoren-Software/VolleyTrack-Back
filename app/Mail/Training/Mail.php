@@ -8,13 +8,23 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * @property \App\Models\Training $training
+ * @property \App\Models\User $user
+ */
 class Mail extends Mailable
 {
     use Queueable;
     use SerializesModels;
 
+    /**
+     * @var \App\Models\Training
+     */
     public $training;
 
+    /**
+     * @var \App\Models\User
+     */
     public $user;
 
     /**
@@ -31,7 +41,7 @@ class Mail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array
+     * @return array<int, \Symfony\Component\Mime\Part\DataPart>
      */
     public function attachments()
     {

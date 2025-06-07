@@ -4,9 +4,12 @@ namespace Tests\Feature\Database\Tenants;
 
 class TrainingsTest extends TenantBase
 {
-    protected $table = 'trainings';
+    protected string $table = 'trainings';
 
-    public static $fieldTypes = [
+    /**
+     * @var array<string, mixed>
+     */
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'team_id' => ['type' => 'bigint', 'unsigned' => true],
         'user_id' => ['type' => 'bigint', 'unsigned' => true],
@@ -20,14 +23,26 @@ class TrainingsTest extends TenantBase
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    /**
+     * @var array<int, string>
+     */
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define o campo auto_increment
+    /**
+     * @var array<int, string>
+     */
+    protected static array $autoIncrements = ['id']; // Define o campo auto_increment
 
-    public static $foreignKeys = [
+    /**
+     * @var array<int, string>
+     */
+    protected static array $foreignKeys = [
         'trainings_user_id_foreign',
         'trainings_team_id_foreign',
     ]; // Define as chaves estrangeiras
 
-    public static $uniqueKeys = []; // Nenhuma chave única
+    /**
+     * @var array<int, string>
+     */
+    protected static array $uniqueKeys = []; // Nenhuma chave única
 }

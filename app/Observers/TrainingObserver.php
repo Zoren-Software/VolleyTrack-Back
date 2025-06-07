@@ -33,6 +33,11 @@ class TrainingObserver
     {
         if ($training->isDirty('team_id')) {
             $originalTeamId = $training->getOriginal('team_id');
+
+            if (!is_int($originalTeamId)) {
+                throw new \RuntimeException('Expected integer for original team_id');
+            }
+
             $training->deleteConfirmationsPlayersOld($originalTeamId);
         }
 
@@ -44,17 +49,31 @@ class TrainingObserver
         }
     }
 
+    /**
+     * @return void
+     */
     public function creating(Training $training)
     {
         if (!$training->isDirty('user_id')) {
-            $training->user_id = auth()->user()->id ?? null;
+            $user = auth()->user();
+
+            if ($user instanceof \App\Models\User) {
+                $training->user_id = $user->id;
+            }
         }
     }
 
+    /**
+     * @return void
+     */
     public function updating(Training $training)
     {
         if (!$training->isDirty('user_id')) {
-            $training->user_id = auth()->user()->id ?? null;
+            $user = auth()->user();
+
+            if ($user instanceof \App\Models\User) {
+                $training->user_id = $user->id;
+            }
         }
     }
 }

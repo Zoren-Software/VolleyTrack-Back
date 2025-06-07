@@ -20,78 +20,90 @@ class CommandBase extends Command
      */
     protected $description = 'Command description';
 
+    /**
+     * Nome do processo utilizado em mensagens de progresso
+     */
+    protected string $nomeProcesso = 'default';
+
+    /**
+     * @var string|null
+     */
     protected $tenant;
 
+    /**
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct();
-
         $this->tenant = null;
     }
 
-    public function formatProgress($tenant)
-    {
-        return "cron - tenant($tenant): PROCESSO $this->nomeProcesso %current%/%max% [%bar%] %percent:3s%% estimated: %estimated:-6s% - current: %elapsed:-3s% \n";
-    }
-
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @param  string  $tenant
      */
-    public function handle()
+    public function formatProgress($tenant): string
     {
-        //
+        return "cron - tenant($tenant): PROCESSO {$this->nomeProcesso} %current%/%max% [%bar%] %percent:3s%% estimated: %estimated:-6s% - current: %elapsed:-3s%\n";
+    }
+
+    public function handle(): int
+    {
+        return 0;
     }
 
     /**
-     * @param  mixed  $nomeComando
-     * @param  mixed  $mensagem
+     * @param  string  $nomeComando
+     * @param  string  $mensagem
      */
     protected function infoComando($nomeComando, $mensagem): void
     {
-        if (env('APP_ENV') == 'test') {
+        if (config('app.env') === 'test') {
             return;
         }
+
         $this->info('cron - ' . $mensagem . ': ' . $nomeComando);
     }
 
     /**
-     * @param  mixed  $nomeComando
-     * @param  mixed  $tenant
-     * @param  mixed  $mensagem
+     * @param  string  $nomeComando
+     * @param  string  $tenant
+     * @param  string  $mensagem
      */
     protected function processoComando($nomeComando, $tenant, $mensagem): void
     {
-        if (env('APP_ENV') == 'test') {
+        if (config('app.env') === 'test') {
             return;
         }
+
         $this->info('cron - tenant(' . $tenant . '): ' . $mensagem . ' PROCESSO ' . $nomeComando);
     }
 
     /**
-     * @param  mixed  $nomeComando
-     * @param  mixed  $tenant
-     * @param  mixed  $mensagem
+     * @param  string  $nomeComando
+     * @param  string  $tenant
+     * @param  string  $mensagem
      */
     protected function processoComandoCancelado($nomeComando, $tenant, $mensagem): void
     {
-        if (env('APP_ENV') == 'test') {
+        if (config('app.env') === 'test') {
             return;
         }
+
         $this->warn('cron - tenant(' . $tenant . '): ' . $mensagem . ' PROCESSO ' . $nomeComando);
     }
 
     /**
-     * @param  mixed  $nomeComando
-     * @param  mixed  $tenant
-     * @param  mixed  $seeder
+     * @param  string  $nomeComando
+     * @param  string  $tenant
+     * @param  string  $seeder
      */
     protected function execSeederComando($nomeComando, $tenant, $seeder): void
     {
-        if (env('APP_ENV') == 'test') {
+        if (config('app.env') === 'test') {
             return;
         }
+
         $this->info('cron - tenant(' . $tenant . '): seeder: ' . $seeder . ' PROCESSO ' . $nomeComando);
     }
 }

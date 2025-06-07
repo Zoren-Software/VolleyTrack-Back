@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'sanctum', //NOTE - aqui deve ser sactum
+        'guard' => 'sanctum', // NOTE - aqui deve ser sactum
         'passwords' => 'users',
     ],
 

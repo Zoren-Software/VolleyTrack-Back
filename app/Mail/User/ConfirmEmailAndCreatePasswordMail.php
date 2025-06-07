@@ -15,11 +15,15 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
      */
     public $title;
 
+    /**
+     * @var bool
+     */
     private $admin;
 
     /**
      * Create a new message instance.
      *
+     * @param  bool  $admin
      * @return void
      */
     public function __construct(User $user, string $tenant, $admin = false)
@@ -37,14 +41,13 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
 
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
+        $appName = config('app.name');
+
         return new Envelope(
-            subject: env('APP_NAME') .
-            ' - ' . 'Confirme seu e-mail e crie sua senha'
+            subject: (is_string($appName) ? $appName : '') . ' - Confirme seu e-mail e crie sua senha'
         );
     }
 

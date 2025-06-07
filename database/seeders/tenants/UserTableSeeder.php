@@ -25,35 +25,35 @@ class UserTableSeeder extends Seeder
             [
                 'id' => 1,
                 'name' => 'Administrador',
-                'email' => env('MAIL_FROM_ADMIN'),
+                'email' => config('mail.from_admin'),
             ],
             [
                 'id' => 2,
                 'name' => 'Suporte',
-                'email' => env('MAIL_FROM_ADDRESS'),
+                'email' => config('mail.from.address'),
             ],
         ];
 
         /*
          * Criando e-mails para testes
          */
-        if (env('APP_DEBUG') && env('APP_ENV') === 'local') {
+        if (config('app.debug') && config('app.env') === 'local') {
             $usersDefault[] = [
                 'id' => 3,
                 'name' => 'Usuário Teste Técnico',
-                'email' => env('MAIL_FROM_TEST_TECHNICIAN'),
+                'email' => config('mail.from_test_technician'),
             ];
 
             $usersDefault[] = [
                 'id' => 4,
                 'name' => 'Usuário Teste Jogador',
-                'email' => env('MAIL_FROM_TEST_PLAYER'),
+                'email' => config('mail.from_test_player'),
             ];
 
             $usersDefault[] = [
                 'id' => 5,
                 'name' => 'Usuário Sem Permissao',
-                'email' => env('MAIL_FROM_NO_PERMISSION'),
+                'email' => config('mail.from_no_permission'),
             ];
         }
 
