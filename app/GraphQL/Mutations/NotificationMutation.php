@@ -39,7 +39,9 @@ final class NotificationMutation
             ];
         }
 
-        $readCount = $args['recent_to_delete_count'] ?? 0;
+        $readCount = isset($args['recent_to_delete_count']) && is_numeric($args['recent_to_delete_count'])
+            ? (int) $args['recent_to_delete_count']
+            : 0;
 
         if ($user instanceof User) {
             $notificationsToRead = $user->notifications()

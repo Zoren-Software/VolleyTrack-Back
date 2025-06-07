@@ -39,9 +39,16 @@ final class FundamentalMutation
      */
     public function delete($rootValue, array $args, GraphQLContext $context): array
     {
+        /** @var array<int>|null $ids */
+        $ids = isset($args['id']) && is_array($args['id']) ? $args['id'] : null;
+
+        if ($ids === null) {
+            throw new \RuntimeException('O campo "id" deve ser um array.');
+        }
+
         $fundamentals = [];
 
-        foreach ($args['id'] as $id) {
+        foreach ($ids as $id) {
             /** @var Fundamental $fundamental */
             $fundamental = Fundamental::findOrFail($id);
             $fundamentals[] = $fundamental;

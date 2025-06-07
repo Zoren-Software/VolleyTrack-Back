@@ -14,11 +14,31 @@ final class UserDeleteValidator extends Validator
      */
     public function rules(): array
     {
+        $id = $this->arg('id');
+
+        if (!is_array($id)) {
+            throw new \RuntimeException('ID deve ser um array');
+        }
+
+        foreach ($id as $singleId) {
+            if (!is_numeric($singleId)) {
+                throw new \RuntimeException('Todos os IDs devem ser numéricos');
+            }
+        }
+
+        /** @var array<int> $idList */
+        $idList = [];
+
+        foreach ($id as $singleId) {
+            /** @var string|int $singleId */
+            $idList[] = (int) $singleId;
+        }
+
         return [
             'id' => [
                 'required',
                 'exists:users,id',
-                new CannotDeleteOwnAccount($this->arg('id')),
+                new CannotDeleteOwnAccount($idList),
             ],
         ];
     }

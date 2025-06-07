@@ -88,12 +88,21 @@ class NotificationSetting extends Model
      * @param  array<string, mixed>  $args
      * @return Builder<NotificationSetting>
      */
-    public function scopeFilterIsActive(Builder $query, array $args)
+    public function scopeFilterIsActive(Builder $query, array $args): Builder
     {
-        return
-            $query->when(isset($args['filter']) && isset($args['filter']['is_active']), function ($query) use ($args) {
-                $query->where('is_active', $args['filter']['is_active']);
-            });
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        return $query->when(
+            is_array($filter) && array_key_exists('is_active', $filter),
+            function (Builder $query) use ($filter): Builder {
+                assert(is_array($filter) && array_key_exists('is_active', $filter));
+                /** @var bool|int|string $isActive */
+                $isActive = $filter['is_active'];
+
+                return $query->where('is_active', $isActive);
+            }
+        );
     }
 
     /**
@@ -101,12 +110,21 @@ class NotificationSetting extends Model
      * @param  array<string, mixed>  $args
      * @return Builder<NotificationSetting>
      */
-    public function scopeFilterViaEmail(Builder $query, array $args)
+    public function scopeFilterViaEmail(Builder $query, array $args): Builder
     {
-        return
-            $query->when(isset($args['filter']) && isset($args['filter']['via_email']), function ($query) use ($args) {
-                $query->where('via_email', $args['filter']['via_email']);
-            });
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        return $query->when(
+            is_array($filter) && array_key_exists('via_email', $filter),
+            function (Builder $query) use ($filter): Builder {
+                assert(is_array($filter) && array_key_exists('via_email', $filter));
+                /** @var bool|int|string $viaEmail */
+                $viaEmail = $filter['via_email'];
+
+                return $query->where('via_email', $viaEmail);
+            }
+        );
     }
 
     /**
@@ -114,12 +132,21 @@ class NotificationSetting extends Model
      * @param  array<string, mixed>  $args
      * @return Builder<NotificationSetting>
      */
-    public function scopeFilterViaSystem(Builder $query, array $args)
+    public function scopeFilterViaSystem(Builder $query, array $args): Builder
     {
-        return
-            $query->when(isset($args['filter']) && isset($args['filter']['via_system']), function ($query) use ($args) {
-                $query->where('via_system', $args['filter']['via_system']);
-            });
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        return $query->when(
+            is_array($filter) && array_key_exists('via_system', $filter),
+            function (Builder $query) use ($filter): Builder {
+                assert(is_array($filter) && array_key_exists('via_system', $filter));
+                /** @var bool|int|string $viaSystem */
+                $viaSystem = $filter['via_system'];
+
+                return $query->where('via_system', $viaSystem);
+            }
+        );
     }
 
     /**

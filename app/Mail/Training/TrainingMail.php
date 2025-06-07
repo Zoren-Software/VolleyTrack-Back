@@ -32,13 +32,13 @@ class TrainingMail extends Mail
 
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
+        $appName = config('app.name');
+
         return new Envelope(
-            subject: config('app.name') .
+            subject: (is_string($appName) ? $appName : '') .
             ' - ' . trans('TrainingNotification.title_mail') .
             ' - ' . $this->training->date_start->format('d/m/Y H:m') .
             ' ' . trans('TrainingNotification.preposition_hours_to') . ' ' .

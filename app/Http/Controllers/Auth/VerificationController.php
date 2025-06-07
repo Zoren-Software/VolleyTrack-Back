@@ -34,7 +34,18 @@ class VerificationController extends Controller
         $user->email_verified_at = now();
         $user->save();
 
-        $link = config('app.protocol') . '://' . $tenant->id . '.' . config('app.external_tenant_url') . '/set-password/' . $user->email . '/' . $token;
+        $protocol = config('app.protocol');
+        $domain = config('app.external_tenant_url');
+
+        if (!is_string($protocol) || !is_string($domain)) {
+            throw new \RuntimeException('Configurações de URL inválidas');
+        }
+
+        $subdomain = (string) $tenant->id;
+        $email = (string) $user->email;
+        $token = (string) $token;
+
+        $link = "{$protocol}://{$subdomain}.{$domain}/set-password/{$email}/{$token}";
 
         return redirect()->away($link);
     }

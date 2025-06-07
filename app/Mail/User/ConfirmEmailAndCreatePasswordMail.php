@@ -41,14 +41,13 @@ class ConfirmEmailAndCreatePasswordMail extends Mail
 
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
+        $appName = config('app.name');
+
         return new Envelope(
-            subject: config('app.name') .
-            ' - ' . 'Confirme seu e-mail e crie sua senha'
+            subject: (is_string($appName) ? $appName : '') . ' - Confirme seu e-mail e crie sua senha'
         );
     }
 

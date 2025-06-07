@@ -16,6 +16,15 @@ final class UserEditValidator extends Validator
      */
     public function rules(): array
     {
+        $idRaw = $this->arg('id');
+
+        if (!is_numeric($idRaw)) {
+            throw new \RuntimeException('O ID do usuário deve ser numérico.');
+        }
+
+        /** @var int $id */
+        $id = (int) $idRaw;
+
         return [
             'name' => [
                 'required',
@@ -25,10 +34,10 @@ final class UserEditValidator extends Validator
                 'sometimes',
                 'string',
                 'min:6',
-                new OwnsPassword($this->arg('id')),
+                new OwnsPassword($id),
             ],
             'email' => [
-                'unique:users,email,' . $this->arg('id'),
+                'unique:users,email,' . $id,
                 'required',
                 'email',
             ],
@@ -39,11 +48,11 @@ final class UserEditValidator extends Validator
             ],
             'cpf' => [
                 'nullable',
-                Rule::unique('user_information', 'cpf')->ignore($this->arg('id'), 'user_id'),
+                Rule::unique('user_information', 'cpf')->ignore($id, 'user_id'),
             ],
             'rg' => [
                 'nullable',
-                Rule::unique('user_information', 'rg')->ignore($this->arg('id'), 'user_id'),
+                Rule::unique('user_information', 'rg')->ignore($id, 'user_id'),
             ],
         ];
     }

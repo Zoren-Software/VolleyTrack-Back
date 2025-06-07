@@ -42,9 +42,16 @@ final class PositionMutation
      */
     public function delete($rootValue, array $args, GraphQLContext $context): array
     {
+        /** @var array<int>|null $ids */
+        $ids = isset($args['id']) && is_array($args['id']) ? $args['id'] : null;
+
+        if ($ids === null) {
+            throw new \RuntimeException('Parâmetro "id" inválido ou ausente.');
+        }
+
         $positions = [];
 
-        foreach ($args['id'] as $id) {
+        foreach ($ids as $id) {
             /** @var Position $position */
             $position = Position::findOrFail($id);
             $positions[] = $position;

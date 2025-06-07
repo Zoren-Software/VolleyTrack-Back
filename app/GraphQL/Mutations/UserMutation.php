@@ -29,29 +29,63 @@ final class UserMutation
         }
 
         if (isset($args['id'])) {
+            $id = $args['id'];
+
+            if (!is_numeric($id)) {
+                throw new \RuntimeException('O ID do usuário deve ser numérico.');
+            }
+
             /** @var User $user */
-            $user = User::findOrFail($args['id']);
+            $user = User::findOrFail((int) $id);
             $this->user = $user;
         }
 
-        $this->user->name = $args['name'];
-        $this->user->email = $args['email'];
+        $name = $args['name'] ?? null;
+        $email = $args['email'] ?? null;
+
+        if (!is_string($name) || !is_string($email)) {
+            throw new \RuntimeException('Nome e e-mail devem ser strings válidas.');
+        }
+
+        $this->user->name = $name;
+        $this->user->email = $email;
 
         if (!empty($args['password'])) {
+            if (!is_string($args['password'])) {
+                throw new \RuntimeException('A senha deve ser uma string.');
+            }
             $this->user->makePassword($args['password']);
         }
 
         $this->user->save();
 
-        if (!isset($args['id']) && $args['sendEmailNotification'] && $this->user->email_verified_at === null) {
-            $this->user->sendConfirmEmailAndCreatePasswordNotification(tenant('id'), false);
+        if (!isset($args['id']) &&
+            ($args['sendEmailNotification'] ?? false) &&
+            $this->user->email_verified_at === null
+        ) {
+            $tenantId = tenant('id');
+            if (!is_string($tenantId)) {
+                throw new \RuntimeException('Tenant ID deve ser uma string.');
+            }
+
+            $this->user->sendConfirmEmailAndCreatePasswordNotification($tenantId, false);
         }
 
         $this->user->updateOrNewInformation($args);
 
-        $this->user->roles()->sync($args['roleId']);
+        $roleId = $args['roleId'] ?? null;
+        $positionId = $args['positionId'] ?? null;
 
-        $this->user->positions()->sync($args['positionId']);
+        if (!is_array($roleId)) {
+            throw new \RuntimeException('O roleId deve ser um array.');
+        }
+
+        if (!is_array($positionId)) {
+            throw new \RuntimeException('O positionId deve ser um array.');
+        }
+
+        $this->user->roles()->sync($roleId);
+        $this->user->positions()->sync($positionId);
 
         $this->relationTeams($this->user, $args, $context);
 
@@ -59,7 +93,6 @@ final class UserMutation
 
         $this->user->touch();
 
-        // Recarrega o usuário com todos os campos necessários
         return $this->user->fresh() ?? $this->user;
     }
 
@@ -74,19 +107,21 @@ final class UserMutation
             throw new \Exception('User not authenticated.');
         }
 
-        // NOTE - Obtém os IDs dos times atualmente associados ao usuário
+        $teamIds = $args['teamId'] ?? [];
+
+        if (!is_array($teamIds)) {
+            throw new \RuntimeException('O campo teamId deve ser um array de IDs.');
+        }
+
+        /** @var array<int|string> $teamIds */
         $currentTeamsIds = $user->teams()->pluck('teams.id')->toArray();
 
-        // NOTE - Sincroniza e obtém os detalhes das alterações
-        $changes = $user->teams()->sync($args['teamId']);
+        /** @var array{attached: array<int>, detached: array<int>, updated: array<int>} $changes */
+        $changes = $user->teams()->sync($teamIds);
 
-        // NOTE - IDs dos times que foram removidos
-        $removedTeamsIds = array_diff($currentTeamsIds, $args['teamId']);
-
-        // NOTE - IDs dos times que foram adicionados
+        $removedTeamsIds = array_diff($currentTeamsIds, $teamIds);
         $addedTeamsIds = $changes['attached'];
 
-        // NOTE - Atualiza o 'updated_at' dos times removidos
         foreach ($removedTeamsIds as $teamId) {
             $team = Team::find($teamId);
             if ($team instanceof Team) {
@@ -96,7 +131,6 @@ final class UserMutation
             }
         }
 
-        // NOTE - Atualiza o 'updated_at' dos times adicionados
         foreach ($addedTeamsIds as $teamId) {
             $team = Team::find($teamId);
             if ($team instanceof Team) {
@@ -115,7 +149,15 @@ final class UserMutation
     public function delete($rootValue, array $args, GraphQLContext $context): array
     {
         $users = [];
-        foreach ($args['id'] as $id) {
+
+        $ids = $args['id'] ?? null;
+
+        if (!is_array($ids)) {
+            throw new \RuntimeException('O campo id deve ser um array.');
+        }
+
+        /** @var array<int|string> $ids */
+        foreach ($ids as $id) {
             /** @var User $user */
             $user = User::findOrFail($id);
 
@@ -140,6 +182,10 @@ final class UserMutation
 
         if (!$user) {
             throw new \Exception('Invalid token or email.');
+        }
+
+        if (!isset($args['password']) || !is_string($args['password'])) {
+            throw new \RuntimeException('A senha fornecida é inválida.');
         }
 
         $this->user = $user;

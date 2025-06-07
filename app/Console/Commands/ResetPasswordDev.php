@@ -35,10 +35,18 @@ class ResetPasswordDev extends CommandDev
 
         $secret = $this->option('secret')[0] ?? $this->ask('What is the new password?');
 
+        if (!is_string($secret)) {
+            throw new \RuntimeException('Senha deve ser uma string.');
+        }
+
         $tenants = $this->option('tenants');
         $tenants = empty($tenants) ? Tenant::pluck('id')->toArray() : $tenants;
 
         foreach ($tenants as $tenant) {
+            if (!is_string($tenant)) {
+                throw new \RuntimeException('Tenant ID deve ser uma string.');
+            }
+
             tenancy()->initialize($tenant);
 
             $this->processoComando('update_passwords', $tenant, 'INICIO');
@@ -50,7 +58,8 @@ class ResetPasswordDev extends CommandDev
 
                 User::chunk(100, function ($users) use ($secret, $bar) {
                     foreach ($users as $user) {
-                        $user->password = Hash::make($secret);
+
+                        $user->password = Hash::make((string) $secret);
                         $user->save();
                     }
                     $bar->advance();

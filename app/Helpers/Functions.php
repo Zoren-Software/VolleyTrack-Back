@@ -4,7 +4,13 @@ use Illuminate\Support\Facades\DB;
 
 function appHost(): string
 {
-    return config('app.host');
+    $host = config('app.host');
+
+    if (!is_string($host)) {
+        throw new \RuntimeException('Configurações de URL inválidas');
+    }
+
+    return $host;
 }
 
 function appVersion(): string
@@ -23,7 +29,13 @@ function appVersion(): string
 
     $data = json_decode($composerJson, true);
 
-    return trim($data['version'] ?? '');
+    if (!is_array($data)) {
+        return '';
+    }
+
+    return isset($data['version']) && is_string($data['version'])
+        ? trim($data['version'])
+        : '';
 }
 
 function hasForeignKeyExist(string $table, string $nameForeignKey): bool

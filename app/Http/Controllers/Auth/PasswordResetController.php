@@ -46,11 +46,26 @@ class PasswordResetController extends Controller
             throw new \Exception('Token inválido ou usuário não encontrado');
         }
 
-        $user->password = Hash::make($request->password);
+        $password = $request->input('password');
+
+        if (!is_string($password)) {
+            throw new \RuntimeException('A senha deve ser uma string.');
+        }
+
+        $user->password = Hash::make($password);
         $user->remember_token = null;
         $user->save();
 
-        $link = config('app.protocol') . '://' . $tenant . '.' . config('app.external_tenant_url') . '/login';
+        $protocol = config('app.protocol');
+        $domain = config('app.external_tenant_url');
+
+        if (!is_string($protocol) || !is_string($domain)) {
+            throw new \RuntimeException('Configurações de URL inválidas');
+        }
+
+        $tenant = (string) $tenant;
+
+        $link = "{$protocol}://{$tenant}.{$domain}/login";
 
         return redirect()->away($link);
     }

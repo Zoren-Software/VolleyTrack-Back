@@ -34,6 +34,7 @@ final class SpecificFundamentalMutation
         }
 
         if (isset($args['fundamental_id'])) {
+            // @phpstan-ignore-next-line
             $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
         }
 
@@ -47,8 +48,16 @@ final class SpecificFundamentalMutation
      */
     public function delete($rootValue, array $args, GraphQLContext $context): array
     {
+        /** @var array<int>|null $ids */
+        $ids = isset($args['id']) && is_array($args['id']) ? $args['id'] : null;
+
+        if ($ids === null) {
+            throw new \RuntimeException('Parâmetro "id" inválido ou ausente.');
+        }
+
         $specificFundamentals = [];
-        foreach ($args['id'] as $id) {
+
+        foreach ($ids as $id) {
             /** @var SpecificFundamental $specificFundamental */
             $specificFundamental = SpecificFundamental::findOrFail($id);
             $specificFundamentals[] = $specificFundamental;

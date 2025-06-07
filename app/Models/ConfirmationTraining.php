@@ -143,12 +143,12 @@ class ConfirmationTraining extends Model
      */
     public function list(array $args): Builder
     {
-        return $this->status($args['status'] ?? null)
-            ->presence($args['presence'] ?? null)
-            ->player($args['player_id'] ?? null)
-            ->team($args['team_id'] ?? null)
-            ->training($args['training_id'] ?? null)
-            ->user($args['user_id'] ?? null)
+        return $this->status(is_string($args['status'] ?? null) ? $args['status'] : null)
+            ->presence(is_string($args['presence'] ?? null) ? $args['presence'] : null)
+            ->player(is_string($args['player_id'] ?? null) ? $args['player_id'] : null)
+            ->team(is_string($args['team_id'] ?? null) ? $args['team_id'] : null)
+            ->training(is_string($args['training_id'] ?? null) ? $args['training_id'] : null)
+            ->user(is_string($args['user_id'] ?? null) ? $args['user_id'] : null)
             ->orderBy('created_at', 'desc');
     }
 }

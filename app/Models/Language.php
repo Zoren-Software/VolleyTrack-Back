@@ -27,15 +27,23 @@ class Language extends Model
      */
     public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) &&
-            isset($args['filter']['search']), function ($query) use ($args) {
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        $query->when(
+            is_array($filter) &&
+            array_key_exists('search', $filter) &&
+            is_string($filter['search']),
+            function (Builder $query) use ($filter): void {
+                /** @psalm-var array{search: string} $filter */
+                $search = $filter['search'];
                 $query
-                    ->filterName($args['filter']['search'])
-                    ->orWhere(function ($query) use ($args) {
-                        $query
-                            ->filterSlug($args['filter']['search']);
+                    ->filterName($search)
+                    ->orWhere(function (Builder $query) use ($search): void {
+                        $query->filterSlug($search);
                     });
-            });
+            }
+        );
     }
 
     /**
@@ -43,7 +51,7 @@ class Language extends Model
      */
     public function scopeFilterName(Builder $query, string $search): void
     {
-        $query->when(!empty($search), function ($query) use ($search) {
+        $query->when(!empty($search), function (Builder $query) use ($search): void {
             $query->where('languages.name', 'like', $search);
         });
     }
@@ -53,7 +61,7 @@ class Language extends Model
      */
     public function scopeFilterSlug(Builder $query, string $search): void
     {
-        $query->when(!empty($search), function ($query) use ($search) {
+        $query->when(!empty($search), function (Builder $query) use ($search): void {
             $query->where('languages.slug', 'like', $search);
         });
     }
@@ -64,8 +72,18 @@ class Language extends Model
      */
     public function scopeFilterIgnores(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
-            $query->whereNotIn('languages.id', $args['filter']['ignoreIds']);
-        });
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        $query->when(
+            is_array($filter) &&
+            array_key_exists('ignoreIds', $filter) &&
+            is_array($filter['ignoreIds']),
+            function (Builder $query) use ($filter): void {
+                /** @psalm-var array{ignoreIds: array<int>} $filter */
+                $ignoreIds = $filter['ignoreIds'];
+                $query->whereNotIn('languages.id', $ignoreIds);
+            }
+        );
     }
 }

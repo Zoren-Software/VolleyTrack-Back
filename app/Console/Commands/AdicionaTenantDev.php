@@ -35,23 +35,37 @@ class AdicionaTenantDev extends CommandDev
             $tenants = $this->option('tenants');
         }
 
+        $host = config('app.host');
+
+        if (!is_string($host)) {
+            throw new \RuntimeException('A configuração "app.host" deve ser uma string.');
+        }
+
         foreach ($tenants as $tenant) {
+            if (!is_string($tenant)) {
+                throw new \RuntimeException('Tenant ID deve ser uma string.');
+            }
+
             if (\App\Models\Tenant::find($tenant)) {
                 $this->error("Tenant {$tenant} already exists!");
 
                 continue;
             }
 
-            $tenant = \App\Models\Tenant::create([
+            $tenantModel = \App\Models\Tenant::create([
                 'id' => $tenant,
             ]);
 
-            $this->info("Tenant {$tenant->id} added successfully!");
+            $this->info("Tenant {$tenantModel->id} added successfully!");
 
-            $tenant->domains()->create(['domain' => $tenant->id . '.' . config('app.host')]);
+            $domain = $tenant . '.' . $host;
+            $tenantModel->domains()->create(['domain' => $domain]);
 
             $this->info('Default domain added successfully!');
-            $this->info("{$tenant->id}" . '.' . config('app.host'));
+            $this->info($domain);
+
+            $this->info('Default domain added successfully!');
+            $this->info($domain);
         }
 
         return 0;

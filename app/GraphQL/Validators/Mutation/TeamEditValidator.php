@@ -13,9 +13,18 @@ final class TeamEditValidator extends Validator
      */
     public function rules(): array
     {
+        $idRaw = $this->arg('id');
+
+        if (!is_numeric($idRaw)) {
+            throw new \RuntimeException('O ID da equipe deve ser numérico.');
+        }
+
+        /** @var int $id */
+        $id = (int) $idRaw;
+
         return [
             'name' => [
-                'unique:teams,name,' . $this->arg('id'),
+                'unique:teams,name,' . $id,
                 'required',
                 'min:3',
             ],

@@ -30,11 +30,15 @@ final class TrainingMutation
         }
 
         if (isset($args['fundamental_id'])) {
-            $this->training->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
+            $fundamentalIds = is_array($args['fundamental_id']) ? $args['fundamental_id'] : [$args['fundamental_id']];
+            /** @var array<int|string> $fundamentalIds */
+            $this->training->fundamentals()->syncWithoutDetaching($fundamentalIds);
         }
 
         if (isset($args['specific_fundamental_id'])) {
-            $this->training->specificFundamentals()->syncWithoutDetaching($args['specific_fundamental_id']);
+            $specificFundamentalIds = is_array($args['specific_fundamental_id']) ? $args['specific_fundamental_id'] : [$args['specific_fundamental_id']];
+            /** @var array<int|string> $specificFundamentalIds */
+            $this->training->specificFundamentals()->syncWithoutDetaching($specificFundamentalIds);
         }
 
         return $this->training;
@@ -47,8 +51,12 @@ final class TrainingMutation
      */
     public function delete($rootValue, array $args, GraphQLContext $context): array
     {
+        /** @var array<int|string> $ids */
+        $ids = is_array($args['id']) ? $args['id'] : [];
+
         $trainings = [];
-        foreach ($args['id'] as $id) {
+
+        foreach ($ids as $id) {
             /** @var Training $training */
             $training = Training::findOrFail($id);
             $this->training = $training;

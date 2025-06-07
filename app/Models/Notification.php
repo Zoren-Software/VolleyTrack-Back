@@ -38,8 +38,11 @@ class Notification extends Model
      */
     public function list(array $args): Builder
     {
+        /** @var bool $read */
+        $read = isset($args['read']) ? (bool) $args['read'] : false;
+
         return $this->userLogged()
-            ->filterRead($args['read'] ?? false)
+            ->filterRead($read)
             ->orderBy('created_at', 'desc');
     }
 
