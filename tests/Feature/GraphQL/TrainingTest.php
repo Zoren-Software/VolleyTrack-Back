@@ -28,7 +28,7 @@ class TrainingTest extends TestCase
     /**
      * @var string
      */
-    public static $formatDate;
+    public static $formatDate = 'Y-m-d H:i:s';
 
     /**
      * @var string
@@ -375,7 +375,6 @@ class TrainingTest extends TestCase
     public static function trainingCreateSuccessProvider(): array
     {
         $faker = Faker::create();
-        $userId = 1;
         $nameExistent = $faker->name . self::$trainingText;
         $trainingCreate = ['trainingCreate'];
 
@@ -1093,7 +1092,10 @@ class TrainingTest extends TestCase
         /** @var array<string, mixed> $params */
         $params = $data;
 
+        $params['id'] = $training->id;
+
         if ($data['error'] != null) {
+            unset($params['error']);
             $params['id'] = $data['error'];
         }
 
@@ -1107,7 +1109,7 @@ class TrainingTest extends TestCase
         );
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
-
+        
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);

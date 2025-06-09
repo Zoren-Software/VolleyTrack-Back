@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use App\Models\Training;
 use Illuminate\Contracts\Validation\InvokableRule;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ValidTrainingDeletion implements InvokableRule
 {
@@ -29,7 +29,7 @@ class ValidTrainingDeletion implements InvokableRule
                 continue; // Ou você pode lançar erro aqui, se quiser
             }
 
-            $training = Training::with(['confirmationsTraining' => function (Builder $query) {
+            $training = Training::with(['confirmationsTraining' => function (HasMany $query) {
                 $query->where('presence', true);
             }])->find($id);
 

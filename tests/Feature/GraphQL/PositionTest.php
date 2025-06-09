@@ -493,7 +493,10 @@ class PositionTest extends TestCase
         /** @var array<string, mixed> $params */
         $params = $data;
 
-        if (array_key_exists('error', $data) && $data['error'] !== null) {
+        $params['id'] = $position->id;
+
+        if ($data['error'] != null) {
+            unset($params['error']);
             $params['id'] = $data['error'];
         }
 

@@ -544,10 +544,13 @@ class SpecificFundamentalTest extends TestCase
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
 
-        /** @var array<string, mixed> $parameters */
+        /** @var array<string, mixed> $params */
         $params = $data;
 
-        if (array_key_exists('error', $data) && $data['error'] !== null) {
+        $params['id'] = $specificFundamental->id;
+
+        if ($data['error'] != null) {
+            unset($params['error']);
             $params['id'] = $data['error'];
         }
 

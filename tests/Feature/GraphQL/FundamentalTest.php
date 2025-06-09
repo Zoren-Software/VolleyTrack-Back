@@ -499,20 +499,19 @@ class FundamentalTest extends TestCase
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
 
-        /** @var array<string, mixed> $parameters */
-        $parameters = $data;
+        /** @var array<string, mixed> $params */
+        $params = $data;
 
-        $parameters['id'] = $fundamental->id;
+        $params['id'] = $fundamental->id;
 
         if ($data['error'] != null) {
-            $parameters['id'] = $data['error'];
+            unset($params['error']);
+            $params['id'] = $data['error'];
         }
-
-        dump($parameters);
 
         $response = $this->graphQL(
             'fundamentalDelete',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,
