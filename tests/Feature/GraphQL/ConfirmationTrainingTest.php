@@ -378,7 +378,7 @@ class ConfirmationTrainingTest extends TestCase
             ];
         } else {
             /** @var array<string, mixed> $parameters */
-            $parameters = $data['data_error']; // agora garantido como array
+            $parameters = $data['data_error'];
 
             if (
                 isset($parameters['trainingId']) &&

@@ -18,10 +18,6 @@ final class ConfirmTrainingValidator extends Validator
         $playerId = $this->arg('playerId');
         $trainingId = $this->arg('trainingId');
 
-        if (!is_numeric($playerId) || !is_numeric($trainingId)) {
-            throw new \RuntimeException('O ID do jogador e do treinamento devem ser numéricos.');
-        }
-
         /** @var int $playerId */
         $playerId = (int) $playerId;
         /** @var int $trainingId */
