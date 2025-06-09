@@ -9,20 +9,11 @@ use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
-    protected $login = true;
+    protected bool $login = true;
 
     /**
      * @var array<int, string>

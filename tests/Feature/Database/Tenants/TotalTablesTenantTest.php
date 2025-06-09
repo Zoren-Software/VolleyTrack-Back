@@ -10,17 +10,17 @@ class TotalTablesTenantTest extends TestCase
     /**
      * @var bool
      */
-    protected $graphql = false;
+    protected bool $graphql = false;
 
     /**
      * @var bool
      */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
     /**
      * @var bool
      */
-    protected $login = false;
+    protected bool $login = false;
 
     /**
      * Verificar o número total de tabelas existentes.

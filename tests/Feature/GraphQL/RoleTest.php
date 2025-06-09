@@ -6,15 +6,9 @@ use Tests\TestCase;
 
 class RoleTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
     /**
      * @var array<int, string>

@@ -12,7 +12,7 @@ parameters:
         - tests/Feature/
 
     # Level 10 is the highest level
-    level: 9
+    level: 10
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'

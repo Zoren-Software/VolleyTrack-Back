@@ -8,15 +8,9 @@ use Tests\TestCase;
 
 class TenantTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var string
-     */
-    protected $tenant = 'graphql';
+    protected string $tenant = 'graphql';
 
     /**
      * A basic test route horizon for login.

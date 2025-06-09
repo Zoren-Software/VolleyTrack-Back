@@ -14,30 +14,18 @@ use Tests\TestCase;
 
 class TeamTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
-    protected $login = true;
+    protected bool $login = true;
 
     /**
      * @var string
      */
     public static $teamText = ' TEAM';
 
-    /**
-     * @var string
-     */
-    private $role = 'technician';
+    private string $role = 'technician';
 
     /**
      * @var array<int, string>
@@ -632,7 +620,10 @@ class TeamTest extends TestCase
         $team = Team::factory()->make();
         $team->save();
 
-        $parameters['id'] = $team->id;
+        /** @var array<string, mixed> $parameters */
+        $parameters = [
+            'id' => $team->id,
+        ];
 
         if ($data['error'] != null) {
             $parameters['id'] = $data['error'];

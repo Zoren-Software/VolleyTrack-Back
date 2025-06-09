@@ -6,10 +6,7 @@ use Tests\TestCase;
 
 class PingTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
     /**
      * A basic feature test example.

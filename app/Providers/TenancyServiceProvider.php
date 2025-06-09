@@ -21,44 +21,55 @@ class TenancyServiceProvider extends ServiceProvider
     public static string $controllerNamespace = '';
 
     /**
-     * Register any application services.
-     *
-     * @codeCoverageIgnore
-     *
-     * @return array<string, array<int, class-string|JobPipeline>>
+     * @return array<string, list<callable|class-string>>
      */
     public function events(): array
     {
+        // TenantCreated pipeline
+        /** @var JobPipeline $pipelineCreated */
+        $pipelineCreated = JobPipeline::make([
+            Jobs\CreateDatabase::class,
+            Jobs\MigrateDatabase::class,
+        ]);
+
+        /** @var JobPipeline $pipelineCreatedSent */
+        $pipelineCreatedSent = $pipelineCreated->send(
+            fn(Events\TenantCreated $event) => $event->tenant
+        );
+
+        /** @var JobPipeline $pipelineCreatedQueued */
+        $pipelineCreatedQueued = $pipelineCreatedSent->shouldBeQueued(false);
+
+        /** @var callable $tenantCreatedListener */
+        $tenantCreatedListener = $pipelineCreatedQueued->toListener();
+
+        // TenantDeleted pipeline
+        /** @var JobPipeline $pipelineDeleted */
+        $pipelineDeleted = JobPipeline::make([
+            Jobs\DeleteDatabase::class,
+        ]);
+
+        /** @var JobPipeline $pipelineDeletedSent */
+        $pipelineDeletedSent = $pipelineDeleted->send(
+            fn(Events\TenantDeleted $event) => $event->tenant
+        );
+
+        /** @var JobPipeline $pipelineDeletedQueued */
+        $pipelineDeletedQueued = $pipelineDeletedSent->shouldBeQueued(false);
+
+        /** @var callable $tenantDeletedListener */
+        $tenantDeletedListener = $pipelineDeletedQueued->toListener();
+
         return [
-            // Tenant events
             Events\CreatingTenant::class => [],
-            Events\TenantCreated::class => [
-                JobPipeline::make([
-                    Jobs\CreateDatabase::class,
-                    Jobs\MigrateDatabase::class,
-                    // Jobs\SeedDatabase::class,
+            Events\TenantCreated::class => [$tenantCreatedListener],
+            Events\TenantDeleted::class => [$tenantDeletedListener],
 
-                    // Your own jobs to prepare the tenant.
-                    // Provision API keys, create S3 buckets, anything you want!
-
-                ])->send(function (Events\TenantCreated $event) {
-                    return $event->tenant;
-                })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
-            ],
             Events\SavingTenant::class => [],
             Events\TenantSaved::class => [],
             Events\UpdatingTenant::class => [],
             Events\TenantUpdated::class => [],
             Events\DeletingTenant::class => [],
-            Events\TenantDeleted::class => [
-                JobPipeline::make([
-                    Jobs\DeleteDatabase::class,
-                ])->send(function (Events\TenantDeleted $event) {
-                    return $event->tenant;
-                })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
-            ],
-
-            // Domain events
             Events\CreatingDomain::class => [],
             Events\DomainCreated::class => [],
             Events\SavingDomain::class => [],
@@ -67,39 +78,32 @@ class TenancyServiceProvider extends ServiceProvider
             Events\DomainUpdated::class => [],
             Events\DeletingDomain::class => [],
             Events\DomainDeleted::class => [],
-
-            // Database events
             Events\DatabaseCreated::class => [],
             Events\DatabaseMigrated::class => [],
             Events\DatabaseSeeded::class => [],
             Events\DatabaseRolledBack::class => [],
             Events\DatabaseDeleted::class => [],
-
-            // Tenancy events
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
             ],
-
             Events\EndingTenancy::class => [],
             Events\TenancyEnded::class => [
                 Listeners\RevertToCentralContext::class,
             ],
-
             Events\BootstrappingTenancy::class => [],
             Events\TenancyBootstrapped::class => [],
             Events\RevertingToCentralContext::class => [],
             Events\RevertedToCentralContext::class => [],
-
-            // Resource syncing
             Events\SyncedResourceSaved::class => [
                 Listeners\UpdateSyncedResource::class,
             ],
-
-            // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
             Events\SyncedResourceChangedInForeignDatabase::class => [],
         ];
     }
+
+
+
 
     public function register()
     {
@@ -121,9 +125,9 @@ class TenancyServiceProvider extends ServiceProvider
     {
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {
-                if ($listener instanceof JobPipeline) {
-                    $listener = $listener->toListener();
-                }
+                // if ($listener instanceof JobPipeline) {
+                //     $listener = $listener->toListener();
+                // }
 
                 Event::listen($event, $listener);
             }

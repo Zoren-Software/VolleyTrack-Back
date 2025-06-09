@@ -19,21 +19,21 @@ abstract class TestCase extends BaseTestCase
     use MakesGraphQLRequests;
     use RefreshesSchemaCache;
 
-    protected $tenancy = false;
+    protected bool $tenancy = false;
 
-    protected $tenant = 'test';
+    protected string $tenant = 'test';
 
-    protected $graphql = false;
+    protected bool $graphql = false;
 
-    protected $login = false;
+    protected bool $login = false;
 
-    protected $email = null;
+    protected ?string $email = null;
 
-    protected $token = '';
+    protected string $token = '';
 
-    protected ?\App\Models\User $user = null;
+    protected ?User $user = null;
 
-    protected $otherUser = false;
+    protected bool $otherUser = false;
 
     public static $paginatorInfo = [
         'count',
@@ -57,11 +57,17 @@ abstract class TestCase extends BaseTestCase
         ],
     ];
 
+    /**
+     * @var string
+     */
     public static $formatDate = 'Y-m-d H:i:s';
 
+    /**
+     * @var string
+     */
     public static $unauthorized = 'This action is unauthorized.';
 
-    public $tenantUrl;
+    public string $tenantUrl;
 
     protected function setUp(): void
     {

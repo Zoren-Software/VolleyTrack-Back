@@ -9,20 +9,11 @@ abstract class BaseDatabase extends TestCase
 {
     use DatabaseAssertions;
 
-    /**
-     * @var bool
-     */
-    protected $graphql = false;
+    protected bool $graphql = false;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = false;
+    protected bool $tenancy = false;
 
-    /**
-     * @var bool
-     */
-    protected $login = false;
+    protected bool $login = false;
 
     protected string $table = ''; // cada classe filha sobrescreve
 

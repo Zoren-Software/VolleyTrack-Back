@@ -25,6 +25,63 @@ class PermissionTableSeeder extends Seeder
         $player = Role::updateOrCreate(['id' => 3], ['name' => 'player', 'guard_name' => 'sanctum']);
 
         /**
+         * @var array<int, Permission> $user
+         */
+        $user = [];
+        /**
+         * @var array<int, Permission> $team
+         */
+        $team = [];
+        /**
+         * @var array<int, Permission> $fundamental
+         */
+        $fundamental = [];
+        /**
+         * @var array<int, Permission> $position
+         */
+        $position = [];
+        /**
+         * @var array<int, Permission> $role
+         */
+        $role = [];
+        /**
+         * @var array<int, Permission> $roleAdmin
+         */
+        $roleAdmin = [];
+        /**
+         * @var array<int, Permission> $roleTechnician
+         */
+        $roleTechnician = [];
+        /**
+         * @var array<int, Permission> $rolePlayer
+         */
+        $rolePlayer = [];
+        /**
+         * @var array<int, Permission> $training
+         */
+        $training = [];
+        /**
+         * @var array<int, Permission> $config
+         */
+        $config = [];
+        /**
+         * @var array<int, Permission> $trainingConfig
+         */
+        $trainingConfig = [];
+        /**
+         * @var array<int, Permission> $confirmationTraining
+         */
+        $confirmationTraining = [];
+        /**
+         * @var array<int, Permission> $teamLevels
+         */
+        $teamLevels = [];
+        /**
+         * @var array<int, Permission> $teamCategories
+         */
+        $teamCategories = [];
+
+        /**
          * Permissões Usuário
          */
         $user[] = Permission::updateOrCreate(['id' => 1], ['name' => 'edit-user']);

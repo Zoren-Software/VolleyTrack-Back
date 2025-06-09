@@ -7,25 +7,13 @@ use Tests\TestCase;
 
 class ConfigTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
-    protected $login = true;
+    protected bool $login = true;
 
-    /**
-     * @var string
-     */
-    private $role = 'technician';
+    private string $role = 'technician';
 
     /**
      * @var array<int, string>

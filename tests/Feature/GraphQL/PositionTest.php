@@ -10,25 +10,13 @@ use Tests\TestCase;
 
 class PositionTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
-    protected $login = true;
+    protected bool $login = true;
 
-    /**
-     * @var string
-     */
-    private $role = 'technician';
+    private string $role = 'technician';
 
     /**
      * @var array<int, string>
@@ -502,15 +490,16 @@ class PositionTest extends TestCase
         $position = Position::factory()->make();
         $position->save();
 
-        $parameters['id'] = $position->id;
+        /** @var array<string, mixed> $params */
+        $params = $data;
 
-        if ($data['error'] != null) {
-            $parameters['id'] = $data['error'];
+        if (array_key_exists('error', $data) && $data['error'] !== null) {
+            $params['id'] = $data['error'];
         }
 
         $response = $this->graphQL(
             'positionDelete',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,

@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Training;
 use Illuminate\Contracts\Validation\InvokableRule;
+use Illuminate\Database\Eloquent\Builder;
 
 class ValidTrainingDeletion implements InvokableRule
 {
@@ -13,11 +14,9 @@ class ValidTrainingDeletion implements InvokableRule
      * @codeCoverageIgnore
      *
      * @param  string  $attribute
-     * @param  mixed  $value
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     * @return void
      */
-    public function __invoke($attribute, $value, $fail)
+    public function __invoke($attribute, mixed $value, \Closure $fail): void
     {
         if (!is_iterable($value)) {
             $fail('O valor informado para exclusão de treinos deve ser uma lista de IDs.');
@@ -26,8 +25,11 @@ class ValidTrainingDeletion implements InvokableRule
         }
 
         foreach ($value as $id) {
-            /** @var \App\Models\Training|null $training */
-            $training = Training::with(['confirmationsTraining' => function ($query) {
+            if (!is_scalar($id)) {
+                continue; // Ou você pode lançar erro aqui, se quiser
+            }
+
+            $training = Training::with(['confirmationsTraining' => function (Builder $query) {
                 $query->where('presence', true);
             }])->find($id);
 

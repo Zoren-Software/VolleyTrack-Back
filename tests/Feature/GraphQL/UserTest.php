@@ -18,25 +18,13 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
-    protected $otherUser = false;
+    protected bool $otherUser = false;
 
-    /**
-     * @var bool
-     */
-    protected $login = true;
+    protected bool $login = true;
 
     /**
      * @var string
@@ -1175,9 +1163,13 @@ class UserTest extends TestCase
     ): void {
         $this->setPermissions($hasPermission);
 
+        /** @var \App\Models\User $user */
         $user = User::factory()
             ->has(Position::factory()->count(3))
             ->create();
+
+        /** @var array<string, mixed> $parameters */
+        $parameters = [];
 
         $parameters['id'] = $user->id;
 

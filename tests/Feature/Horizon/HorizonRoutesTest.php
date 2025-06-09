@@ -6,15 +6,9 @@ use Tests\TestCase;
 
 class HorizonRoutesTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var string
-     */
-    protected $tenant = 'horizon';
+    protected string $tenant = 'horizon';
 
     /**
      * A basic test route horizon for login.

@@ -11,25 +11,13 @@ use Tests\TestCase;
 
 class SpecificFundamentalTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
-    protected $login = true;
+    protected bool $login = true;
 
-    /**
-     * @var string
-     */
-    private $role = 'technician';
+    private string $role = 'technician';
 
     /**
      * @var array<int, string>
@@ -556,15 +544,16 @@ class SpecificFundamentalTest extends TestCase
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
 
-        $parameters['id'] = $specificFundamental->id;
+        /** @var array<string, mixed> $parameters */
+        $params = $data;
 
-        if ($data['error'] != null) {
-            $parameters['id'] = $data['error'];
+        if (array_key_exists('error', $data) && $data['error'] !== null) {
+            $params['id'] = $data['error'];
         }
 
         $response = $this->graphQL(
             'specificFundamentalDelete',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,

@@ -12,30 +12,23 @@ use Tests\TestCase;
 
 class TrainingTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
-    protected $login = true;
+    protected bool $login = true;
 
     /**
      * @var string
      */
     public static $trainingText = ' TRAINING';
 
+    private string $role = 'technician';
+
     /**
      * @var string
      */
-    private $role = 'technician';
+    public static $formatDate;
 
     /**
      * @var string
@@ -1097,15 +1090,16 @@ class TrainingTest extends TestCase
             ->setTeamId($team->id)
             ->create();
 
-        $parameters['id'] = $training->id;
+        /** @var array<string, mixed> $params */
+        $params = $data;
 
         if ($data['error'] != null) {
-            $parameters['id'] = $data['error'];
+            $params['id'] = $data['error'];
         }
 
         $response = $this->graphQL(
             'trainingDelete',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,

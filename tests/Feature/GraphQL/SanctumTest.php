@@ -11,20 +11,11 @@ use Tests\TestCase;
 
 class SanctumTest extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
-    protected $otherUser = true;
+    protected bool $otherUser = true;
 
     protected function setUp(): void
     {

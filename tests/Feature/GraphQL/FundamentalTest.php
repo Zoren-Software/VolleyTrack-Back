@@ -13,22 +13,22 @@ class FundamentalTest extends TestCase
     /**
      * @var bool
      */
-    protected $graphql = true;
+    protected bool $graphql = true;
 
     /**
      * @var bool
      */
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
     /**
      * @var bool
      */
-    protected $login = true;
+    protected bool $login = true;
 
     /**
      * @var string
      */
-    private $role = 'technician';
+    private string $role = 'technician';
 
     /**
      * @var array<int, string>
@@ -372,15 +372,18 @@ class FundamentalTest extends TestCase
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
 
-        $parameters['id'] = $fundamental->id;
+        /** @var array<string, mixed> $params */
+        $params = $parameters;
+
+        $params['id'] = $fundamental->id;
 
         if ($expectedMessage == 'FundamentalEdit.name_unique') {
-            $parameters['name'] = $fundamentalExist->name;
+            $params['name'] = $fundamentalExist->name;
         }
 
         $response = $this->graphQL(
             'fundamentalEdit',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,
@@ -496,11 +499,16 @@ class FundamentalTest extends TestCase
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
 
+        /** @var array<string, mixed> $parameters */
+        $parameters = $data;
+
         $parameters['id'] = $fundamental->id;
 
         if ($data['error'] != null) {
             $parameters['id'] = $data['error'];
         }
+
+        dump($parameters);
 
         $response = $this->graphQL(
             'fundamentalDelete',
