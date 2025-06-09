@@ -29,6 +29,8 @@ class AdicionaTenantDev extends CommandDev
             return $handle;
         }
 
+        $tenants = [];
+
         if (!$this->option('tenants')) {
             $tenants[] = $this->ask('What is the tenant id?');
         } else {

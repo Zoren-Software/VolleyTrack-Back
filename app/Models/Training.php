@@ -176,7 +176,7 @@ class Training extends Model
      */
     public function sendNotificationTechnicians(?int $daysNotification = null): void
     {
-        $this->team->technicians()->each(function ($technician) use ($daysNotification) {
+        $this->team->technicians()->each(function (User $technician) use ($daysNotification) {
             if (
                 $technician->email_verified_at &&
                 $this->rangeDateNotification(
@@ -188,7 +188,7 @@ class Training extends Model
                 if ($technician->canReceiveNotification('training_created', 'system')) {
                     $technician->notify(new ConfirmationTrainingNotification($this, null));
                 }
-
+        
                 if ($technician->canReceiveNotification('training_created', 'email')) {
                     Mail::to($technician->email)
                         ->send(new ConfirmationTrainingMail($this, $technician));
@@ -204,7 +204,7 @@ class Training extends Model
      */
     public function sendNotificationPlayers(?int $daysNotification = null): void
     {
-        $this->team->players()->each(function ($player) use ($daysNotification) {
+        $this->team->players()->each(function (User $player) use ($daysNotification) {
             if (
                 $player->email_verified_at &&
                 $this->rangeDateNotification(
@@ -243,7 +243,7 @@ class Training extends Model
     {
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification ?? 0;
 
-        $this->team->players()->each(function ($player) use ($trainingId, $daysNotification) {
+        $this->team->players()->each(function (User $player) use ($trainingId, $daysNotification) {
             $confirmationTraining = $this->confirmationsTraining()
                 ->where('training_id', $trainingId)
                 ->where('player_id', $player->id)
@@ -305,7 +305,7 @@ class Training extends Model
      */
     public function sendNotificationPlayersTrainingCancelled(): void
     {
-        $this->team->players()->each(function ($player) {
+        $this->team->players()->each(function (User $player) {
             if (
                 $player->email_verified_at &&
                 $player->canReceiveNotification('training_cancelled', 'system')
@@ -317,7 +317,7 @@ class Training extends Model
 
     public function sendEmailPlayersTrainingCancelled(): void
     {
-        $this->team->players()->each(function ($player) {
+        $this->team->players()->each(function (User $player) {
             if (
                 $player->email_verified_at &&
                 $player->canReceiveNotification('training_cancelled', 'email')
