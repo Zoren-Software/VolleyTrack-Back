@@ -20,7 +20,7 @@ environments:
         database: volleytrack
         memory: 1024
         cli-memory: 512
-        runtime: 'php-8.3:al2'
+        runtime: 'php-8.4:al2'
         build:
             - 'composer install --optimize-autoloader --no-dev'
             - 'composer dump-autoload -o'
