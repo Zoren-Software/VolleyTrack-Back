@@ -7,14 +7,17 @@ use Tests\TestCase;
 
 class ConfigTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
-    private $role = 'technician';
+    private string $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'nameTenant',
@@ -23,6 +26,9 @@ class ConfigTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-config');
@@ -32,18 +38,17 @@ class ConfigTest extends TestCase
     /**
      * Listagem de configurações.
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
      * @author Maicon Cerutti
      *
+     * @param  array<int, string>  $expected
      * @return void
      */
-    public function configInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function config_info(
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -73,9 +78,9 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -102,19 +107,19 @@ class ConfigTest extends TestCase
     /**
      * Método de edição de configurações.
      *
-     * @dataProvider configEditProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<int, string>  $expected
      * @return void
      */
-    public function configEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('configEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function config_edit(
+        array $parameters,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -141,9 +146,9 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function configEditProvider()
+    public static function configEditProvider(): array
     {
         $faker = Faker::create();
         $userId = 2;

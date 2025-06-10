@@ -4,9 +4,12 @@ namespace Tests\Feature\Database\Tenants;
 
 class RolesTest extends TenantBase
 {
-    protected $table = 'roles';
+    protected string $table = 'roles';
 
-    public static $fieldTypes = [
+    /**
+     * @var array<string, mixed>
+     */
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'name' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
         'guard_name' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
@@ -14,13 +17,25 @@ class RolesTest extends TenantBase
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    /**
+     * @var array<int, string>
+     */
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    /**
+     * @var array<int, string>
+     */
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = []; // Nenhuma chave estrangeira definida
+    /**
+     * @var array<int, string>
+     */
+    protected static array $foreignKeys = []; // Nenhuma chave estrangeira definida
 
-    public static $uniqueKeys = [
+    /**
+     * @var array<int, string>
+     */
+    protected static array $uniqueKeys = [
         'roles_name_guard_unique',
     ]; // Chave única definida
 }

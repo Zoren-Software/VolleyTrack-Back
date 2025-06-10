@@ -28,7 +28,12 @@ class Kernel extends ConsoleKernel
         $tenants = Tenant::where('id', 'NOT LIKE', '%_logs')->pluck('id');
 
         foreach ($tenants as $tenant) {
-            $schedule->job(new TrainingNotificationDaily($tenant), $this->queueEmails)
+
+            if (!is_string($tenant)) {
+                throw new \RuntimeException('Tenant ID deve ser uma string.');
+            }
+
+            $schedule->job(new TrainingNotificationDaily((string) $tenant), $this->queueEmails)
                 ->appendOutputTo($output)
                 ->dailyAt('03:00');
         }

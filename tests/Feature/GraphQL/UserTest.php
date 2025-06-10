@@ -18,16 +18,22 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $otherUser = false;
+    protected bool $otherUser = false;
 
-    protected $login = true;
+    protected bool $login = true;
 
+    /**
+     * @var string
+     */
     private $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -37,13 +43,13 @@ class UserTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -70,7 +76,7 @@ class UserTest extends TestCase
         ]);
     }
 
-    private function setPermissions(bool $hasPermission)
+    private function setPermissions(bool $hasPermission): void
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-user');
         $this->checkPermission($hasPermission, $this->role, 'view-user');
@@ -81,18 +87,16 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
-     * @return void
+     * @param  array<string, mixed>  $expected
      */
-    public function usersList(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function users_list(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
-    ) {
+    ): void {
         $this->setPermissions($hasPermission);
 
         User::factory()
@@ -128,9 +132,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -164,16 +168,15 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function userInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_info(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -207,9 +210,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -236,19 +239,19 @@ class UserTest extends TestCase
     /**
      * Método de criação de um usuário.
      *
-     * @dataProvider userCreateProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function userCreate(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('userCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_create(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasTeam,
         bool $hasPermission
     ) {
@@ -260,6 +263,10 @@ class UserTest extends TestCase
             $existingUser->information()->update([
                 'cpf' => $parameters['cpf'],
             ]);
+        }
+
+        if ($parameters['password'] == 'testing.password_test') {
+            $parameters['password'] = config('testing.password_test');
         }
 
         if ($hasTeam) {
@@ -288,7 +295,7 @@ class UserTest extends TestCase
 
         if ($expectedMessage === false) {
             // NOTE - Verifica se o usuário foi criado no banc o de dados
-            $user = User::where('email', $parameters['email'])->first();
+            $user = User::where('email', $parameters['email'])->firstOrFail();
             $this->assertDatabaseHas('users', [
                 'id' => $user->id,
                 'name' => $parameters['name'],
@@ -311,16 +318,16 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function userCreateProvider()
+    public static function userCreateProvider(): array
     {
         $faker = Faker::create();
         $emailExistent = $faker->email;
         $cpfExistent = strval($faker->numberBetween(10000000000, 99999999999));
         $rgExistent = strval($faker->numberBetween(10000000000, 99999999999));
 
-        $password = env('PASSWORD_TEST', '123456');
+        $password = 'testing.password_test';
 
         $userCreate = ['userCreate'];
 
@@ -333,7 +340,6 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'positionId' => [1],
                     'teamId' => [1],
-                    'positionId' => [1],
                     'password' => $password,
                 ],
                 'typeMessageError' => false,
@@ -354,7 +360,6 @@ class UserTest extends TestCase
                     'roleId' => [2],
                     'positionId' => [1],
                     'teamId' => [1],
-                    'positionId' => [1],
                     'password' => $password,
                 ],
                 'typeMessageError' => false,
@@ -375,7 +380,6 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
-                    'positionId' => [1],
                     'password' => $password,
                 ],
                 'typeMessageError' => false,
@@ -399,7 +403,6 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
-                    'positionId' => [1],
                     'password' => $password,
                 ],
                 'typeMessageError' => false,
@@ -710,25 +713,31 @@ class UserTest extends TestCase
     /**
      * Método de edição de um usuário.
      *
-     * @dataProvider userEditProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @return void
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      */
-    public function userEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('userEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function user_edit(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasTeam,
         bool $hasPermission
-    ) {
+    ): void {
         $this->setPermissions($hasPermission);
 
-        $user = User::find($this->user->id);
+        $this->assertNotNull($this->user);
+
+        /** @var User $user */
+        $user = User::findOrFail($this->user->id);
+
+        if ($parameters['password'] == 'testing.password_test') {
+            $parameters['password'] = config('testing.password_test');
+        }
 
         if (isset($parameters['cpf']) && $parameters['cpf']) {
             $parameters['cpf'] = User::factory()->create()->information->cpf;
@@ -784,13 +793,13 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function userEditProvider()
+    public static function userEditProvider(): array
     {
         $faker = Faker::create();
 
-        $password = env('PASSWORD_TEST', '123456');
+        $password = 'testing.password_test';
         $userEdit = ['userEdit'];
 
         return [
@@ -916,7 +925,6 @@ class UserTest extends TestCase
                     'positionId' => [1],
                     'teamId' => [1],
                     'roleId' => [2],
-                    'positionId' => [2],
                 ],
                 'typeMessageError' => false,
                 'expectedMessage' => false,
@@ -934,7 +942,6 @@ class UserTest extends TestCase
                     'name' => $faker->name,
                     'password' => $password,
                     'roleId' => [2],
-                    'positionId' => [1],
                     'teamId' => [1],
                     'positionId' => [2],
                 ],
@@ -1140,21 +1147,29 @@ class UserTest extends TestCase
     /**
      * Método de deletar um usuário.
      *
-     * @dataProvider userDeleteProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @return void
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
      */
-    public function deleteUser($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
-    {
+    #[\PHPUnit\Framework\Attributes\DataProvider('userDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function delete_user(
+        array $data,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission
+    ): void {
         $this->setPermissions($hasPermission);
 
+        /** @var \App\Models\User $user */
         $user = User::factory()
             ->has(Position::factory()->count(3))
             ->create();
+
+        /** @var array<string, mixed> $parameters */
+        $parameters = [];
 
         $parameters['id'] = $user->id;
 
@@ -1162,12 +1177,17 @@ class UserTest extends TestCase
             $parameters['id'] = $data['error'];
         }
 
+        if (!$this->user) {
+            $this->fail('User não inicializado');
+        }
+
         if ($expectedMessage == 'UserDelete.cannot_delete_own_account') {
             $parameters['id'] = $this->user->id;
         }
 
         if ($expectedMessage == 'UserDelete.ids_exists') {
-            $parameters['id'] = User::max('id') + 1;
+            $maxId = User::max('id');
+            $parameters['id'] = (is_int($maxId) ? $maxId : 0) + 1;
         }
 
         $response = $this->graphQL(
@@ -1187,9 +1207,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function userDeleteProvider()
+    public static function userDeleteProvider(): array
     {
         $userDelete = ['userDelete'];
 
@@ -1249,16 +1269,15 @@ class UserTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider meProvider
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('meProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
     public function me(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -1302,9 +1321,9 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function meProvider()
+    public static function meProvider(): array
     {
         return [
             'with auth' => [
@@ -1329,45 +1348,56 @@ class UserTest extends TestCase
     /**
      * Método de criar senha para um usuário.
      *
-     * @dataProvider setPasswordProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @return void
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      */
-    public function setPassword($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
-    {
+    #[\PHPUnit\Framework\Attributes\DataProvider('setPasswordProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function set_password(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission
+    ): void {
         $this->setPermissions($hasPermission);
 
         $user = User::factory()
             ->has(Position::factory()->count(3))
             ->create();
 
-        if ($data['email']) {
+        if (isset($parameters['email']) && $parameters['email'] === true) {
             $parameters['email'] = $user->email;
-        }
-        if ($data['email'] === 'not_valid') {
+        } elseif (isset($parameters['email']) && $parameters['email'] === false) {
+            unset($parameters['email']);
+        } elseif (isset($parameters['email']) && $parameters['email'] === 'not_valid') {
             $parameters['email'] = 'notemail.com';
         }
-        if ($data['token']) {
+
+        if (isset($parameters['token']) && $parameters['token'] === true) {
             $parameters['token'] = $user->set_password_token;
-        }
-        if ($data['token'] === 'not_find_user_invalid_token') {
+        } elseif (isset($parameters['token']) && $parameters['token'] === 'not_find_user_invalid_token') {
             $parameters['token'] = 'not_find_user_invalid_token';
+        } else {
+            unset($parameters['token']);
         }
-        if ($data['password']) {
-            $parameters['password'] = env('PASSWORD_TEST', '1234');
-        }
-        if ($data['password'] === 'min_6') {
+
+        if (isset($parameters['password']) && $parameters['password'] === true) {
+            $parameters['password'] = config('testing.password_test');
+        } elseif (isset($parameters['password']) && $parameters['password'] === 'min_6') {
             $parameters['password'] = '1234';
+        } else {
+            unset($parameters['password']);
         }
-        if ($data['passwordConfirmation']) {
-            $parameters['passwordConfirmation'] = env('PASSWORD_TEST', '1234');
-        }
-        if ($data['passwordConfirmation'] === 'not_match') {
+
+        if (isset($parameters['passwordConfirmation']) && $parameters['passwordConfirmation'] === true) {
+            $parameters['passwordConfirmation'] = config('testing.password_test');
+        } elseif (isset($parameters['passwordConfirmation']) && $parameters['passwordConfirmation'] === 'not_match') {
             $parameters['passwordConfirmation'] = '12345678';
+        } else {
+            unset($parameters['passwordConfirmation']);
         }
 
         $response = $this->graphQL(
@@ -1387,16 +1417,15 @@ class UserTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function setPasswordProvider()
+    public static function setPasswordProvider(): array
     {
         $userSetPassword = ['userSetPassword'];
 
         return [
             'set password a user, success' => [
                 [
-                    'error' => null,
                     'email' => true,
                     'token' => true,
                     'password' => true,
@@ -1420,7 +1449,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not send email, error' => [
                 [
-                    'error' => true,
                     'email' => false,
                     'token' => true,
                     'password' => true,
@@ -1435,7 +1463,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not valid email, error' => [
                 [
-                    'error' => true,
                     'email' => 'not_valid',
                     'token' => true,
                     'password' => true,
@@ -1450,7 +1477,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not send token, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => false,
                     'password' => true,
@@ -1465,7 +1491,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not token string, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => 'not_find_user_invalid_token',
                     'password' => true,
@@ -1480,7 +1505,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not send password, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => true,
                     'password' => false,
@@ -1495,7 +1519,6 @@ class UserTest extends TestCase
             ],
             'set password a user, send password min 6 characters, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => true,
                     'password' => 'min_6',
@@ -1510,7 +1533,6 @@ class UserTest extends TestCase
             ],
             'set password a user, send password does not match, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => true,
                     'password' => true,
@@ -1525,7 +1547,6 @@ class UserTest extends TestCase
             ],
             'set password a user, not send passwordConfirmation, error' => [
                 [
-                    'error' => true,
                     'email' => true,
                     'token' => true,
                     'password' => true,

@@ -12,30 +12,62 @@ use Tests\TestCase;
 
 class TrainingTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
+    /**
+     * @var string
+     */
     public static $trainingText = ' TRAINING';
 
-    private $role = 'technician';
+    private string $role = 'technician';
 
+    /**
+     * @var string
+     */
+    public static $formatDate = 'Y-m-d H:i:s';
+
+    /**
+     * @var string
+     */
     public static $dateStart = '2022-10-23 13:50:00';
 
+    /**
+     * @var string
+     */
     public static $dateEnd = '2022-10-22 13:45:00';
 
+    /**
+     * @var string
+     */
     public static $dateStartError = '08/10/2022 13:50:00';
 
+    /**
+     * @var string
+     */
     public static $dateEndError = '08/10/2022 13:55:00';
 
+    /**
+     * @var string
+     */
     public static $twoHours = ' +2 hours';
 
+    /**
+     * @var string
+     */
     public static $treeHours = ' +3 hours';
 
+    /**
+     * @var string
+     */
     public static $moreTwoDays = '+2 days';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -55,13 +87,13 @@ class TrainingTest extends TestCase
         $this->checkPermission($hasPermission, $this->role, 'view-training');
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -84,19 +116,18 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingList(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_list(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $this->setPermissions($hasPermission);
 
@@ -136,9 +167,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -172,19 +203,18 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_info(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $this->setPermissions($hasPermission);
 
@@ -219,9 +249,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -248,25 +278,25 @@ class TrainingTest extends TestCase
     /**
      * Método de criação de um treino.
      *
-     * @dataProvider trainingCreateSuccessProvider
-     * @dataProvider trainingCreateErrorProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingCreate(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateSuccessProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateErrorProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_create(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
 
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $team = Team::factory()
             ->create();
@@ -274,34 +304,38 @@ class TrainingTest extends TestCase
         if ($parameters['sendEmailPlayer']) {
             $player = $team->players()->first();
 
-            $setting = $player->notificationSettings()
-                ->whereHas('notificationType', function ($query) {
-                    $query->where('key', 'training_created');
-                })
-                ->first();
+            if ($player) {
+                $setting = $player->notificationSettings()
+                    ->whereHas('notificationType', function ($query) {
+                        $query->where('key', 'training_created');
+                    })
+                    ->first();
 
-            if ($setting) {
-                $setting->via_email = true;
-                $setting->save();
+                if ($setting) {
+                    $setting->via_email = true;
+                    $setting->save();
+                }
             }
         }
 
         if ($parameters['sendEmailTechnician']) {
             $technician = $team->technicians()->first();
 
-            $setting = $technician->notificationSettings()
-                ->whereHas('notificationType', function ($query) {
-                    $query->where('key', 'training_created');
-                })
-                ->first();
+            if ($technician) {
+                $setting = $technician->notificationSettings()
+                    ->whereHas('notificationType', function ($query) {
+                        $query->where('key', 'training_created');
+                    })
+                    ->first();
 
-            if ($setting) {
-                $setting->via_email = true;
-                $setting->save();
+                if ($setting) {
+                    $setting->via_email = true;
+                    $setting->save();
+                }
             }
         }
 
-        $user = $team->players->first();
+        $user = $team->players->firstOrFail();
 
         $user->roles()->sync(2);
 
@@ -336,12 +370,11 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingCreateSuccessProvider()
+    public static function trainingCreateSuccessProvider(): array
     {
         $faker = Faker::create();
-        $userId = 1;
         $nameExistent = $faker->name . self::$trainingText;
         $trainingCreate = ['trainingCreate'];
 
@@ -513,9 +546,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingCreateErrorProvider()
+    public static function trainingCreateErrorProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -651,39 +684,42 @@ class TrainingTest extends TestCase
     /**
      * Método de edição de um treino.
      *
-     * @dataProvider trainingEditSuccessProvider
-     * @dataProvider trainingEditErrorProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingEditSuccessProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingEditErrorProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_edit(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission,
         bool $cancellation
     ) {
         $this->setPermissions($hasPermission);
 
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $team = Team::factory()->hasPlayers(10)->create();
 
+        $status = isset($parameters['status']) ? (bool) $parameters['status'] : false;
+
         $training = Training::factory()
-            ->setStatus($parameters['status'])
+            ->setStatus($status)
             ->make([
                 'team_id' => $team->id,
             ]);
+
         $training->save();
 
         $parameters['id'] = $training->id;
 
-        $user = $team->players->first();
+        $user = $team->players->firstOrFail();
 
         $user->roles()->sync(2);
 
@@ -719,9 +755,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingEditSuccessProvider()
+    public static function trainingEditSuccessProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -876,9 +912,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingEditErrorProvider()
+    public static function trainingEditErrorProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -1032,31 +1068,40 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider trainingDeleteProvider
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingDelete(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_delete(
+        array $data,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
 
-        $training = Training::factory()->make();
-        $training->save();
+        $team = Team::factory()->create();
 
-        $parameters['id'] = $training->id;
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
+
+        /** @var array<string, mixed> $params */
+        $params = $data;
+
+        $params['id'] = $training->id;
 
         if ($data['error'] != null) {
-            $parameters['id'] = $data['error'];
+            unset($params['error']);
+            $params['id'] = $data['error'];
         }
 
         $response = $this->graphQL(
             'trainingDelete',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,
@@ -1073,9 +1118,9 @@ class TrainingTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingDeleteProvider()
+    public static function trainingDeleteProvider(): array
     {
         $trainingDelete = ['trainingDelete'];
 
@@ -1109,8 +1154,8 @@ class TrainingTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'typeMessageError' => 'message',
-                'expectedMessage' => 'internal',
+                'typeMessageError' => 'id',
+                'expectedMessage' => 'The selected id is invalid.',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingDelete,

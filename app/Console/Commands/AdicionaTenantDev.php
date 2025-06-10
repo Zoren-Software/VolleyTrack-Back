@@ -20,40 +20,56 @@ class AdicionaTenantDev extends CommandDev
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $handle = parent::handle();
 
-        if ($handle === false) {
-            return false;
+        if ($handle !== 0) {
+            return $handle;
         }
+
+        $tenants = [];
 
         if (!$this->option('tenants')) {
             $tenants[] = $this->ask('What is the tenant id?');
         } else {
-            $tenants = $this->option('tenants');
+            $tenants = (array) $this->option('tenants');
+        }
+
+        $host = config('app.host');
+
+        if (!is_string($host)) {
+            throw new \RuntimeException('A configuração "app.host" deve ser uma string.');
         }
 
         foreach ($tenants as $tenant) {
+            if (!is_string($tenant)) {
+                throw new \RuntimeException('Tenant ID deve ser uma string.');
+            }
+
             if (\App\Models\Tenant::find($tenant)) {
                 $this->error("Tenant {$tenant} already exists!");
 
                 continue;
             }
 
-            $tenant = \App\Models\Tenant::create([
+            $tenantModel = \App\Models\Tenant::create([
                 'id' => $tenant,
             ]);
 
-            $this->info("Tenant {$tenant->id} added successfully!");
+            $this->info("Tenant {$tenantModel->id} added successfully!");
 
-            $tenant->domains()->create(['domain' => $tenant->id . '.' . env('APP_HOST')]);
+            $domain = $tenant . '.' . $host;
+            $tenantModel->domains()->create(['domain' => $domain]);
 
             $this->info('Default domain added successfully!');
-            $this->info("{$tenant->id}" . '.' . env('APP_HOST'));
+            $this->info($domain);
+
+            $this->info('Default domain added successfully!');
+            $this->info($domain);
         }
+
+        return 0;
     }
 }

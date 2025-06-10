@@ -23,11 +23,15 @@ class PermissionAssignment implements ImplicitRule
      * @codeCoverageIgnore
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  mixed  $values
      * @return bool
      */
     public function passes($attribute, $values)
     {
+        if (!is_iterable($values)) {
+            return false;
+        }
+
         foreach ($values as $value) {
             if (!Role::find($value)) {
                 return false;

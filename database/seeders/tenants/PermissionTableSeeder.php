@@ -11,10 +11,8 @@ class PermissionTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
@@ -25,6 +23,63 @@ class PermissionTableSeeder extends Seeder
         $admin = Role::updateOrCreate(['id' => 1], ['name' => 'admin', 'guard_name' => 'sanctum']);
         $technician = Role::updateOrCreate(['id' => 2], ['name' => 'technician', 'guard_name' => 'sanctum']);
         $player = Role::updateOrCreate(['id' => 3], ['name' => 'player', 'guard_name' => 'sanctum']);
+
+        /**
+         * @var array<int, Permission> $user
+         */
+        $user = [];
+        /**
+         * @var array<int, Permission> $team
+         */
+        $team = [];
+        /**
+         * @var array<int, Permission> $fundamental
+         */
+        $fundamental = [];
+        /**
+         * @var array<int, Permission> $position
+         */
+        $position = [];
+        /**
+         * @var array<int, Permission> $role
+         */
+        $role = [];
+        /**
+         * @var array<int, Permission> $roleAdmin
+         */
+        $roleAdmin = [];
+        /**
+         * @var array<int, Permission> $roleTechnician
+         */
+        $roleTechnician = [];
+        /**
+         * @var array<int, Permission> $rolePlayer
+         */
+        $rolePlayer = [];
+        /**
+         * @var array<int, Permission> $training
+         */
+        $training = [];
+        /**
+         * @var array<int, Permission> $config
+         */
+        $config = [];
+        /**
+         * @var array<int, Permission> $trainingConfig
+         */
+        $trainingConfig = [];
+        /**
+         * @var array<int, Permission> $confirmationTraining
+         */
+        $confirmationTraining = [];
+        /**
+         * @var array<int, Permission> $teamLevels
+         */
+        $teamLevels = [];
+        /**
+         * @var array<int, Permission> $teamCategories
+         */
+        $teamCategories = [];
 
         /**
          * Permissões Usuário
@@ -147,20 +202,25 @@ class PermissionTableSeeder extends Seeder
         /**
          * Definir user como perfil de admin
          */
-        User::whereEmail(env('MAIL_FROM_ADDRESS'))->first()->assignRole('admin');
-        User::whereEmail(env('MAIL_FROM_ADMIN'))->first()->assignRole('admin');
+        User::whereEmail(config('mail.from.address'))->first()?->assignRole('admin');
+        User::whereEmail(config('mail.from_admin'))->first()?->assignRole('admin');
 
         /**
          * Definir user como perfil de técnico
          */
-        if (env('APP_DEBUG') && env('APP_ENV') === 'local') {
-            User::whereEmail(env('MAIL_FROM_TEST_TECHNICIAN'))->first()->assignRole('technician');
-            User::whereEmail(env('MAIL_FROM_TEST_PLAYER'))->first()->assignRole('player');
+        if (config('app.debug') && config('app.env') === 'local') {
+            User::whereEmail(config('mail.from_test_technician'))->first()?->assignRole('technician');
+            User::whereEmail(config('mail.from_test_player'))->first()?->assignRole('player');
         }
     }
 
-    public function sync($role, $permissions)
-    {
+    /**
+     * @param  array<int, Permission>  $permissions
+     */
+    public function sync(
+        Role $role,
+        array $permissions
+    ): void {
         foreach ($permissions as $permission) {
             $role->givePermissionTo($permission);
         }

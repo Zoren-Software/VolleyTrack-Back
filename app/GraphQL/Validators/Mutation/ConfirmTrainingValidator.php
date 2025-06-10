@@ -15,8 +15,14 @@ final class ConfirmTrainingValidator extends Validator
      */
     public function rules(): array
     {
-        $playerId = $this->arg('playerId') ?? null;
-        $trainingId = $this->arg('trainingId') ?? null;
+        $rawPlayerId = $this->arg('playerId');
+        $rawTrainingId = $this->arg('trainingId');
+
+        /** @var int $playerId */
+        $playerId = is_numeric($rawPlayerId) ? (int) $rawPlayerId : 0;
+
+        /** @var int $trainingId */
+        $trainingId = is_numeric($rawTrainingId) ? (int) $rawTrainingId : 0;
 
         return [
             'id' => [
@@ -24,10 +30,12 @@ final class ConfirmTrainingValidator extends Validator
             ],
             'playerId' => [
                 'required',
+                'integer',
                 new CheckPlayerIsInTraining($playerId, $trainingId),
             ],
             'trainingId' => [
                 'required',
+                'integer',
                 'exists:trainings,id',
                 new CheckTrainingCancelled($trainingId),
             ],
@@ -47,7 +55,8 @@ final class ConfirmTrainingValidator extends Validator
             'trainingId.required' => trans('ConfirmTraining.trainingId_required'),
             'trainingId.exists' => trans('ConfirmTraining.trainingId_exists'),
             'status.required' => trans('ConfirmTraining.status_required'),
-
+            'playerId.integer' => trans('ConfirmTraining.playerId_integer'),
+            'trainingId.integer' => trans('ConfirmTraining.trainingId_integer'),
         ];
     }
 }

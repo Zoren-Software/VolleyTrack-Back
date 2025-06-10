@@ -5,9 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable('notification_settings')) {
             Schema::table('notification_settings', function (Blueprint $table) {
@@ -32,7 +32,7 @@ return new class() extends Migration
         }
     }
 
-    public function down()
+    public function down(): void
     {
         if (Schema::hasTable('notification_settings')) {
             Schema::table('notification_settings', function (Blueprint $table) {

@@ -6,10 +6,13 @@ use Tests\TestCase;
 
 class RoleTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -22,11 +25,10 @@ class RoleTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
      * @return void
      */
-    public function roleInfo()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function role_info()
     {
         $this->login = true;
 
@@ -50,11 +52,10 @@ class RoleTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
      * @return void
      */
-    public function rolesList()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function roles_list()
     {
         $this->login = true;
 

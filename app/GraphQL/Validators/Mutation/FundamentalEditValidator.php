@@ -13,9 +13,18 @@ final class FundamentalEditValidator extends Validator
      */
     public function rules(): array
     {
+        $idRaw = $this->arg('id');
+
+        if (!is_numeric($idRaw)) {
+            throw new \RuntimeException('O ID do fundamental deve ser numérico.');
+        }
+
+        /** @var int $id */
+        $id = (int) $idRaw;
+
         return [
             'name' => [
-                'unique:fundamentals,name,' . $this->arg('id'),
+                'unique:fundamentals,name,' . $id,
                 'required',
                 'min:3',
             ],

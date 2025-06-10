@@ -4,9 +4,12 @@ namespace Tests\Feature\Database\Tenants;
 
 class TeamLevelsTest extends TenantBase
 {
-    protected $table = 'team_levels';
+    protected string $table = 'team_levels';
 
-    public static $fieldTypes = [
+    /**
+     * @var array<string, mixed>
+     */
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'name' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
         'description' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci', 'nullable' => true],
@@ -14,11 +17,23 @@ class TeamLevelsTest extends TenantBase
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id'];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $primaryKey = ['id'];
 
-    public static $autoIncrements = ['id'];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $autoIncrements = ['id'];
 
-    public static $foreignKeys = [];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $foreignKeys = [];
 
-    public static $uniqueKeys = [];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $uniqueKeys = [];
 }

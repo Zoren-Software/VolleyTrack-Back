@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class TeamCategorySeederTest extends DataAbstract
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -21,10 +21,8 @@ class TeamCategorySeederTest extends DataAbstract
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function teamCategoriesAreSeeded(): void
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_categories_are_seeded(): void
     {
         $expectedCategories = [
             'Sub-13',

@@ -14,12 +14,16 @@ class Notification extends IlluminateNotification implements ShouldQueue
 
     public Training $training;
 
-    public $confirmationTraining;
+    public ?ConfirmationTraining $confirmationTraining = null;
 
+    /**
+     * @var string
+     */
     public $tenant;
 
     /**
      * Create a new notification instance.
+     *
      *
      * @return void
      */
@@ -27,7 +31,15 @@ class Notification extends IlluminateNotification implements ShouldQueue
     {
         $this->training = $training;
         $this->confirmationTraining = $confirmationTraining;
-        $this->tenant = tenant('id');
+
+        $tenantId = tenant('id');
+
+        if (!is_string($tenantId)) {
+            throw new \RuntimeException('Tenant ID must be a string');
+        }
+
+        $this->tenant = $tenantId;
+
         $this->afterCommit();
     }
 
@@ -37,7 +49,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
      * NOTE - Todas as notificações Training agora são apenas via sistema (database).
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string>
      */
     public function via($notifiable)
     {
@@ -47,7 +59,7 @@ class Notification extends IlluminateNotification implements ShouldQueue
     /**
      * Get the tags that should be assigned to the job.
      *
-     * @return array<int, string>
+     * @return array<string>
      */
     public function tags(): array
     {

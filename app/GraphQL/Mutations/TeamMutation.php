@@ -10,24 +10,29 @@ final class TeamMutation
 {
     private Team $team;
 
-    private User $user;
-
-    public function __construct(Team $team, User $user)
+    public function __construct(Team $team)
     {
         $this->team = $team;
-        $this->user = $user;
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): Team
     {
-        $args['user_id'] = $context->user()->id;
+        $userLogged = $context->user();
+
+        if (!$userLogged instanceof User) {
+            throw new \Exception('User not authenticated.');
+        }
+
+        $args['user_id'] = $userLogged->id;
 
         if (isset($args['id'])) {
-            $this->team = $this->team->find($args['id']);
+            /** @var Team $team */
+            $team = Team::findOrFail($args['id']);
+            $this->team = $team;
             $this->team->update($args);
         } else {
             $this->team = $this->team->create($args);
@@ -38,84 +43,129 @@ final class TeamMutation
         return $this->team;
     }
 
-    private function relationUsers($args, $context)
+    /**
+     * @param  array<string, mixed>  $args
+     */
+    private function relationUsers(array $args, GraphQLContext $context): Team
     {
-        if (isset($args['player_id']) && count($args['player_id']) > 0) {
+        /** @var array<int>|null $playerIds */
+        $playerIds = isset($args['player_id']) && is_array($args['player_id']) ? $args['player_id'] : null;
 
-            $currentUsersIds = $this->team->players()->pluck('users.id')->toArray();
+        if ($playerIds !== null && count($playerIds) > 0) {
+            /** @var \Illuminate\Support\Collection<int, int> $ids */
+            $ids = $this->team->players()->pluck('users.id');
+
+            /** @var array<int> $currentUsersIds */
+            $currentUsersIds = $ids->map(fn ($id): int => (int) $id)->toArray();
 
             $players = [];
             $technicians = [];
 
-            foreach ($args['player_id'] as $playerId) {
-                $user = $this->user->findOrFail($playerId);
+            foreach ($playerIds as $playerId) {
+                /** @var User $user */
+                $user = User::findOrFail($playerId);
 
-                if ($this->user->findOrFail($playerId) && $this->user->findOrFail($playerId)->hasRole('technician')) {
+                if ($user->hasRole('technician')) {
                     $technicians[] = $playerId;
                 } else {
                     $players[] = $playerId;
                 }
             }
 
-            $changes = $this->team->technicians()->syncWithPivotValues(
+            $changesTechnicians = $this->team->technicians()->syncWithPivotValues(
                 $technicians,
-                [
-                    'role' => 'technician',
-                ]
+                ['role' => 'technician']
             );
-            $this->alteracoesModificacao($args, $currentUsersIds, $changes, $context);
+            $this->alteracoesModificacao($args, $currentUsersIds, $changesTechnicians, $context);
 
-            $changes = $this->team->players()->syncWithPivotValues(
+            $changesPlayers = $this->team->players()->syncWithPivotValues(
                 $players,
-                [
-                    'role' => 'player',
-                ]
+                ['role' => 'player']
             );
-
-            $this->alteracoesModificacao($args, $currentUsersIds, $changes, $context);
+            $this->alteracoesModificacao($args, $currentUsersIds, $changesPlayers, $context);
         }
 
         return $this->team;
     }
 
-    private function alteracoesModificacao($args, $currentUsersIds, $changes, $context)
+    /**
+     * @param  array<string, mixed>  $args
+     * @param  array<int>  $currentUsersIds
+     * @param  array<string, mixed>  $changes
+     */
+    private function alteracoesModificacao(array $args, array $currentUsersIds, array $changes, GraphQLContext $context): void
     {
-        // NOTE - IDs dos times que foram removidos
-        $removedUsersIds = array_diff($currentUsersIds, $args['player_id']);
+        /** @var array<int> $playerIds */
+        $playerIds = [];
 
-        // NOTE - IDs dos times que foram adicionados
-        $addedUsersIds = $changes['attached'];
+        if (isset($args['player_id']) && is_array($args['player_id'])) {
+            foreach ($args['player_id'] as $id) {
+                if (is_int($id) || (is_string($id) && ctype_digit($id))) {
+                    $playerIds[] = (int) $id;
+                }
+            }
+        }
 
-        // NOTE - Atualiza o 'updated_at' dos usuários removidos
-        foreach ($removedUsersIds as $userId) {
-            $user = User::find($userId);
-            if ($user) {
+        /** @var array<int> $removedUsersIds */
+        $removedUsersIds = array_diff($currentUsersIds, $playerIds);
+
+        /** @var array<int> $addedUsersIds */
+        $addedUsersIds = [];
+
+        if (isset($changes['attached']) && is_array($changes['attached'])) {
+            foreach ($changes['attached'] as $id) {
+                if (is_int($id) || (is_string($id) && ctype_digit($id))) {
+                    $addedUsersIds[] = (int) $id;
+                }
+            }
+        }
+
+        /** @var int|null $userId */
+        $userId = $context->user()?->getAuthIdentifier();
+
+        foreach ($removedUsersIds as $id) {
+            $user = User::find($id);
+            if ($user instanceof User && $userId !== null) {
                 $user->touch();
-                $user->user_id = $context->user()->id;
+                $user->user_id = $userId;
                 $user->save();
             }
         }
 
-        // NOTE - Atualiza o 'updated_at' dos times adicionados
-        foreach ($addedUsersIds as $userId) {
-            $user = User::find($userId);
-            if ($user) {
+        foreach ($addedUsersIds as $id) {
+            $user = User::find($id);
+            if ($user instanceof User && $userId !== null) {
                 $user->touch();
-                $user->user_id = $context->user()->id;
+                $user->user_id = $userId;
                 $user->save();
             }
         }
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @return Team[]
      */
-    public function delete($rootValue, array $args, GraphQLContext $context)
+    public function delete($rootValue, array $args, GraphQLContext $context): array
     {
+        /** @var array<int> $ids */
+        $ids = [];
+
+        if (isset($args['id']) && is_array($args['id'])) {
+            foreach ($args['id'] as $id) {
+                if (is_int($id) || (is_string($id) && ctype_digit($id))) {
+                    $ids[] = (int) $id;
+                }
+            }
+        }
+
         $teams = [];
-        foreach ($args['id'] as $id) {
-            $this->team = $this->team->findOrFail($id);
+
+        foreach ($ids as $id) {
+            /** @var Team $team */
+            $team = Team::findOrFail($id);
+            $this->team = $team;
             $teams[] = $this->team;
             $this->team->delete();
         }

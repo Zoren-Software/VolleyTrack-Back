@@ -25,21 +25,24 @@ class CommandDev extends CommandBase
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
-        if (env('APP_ENV') == 'production') {
+        $env = config('app.env');
+        $debug = config('app.debug');
+
+        if ($env === 'production') {
             $this->error('It is not possible to run this command in the production environment');
 
-            return false;
+            return 1;
         }
 
-        if (!(env('APP_DEBUG')) || env('APP_ENV') == 'staging') {
+        if (!$debug || $env === 'staging') {
             $this->error('It is not possible to run this command in this environment');
 
-            return false;
+            return 1;
         }
+
+        return 0;
     }
 }

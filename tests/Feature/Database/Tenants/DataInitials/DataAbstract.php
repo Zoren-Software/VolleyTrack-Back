@@ -6,9 +6,9 @@ use Tests\TestCase;
 
 abstract class DataAbstract extends TestCase
 {
-    protected $graphql = false;
+    protected bool $graphql = false;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = false;
+    protected bool $login = false;
 }

@@ -6,11 +6,11 @@ use Tests\Feature\Database\BaseDatabase;
 
 class TenantBase extends BaseDatabase
 {
-    protected $graphql = false;
+    protected bool $graphql = false;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $tenant = 'test';
+    protected string $tenant = 'test';
 
-    protected $login = false;
+    protected bool $login = false;
 }

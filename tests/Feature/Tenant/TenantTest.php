@@ -3,24 +3,24 @@
 namespace Tests\Feature\Tenant;
 
 use App\Models\Central\ExternalAccessToken;
+use App\Models\Tenant;
 use Tests\TestCase;
 
 class TenantTest extends TestCase
 {
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $tenant = 'graphql';
+    protected string $tenant = 'graphql';
 
     /**
      * A basic test route horizon for login.
      *
-     * @test
-     *
-     * @dataProvider createTenantDataProvider
-     *
+     * @param  array<string, mixed>  $data
      * @return void
      */
-    public function createTenant(array $data, string $expectedMessage, int $expectedStatus)
+    #[\PHPUnit\Framework\Attributes\DataProvider('createTenantDataProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function create_tenant(array $data, string $expectedMessage, int $expectedStatus)
     {
         $this->withHeaders([
             'Content-Type' => 'application/json',
@@ -30,7 +30,40 @@ class TenantTest extends TestCase
         if ($data['token'] === false) {
             $data['token'] = 'test';
         } else {
-            $data['token'] = ExternalAccessToken::first()->token;
+            $externalToken = ExternalAccessToken::first();
+
+            if (!$externalToken) {
+                $this->fail('Nenhum token de acesso externo encontrado para o teste.');
+            }
+
+            $data['token'] = $externalToken->token;
+        }
+
+        if (
+            $expectedMessage === 'TenantCreate.tenantId.unique'
+        ) {
+            // Garante que o tenantId 'test' exista no banco
+            Tenant::updateOrCreate(['id' => 'test'], [
+                'email' => 'tenant-existente@test.com',
+                'name' => 'Tenant Existente',
+            ]);
+
+            $data['tenantId'] = 'test';
+        } elseif (
+            $expectedMessage === 'TenantCreate.tenantId.string'
+        ) {
+            $data['tenantId'] = 1;
+        } elseif (
+            $expectedMessage !== 'TenantCreate.tenantId.required'
+        ) {
+            // Gera um tenantId único, apenas se o teste não exige que esteja ausente
+            while (true) {
+                $randomTenantId = 'tenant-test-' . rand(1, 1000);
+                if (!Tenant::where('id', $randomTenantId)->exists()) {
+                    $data['tenantId'] = $randomTenantId;
+                    break;
+                }
+            }
         }
 
         $response = $this->postJson(
@@ -45,6 +78,9 @@ class TenantTest extends TestCase
         $response->assertStatus($expectedStatus);
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public static function createTenantDataProvider()
     {
         return [

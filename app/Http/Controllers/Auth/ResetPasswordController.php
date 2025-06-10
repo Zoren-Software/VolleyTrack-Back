@@ -11,26 +11,38 @@ class ResetPasswordController extends Controller
      * @codeCoverageIgnore
      *
      * @param  null  $token
-     * @return [type]
+     * @return \Illuminate\Contracts\View\View
      */
     public function showResetForm(Request $request, $token = null)
     {
-        return view('auth.passwords.reset')->with(
-            ['token' => $token, 'email' => $request->email]
-        );
+        /**
+         * @var view-string $view
+         */
+        $view = 'auth.passwords.reset';
+
+        return view($view)->with([
+            'token' => $token,
+            'email' => $request->email,
+        ]);
     }
 
     /**
      * @codeCoverageIgnore
      *
-     * @return [type]
+     * @return \Illuminate\Contracts\View\View
      */
     public function postReset(Request $request)
     {
         $token = $request->input('token');
 
-        return view('auth.passwords.reset')->with(
-            ['token' => $token, 'email' => $request->email]
-        );
+        /**
+         * @var view-string $view
+         */
+        $view = 'auth.passwords.reset';
+
+        return view($view)->with([
+            'token' => $token,
+            'email' => $request->email,
+        ]);
     }
 }

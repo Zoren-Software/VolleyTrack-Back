@@ -14,16 +14,22 @@ use Tests\TestCase;
 
 class TeamTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
+    /**
+     * @var string
+     */
     public static $teamText = ' TEAM';
 
-    private $role = 'technician';
+    private string $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -34,13 +40,13 @@ class TeamTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -64,6 +70,9 @@ class TeamTest extends TestCase
         ]);
     }
 
+    /**
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-team');
@@ -73,15 +82,17 @@ class TeamTest extends TestCase
     /**
      * Listagem de todos os times.
      *
+     * @param  string|bool  $typeMessageError
+     * @param  string|bool  $expectedMessage
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
-     *
-     * @test
-     *
-     * @dataProvider listProvider
      *
      * @return void
      */
-    public function teamsList(
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function teams_list(
         $typeMessageError,
         $expectedMessage,
         $expected,
@@ -89,9 +100,9 @@ class TeamTest extends TestCase
     ) {
         $this->setPermissions($hasPermission);
 
-        $teamCategory = TeamCategory::where('id', 1)->first();
+        $teamCategory = TeamCategory::where('id', 1)->firstOrFail();
 
-        $teamLevel = TeamLevel::where('id', 1)->first();
+        $teamLevel = TeamLevel::where('id', 1)->firstOrFail();
 
         Team::factory()
             ->hasPlayers(10)
@@ -130,9 +141,9 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -166,23 +177,22 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function teamInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_info(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
 
-        $teamCategory = TeamCategory::where('id', 1)->first();
+        $teamCategory = TeamCategory::where('id', 1)->firstOrFail();
 
-        $teamLevel = TeamLevel::where('id', 1)->first();
+        $teamLevel = TeamLevel::where('id', 1)->firstOrFail();
 
         $team = Team::factory()
             ->hasPlayers(10)
@@ -216,9 +226,9 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -245,19 +255,20 @@ class TeamTest extends TestCase
     /**
      * Método de criação de um time.
      *
-     * @dataProvider teamCreateProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
-    public function teamCreate(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_create(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -292,9 +303,8 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
-        if (!empty($parameters['playerId'])) {
+        if (!empty($parameters['playerId']) && is_array($parameters['playerId'])) {
             foreach ($parameters['playerId'] as $playerId) {
-                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
                 $this->assertDatabaseHas('teams_users', [
                     'team_id' => $response->json('data.teamCreate.id'),
                     'user_id' => $playerId,
@@ -308,9 +318,9 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function teamCreateProvider()
+    public static function teamCreateProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -419,19 +429,20 @@ class TeamTest extends TestCase
     /**
      * Método de edição de um time.
      *
-     * @dataProvider teamEditProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
-    public function teamEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_edit(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -472,9 +483,8 @@ class TeamTest extends TestCase
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
 
-        if (!empty($parameters['playerId'])) {
+        if (!empty($parameters['playerId']) && is_array($parameters['playerId'])) {
             foreach ($parameters['playerId'] as $playerId) {
-                // Verifica na tabela teams_users se o relacionamento com cada jogador foi criado
                 $this->assertDatabaseHas('teams_users', [
                     'team_id' => $response->json('data.teamEdit.id'),
                     'user_id' => $playerId,
@@ -488,9 +498,9 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function teamEditProvider()
+    public static function teamEditProvider(): array
     {
         $faker = Faker::create();
         $userId = 2;
@@ -594,20 +604,26 @@ class TeamTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider teamDeleteProvider
-     *
-     * @test
-     *
+     * @param  array<string, mixed>  $data
+     * @param  string|bool  $typeMessageError
+     * @param  string|bool  $expectedMessage
+     * @param  array<string, mixed>  $expected
+     * @param  bool  $hasPermission
      * @return void
      */
-    public function teamDelete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function team_delete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
     {
         $this->setPermissions($hasPermission);
 
         $team = Team::factory()->make();
         $team->save();
 
-        $parameters['id'] = $team->id;
+        /** @var array<string, mixed> $parameters */
+        $parameters = [
+            'id' => $team->id,
+        ];
 
         if ($data['error'] != null) {
             $parameters['id'] = $data['error'];
@@ -632,9 +648,9 @@ class TeamTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function teamDeleteProvider()
+    public static function teamDeleteProvider(): array
     {
         $teamDelete = ['teamDelete'];
 

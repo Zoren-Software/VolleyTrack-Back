@@ -15,48 +15,61 @@ use Stancl\Tenancy\Middleware;
 
 class TenancyServiceProvider extends ServiceProvider
 {
-    // By default, no namespace is used to support the callable array syntax.
+    /**
+     * By default, no namespace is used to support the callable array syntax.
+     */
     public static string $controllerNamespace = '';
 
     /**
-     * Register any application services.
-     *
-     * @codeCoverageIgnore
-     *
-     * @return void
+     * @return array<string, list<callable|class-string>>
      */
-    public function events()
+    public function events(): array
     {
+        // TenantCreated pipeline
+        /** @var JobPipeline $pipelineCreated */
+        $pipelineCreated = JobPipeline::make([
+            Jobs\CreateDatabase::class,
+            Jobs\MigrateDatabase::class,
+        ]);
+
+        /** @var JobPipeline $pipelineCreatedSent */
+        $pipelineCreatedSent = $pipelineCreated->send(
+            fn (Events\TenantCreated $event) => $event->tenant
+        );
+
+        /** @var JobPipeline $pipelineCreatedQueued */
+        $pipelineCreatedQueued = $pipelineCreatedSent->shouldBeQueued(false);
+
+        /** @var callable $tenantCreatedListener */
+        $tenantCreatedListener = $pipelineCreatedQueued->toListener();
+
+        // TenantDeleted pipeline
+        /** @var JobPipeline $pipelineDeleted */
+        $pipelineDeleted = JobPipeline::make([
+            Jobs\DeleteDatabase::class,
+        ]);
+
+        /** @var JobPipeline $pipelineDeletedSent */
+        $pipelineDeletedSent = $pipelineDeleted->send(
+            fn (Events\TenantDeleted $event) => $event->tenant
+        );
+
+        /** @var JobPipeline $pipelineDeletedQueued */
+        $pipelineDeletedQueued = $pipelineDeletedSent->shouldBeQueued(false);
+
+        /** @var callable $tenantDeletedListener */
+        $tenantDeletedListener = $pipelineDeletedQueued->toListener();
+
         return [
-            // Tenant events
             Events\CreatingTenant::class => [],
-            Events\TenantCreated::class => [
-                JobPipeline::make([
-                    Jobs\CreateDatabase::class,
-                    Jobs\MigrateDatabase::class,
-                    // Jobs\SeedDatabase::class,
+            Events\TenantCreated::class => [$tenantCreatedListener],
+            Events\TenantDeleted::class => [$tenantDeletedListener],
 
-                    // Your own jobs to prepare the tenant.
-                    // Provision API keys, create S3 buckets, anything you want!
-
-                ])->send(function (Events\TenantCreated $event) {
-                    return $event->tenant;
-                })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
-            ],
             Events\SavingTenant::class => [],
             Events\TenantSaved::class => [],
             Events\UpdatingTenant::class => [],
             Events\TenantUpdated::class => [],
             Events\DeletingTenant::class => [],
-            Events\TenantDeleted::class => [
-                JobPipeline::make([
-                    Jobs\DeleteDatabase::class,
-                ])->send(function (Events\TenantDeleted $event) {
-                    return $event->tenant;
-                })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
-            ],
-
-            // Domain events
             Events\CreatingDomain::class => [],
             Events\DomainCreated::class => [],
             Events\SavingDomain::class => [],
@@ -65,36 +78,26 @@ class TenancyServiceProvider extends ServiceProvider
             Events\DomainUpdated::class => [],
             Events\DeletingDomain::class => [],
             Events\DomainDeleted::class => [],
-
-            // Database events
             Events\DatabaseCreated::class => [],
             Events\DatabaseMigrated::class => [],
             Events\DatabaseSeeded::class => [],
             Events\DatabaseRolledBack::class => [],
             Events\DatabaseDeleted::class => [],
-
-            // Tenancy events
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
             ],
-
             Events\EndingTenancy::class => [],
             Events\TenancyEnded::class => [
                 Listeners\RevertToCentralContext::class,
             ],
-
             Events\BootstrappingTenancy::class => [],
             Events\TenancyBootstrapped::class => [],
             Events\RevertingToCentralContext::class => [],
             Events\RevertedToCentralContext::class => [],
-
-            // Resource syncing
             Events\SyncedResourceSaved::class => [
                 Listeners\UpdateSyncedResource::class,
             ],
-
-            // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
             Events\SyncedResourceChangedInForeignDatabase::class => [],
         ];
     }
@@ -104,21 +107,24 @@ class TenancyServiceProvider extends ServiceProvider
         //
     }
 
+    /**
+     * @return void
+     */
     public function boot()
     {
         $this->bootEvents();
-        //$this->mapRoutes();
+        // $this->mapRoutes();
 
         $this->makeTenancyMiddlewareHighestPriority();
     }
 
-    protected function bootEvents()
+    protected function bootEvents(): void
     {
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {
-                if ($listener instanceof JobPipeline) {
-                    $listener = $listener->toListener();
-                }
+                // if ($listener instanceof JobPipeline) {
+                //     $listener = $listener->toListener();
+                // }
 
                 Event::listen($event, $listener);
             }
@@ -127,10 +133,8 @@ class TenancyServiceProvider extends ServiceProvider
 
     /**
      * @codeCoverageIgnore
-     *
-     * @return void
      */
-    protected function mapRoutes()
+    protected function mapRoutes(): void
     {
         if (file_exists(base_path('routes/tenant.php'))) {
             Route::namespace(static::$controllerNamespace)
@@ -138,7 +142,7 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
-    protected function makeTenancyMiddlewareHighestPriority()
+    protected function makeTenancyMiddlewareHighestPriority(): void
     {
         $tenancyMiddleware = [
             // Even higher priority than the initialization middleware
@@ -152,7 +156,7 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            app(\Illuminate\Contracts\Http\Kernel::class)->prependToMiddlewarePriority($middleware);
         }
     }
 }

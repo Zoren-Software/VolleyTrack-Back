@@ -19,6 +19,8 @@ class ConfirmationTrainingPolicy
 
     /**
      * ConfirmTraining a confirmation training instance.
+     *
+     * @param  array<string, mixed>  $args
      */
     public function confirmTraining(User $user, array $args): bool
     {

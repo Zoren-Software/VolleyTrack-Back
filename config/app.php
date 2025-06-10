@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'VolleyTrack'),
 
     /*
     |--------------------------------------------------------------------------
@@ -188,7 +188,7 @@ return [
         /*
          * Application Service Socialite
          */
-        //\SocialiteProviders\Manager\ServiceProvider::class
+        // \SocialiteProviders\Manager\ServiceProvider::class
         Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
@@ -207,4 +207,7 @@ return [
         // ...
     ])->toArray(),
 
+    'host' => env('APP_HOST', 'volleytrack.com'),
+    'protocol' => env('APP_PROTOCOL', 'https'),
+    'external_tenant_url' => env('LINK_EXTERNAL_TENANT_URL', 'volleytrack.com'),
 ];

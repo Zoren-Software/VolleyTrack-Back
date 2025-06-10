@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\TestResponse;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Spatie\Permission\Models\Role;
@@ -18,21 +19,21 @@ abstract class TestCase extends BaseTestCase
     use MakesGraphQLRequests;
     use RefreshesSchemaCache;
 
-    protected $tenancy = false;
+    protected bool $tenancy = false;
 
-    protected $tenant = 'test';
+    protected string $tenant = 'test';
 
-    protected $graphql = false;
+    protected bool $graphql = false;
 
-    protected $login = false;
+    protected bool $login = false;
 
-    protected $email = null;
+    protected ?string $email = null;
 
-    protected $token = '';
+    protected string $token = '';
 
-    protected $user = null;
+    protected ?User $user = null;
 
-    protected $otherUser = false;
+    protected bool $otherUser = false;
 
     public static $paginatorInfo = [
         'count',
@@ -56,22 +57,28 @@ abstract class TestCase extends BaseTestCase
         ],
     ];
 
+    /**
+     * @var string
+     */
     public static $formatDate = 'Y-m-d H:i:s';
 
+    /**
+     * @var string
+     */
     public static $unauthorized = 'This action is unauthorized.';
 
-    public $tenantUrl;
+    public string $tenantUrl;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         if ($this->tenancy) {
-            $this->tenant = $this->tenant ?? env('TENANT_TEST', 'test');
+            $this->tenant = $this->tenant ?? config('testing.tenant_test');
 
             $this->initializeTenancy();
-            $protocol = env('APP_ENV') === 'local' ? 'http' : 'https';
-            $this->tenantUrl = $protocol . '://' . $this->tenant . '.' . env('APP_HOST');
+            $protocol = config('app.env') === 'local' ? 'http' : 'https';
+            $this->tenantUrl = $protocol . '://' . $this->tenant . '.' . config('app.host');
         }
 
         if ($this->graphql) {
@@ -82,15 +89,13 @@ abstract class TestCase extends BaseTestCase
 
     public function initializeTenancy(): void
     {
-        $tenantId = env('TENANT_TEST', 'test');
-        $tenantIdLogs = $tenantId . '_logs';
+        $tenantId = config('testing.tenant_test');
 
         Artisan::call('migrate --seed');
 
         if (!Tenant::find($tenantId)) {
             $tenant = Tenant::create(['id' => $tenantId]);
-            Tenant::create(['id' => $tenantIdLogs]);
-            $tenant->domains()->create(['domain' => $tenantId . '.' . env('APP_HOST')]);
+            $tenant->domains()->create(['domain' => $tenantId . '.' . config('app.host')]);
 
             try {
                 Artisan::call("tenants:migrate --tenants {$tenantId} --path database/migrations/tenant/base");
@@ -119,6 +124,9 @@ abstract class TestCase extends BaseTestCase
         tenancy()->initialize($tenantId);
     }
 
+    /**
+     * Executa uma requisição GraphQL personalizada.
+     */
     public function graphQL(
         string $nomeQueryGraphQL,
         array $dadosEntrada,
@@ -126,7 +134,8 @@ abstract class TestCase extends BaseTestCase
         string $type,
         bool $input,
         bool $parametrosEntrada = false
-    ): object {
+    ): TestResponse {
+        $post = [];
         $objectString = $this->converteDadosEmStringGraphQL($nomeQueryGraphQL, $dadosEntrada, $dadosSaida, $input, $type, $parametrosEntrada);
 
         switch ($type) {
@@ -146,7 +155,7 @@ abstract class TestCase extends BaseTestCase
         }
 
         $headers = [
-            'x-tenant' => env('TENANT_TEST', 'test'),
+            'x-tenant' => config('testing.tenant_test'),
             'content-type' => 'application/json',
         ];
 
@@ -168,7 +177,7 @@ abstract class TestCase extends BaseTestCase
             $user = User::factory()->make();
             $user->save();
         } else {
-            $user = User::where('email', env('MAIL_FROM_TEST_TECHNICIAN'))->first();
+            $user = User::where('email', config('mail.from_test_technician'))->first();
         }
 
         $user->password = Hash::make('password');
@@ -247,7 +256,7 @@ abstract class TestCase extends BaseTestCase
         $query .= "{$closeExit}";
 
         // NOTE - Para Debug das queries
-        //dump($query);
+        // dump($query);
 
         return $query;
     }
