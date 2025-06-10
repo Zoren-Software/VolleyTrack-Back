@@ -2,7 +2,7 @@
     "name": "zoren-software/volei-club",
     "type": "project",
     "description": "API for VoleiClub project",
-    "version": "1.9.0",
+    "version": "2.0.0",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
