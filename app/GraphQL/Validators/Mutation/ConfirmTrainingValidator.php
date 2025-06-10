@@ -24,7 +24,6 @@ final class ConfirmTrainingValidator extends Validator
         /** @var int $trainingId */
         $trainingId = is_numeric($rawTrainingId) ? (int) $rawTrainingId : 0;
 
-
         return [
             'id' => [
                 'required',

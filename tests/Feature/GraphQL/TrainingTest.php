@@ -1109,7 +1109,7 @@ class TrainingTest extends TestCase
         );
 
         $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
-        
+
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);

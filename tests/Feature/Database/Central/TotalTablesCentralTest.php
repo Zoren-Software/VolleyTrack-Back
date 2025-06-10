@@ -7,19 +7,10 @@ use Tests\TestCase;
 
 class TotalTablesCentralTest extends TestCase
 {
-    /**
-     * @var bool
-     */
     protected bool $graphql = false;
 
-    /**
-     * @var bool
-     */
     protected bool $tenancy = false;
 
-    /**
-     * @var bool
-     */
     protected bool $login = false;
 
     /**

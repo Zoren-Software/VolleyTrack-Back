@@ -188,7 +188,7 @@ class Training extends Model
                 if ($technician->canReceiveNotification('training_created', 'system')) {
                     $technician->notify(new ConfirmationTrainingNotification($this, null));
                 }
-        
+
                 if ($technician->canReceiveNotification('training_created', 'email')) {
                     Mail::to($technician->email)
                         ->send(new ConfirmationTrainingMail($this, $technician));

@@ -34,7 +34,7 @@ class TenancyServiceProvider extends ServiceProvider
 
         /** @var JobPipeline $pipelineCreatedSent */
         $pipelineCreatedSent = $pipelineCreated->send(
-            fn(Events\TenantCreated $event) => $event->tenant
+            fn (Events\TenantCreated $event) => $event->tenant
         );
 
         /** @var JobPipeline $pipelineCreatedQueued */
@@ -51,7 +51,7 @@ class TenancyServiceProvider extends ServiceProvider
 
         /** @var JobPipeline $pipelineDeletedSent */
         $pipelineDeletedSent = $pipelineDeleted->send(
-            fn(Events\TenantDeleted $event) => $event->tenant
+            fn (Events\TenantDeleted $event) => $event->tenant
         );
 
         /** @var JobPipeline $pipelineDeletedQueued */
@@ -101,9 +101,6 @@ class TenancyServiceProvider extends ServiceProvider
             Events\SyncedResourceChangedInForeignDatabase::class => [],
         ];
     }
-
-
-
 
     public function register()
     {

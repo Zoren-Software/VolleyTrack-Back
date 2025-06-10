@@ -10,24 +10,12 @@ use Tests\TestCase;
 
 class FundamentalTest extends TestCase
 {
-    /**
-     * @var bool
-     */
     protected bool $graphql = true;
 
-    /**
-     * @var bool
-     */
     protected bool $tenancy = true;
 
-    /**
-     * @var bool
-     */
     protected bool $login = true;
 
-    /**
-     * @var string
-     */
     private string $role = 'technician';
 
     /**

@@ -164,7 +164,6 @@ function getUniqueKeys(string $table): array
     return array_combine($keys, $keys) ?: [];
 }
 
-
 /**
  * Retorna uma lista de chaves primárias de uma tabela no banco de dados.
  *
