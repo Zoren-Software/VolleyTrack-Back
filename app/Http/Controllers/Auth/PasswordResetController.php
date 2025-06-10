@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 
 class PasswordResetController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\JsonResponse
+     */
     public function showSetPasswordForm(string $tenant, string $token)
     {
         tenancy()->initialize($tenant);
@@ -18,9 +21,17 @@ class PasswordResetController extends Controller
             return response()->json(['message' => 'Token inválido ou expirado.'], 403);
         }
 
-        return view('auth.set-password', compact('token', 'tenant', 'user'));
+        /**
+         * @var view-string $view
+         */
+        $view = 'auth.set-password';
+
+        return view($view, compact('token', 'tenant', 'user'));
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function setPassword(Request $request, string $tenant, string $token)
     {
         tenancy()->initialize($tenant);
@@ -35,11 +46,26 @@ class PasswordResetController extends Controller
             throw new \Exception('Token inválido ou usuário não encontrado');
         }
 
-        $user->password = Hash::make($request->password);
+        $password = $request->input('password');
+
+        if (!is_string($password)) {
+            throw new \RuntimeException('A senha deve ser uma string.');
+        }
+
+        $user->password = Hash::make($password);
         $user->remember_token = null;
         $user->save();
 
-        $link = env('APP_PROTOCOL') . '://' . $tenant . '.' . env('LINK_EXTERNAL_TENANT_URL') . '/login';
+        $protocol = config('app.protocol');
+        $domain = config('app.external_tenant_url');
+
+        if (!is_string($protocol) || !is_string($domain)) {
+            throw new \RuntimeException('Configurações de URL inválidas');
+        }
+
+        $tenant = (string) $tenant;
+
+        $link = "{$protocol}://{$tenant}.{$domain}/login";
 
         return redirect()->away($link);
     }

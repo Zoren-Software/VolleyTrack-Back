@@ -10,14 +10,17 @@ use Tests\TestCase;
 
 class PositionTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
-    private $role = 'technician';
+    private string $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -26,13 +29,13 @@ class PositionTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -52,6 +55,9 @@ class PositionTest extends TestCase
         ]);
     }
 
+    /**
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-position');
@@ -61,18 +67,18 @@ class PositionTest extends TestCase
     /**
      * Listagem de todos os fundamentos.
      *
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
-     *
-     * @test
-     *
-     * @dataProvider listProvider
      *
      * @return void
      */
-    public function positionsList(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function positions_list(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -108,9 +114,9 @@ class PositionTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
@@ -142,18 +148,18 @@ class PositionTest extends TestCase
     /**
      * Listagem de um fundamento
      *
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
-     *
-     * @test
-     *
-     * @dataProvider infoProvider
      *
      * @return void
      */
-    public function positionInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    public function position_info(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -186,9 +192,9 @@ class PositionTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
@@ -215,19 +221,19 @@ class PositionTest extends TestCase
     /**
      * Método de criação de um fundamento.
      *
-     * @dataProvider positionCreateProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function positionCreate(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('positionCreateProvider')]
+    public function position_create(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->checkPermission($hasPermission, $this->role, 'edit-position');
@@ -254,9 +260,9 @@ class PositionTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function positionCreateProvider()
+    public static function positionCreateProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -335,19 +341,20 @@ class PositionTest extends TestCase
     /**
      * Método de edição de um fundamento.
      *
-     * @dataProvider positionEditProvider
-     *
-     * @test
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      *
      * @author Maicon Cerutti
      *
      * @return void
      */
-    public function positionEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('positionEditProvider')]
+    public function position_edit(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->checkPermission($hasPermission, $this->role, 'edit-position');
@@ -380,9 +387,9 @@ class PositionTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function positionEditProvider()
+    public static function positionEditProvider(): array
     {
         $faker = Faker::create();
         $userId = 2;
@@ -460,19 +467,20 @@ class PositionTest extends TestCase
     /**
      * Método de exclusão de uma posição.
      *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
-     *
-     * @test
-     *
-     * @dataProvider positionDeleteProvider
      *
      * @return void
      */
-    public function positionDelete(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('positionDeleteProvider')]
+    public function position_delete(
+        array $data,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->login = true;
@@ -482,15 +490,19 @@ class PositionTest extends TestCase
         $position = Position::factory()->make();
         $position->save();
 
-        $parameters['id'] = $position->id;
+        /** @var array<string, mixed> $params */
+        $params = $data;
+
+        $params['id'] = $position->id;
 
         if ($data['error'] != null) {
-            $parameters['id'] = $data['error'];
+            unset($params['error']);
+            $params['id'] = $data['error'];
         }
 
         $response = $this->graphQL(
             'positionDelete',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,
@@ -512,9 +524,9 @@ class PositionTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function positionDeleteProvider()
+    public static function positionDeleteProvider(): array
     {
         $positionDelete = ['positionDelete'];
 

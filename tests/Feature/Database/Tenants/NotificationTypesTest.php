@@ -4,9 +4,12 @@ namespace Tests\Feature\Database\Tenants;
 
 class NotificationTypesTest extends TenantBase
 {
-    protected $table = 'notification_types';
+    protected string $table = 'notification_types';
 
-    public static $fieldTypes = [
+    /**
+     * @var array<string, mixed>
+     */
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'key' => ['type' => 'varchar', 'length' => 50, 'collation' => 'utf8mb4_unicode_ci'],
         'description' => ['type' => 'varchar', 'length' => 100, 'collation' => 'utf8mb4_unicode_ci'],
@@ -19,13 +22,25 @@ class NotificationTypesTest extends TenantBase
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id'];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $primaryKey = ['id'];
 
-    public static $autoIncrements = ['id'];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $autoIncrements = ['id'];
 
-    public static $foreignKeys = [];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $foreignKeys = [];
 
-    public static $uniqueKeys = [
+    /**
+     * @var array<int, string>
+     */
+    protected static array $uniqueKeys = [
         'notification_types_key_unique',
     ];
 }

@@ -7,23 +7,17 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class NotificationMutation
 {
-    private ?User $user;
-
-    public function __construct(?User $user = null)
-    {
-        $this->user = $user;
-    }
-
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @return array<string, string>
      */
-    public function notificationsRead($rootValue, array $args, GraphQLContext $context)
+    public function notificationsRead($rootValue, array $args, GraphQLContext $context): array
     {
         $user = $context->user();
 
         // NOTE - Checa se deve marcar apenas uma notificação como lida
-        if (isset($args['id']) && $args['id']) {
+        if (isset($args['id']) && $args['id'] && $user instanceof User) {
             $user->notifications()
                 ->whereNull('read_at')
                 ->whereIn('id', $args['id'])
@@ -35,7 +29,7 @@ final class NotificationMutation
         }
 
         // NOTE - Checa se deve marcar todas as notificações como lidas
-        if (isset($args['mark_all_as_read']) && $args['mark_all_as_read']) {
+        if (isset($args['mark_all_as_read']) && $args['mark_all_as_read'] && $user instanceof User) {
             $user->notifications()
                 ->whereNull('read_at')
                 ->update(['read_at' => now()]);
@@ -45,22 +39,30 @@ final class NotificationMutation
             ];
         }
 
-        $readCount = $args['recent_to_delete_count'] ?? 0;
+        $readCount = isset($args['recent_to_delete_count']) && is_numeric($args['recent_to_delete_count'])
+            ? (int) $args['recent_to_delete_count']
+            : 0;
 
-        $notificationsToRead = $user->notifications()
-            ->whereNull('read_at')
-            ->latest()
-            ->take($readCount)
-            ->get();
+        if ($user instanceof User) {
+            $notificationsToRead = $user->notifications()
+                ->whereNull('read_at')
+                ->latest()
+                ->take($readCount)
+                ->get();
 
-        $notificationsToRead->each(function ($notification) {
-            $notification->update(['read_at' => now()]);
-        });
+            $notificationsToRead->each(function ($notification) {
+                $notification->update(['read_at' => now()]);
+            });
 
-        $actualReadCount = $notificationsToRead->count();
+            $actualReadCount = $notificationsToRead->count();
+
+            return [
+                'message' => trans('NotificationRead.recent_notifications_read', ['count' => $actualReadCount]),
+            ];
+        }
 
         return [
-            'message' => trans('NotificationRead.recent_notifications_read', ['count' => $actualReadCount]),
+            'message' => trans('NotificationRead.no_notifications_to_read'),
         ];
     }
 }

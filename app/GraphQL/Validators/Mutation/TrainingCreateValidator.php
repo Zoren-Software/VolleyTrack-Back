@@ -14,8 +14,13 @@ class TrainingCreateValidator extends Validator
      */
     public function rules(): array
     {
-        $fundamentalIds = $this->arg('fundamentalId') ?? [];
+        $fundamentalIds = $this->arg('fundamentalId');
 
+        if (!is_array($fundamentalIds)) {
+            $fundamentalIds = [];
+        }
+
+        /** @var array<string> $fundamentalIds */
         return Training::rules($fundamentalIds);
     }
 

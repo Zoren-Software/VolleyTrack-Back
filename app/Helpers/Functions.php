@@ -2,19 +2,43 @@
 
 use Illuminate\Support\Facades\DB;
 
-function appHost()
+function appHost(): string
 {
-    return env('APP_HOST', 'volleytrack.com');
+    $host = config('app.host');
+
+    if (!is_string($host)) {
+        throw new \RuntimeException('Configurações de URL inválidas');
+    }
+
+    return $host;
 }
 
-function appVersion()
+function appVersion(): string
 {
-    $composerJson = file_get_contents(base_path('composer.json'));
+    $path = base_path('composer.json');
 
-    return trim(json_decode($composerJson, true)['version'] ?? '');
+    if (!file_exists($path)) {
+        return '';
+    }
+
+    $composerJson = file_get_contents($path);
+
+    if (!is_string($composerJson)) {
+        return '';
+    }
+
+    $data = json_decode($composerJson, true);
+
+    if (!is_array($data)) {
+        return '';
+    }
+
+    return isset($data['version']) && is_string($data['version'])
+        ? trim($data['version'])
+        : '';
 }
 
-function hasForeignKeyExist($table, $nameForeignKey)
+function hasForeignKeyExist(string $table, string $nameForeignKey): bool
 {
     $databaseName = DB::getDatabaseName();
     $result = DB::select('
@@ -28,7 +52,7 @@ function hasForeignKeyExist($table, $nameForeignKey)
     return !empty($result);
 }
 
-function hasIndexExist($table, $nameIndex)
+function hasIndexExist(string $table, string $nameIndex): bool
 {
     $databaseName = DB::getDatabaseName();
     $result = DB::select('
@@ -42,7 +66,7 @@ function hasIndexExist($table, $nameIndex)
     return !empty($result);
 }
 
-function hasEventExist($eventName)
+function hasEventExist(string $eventName): bool
 {
     $dbName = DB::connection()->getDatabaseName();
     $result = DB::select('
@@ -55,7 +79,7 @@ function hasEventExist($eventName)
     return !empty($result);
 }
 
-function hasAutoIncrement($table, $column = 'id')
+function hasAutoIncrement(string $table, string $column = 'id'): bool
 {
     $databaseName = DB::getDatabaseName();
     $result = DB::select("
@@ -72,6 +96,11 @@ function hasAutoIncrement($table, $column = 'id')
 
 /**
  * Obtém as chaves estrangeiras de uma tabela.
+ *
+ * @author Maicon Cerutti
+ *
+ * @param  string  $table  Nome da tabela
+ * @return array<string>
  */
 function getForeignKeys(string $table): array
 {
@@ -85,16 +114,29 @@ function getForeignKeys(string $table): array
             AND REFERENCED_TABLE_NAME IS NOT NULL
     ', [$databaseName, $table]);
 
-    return array_column($foreignKeys, 'CONSTRAINT_NAME');
+    $rawKeys = array_column($foreignKeys, 'CONSTRAINT_NAME');
+
+    /** @var list<string> $keys */
+    $keys = array_values(array_filter(
+        array_map(
+            static function (mixed $v): ?string {
+                return is_scalar($v) || $v === null ? (string) $v : null;
+            },
+            $rawKeys
+        )
+    ));
+
+    /** @var array<string> */
+    return array_combine($keys, $keys) ?: [];
 }
 
 /**
  * Retorna uma lista de unique keys de uma tabela no banco de dados.
  *
  * @param  string  $table  Nome da tabela
- * @return array Lista de unique keys
+ * @return array<string>
  */
-function getUniqueKeys($table)
+function getUniqueKeys(string $table): array
 {
     $databaseName = DB::getDatabaseName();
 
@@ -106,26 +148,52 @@ function getUniqueKeys($table)
             AND CONSTRAINT_TYPE = 'UNIQUE'
     ", [$databaseName, $table]);
 
-    return array_column($results, 'CONSTRAINT_NAME');
+    $rawKeys = array_column($results, 'CONSTRAINT_NAME');
+
+    /** @var list<string> $keys */
+    $keys = array_values(array_filter(
+        array_map(
+            static function (mixed $v): ?string {
+                return is_scalar($v) || $v === null ? (string) $v : null;
+            },
+            $rawKeys
+        )
+    ));
+
+    /** @var array<string> */
+    return array_combine($keys, $keys) ?: [];
 }
 
 /**
  * Retorna uma lista de chaves primárias de uma tabela no banco de dados.
  *
  * @param  string  $table  Nome da tabela
- * @return array Lista de unique keys
+ * @return array<string>
  */
-function getPrimaryKeyColumns($table): array
+function getPrimaryKeyColumns(string $table): array
 {
     $databaseName = DB::getDatabaseName();
 
     $primaryKey = DB::select("
-            SELECT COLUMN_NAME
-            FROM information_schema.KEY_COLUMN_USAGE
-            WHERE TABLE_SCHEMA = ?
+        SELECT COLUMN_NAME
+        FROM information_schema.KEY_COLUMN_USAGE
+        WHERE TABLE_SCHEMA = ?
             AND TABLE_NAME = ?
             AND CONSTRAINT_NAME = 'PRIMARY'
-        ", [$databaseName, $table]);
+    ", [$databaseName, $table]);
 
-    return array_column($primaryKey, 'COLUMN_NAME');
+    $rawKeys = array_column($primaryKey, 'COLUMN_NAME');
+
+    /** @var list<string> $keys */
+    $keys = array_values(array_filter(
+        array_map(
+            static function (mixed $v): ?string {
+                return is_scalar($v) || $v === null ? (string) $v : null;
+            },
+            $rawKeys
+        )
+    ));
+
+    /** @var array<string> */
+    return array_combine($keys, $keys) ?: [];
 }

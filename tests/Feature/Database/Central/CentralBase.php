@@ -6,9 +6,9 @@ use Tests\Feature\Database\BaseDatabase;
 
 class CentralBase extends BaseDatabase
 {
-    protected $graphql = false;
+    protected bool $graphql = false;
 
-    protected $tenancy = false;
+    protected bool $tenancy = false;
 
-    protected $login = false;
+    protected bool $login = false;
 }

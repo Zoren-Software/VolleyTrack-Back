@@ -15,32 +15,44 @@ final class FundamentalMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): Fundamental
     {
         if (isset($args['id'])) {
-            $this->fundamental = $this->fundamental->find($args['id']);
-            $this->fundamental->update($args);
+            /** @var Fundamental $fundamental */
+            $fundamental = Fundamental::findOrFail($args['id']);
+            $fundamental->update($args);
+            $this->fundamental = $fundamental;
         } else {
-            $this->fundamental = $this->fundamental->create($args);
+            $this->fundamental = Fundamental::create($args);
         }
 
         return $this->fundamental;
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @return array<Fundamental>
      */
-    public function delete($rootValue, array $args, GraphQLContext $context)
+    public function delete($rootValue, array $args, GraphQLContext $context): array
     {
+        /** @var array<int>|null $ids */
+        $ids = isset($args['id']) && is_array($args['id']) ? $args['id'] : null;
+
+        if ($ids === null) {
+            throw new \RuntimeException('O campo "id" deve ser um array.');
+        }
+
         $fundamentals = [];
-        foreach ($args['id'] as $id) {
-            $this->fundamental = $this->fundamental->findOrFail($id);
-            $fundamentals[] = $this->fundamental;
-            $this->fundamental->delete();
+
+        foreach ($ids as $id) {
+            /** @var Fundamental $fundamental */
+            $fundamental = Fundamental::findOrFail($id);
+            $fundamentals[] = $fundamental;
+            $fundamental->delete();
         }
 
         return $fundamentals;

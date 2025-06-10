@@ -4,41 +4,37 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        if (
-            Schema::hasTable(config('activitylog.table_name')) &&
-            !hasAutoIncrement(config('activitylog.table_name'))
-        ) {
-            DB::statement(
-                'ALTER TABLE ' . config('activitylog.table_name') .
-                ' MODIFY id BIGINT UNSIGNED AUTO_INCREMENT'
-            );
+        $table = config('activitylog.table_name');
+
+        if (!is_string($table)) {
+            throw new \RuntimeException('Invalid config for activitylog.table_name. Expected string.');
+        }
+
+        if (Schema::hasTable($table) && !hasAutoIncrement($table)) {
+            DB::statement("ALTER TABLE {$table} MODIFY id BIGINT UNSIGNED AUTO_INCREMENT");
         }
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        if (
-            Schema::hasTable(config('activitylog.table_name')) &&
-            hasAutoIncrement(config('activitylog.table_name'))
-        ) {
-            DB::statement(
-                'ALTER TABLE ' . config('activitylog.table_name') .
-                ' MODIFY id BIGINT UNSIGNED NOT NULL'
-            );
+        $table = config('activitylog.table_name');
+
+        if (!is_string($table)) {
+            throw new \RuntimeException('Invalid config for activitylog.table_name. Expected string.');
+        }
+
+        if (Schema::hasTable($table) && hasAutoIncrement($table)) {
+            DB::statement("ALTER TABLE {$table} MODIFY id BIGINT UNSIGNED NOT NULL");
         }
     }
 };

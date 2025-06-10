@@ -5,16 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Fundamental extends Model
 {
+    /**
+     * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\FundamentalFactory>
+     */
     use HasFactory;
+
     use LogsActivity;
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'name',
         'user_id',
@@ -22,18 +32,30 @@ class Fundamental extends Model
         'updated_at',
     ];
 
-    public function user()
+    /**
+     * @return BelongsTo<User, Fundamental>
+     */
+    public function user(): BelongsTo
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsTo(User::class);
     }
 
-    public function specificFundamental()
+    /**
+     * @return HasMany<SpecificFundamental, Fundamental>
+     */
+    public function specificFundamental(): HasMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->hasMany(SpecificFundamental::class);
     }
 
-    public function trainings()
+    /**
+     * @return BelongsToMany<Training, Fundamental, FundamentalsTrainings>
+     */
+    public function trainings(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(Training::class, 'fundamentals_trainings')
             ->using(FundamentalsTrainings::class)
             ->as('trainings')
@@ -57,7 +79,11 @@ class Fundamental extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function list(array $args)
+    /**
+     * @param  array<string, mixed>  $args
+     * @return Builder<Fundamental>
+     */
+    public function list(array $args): Builder
     {
         return $this
             ->filterSearch($args)
@@ -65,58 +91,109 @@ class Fundamental extends Model
             ->filterUser($args);
     }
 
-    public function scopeFilterSearch(Builder $query, array $args)
+    /**
+     * @param  Builder<Fundamental>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        if (
+            is_array($filter) &&
+            array_key_exists('search', $filter) &&
+            is_string($filter['search'])
+        ) {
+            /** @var string $search */
+            $search = $filter['search'];
+
             $query
-                ->filterName($args['filter']['search'])
-                ->orWhere(function ($query) use ($args) {
-                    $query
-                        ->filterUserName($args['filter']['search']);
+                ->filterName($search)
+                ->orWhere(function (Builder $query) use ($search): void {
+                    $query->filterUserName($search);
                 });
-        });
+        }
     }
 
-    public function scopeFilterName(Builder $query, string $search)
+    /**
+     * @param  Builder<Fundamental>  $query
+     */
+    public function scopeFilterName(Builder $query, string $search): void
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('fundamentals.name', 'like', $search);
         });
     }
 
-    public function scopeFilterUserName(Builder $query, string $search)
+    /**
+     * @param  Builder<Fundamental>  $query
+     */
+    public function scopeFilterUserName(Builder $query, string $search): void
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('user', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filterName($search);
             });
         });
     }
 
-    public function scopeFilterUser(Builder $query, array $args)
+    /**
+     * @param  Builder<Fundamental>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterUser(Builder $query, array $args): void
     {
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
+        if (
+            is_array($filter) &&
+            array_key_exists('usersIds', $filter) &&
+            is_array($filter['usersIds']) &&
+            !empty($filter['usersIds'])
+        ) {
+            /** @var array<int> $usersIds */
+            $usersIds = $filter['usersIds'];
+
+            $query->whereHas('user', function ($query) use ($usersIds) {
+                // @phpstan-ignore-next-line
+                $query->filterIds($usersIds);
+            });
+        }
+    }
+
+    /**
+     * @param  Builder<Fundamental>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterIgnores(Builder $query, array $args): void
+    {
+        /** @var array<string, mixed>|null $filter */
+        $filter = $args['filter'] ?? null;
+
         $query->when(
-            isset($args['filter']) &&
-            isset($args['filter']['usersIds']) &&
-            !empty($args['filter']['usersIds']),
-            function ($query) use ($args) {
-                $query->whereHas('user', function ($query) use ($args) {
-                    $query->filterIds($args['filter']['usersIds']);
-                });
+            is_array($filter) &&
+            array_key_exists('ignoreIds', $filter) &&
+            is_array($filter['ignoreIds']) &&
+            !empty($filter['ignoreIds']),
+            function (Builder $query) use ($filter): void {
+                /** @phpstan-var array<int> $filter */
+                /** @var array<int> $ignoreIds */
+                $ignoreIds = $filter['ignoreIds'];
+                $query->whereNotIn('fundamentals.id', $ignoreIds);
             }
         );
     }
 
-    public function scopeFilterIgnores(Builder $query, array $args)
+    /**
+     * @param  Builder<Fundamental>  $query
+     * @param  array<string>  $ids
+     */
+    public function scopeFilterIds(Builder $query, array $ids): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
-            $query->whereNotIn('fundamentals.id', $args['filter']['ignoreIds']);
-        });
-    }
-
-    public function scopeFilterIds(Builder $query, array $ids)
-    {
-        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+        $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('fundamentals.id', $ids);
         });
     }

@@ -9,12 +9,15 @@ use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'type',
@@ -26,13 +29,13 @@ class NotificationTest extends TestCase
         'updatedAt',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->limparAmbiente();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->limparAmbiente();
 
@@ -49,13 +52,10 @@ class NotificationTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
-     *
-     * @test
-     *
      * @return void
      */
-    public function notificationList()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_list()
     {
         $user = User::factory()->create();
 
@@ -94,19 +94,20 @@ class NotificationTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider notificationReadProvider
-     *
-     * @test
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function notificationsRead(
-        $data,
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
-        $hasLogin
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationReadProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifications_read(
+        array $data,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasLogin
     ) {
         if ($hasLogin) {
             $user = User::factory()->create();
@@ -132,7 +133,7 @@ class NotificationTest extends TestCase
         }
 
         if ($parameters['id'] && $hasLogin) {
-            $notification = $user->notifications()->first();
+            $notification = $user->notifications()->firstOrFail();
             $parameters['id'] = [$notification->id];
         } else {
             unset($parameters['id']);
@@ -166,9 +167,9 @@ class NotificationTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function notificationReadProvider()
+    public static function notificationReadProvider(): array
     {
         return [
             'read the last 10 notifications, success' => [

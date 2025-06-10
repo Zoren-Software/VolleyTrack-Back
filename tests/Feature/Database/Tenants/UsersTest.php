@@ -4,9 +4,12 @@ namespace Tests\Feature\Database\Tenants;
 
 class UsersTest extends TenantBase
 {
-    protected $table = 'users';
+    protected string $table = 'users';
 
-    public static $fieldTypes = [
+    /**
+     * @var array<string, mixed>
+     */
+    protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'user_id' => ['type' => 'bigint', 'unsigned' => true, 'nullable' => true],
         'name' => ['type' => 'varchar', 'length' => 255, 'collation' => 'utf8mb4_unicode_ci'],
@@ -20,13 +23,25 @@ class UsersTest extends TenantBase
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],
     ];
 
-    public static $primaryKey = ['id']; // Define a chave primária
+    /**
+     * @var array<int, string>
+     */
+    protected static array $primaryKey = ['id']; // Define a chave primária
 
-    public static $autoIncrements = ['id']; // Define quais campos são auto_increment
+    /**
+     * @var array<int, string>
+     */
+    protected static array $autoIncrements = ['id']; // Define quais campos são auto_increment
 
-    public static $foreignKeys = [
+    /**
+     * @var array<int, string>
+     */
+    protected static array $foreignKeys = [
         'users_user_id_foreign',
     ]; // Define as chaves estrangeiras
 
-    public static $uniqueKeys = [];
+    /**
+     * @var array<int, string>
+     */
+    protected static array $uniqueKeys = [];
 }

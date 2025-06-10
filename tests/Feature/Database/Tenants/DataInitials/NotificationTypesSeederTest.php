@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class NotificationTypesSeederTest extends DataAbstract
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -26,10 +26,8 @@ class NotificationTypesSeederTest extends DataAbstract
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function notificationTypesAreSeeded(): void
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_types_are_seeded(): void
     {
         $expectedKeys = [
             'account_confirmation',
@@ -44,10 +42,8 @@ class NotificationTypesSeederTest extends DataAbstract
         $this->assertDatabaseCount('notification_types', count($expectedKeys));
     }
 
-    /**
-     * @test
-     */
-    public function notificationSettingsAreCreatedForEachUser(): void
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_settings_are_created_for_each_user(): void
     {
         $types = NotificationType::where('is_active', true)->get();
 

@@ -19,7 +19,7 @@ class FundamentalFactory extends Factory
     {
         return [
             'name' => $this->faker->name() . ' Fundamental',
-            'user_id' => User::first()->id,
+            'user_id' => User::firstOrFail()->id,
         ];
     }
 }

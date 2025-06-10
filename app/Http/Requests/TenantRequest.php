@@ -28,7 +28,7 @@ class TenantRequest extends FormRequest implements ScribeInterface
             'token' => [
                 'required',
                 'string',
-                new ValidToken(),
+                new ValidToken,
             ],
             'tenantId' => [
                 'required',
@@ -66,6 +66,9 @@ class TenantRequest extends FormRequest implements ScribeInterface
         ];
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     public function bodyParameters(): array
     {
         return [

@@ -11,8 +11,9 @@ class VerificationController extends Controller
     /**
      * @codeCoverageIgnore
      *
-     * @param  null  $token
-     * @return [type]
+     * @param  string|null  $tenant
+     * @param  string|null  $token
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function verify($tenant = null, $token = null)
     {
@@ -33,7 +34,18 @@ class VerificationController extends Controller
         $user->email_verified_at = now();
         $user->save();
 
-        $link = env('APP_PROTOCOL') . '://' . $tenant->id . '.' . env('LINK_EXTERNAL_TENANT_URL') . '/set-password/' . $user->email . '/' . $token;
+        $protocol = config('app.protocol');
+        $domain = config('app.external_tenant_url');
+
+        if (!is_string($protocol) || !is_string($domain)) {
+            throw new \RuntimeException('Configurações de URL inválidas');
+        }
+
+        $subdomain = (string) $tenant->id;
+        $email = (string) $user->email;
+        $token = (string) $token;
+
+        $link = "{$protocol}://{$subdomain}.{$domain}/set-password/{$email}/{$token}";
 
         return redirect()->away($link);
     }

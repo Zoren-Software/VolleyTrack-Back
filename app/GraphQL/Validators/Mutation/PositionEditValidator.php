@@ -13,9 +13,18 @@ final class PositionEditValidator extends Validator
      */
     public function rules(): array
     {
+        $idRaw = $this->arg('id');
+
+        if (!is_numeric($idRaw)) {
+            throw new \RuntimeException('O ID da posição deve ser numérico.');
+        }
+
+        /** @var int $id */
+        $id = (int) $idRaw;
+
         return [
             'name' => [
-                'unique:positions,name,' . $this->arg('id'),
+                'unique:positions,name,' . $id,
                 'required',
                 'min:3',
             ],

@@ -21,7 +21,7 @@ final class TrainingDeleteValidator extends Validator
                 'required',
                 'array',
                 'exists:trainings,id',
-                new ValidTrainingDeletion($ids),
+                new ValidTrainingDeletion,
             ],
         ];
     }

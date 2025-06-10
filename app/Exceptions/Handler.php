@@ -11,7 +11,7 @@ class Handler extends ExceptionHandler
     /**
      * A list of the exception types that are not reported.
      *
-     * @var array<int, class-string<Throwable>>
+     * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
         //
@@ -39,7 +39,7 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (\Throwable $e) {
             if (config('app.env') === 'production' && $this->shouldReport($e)) {
-                $clientDiscord = new GuzzleClient();
+                $clientDiscord = new GuzzleClient;
                 $discord = new DiscordService($clientDiscord);
                 $discord->sendError($e, 'Laravel Handler');
             }

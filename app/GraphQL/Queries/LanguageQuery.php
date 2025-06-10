@@ -3,16 +3,18 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Language;
+use Illuminate\Database\Eloquent\Builder;
 
 class LanguageQuery
 {
     /**
-     * @param  null  $_
+     * @param  mixed  $_
      * @param  array{}  $args
+     * @return Builder<Language>
      */
-    public function list($_, array $args)
+    public function list($_, array $args): Builder
     {
-        $language = new Language();
+        $language = new Language;
 
         return $language->list($args);
     }

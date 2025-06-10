@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $tableNames = config('permission.table_names');
+        $tableNames = $this->getPermissionTableNames();
 
         $this->removeForeignKeys($tableNames);
         $this->modifyPermissionsTable($tableNames);
@@ -18,13 +18,16 @@ return new class extends Migration
 
     public function down(): void
     {
-        $tableNames = config('permission.table_names');
+        $tableNames = $this->getPermissionTableNames();
 
         $this->removeForeignKeys($tableNames);
         $this->removeIndexes($tableNames);
         $this->recreateForeignKeys($tableNames);
     }
 
+    /**
+     * @param  array<string, string>  $tableNames
+     */
     private function removeForeignKeys(array $tableNames): void
     {
         $foreignKeys = [
@@ -43,6 +46,9 @@ return new class extends Migration
         }
     }
 
+    /**
+     * @param  array<string, string>  $tableNames
+     */
     private function modifyPermissionsTable(array $tableNames): void
     {
         if (!Schema::hasTable($tableNames['permissions'])) {
@@ -60,6 +66,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @param  array<string, string>  $tableNames
+     */
     private function removeIndexes(array $tableNames): void
     {
         if (!Schema::hasTable($tableNames['permissions'])) {
@@ -73,6 +82,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * @param  array<string, string>  $tableNames
+     */
     private function recreateForeignKeys(array $tableNames): void
     {
         $foreignKeys = [
@@ -92,5 +104,24 @@ return new class extends Migration
                 });
             }
         }
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getPermissionTableNames(): array
+    {
+        $config = config('permission.table_names');
+
+        if (
+            !is_array($config)
+            || !isset($config['permissions'], $config['model_has_permissions'], $config['role_has_permissions'])
+            || !is_string($config['permissions']) || !is_string($config['model_has_permissions']) || !is_string($config['role_has_permissions'])
+        ) {
+            throw new \RuntimeException('Invalid permission.table_names config.');
+        }
+
+        /** @var array<string, string> */
+        return $config;
     }
 };

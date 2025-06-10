@@ -3,17 +3,17 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\NotificationSetting;
+use Illuminate\Database\Eloquent\Builder;
 
 class NotificationSettingQuery
 {
     /**
-     * @param  null  $_
+     * @param  mixed  $_
      * @param  array{}  $args
+     * @return Builder<NotificationSetting>
      */
-    public function list($_, array $args)
+    public function list($_, array $args): Builder
     {
-        $notificationSetting = new NotificationSetting();
-
-        return $notificationSetting->list($args);
+        return NotificationSetting::query()->list($args);
     }
 }

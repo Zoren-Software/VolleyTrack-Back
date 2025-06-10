@@ -25,7 +25,7 @@ class CheckPlayerIsInTraining implements Rule
     ) {
         $this->playerId = $playerId;
         $this->trainingId = $trainingId;
-        $this->confirmationTraining = $confirmationTraining ?? new ConfirmationTraining();
+        $this->confirmationTraining = $confirmationTraining ?? new ConfirmationTraining;
     }
 
     /**

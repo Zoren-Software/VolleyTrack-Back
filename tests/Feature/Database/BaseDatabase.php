@@ -9,88 +9,107 @@ abstract class BaseDatabase extends TestCase
 {
     use DatabaseAssertions;
 
-    protected $graphql = false;
+    protected bool $graphql = false;
 
-    protected $tenancy = false;
+    protected bool $tenancy = false;
 
-    protected $login = false;
+    protected bool $login = false;
+
+    protected string $table = ''; // cada classe filha sobrescreve
+
+    /**
+     * @var array<int, string>
+     */
+    protected static array $primaryKey = [];
+
+    /**
+     * @var array<int, string>
+     */
+    protected static array $autoIncrements = [];
+
+    /**
+     * @var array<int, string>
+     */
+    protected static array $foreignKeys = [];
+
+    /**
+     * @var array<int, string>
+     */
+    protected static array $uniqueKeys = [];
+
+    /**
+     * @var array<string, mixed>
+     */
+    protected static array $fieldTypes = [];
 
     /**
      * Verificar se os campos estão corretamente definidos.
-     *
-     * @test
      */
-    public function databaseVerifyFields()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_fields(): void
     {
         $this->verifyFields();
     }
 
     /**
      * Verificar se a chave primária está corretamente definida.
-     *
-     * @test
      */
-    public function databaseVerifyPrimaryKey()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_primary_key(): void
     {
         $this->verifyPrimaryKey();
     }
 
     /**
      * Verificar se as chaves estrangeiras estão corretamente definidas.
-     *
-     * @test
      */
-    public function databaseVerifyForeignKeys()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_foreign_keys(): void
     {
         $this->verifyForeignKeys();
     }
 
     /**
      * Verificar se os campos auto_increment estão corretamente definidos.
-     *
-     * @test
      */
-    public function databaseVerifyAutoIncrements()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_auto_increments(): void
     {
         $this->verifyAutoIncrements();
     }
 
     /**
      * Verificar se as chaves únicas estão corretamente definidas.
-     *
-     * @test
      */
-    public function databaseVerifyUniqueKeys()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_unique_keys(): void
     {
         $this->verifyUniqueKeys();
     }
 
     /**
      * Verificar número total de campos na tabela.
-     *
-     * @test
      */
-    public function databaseVerifyTotalFields()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_total_fields(): void
     {
         $this->verifyTotalFields();
     }
 
     /**
      * Verificar o total de chaves estrangeiras no array de chaves estrangeiras e na tabela.
-     *
-     * @test
      */
-    public function databaseVerifyTotalForeignKeys()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_total_foreign_keys(): void
     {
         $this->verifyTotalForeignKeys();
     }
 
     /**
      * Verificar se o total de unique keys está correto.
-     *
-     * @test
      */
-    public function databaseVerifyTotalUniqueKeys()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_verify_total_unique_keys(): void
     {
         $this->verifyTotalUniqueKeys();
     }
