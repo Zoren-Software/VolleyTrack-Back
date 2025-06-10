@@ -31,7 +31,7 @@ final class TeamMutation
 
         if (isset($args['id'])) {
             /** @var Team $team */
-            $team = Team::find($args['id']);
+            $team = Team::findOrFail($args['id']);
             $this->team = $team;
             $this->team->update($args);
         } else {

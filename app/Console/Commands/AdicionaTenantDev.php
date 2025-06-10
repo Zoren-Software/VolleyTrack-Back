@@ -34,7 +34,7 @@ class AdicionaTenantDev extends CommandDev
         if (!$this->option('tenants')) {
             $tenants[] = $this->ask('What is the tenant id?');
         } else {
-            $tenants = $this->option('tenants');
+            $tenants = (array) $this->option('tenants');
         }
 
         $host = config('app.host');

@@ -39,7 +39,7 @@ class ResetPasswordDev extends CommandDev
             throw new \RuntimeException('Senha deve ser uma string.');
         }
 
-        $tenants = $this->option('tenants');
+        $tenants = (array) $this->option('tenants');
         $tenants = empty($tenants) ? Tenant::pluck('id')->toArray() : $tenants;
 
         foreach ($tenants as $tenant) {
