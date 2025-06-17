@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (!Schema::hasTable('scout_fundamentals')) {
-            Schema::create('scout_fundamentals', function (Blueprint $table) {
+        if (!Schema::hasTable('scout_fundamentals_training')) {
+            Schema::create('scout_fundamentals_training', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id');
                 $table->unsignedBigInteger('player_id');
@@ -23,6 +23,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('scout_fundamentals');
+        Schema::dropIfExists('scout_fundamentals_training');
     }
 };

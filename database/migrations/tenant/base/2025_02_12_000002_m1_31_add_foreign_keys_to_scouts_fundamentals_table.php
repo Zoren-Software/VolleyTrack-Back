@@ -36,7 +36,7 @@ return new class extends Migration
 
                     if (!hasForeignKeyExist($tableName, $fkScout)) {
                         $table->foreign('scout_fundamental_id', $fkScout)
-                            ->references('id')->on('scout_fundamentals')->onDelete('cascade');
+                            ->references('id')->on('scout_fundamentals_training')->onDelete('cascade');
                     }
                 });
             }

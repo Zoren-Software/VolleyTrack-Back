@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Database\Tenants;
 
-class ScoutFundamentalsTest extends TenantBase
+class ScoutFundamentalsTrainingTest extends TenantBase
 {
-    protected string $table = 'scout_fundamentals';
+    protected string $table = 'scout_fundamentals_training';
 
     /**
      * @var array<string, mixed>
@@ -34,10 +34,10 @@ class ScoutFundamentalsTest extends TenantBase
      * @var array<int, string>
      */
     protected static array $foreignKeys = [
-        'scout_fundamentals_user_id_foreign',
-        'scout_fundamentals_player_id_foreign',
-        'scout_fundamentals_training_id_foreign',
-        'scout_fundamentals_position_id_foreign',
+        'scout_fundamentals_training_user_id_foreign',
+        'scout_fundamentals_training_player_id_foreign',
+        'scout_fundamentals_training_training_id_foreign',
+        'scout_fundamentals_training_position_id_foreign',
     ];
 
     /**
