@@ -27,6 +27,70 @@ return [
                 'versions' => ['v1'],
             ],
 
+            'apply' => [
+                /*
+                 * Additional headers to be added to the example requests
+                 */
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'x-tenant' => 'test',
+                ],
+
+                /*
+                 * If no @response or @transformer declarations are found for the route,
+                 * Scribe will try to get a sample response by attempting an API call.
+                 * Configure the settings for the API call here.
+                 */
+                'response_calls' => [
+                    /*
+                     * API calls will be made only for routes in this group matching these HTTP methods (GET, POST, etc).
+                     * List the methods here or use '*' to mean all methods. Leave empty to disable API calls.
+                     */
+                    'methods' => ['GET'],
+
+                    /*
+                     * Laravel config variables which should be set for the API call.
+                     * This is a good place to ensure that notifications, emails and other external services
+                     * are not triggered during the documentation API calls.
+                     * You can also create a `.env.docs` file and run the generate command with `--env docs`.
+                     */
+                    'config' => [
+                        'app.env' => 'documentation',
+                        // 'app.debug' => false,
+                    ],
+
+                    /*
+                     * Query parameters which should be sent with the API call.
+                     */
+                    'queryParams' => [
+                        // 'key' => 'value'
+                    ],
+
+                    /*
+                     * Body parameters which should be sent with the API call.
+                     */
+                    'bodyParams' => [
+                        // 'key' => 'value',
+                    ],
+
+                    /*
+                     * Files which should be sent with the API call.
+                     * Each value should be a valid path (absolute or relative to your project directory) to a file on this machine (but not in the project root).
+                     */
+                    'fileParams' => [
+                        // 'key' => 'storage/app/image.png',
+                    ],
+
+                    /*
+                     * Cookies which should be sent with the API call.
+                     */
+                    'cookies' => [
+                        // 'name' => 'value'
+                    ],
+                ],
+            ],
+
             // Include these routes even if they did not match the rules above.
             'include' => [
                 // 'users.index', 'POST /new', '/auth/*'
@@ -96,7 +160,7 @@ return [
     // How is your API authenticated? This information will be used in the displayed docs, generated examples and response calls.
     'auth' => [
         // Set this to true if ANY endpoints in your API use authentication.
-        'enabled' => false,
+        'enabled' => true,
 
         // Set this to true if your API should be authenticated by default. If so, you must also set `enabled` (above) to true.
         // You can then use @unauthenticated or @authenticated on individual endpoints to change their status from the default.
