@@ -10,7 +10,8 @@ extend type Mutation @guard {
         roleId: [Int!]!
         positionId: [Int]
         teamId: [Int]
-        password: String @rules(apply: ["min:6"])
+        password: String
+        sendEmailNotification: Boolean
     ): User
         @field(resolver: "UserMutation@make")
         @validator
@@ -27,7 +28,8 @@ extend type Mutation @guard {
         roleId: [Int!]!
         positionId: [Int]
         teamId: [Int]
-        password: String @rules(apply: ["min:6"])
+        password: String
+        sendEmailNotification: Boolean
     ): User
         @field(resolver: "UserMutation@make")
         @validator
@@ -48,5 +50,11 @@ extend type Mutation {
       passwordConfirmation: String
     ): User
         @field(resolver: "UserMutation@setPassword")
+        @validator
+
+    forgotPassword(
+      email: String!
+    ): ForgotPasswordResponseType
+        @field(resolver: "UserMutation@forgotPassword")
         @validator
 }

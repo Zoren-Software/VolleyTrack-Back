@@ -23,4 +23,5 @@ return [
     'role_id_required' => 'The permission field is required.',
     'cpf_unique' => 'This CPF has already been registered.',
     'rg_unique' => 'This RG has already been registered.',
+    'send_email_nofification_required' => 'The email notification field is required.',
 ];

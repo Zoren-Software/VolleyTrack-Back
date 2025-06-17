@@ -35,35 +35,67 @@ if (app()->environment('local') && config('app.debug')) {
     Route::get('/test-notification-training-mail', function () {
         tenancy()->initialize('test');
 
-        $training = App\Models\Training::find(1);
-        $user = App\Models\User::find(1);
+        $training = App\Models\Training::findOrFail(1);
+        $user = App\Models\User::findOrFail(1);
 
-        return new App\Mail\Training\NotificationTrainingMail($training, $user);
+        return new App\Mail\Training\TrainingMail($training, $user);
     });
 
     Route::get('/test-confirmation-notification-training-mail', function () {
         tenancy()->initialize('test');
 
         $training = App\Models\Training::find(1);
-        $user = App\Models\User::find(3);
+        if (!$training) {
+            $team = App\Models\Team::factory()
+                ->hasPlayers(10)
+                ->create();
 
-        return new App\Mail\Training\ConfirmationNotificationTrainingMail($training, $user);
+            $training = App\Models\Training::factory()
+                ->setTeamId($team->id)
+                ->setStatus(true)
+                ->create();
+        }
+
+        $user = App\Models\User::find(3);
+        if (!$user) {
+            $user = App\Models\User::factory()->create();
+        }
+
+        return new App\Mail\Training\ConfirmationTrainingMail($training, $user);
     });
 
     Route::get('/test-cancellation-notification-training-mail', function () {
         tenancy()->initialize('test');
 
-        $training = App\Models\Training::find(1);
-        $user = App\Models\User::find(3);
+        $training = App\Models\Training::findOrFail(1);
+        $user = App\Models\User::findOrFail(3);
 
-        return new App\Mail\Training\CancellationNotificationTrainingMail($training, $user);
+        return new App\Mail\Training\CancellationTrainingMail($training, $user);
     });
 
     Route::get('/test-confirm-email-and-create-password', function () {
         tenancy()->initialize('test');
 
-        $user = App\Models\User::find(3);
+        $user = App\Models\User::findOrFail(3);
 
-        return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, tenant('id'), true);
+        $tenantId = tenant('id');
+        if (!is_string($tenantId)) {
+            abort(500, 'Tenant ID inválido');
+        }
+
+        return new App\Mail\User\ConfirmEmailAndCreatePasswordMail($user, $tenantId, true);
+    });
+
+    Route::get('/test-forgot-password', function () {
+        tenancy()->initialize('test');
+
+        $user = App\Models\User::findOrFail(3);
+
+        $tenantId = tenant('id');
+        if (!is_string($tenantId)) {
+            abort(500, 'Tenant ID inválido');
+        }
+
+        return new App\Mail\User\ForgotPasswordMail($user, $tenantId);
     });
 }

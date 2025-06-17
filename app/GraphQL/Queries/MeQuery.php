@@ -7,15 +7,11 @@ use App\Models\User;
 class MeQuery
 {
     /**
-     * @codeCoverageIgnore
-     *
-     * @param  null  $_
+     * @param  mixed  $_
      * @param  array{}  $args
      */
-    public function me($_, array $args)
+    public function me($_, array $args): User
     {
-        $user = new User();
-
-        return $user->me($args);
+        return User::query()->me()->firstOrFail();
     }
 }

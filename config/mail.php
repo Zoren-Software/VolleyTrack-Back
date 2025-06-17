@@ -114,4 +114,8 @@ return [
         ],
     ],
 
+    'from_admin' => env('MAIL_FROM_ADMIN', 'admin@volleytrack.com'),
+    'from_test_technician' => env('MAIL_FROM_TEST_TECHNICIAN', 'tech@volleytrack.com'),
+    'from_test_player' => env('MAIL_FROM_TEST_PLAYER', 'player@volleytrack.com'),
+    'from_no_permission' => env('MAIL_FROM_NO_PERMISSION', 'nopermission@volleytrack.com'),
 ];

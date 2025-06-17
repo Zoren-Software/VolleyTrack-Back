@@ -6,18 +6,17 @@ use Tests\TestCase;
 
 class PingTest extends TestCase
 {
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
     /**
      * A basic feature test example.
      *
-     * @test
-     *
      * @return void
      */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ping()
     {
-        $response = $this->get($this->tenantUrl . '/api/ping');
+        $response = $this->get($this->tenantUrl . '/v1/ping');
 
         $response->assertStatus(200);
     }

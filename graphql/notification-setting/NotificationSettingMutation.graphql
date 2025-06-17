@@ -1,0 +1,18 @@
+
+extend type Mutation @guard {
+    notificationSettingEdit(
+        "Notification Setting Id to be edited."
+        id: ID
+
+        "Notification Setting UserId to be edited. Not editable."
+        notificationTypeId: Int @rename(attribute: "notification_type_id")
+
+        "Notification Setting viaEmail to be edited."
+        viaEmail: Boolean @rename(attribute: "via_email")
+
+        "Notification Setting viaSystem to be edited."
+        viaSystem: Boolean @rename(attribute: "via_system")
+    ): NotificationSetting
+        @validator
+        @field(resolver: "NotificationSettingMutation@notificationEdit") 
+}

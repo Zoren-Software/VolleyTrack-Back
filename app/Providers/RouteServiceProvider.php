@@ -33,10 +33,8 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
@@ -50,17 +48,15 @@ class RouteServiceProvider extends ServiceProvider
      * Configure the rate limiters for the application.
      *
      * @codeCoverageIgnore
-     *
-     * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 
-    protected function mapWebRoutes()
+    protected function mapWebRoutes(): void
     {
         Route::middleware([
             'web',
@@ -72,9 +68,9 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware([
             'web',
             // NOTE - Deixar sempre comentado, descomentar apenas para testar rotas de e-mail
-            //InitializeTenancyByDomain::class,
-            //PreventAccessFromCentralDomains::class,
-            //CheckTenantForMaintenanceMode::class,
+            // InitializeTenancyByDomain::class,
+            // PreventAccessFromCentralDomains::class,
+            // CheckTenantForMaintenanceMode::class,
         ])
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
@@ -86,13 +82,13 @@ class RouteServiceProvider extends ServiceProvider
                 // PreventAccessFromCentralDomains::class,
                 // CheckTenantForMaintenanceMode::class,
             ])
-                ->prefix('/api')->name('app.')
+                ->prefix('/v1')->name('app.')
                 ->namespace("{$this->namespace}\App")
                 ->group(base_path("routes/v1/web/$arquivoDeRota"));
         }
     }
 
-    protected function mapApiRoutes()
+    protected function mapApiRoutes(): void
     {
         foreach ($this->centralDomains() as $domain) {
             Route::prefix('api')
@@ -103,11 +99,29 @@ class RouteServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * @return array<string>
+     */
     protected function centralDomains(): array
     {
-        return config('tenancy.central_domains');
+        $domains = config('tenancy.central_domains');
+
+        if (!is_array($domains)) {
+            throw new \RuntimeException('Config "tenancy.central_domains" must be an array.');
+        }
+
+        return array_map(function ($value): string {
+            if (!is_string($value) && !is_int($value) && !is_float($value)) {
+                throw new \RuntimeException('Each central domain must be a string, int, or float.');
+            }
+
+            return (string) $value;
+        }, $domains);
     }
 
+    /**
+     * @return array<string>
+     */
     private function rotasWeb(): array
     {
         return array_diff(scandir(base_path('routes/v1/web')), ['.', '..']);

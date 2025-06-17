@@ -2,39 +2,72 @@
 
 namespace Tests\Feature\Tenant;
 
-use Tests\TestCase;
 use App\Models\Central\ExternalAccessToken;
+use App\Models\Tenant;
+use Tests\TestCase;
 
 class TenantTest extends TestCase
 {
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $tenant = 'graphql';
+    protected string $tenant = 'graphql';
 
     /**
      * A basic test route horizon for login.
      *
-     * @test
-     *
-     * @dataProvider createTenantDataProvider
-     *
+     * @param  array<string, mixed>  $data
      * @return void
      */
-    public function createTenant(array $data, string $expectedMessage, int $expected_status)
+    #[\PHPUnit\Framework\Attributes\DataProvider('createTenantDataProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function create_tenant(array $data, string $expectedMessage, int $expectedStatus)
     {
         $this->withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ]);
 
-        if($data['token'] === false) {
+        if ($data['token'] === false) {
             $data['token'] = 'test';
         } else {
-            $data['token'] = ExternalAccessToken::first()->token;
+            $externalToken = ExternalAccessToken::first();
+
+            if (!$externalToken) {
+                $this->fail('Nenhum token de acesso externo encontrado para o teste.');
+            }
+
+            $data['token'] = $externalToken->token;
+        }
+
+        if (
+            $expectedMessage === 'TenantCreate.tenantId.unique'
+        ) {
+            // Garante que o tenantId 'test' exista no banco
+            Tenant::updateOrCreate(['id' => 'test'], [
+                'email' => 'tenant-existente@test.com',
+                'name' => 'Tenant Existente',
+            ]);
+
+            $data['tenantId'] = 'test';
+        } elseif (
+            $expectedMessage === 'TenantCreate.tenantId.string'
+        ) {
+            $data['tenantId'] = 1;
+        } elseif (
+            $expectedMessage !== 'TenantCreate.tenantId.required'
+        ) {
+            // Gera um tenantId único, apenas se o teste não exige que esteja ausente
+            while (true) {
+                $randomTenantId = 'tenant-test-' . rand(1, 1000);
+                if (!Tenant::where('id', $randomTenantId)->exists()) {
+                    $data['tenantId'] = $randomTenantId;
+                    break;
+                }
+            }
         }
 
         $response = $this->postJson(
-            $this->tenantUrl . '/api/tenant',
+            $this->tenantUrl . '/v1/tenant',
             $data
         );
 
@@ -42,9 +75,12 @@ class TenantTest extends TestCase
             'message' => trans($expectedMessage),
         ]);
 
-        $response->assertStatus($expected_status);
+        $response->assertStatus($expectedStatus);
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public static function createTenantDataProvider()
     {
         return [
@@ -55,8 +91,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.messageSuccess',
-                'expected_status' => 200,
+                'expectedMessage' => 'TenantCreate.messageSuccess',
+                'expectedStatus' => 200,
             ],
             'create tenant, token incorrect, error' => [
                 'data' => [
@@ -65,8 +101,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'validation.token_invalid',
-                'expected_status' => 422,
+                'expectedMessage' => 'validation.token_invalid',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation email field is required, error' => [
                 'data' => [
@@ -74,8 +110,8 @@ class TenantTest extends TestCase
                     'tenantId' => 'tenant-test-' . rand(1, 1000),
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.email.required',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.email.required',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation tenantId field is required, error' => [
                 'data' => [
@@ -83,8 +119,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.tenantId.required',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.tenantId.required',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation tenantId has already been taken, error' => [
                 'data' => [
@@ -93,8 +129,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.tenantId.unique',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.tenantId.unique',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation email must be a valid email address, error' => [
                 'data' => [
@@ -103,8 +139,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000),
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.email.email',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.email.email',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation tenantId must be a string, error' => [
                 'data' => [
@@ -113,8 +149,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 'Tenant Test',
                 ],
-                'expected_message' => 'TenantCreate.tenantId.string',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.tenantId.string',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation name field is required, error' => [
                 'data' => [
@@ -122,8 +158,8 @@ class TenantTest extends TestCase
                     'tenantId' => 'tenant-test-' . rand(1, 1000),
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                 ],
-                'expected_message' => 'TenantCreate.name.required',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.name.required',
+                'expectedStatus' => 422,
             ],
             'create tenant, validation name must be a string, error' => [
                 'data' => [
@@ -132,8 +168,8 @@ class TenantTest extends TestCase
                     'email' => 'tenant-test-' . rand(1, 1000) . '@test.com',
                     'name' => 1,
                 ],
-                'expected_message' => 'TenantCreate.name.string',
-                'expected_status' => 422,
+                'expectedMessage' => 'TenantCreate.name.string',
+                'expectedStatus' => 422,
             ],
         ];
     }

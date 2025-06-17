@@ -3,9 +3,15 @@
 namespace App\Models;
 
 use App\Mail\User\ConfirmEmailAndCreatePasswordMail;
+use App\Mail\User\ForgotPasswordMail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,13 +26,21 @@ use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
- * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $unreadNotifications
+ * @property \Illuminate\Notifications\DatabaseNotificationCollection<string, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property \Illuminate\Notifications\DatabaseNotificationCollection<string, \Illuminate\Notifications\DatabaseNotification> $unreadNotifications
+ * @property \App\Models\UserInformation $information
+ * @property \Illuminate\Database\Eloquent\Collection<array-key, \App\Models\NotificationSetting> $notificationSettings
+ * @property string|null $remember_token
  */
 class User extends Authenticatable implements HasApiTokensContract
 {
     use HasApiTokens;
+
+    /**
+     * @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\UserFactory>
+     */
     use HasFactory;
+
     use HasRoles;
     use LogsActivity;
     use Notifiable;
@@ -35,7 +49,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -48,7 +62,7 @@ class User extends Authenticatable implements HasApiTokensContract
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -64,58 +78,110 @@ class User extends Authenticatable implements HasApiTokensContract
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @var string
+     */
     protected $guard_name = 'sanctum';
 
+    /**
+     * @param  array<string>  $permissions
+     */
     public function hasPermissionsViaRoles(string $namePermission, array $permissions): bool
     {
         return in_array($namePermission, $permissions);
     }
 
-    public function user()
+    /**
+     * @return BelongsTo<User, self>
+     */
+    public function user(): BelongsTo
     {
+        /** @var BelongsTo<User, User> */
         return $this->belongsTo(User::class);
     }
 
-    public function rolesCustom(): BelongsToMany
+    /**
+     * @return MorphToMany<Role, User, MorphPivot>
+     *
+     * @phpstan-return MorphToMany<Role, User, MorphPivot>
+     */
+    public function rolesCustom(): MorphToMany
     {
+        /** @var string $modelHasRoles */
+        $modelHasRoles = config('permission.table_names.model_has_roles');
+
+        /** @var string $modelMorphKey */
+        $modelMorphKey = config('permission.column_names.model_morph_key');
+
+        /** @var string $pivotRole */
+        $pivotRole = app(PermissionRegistrar::class)->pivotRole;
+
         $relation = $this->morphToMany(
             Role::class,
             'model',
-            config('permission.table_names.model_has_roles'),
-            config('permission.column_names.model_morph_key'),
-            PermissionRegistrar::$pivotRole
+            $modelHasRoles,
+            $modelMorphKey,
+            $pivotRole
         );
 
-        if (!PermissionRegistrar::$teams) {
+        /** @var bool $teamsEnabled */
+        $teamsEnabled = app(PermissionRegistrar::class)->teams;
+
+        if (!$teamsEnabled) {
+            /** @phpstan-ignore-next-line */
             return $relation;
         }
 
-        return $relation->wherePivot(PermissionRegistrar::$teamsKey, getPermissionsTeamId())
-            ->where(function ($q) {
-                $teamField = config('permission.table_names.roles') . '.' . PermissionRegistrar::$teamsKey;
-                $q->whereNull($teamField)->orWhere($teamField, getPermissionsTeamId());
-            });
+        /** @var string $teamsKey */
+        $teamsKey = app(PermissionRegistrar::class)->teamsKey;
+
+        /** @var string $rolesTable */
+        $rolesTable = config('permission.table_names.roles');
+
+        /** @var string|int $teamId */
+        $teamId = getPermissionsTeamId();
+
+        $teamField = $rolesTable . '.' . $teamsKey;
+
+        /** @phpstan-ignore-next-line */
+        return $relation
+            ->wherePivot($teamsKey, $teamId)
+            ->where(fn ($q) => $q->whereNull($teamField)->orWhere($teamField, $teamId));
     }
 
-    public function positions()
+    /**
+     * @phpstan-return BelongsToMany<Position, User, PositionsUsers>
+     */
+    public function positions(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(Position::class, 'positions_users')
             ->using(PositionsUsers::class)
             ->withTimestamps()
             ->withPivot('created_at', 'updated_at');
     }
 
-    public function makePassword($password)
+    /**
+     * @param  string  $password
+     */
+    public function makePassword($password): void
     {
         $this->password = Hash::make($password);
     }
 
     public function hasPermissionRole(string $namePermission): bool
     {
-        return $this->hasPermissionsViaRoles(
-            $namePermission,
-            auth()->user()->getPermissionsViaRoles()->pluck('name')->toArray()
-        );
+        $user = auth()->user();
+
+        /** @var User|null $user */
+        if ($user === null) {
+            return false;
+        }
+
+        /** @var array<string> $permissions */
+        $permissions = $user->getPermissionsViaRoles()->pluck('name')->toArray();
+
+        return $this->hasPermissionsViaRoles($namePermission, $permissions);
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -126,7 +192,6 @@ class User extends Authenticatable implements HasApiTokensContract
             ->logOnlyDirty()
             ->dontLogIfAttributesChangedOnly(
                 [
-                    'password',
                     'remember_token',
                     'token',
                     'token_sessao',
@@ -138,8 +203,12 @@ class User extends Authenticatable implements HasApiTokensContract
             ->dontSubmitEmptyLogs();
     }
 
-    public function teams()
+    /**
+     * @phpstan-return BelongsToMany<Team, User, TeamsUsers>
+     */
+    public function teams(): BelongsToMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->belongsToMany(Team::class, 'teams_users')
             ->using(TeamsUsers::class)
             ->as('teams')
@@ -171,40 +240,51 @@ class User extends Authenticatable implements HasApiTokensContract
         return $this->hasRole('admin');
     }
 
-    public function playerConfirmationsTraining()
+    /**
+     * @phpstan-return HasMany<ConfirmationTraining, User>
+     */
+    public function playerConfirmationsTraining(): HasMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->hasMany(ConfirmationTraining::class, 'player_id');
     }
 
-    public function userConfirmationsTraining()
+    /**
+     * @phpstan-return HasMany<ConfirmationTraining, User>
+     */
+    public function userConfirmationsTraining(): HasMany
     {
+        /** @phpstan-ignore-next-line */
         return $this->hasMany(ConfirmationTraining::class, 'user_id');
     }
 
     /**
      * @codeCoverageIgnore
+     *
+     * @phpstan-param Builder<User> $query
+     *
+     * @phpstan-return Builder<User>
      */
-    public function me()
+    public function scopeMe(Builder $query): Builder
     {
-        return $this->with(
-            'positions',
-            'teams',
-        )
-            ->find(auth()->user()->id);
+        return $query->with('positions', 'teams')->where('id', auth()->id());
     }
 
-    public function information()
+    /**
+     * @phpstan-return HasOne<UserInformation, User>
+     */
+    public function information(): HasOne
     {
+        /** @phpstan-ignore-next-line */
         return $this->hasOne(UserInformation::class);
     }
 
     /**
      * @codeCoverageIgnore
      *
-     * @param  mixed  $args
-     * @return void
+     * @param  array<string, mixed>  $args
      */
-    public function updateOrNewInformation($args)
+    public function updateOrNewInformation($args): void
     {
         $attributes = [];
 
@@ -237,7 +317,11 @@ class User extends Authenticatable implements HasApiTokensContract
         }
     }
 
-    public function list(array $args)
+    /**
+     * @param  array<string, mixed>  $args
+     * @return Builder<User>
+     */
+    public function list(array $args): Builder
     {
         return $this
             ->whereDoesntHave('roles', function ($query) {
@@ -250,129 +334,248 @@ class User extends Authenticatable implements HasApiTokensContract
             ->filterRoles($args);
     }
 
-    public function scopeFilterSearch(Builder $query, array $args)
+    /**
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterSearch(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['search']), function ($query) use ($args) {
-            $query
-                ->where(function ($query) use ($args) {
-                    $query
-                        ->filterName($args['filter']['search'])
-                        ->filterEmail($args['filter']['search'])
-                        ->filterUserInformation($args['filter']['search'])
-                        ->filterPositionName($args['filter']['search'])
-                        ->filterTeamName($args['filter']['search']);
-                });
-        });
+        if (
+            isset($args['filter']) &&
+            is_array($args['filter']) &&
+            isset($args['filter']['search']) &&
+            is_string($args['filter']['search'])
+        ) {
+            $search = $args['filter']['search'];
+
+            $query->where(function (Builder $query) use ($search) {
+                $query
+                    ->filterName($search)
+                    ->filterEmail($search)
+                    ->filterUserInformation($search)
+                    ->filterPositionName($search)
+                    ->filterTeamName($search);
+            });
+        }
     }
 
-    public function scopeFilterName(Builder $query, string $search)
+    /**
+     * @param  Builder<User>  $query
+     */
+    public function scopeFilterName(Builder $query, string $search): void
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->where('users.name', 'like', $search);
         });
     }
 
-    public function scopeFilterEmail(Builder $query, string $search)
+    /**
+     * @param  Builder<User>  $query
+     */
+    public function scopeFilterEmail(Builder $query, string $search): void
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhere('users.email', 'like', $search);
         });
     }
 
-    public function scopeFilterUserInformation(Builder $query, string $search)
+    /**
+     * @param  Builder<User>  $query
+     */
+    public function scopeFilterUserInformation(Builder $query, string $search): void
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('information', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filter($search);
             });
         });
     }
 
-    public function scopeFilterPositionName(Builder $query, string $search)
+    /**
+     * @param  Builder<User>  $query
+     */
+    public function scopeFilterPositionName(Builder $query, string $search): void
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('positions', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filterName($search);
             });
         });
     }
 
-    public function scopeFilterTeamName(Builder $query, string $search)
+    /**
+     * @param  Builder<User>  $query
+     */
+    public function scopeFilterTeamName(Builder $query, string $search): void
     {
-        $query->when(isset($search), function ($query) use ($search) {
+        $query->when(!empty($search), function ($query) use ($search) {
             $query->orWhereHas('teams', function ($query) use ($search) {
+                // @phpstan-ignore-next-line
                 $query->filterName($search);
             });
         });
     }
 
-    public function scopeFilterPosition(Builder $query, array $args)
+    /**
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterPosition(Builder $query, array $args): void
     {
-        $query->when(
+        if (
             isset($args['filter']) &&
+            is_array($args['filter']) &&
             isset($args['filter']['positionsIds']) &&
-            !empty($args['filter']['positionsIds']),
-            function ($query) use ($args) {
-                $query->whereHas('positions', function ($query) use ($args) {
-                    $query->filterIds($args['filter']['positionsIds']);
-                });
-            }
-        );
+            is_array($args['filter']['positionsIds']) &&
+            !empty($args['filter']['positionsIds'])
+        ) {
+            $positionsIds = $args['filter']['positionsIds'];
+
+            $query->whereHas('positions', function ($query) use ($positionsIds) {
+                // @phpstan-ignore-next-line
+                $query->filterIds($positionsIds);
+            });
+        }
     }
 
-    public function scopeFilterTeam(Builder $query, array $args)
+    /**
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterTeam(Builder $query, array $args): void
     {
-        $query->when(
+        if (
             isset($args['filter']) &&
+            is_array($args['filter']) &&
             isset($args['filter']['teamsIds']) &&
-            !empty($args['filter']['teamsIds']),
-            function ($query) use ($args) {
-                $query->whereHas('teams', function ($query) use ($args) {
-                    $query->filterIds($args['filter']['teamsIds']);
-                });
-            }
-        );
+            is_array($args['filter']['teamsIds']) &&
+            !empty($args['filter']['teamsIds'])
+        ) {
+            $teamsIds = $args['filter']['teamsIds'];
+
+            $query->whereHas('teams', function ($query) use ($teamsIds) {
+                // @phpstan-ignore-next-line
+                $query->filterIds($teamsIds);
+            });
+        }
     }
 
-    public function scopeFilterIds(Builder $query, array $ids)
+    /**
+     * @param  Builder<User>  $query
+     * @param  array<string>  $ids
+     */
+    public function scopeFilterIds(Builder $query, array $ids): void
     {
-        $query->when(isset($ids) && !empty($ids), function ($query) use ($ids) {
+        $query->when(!empty($ids), function ($query) use ($ids) {
             $query->whereIn('users.id', $ids);
         });
     }
 
-    public function scopeFilterIgnores(Builder $query, array $args)
+    /**
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterIgnores(Builder $query, array $args): void
     {
-        $query->when(isset($args['filter']) && isset($args['filter']['ignoreIds']), function ($query) use ($args) {
-            $query->whereNotIn('users.id', $args['filter']['ignoreIds']);
-        });
-    }
-
-    public function scopeFilterRoles(Builder $query, array $args)
-    {
-        $query->when(
+        if (
             isset($args['filter']) &&
-            isset($args['filter']['rolesIds']) &&
-            !empty($args['filter']['rolesIds']),
-            function ($query) use ($args) {
-                $query->whereHas('roles', function ($query) use ($args) {
-                    $query->whereIn('id', $args['filter']['rolesIds']);
-                });
-            }
-        );
+            is_array($args['filter']) &&
+            isset($args['filter']['ignoreIds']) &&
+            is_array($args['filter']['ignoreIds']) &&
+            !empty($args['filter']['ignoreIds'])
+        ) {
+            $query->whereNotIn('users.id', $args['filter']['ignoreIds']);
+        }
     }
 
-    public function saveLastUserChange()
+    /**
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $args
+     */
+    public function scopeFilterRoles(Builder $query, array $args): void
+    {
+        if (
+            isset($args['filter']) &&
+            is_array($args['filter']) &&
+            isset($args['filter']['rolesIds']) &&
+            is_array($args['filter']['rolesIds']) &&
+            !empty($args['filter']['rolesIds'])
+        ) {
+            $query->whereHas('roles', function ($query) use ($args) {
+                $query->whereIn('id', $args['filter']['rolesIds']);
+            });
+        }
+    }
+
+    public function saveLastUserChange(): void
     {
         $this->user_id = auth()->user()->id ?? null;
         $this->save();
     }
 
-    public function sendConfirmEmailAndCreatePasswordNotification(string $tenant, $admin = false)
+    /**
+     * @param  bool  $admin
+     */
+    public function sendConfirmEmailAndCreatePasswordNotification(string $tenant, $admin = false): void
     {
         $this->set_password_token = Str::random(60);
         $this->save();
 
         Mail::to($this->email)->send(new ConfirmEmailAndCreatePasswordMail($this, $tenant, $admin));
+    }
+
+    /**
+     * @param  array<string, mixed>  $args
+     */
+    public function sendForgotPasswordNotification(array $args): void
+    {
+        $user = $this->whereEmail($args['email'])->first();
+
+        if ($user) {
+            $user->set_password_token = Str::random(60);
+            $user->save();
+
+            $tenantId = tenant('id');
+
+            if (!is_string($tenantId)) {
+                throw new \RuntimeException('Tenant ID must be a string.');
+            }
+
+            Mail::to($user->email)->send(new ForgotPasswordMail($user, $tenantId));
+
+        }
+    }
+
+    public function canReceiveNotification(string $typeKey, string $channel = 'system'): bool
+    {
+        $channelColumn = match ($channel) {
+            'email' => 'via_email',
+            'system' => 'via_system',
+            default => null,
+        };
+
+        if (!$channelColumn) {
+            return false;
+        }
+
+        return $this->notificationSettings()
+            ->whereHas('notificationType', function ($query) use ($typeKey) {
+                $query
+                    ->where('key', $typeKey)
+                    ->where('is_active', true);
+            })
+            ->where($channelColumn, true)
+            ->exists();
+    }
+
+    /**
+     * @phpstan-return HasMany<NotificationSetting, User>
+     */
+    public function notificationSettings(): HasMany
+    {
+        /** @phpstan-ignore-next-line */
+        return $this->hasMany(NotificationSetting::class);
     }
 }

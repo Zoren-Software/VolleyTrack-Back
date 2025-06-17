@@ -20,7 +20,7 @@ Route::get('/', function () {
 })->name('welcome-horizon');
 
 Horizon::auth(function () {
-    return auth()->check() || env('APP_ENV') === 'local';
+    return auth()->check() || config('app.env') === 'local';
 });
 
 Route::get('/logout', [LoginGitHubController::class, 'logout'])->name('logout');

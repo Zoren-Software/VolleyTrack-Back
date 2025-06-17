@@ -7,14 +7,17 @@ use Tests\TestCase;
 
 class TrainingConfigTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
-    private $role = 'technician';
+    private string $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'userId',
@@ -25,6 +28,9 @@ class TrainingConfigTest extends TestCase
         'updatedAt',
     ];
 
+    /**
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-training-config');
@@ -36,16 +42,15 @@ class TrainingConfigTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingConfigInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_config_info(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -74,14 +79,14 @@ class TrainingConfigTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingConfig' => self::$data,
@@ -90,8 +95,8 @@ class TrainingConfigTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -103,19 +108,19 @@ class TrainingConfigTest extends TestCase
     /**
      * Método de edição de configurações.
      *
-     * @dataProvider ConfigEditProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingConfigEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('ConfigEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_config_edit(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -144,9 +149,9 @@ class TrainingConfigTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function ConfigEditProvider()
+    public static function ConfigEditProvider(): array
     {
         $faker = Faker::create();
         $userId = 2;
@@ -160,13 +165,27 @@ class TrainingConfigTest extends TestCase
                     'notificationTeamByEmail' => $faker->boolean,
                     'notificationTechnicianByEmail' => $faker->boolean,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingConfigEdit,
                 ],
                 'hasPermission' => false,
+            ],
+            'edit config with permission, not required userId , expected error' => [
+                [
+                    'daysNotification' => $faker->randomNumber(2),
+                    'notificationTeamByEmail' => $faker->boolean,
+                    'notificationTechnicianByEmail' => $faker->boolean,
+                ],
+                'typeMessageError' => 'userId',
+                'expectedMessage' => 'TrainingConfigEdit.user_id_required',
+                'expected' => [
+                    'errors' => self::$errors,
+                    'data' => $trainingConfigEdit,
+                ],
+                'hasPermission' => true,
             ],
             'edit config, success' => [
                 [
@@ -175,8 +194,8 @@ class TrainingConfigTest extends TestCase
                     'notificationTeamByEmail' => $faker->boolean,
                     'notificationTechnicianByEmail' => $faker->boolean,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingConfigEdit' => self::$data,

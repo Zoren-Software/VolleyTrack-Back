@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,11 +16,40 @@ class TeamFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->name() . ' TEAM',
-            'user_id' => User::first()->id,
+            'user_id' => User::firstOrFail()->id,
         ];
+    }
+
+    /**
+     * @return Factory<\App\Models\Team>
+     */
+    public function configure(): Factory
+    {
+        return $this->afterCreating(function (Team $team) {
+            $team->players()->syncWithPivotValues(
+                User::factory()->count(10)->create()->pluck('id'),
+                ['role' => 'player']
+            );
+
+            $team->technicians()->syncWithPivotValues(
+                User::factory()->count(2)->create()->pluck('id'),
+                ['role' => 'technician']
+            );
+        });
+    }
+
+    /**
+     * @param  array<string, mixed>  $attributes
+     * @return Factory<\App\Models\Team>
+     */
+    public function setAttributes(array $attributes): Factory
+    {
+        return $this->state(function (array $attributesOriginal) use ($attributes) {
+            return array_merge($attributesOriginal, $attributes);
+        });
     }
 }

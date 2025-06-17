@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true">
+<phpunit 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd" 
+  bootstrap="vendor/autoload.php" 
+  colors="true" 
+  cacheDirectory="./coverage-cache"
+  stopOnFailure="true"
+>
   <testsuites>
+    <testsuite name="Ping">
+      <file>./tests/Feature/Tenant/PingTest.php</file>
+    </testsuite>
     <testsuite name="Unit">
       <directory suffix="Test.php">./tests/Unit</directory>
     </testsuite>
@@ -37,6 +47,12 @@
     <testsuite name="Team">
       <file>./tests/Feature/GraphQL/TeamTest.php</file>
     </testsuite>
+    <testsuite name="TeamLevel">
+      <file>./tests/Feature/GraphQL/TeamLevelTest.php</file>
+    </testsuite>
+    <testsuite name="TeamCategory">
+      <file>./tests/Feature/GraphQL/TeamCategoryTest.php</file>
+    </testsuite>
     <testsuite name="TrainingConfig">
       <file>./tests/Feature/GraphQL/TrainingConfigTest.php</file>
     </testsuite>
@@ -49,8 +65,15 @@
     <testsuite name="ConfirmationTraining">
       <file>./tests/Feature/GraphQL/ConfirmationTrainingTest.php</file>
     </testsuite>
-    <testsuite name="Ping">
-      <file>./tests/Feature/Tenant/PingTest.php</file>
+    <testsuite name="NotificationSettings">
+      <file>./tests/Feature/GraphQL/NotificationSettingTest.php</file>
+    </testsuite>
+    <testsuite name="Database">
+      <directory suffix="Test.php">./tests/Feature/Database/Central</directory>
+      <directory suffix="Test.php">./tests/Feature/Database/Tenants</directory>
+    </testsuite>
+    <testsuite name="DataInitials">
+      <directory suffix="Test.php">./tests/Feature/Database/Tenants/DataInitials</directory>
     </testsuite>
   </testsuites>
   <coverage>

@@ -3,6 +3,8 @@
 #import language/*.graphql
 #import user/*.graphql
 #import team/*.graphql
+#import team-levels/*.graphql
+#import team-categories/*.graphql
 #import training/*.graphql
 #import training-config/*.graphql
 #import sanctum/*.graphql
@@ -11,4 +13,6 @@
 #import specific-fundamental/*.graphql
 #import position/*.graphql
 #import notification/*.graphql
+#import notification-type/*.graphql
+#import notification-setting/*.graphql
 #import confirmation-training/*.graphql

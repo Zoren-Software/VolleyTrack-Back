@@ -3,18 +3,18 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Notification;
+use Illuminate\Database\Eloquent\Builder;
 
 class NotificationQuery
 {
     /**
-     * @codeCoverageIgnore
-     *
-     * @param  null  $_
+     * @param  mixed  $_
      * @param  array{}  $args
+     * @return Builder<Notification>
      */
-    public function list($_, array $args)
+    public function list($_, array $args): Builder
     {
-        $notification = new Notification();
+        $notification = new Notification;
 
         return $notification->list($args);
     }

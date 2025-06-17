@@ -36,6 +36,11 @@ class TrainingNotificationDailyCommand extends Command
         $tenants = $this->option('tenants') == [] ? $tenantsPluck : $this->option('tenants');
 
         foreach ($tenants as $tenant) {
+
+            if (!is_string($tenant)) {
+                throw new \RuntimeException('Tenant ID deve ser uma string.');
+            }
+
             tenancy()->initialize($tenant);
 
             Training::whereBetween('date_start', [

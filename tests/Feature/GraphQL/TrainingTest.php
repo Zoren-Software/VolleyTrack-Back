@@ -7,34 +7,67 @@ use App\Models\TeamsUsers;
 use App\Models\Training;
 use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TrainingTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
+    /**
+     * @var string
+     */
     public static $trainingText = ' TRAINING';
 
-    private $role = 'technician';
+    private string $role = 'technician';
 
+    /**
+     * @var string
+     */
+    public static $formatDate = 'Y-m-d H:i:s';
+
+    /**
+     * @var string
+     */
     public static $dateStart = '2022-10-23 13:50:00';
 
+    /**
+     * @var string
+     */
     public static $dateEnd = '2022-10-22 13:45:00';
 
+    /**
+     * @var string
+     */
     public static $dateStartError = '08/10/2022 13:50:00';
 
+    /**
+     * @var string
+     */
     public static $dateEndError = '08/10/2022 13:55:00';
 
+    /**
+     * @var string
+     */
     public static $twoHours = ' +2 hours';
 
+    /**
+     * @var string
+     */
     public static $treeHours = ' +3 hours';
 
+    /**
+     * @var string
+     */
     public static $moreTwoDays = '+2 days';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -54,28 +87,56 @@ class TrainingTest extends TestCase
         $this->checkPermission($hasPermission, $this->role, 'view-training');
     }
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Team::truncate();
+        Training::truncate();
+        TeamsUsers::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+    }
+
     /**
      * Listagem de todos os treinos.
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingList(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_list(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $this->setPermissions($hasPermission);
 
-        Training::factory()->make()->save();
+        $team = Team::factory()
+            ->create();
+
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
 
         $response = $this->graphQL(
             'trainings',
@@ -106,14 +167,14 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainings' => [
@@ -127,8 +188,8 @@ class TrainingTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -142,24 +203,27 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider infoProvider
-     *
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_info(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $this->setPermissions($hasPermission);
 
-        $training = Training::factory()->make();
-        $training->save();
+        $team = Team::factory()
+            ->create();
+
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
 
         $response = $this->graphQL(
             'training',
@@ -185,14 +249,14 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'training' => self::$data,
@@ -201,8 +265,8 @@ class TrainingTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -214,31 +278,64 @@ class TrainingTest extends TestCase
     /**
      * Método de criação de um treino.
      *
-     * @dataProvider trainingCreateSuccessProvider
-     * @dataProvider trainingCreateErrorProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingCreate(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateSuccessProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingCreateErrorProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_create(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
 
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
 
         $team = Team::factory()
-            ->hasPlayers(10)
             ->create();
 
-        $user = $team->players->first();
+        if ($parameters['sendEmailPlayer']) {
+            $player = $team->players()->first();
+
+            if ($player) {
+                $setting = $player->notificationSettings()
+                    ->whereHas('notificationType', function ($query) {
+                        $query->where('key', 'training_created');
+                    })
+                    ->first();
+
+                if ($setting) {
+                    $setting->via_email = true;
+                    $setting->save();
+                }
+            }
+        }
+
+        if ($parameters['sendEmailTechnician']) {
+            $technician = $team->technicians()->first();
+
+            if ($technician) {
+                $setting = $technician->notificationSettings()
+                    ->whereHas('notificationType', function ($query) {
+                        $query->where('key', 'training_created');
+                    })
+                    ->first();
+
+                if ($setting) {
+                    $setting->via_email = true;
+                    $setting->save();
+                }
+            }
+        }
+
+        $user = $team->players->firstOrFail();
 
         $user->roles()->sync(2);
 
@@ -247,6 +344,9 @@ class TrainingTest extends TestCase
         $team->save();
 
         $parameters['teamId'] = $team->id;
+
+        unset($parameters['sendEmailPlayer']);
+        unset($parameters['sendEmailTechnician']);
 
         $response = $this->graphQL(
             'trainingCreate',
@@ -270,12 +370,11 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingCreateSuccessProvider()
+    public static function trainingCreateSuccessProvider(): array
     {
         $faker = Faker::create();
-        $userId = 1;
         $nameExistent = $faker->name . self::$trainingText;
         $trainingCreate = ['trainingCreate'];
 
@@ -301,14 +400,52 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => false,
+            ],
+            'create training with minimal parameters and send email player, success' => [
+                [
+                    'name' => $nameExistent,
+                    'description' => null,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => true,
+                    'sendEmailTechnician' => false,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingCreate' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
+            'create training with minimal parameters and send email technician, success' => [
+                [
+                    'name' => $nameExistent,
+                    'description' => null,
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => true,
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'trainingCreate' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
             ],
             'create training with minimal parameters, success' => [
                 [
@@ -316,9 +453,11 @@ class TrainingTest extends TestCase
                     'description' => null,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -332,9 +471,11 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -348,10 +489,12 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                     'fundamentalId' => [1, 2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -365,11 +508,13 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -383,11 +528,13 @@ class TrainingTest extends TestCase
                     'description' => $faker->text,
                     'dateStart' => $today,
                     'dateEnd' => $todayPlusTwoHours,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingCreate' => self::$data,
@@ -399,9 +546,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingCreateErrorProvider()
+    public static function trainingCreateErrorProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -422,9 +569,11 @@ class TrainingTest extends TestCase
                     'name' => ' ',
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TrainingCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TrainingCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -436,9 +585,11 @@ class TrainingTest extends TestCase
                     'name' => 'AB',
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TrainingCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TrainingCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -450,9 +601,11 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => 'dateStart',
-                'expected_message' => 'TrainingCreate.date_start_before',
+                'typeMessageError' => 'dateStart',
+                'expectedMessage' => 'TrainingCreate.date_start_before',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -464,9 +617,11 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => self::$dateEnd,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => 'dateEnd',
-                'expected_message' => 'TrainingCreate.date_end_after',
+                'typeMessageError' => 'dateEnd',
+                'expectedMessage' => 'TrainingCreate.date_end_after',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -478,9 +633,11 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStart,
                     'dateEnd' => '08/10/2022 13:45:00',
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => 'dateEnd',
-                'expected_message' => 'TrainingCreate.date_end_date_format',
+                'typeMessageError' => 'dateEnd',
+                'expectedMessage' => 'TrainingCreate.date_end_date_format',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -492,9 +649,11 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                 ],
-                'type_message_error' => 'dateStart',
-                'expected_message' => 'TrainingCreate.date_start_date_format',
+                'typeMessageError' => 'dateStart',
+                'expectedMessage' => 'TrainingCreate.date_start_date_format',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -506,11 +665,13 @@ class TrainingTest extends TestCase
                     'name' => $nameExistent,
                     'dateStart' => self::$dateStartError,
                     'dateEnd' => self::$dateEndError,
+                    'sendEmailPlayer' => false,
+                    'sendEmailTechnician' => false,
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
-                'type_message_error' => 'specificFundamentalId',
-                'expected_message' => 'TrainingCreate.specific_fundamentals_not_relationship',
+                'typeMessageError' => 'specificFundamentalId',
+                'expectedMessage' => 'TrainingCreate.specific_fundamentals_not_relationship',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingCreate,
@@ -523,39 +684,42 @@ class TrainingTest extends TestCase
     /**
      * Método de edição de um treino.
      *
-     * @dataProvider trainingEditSuccessProvider
-     * @dataProvider trainingEditErrorProvider
-     *
      * @author Maicon Cerutti
      *
-     * @test
-     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingEditSuccessProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingEditErrorProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_edit(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission,
         bool $cancellation
     ) {
         $this->setPermissions($hasPermission);
 
-        $this->be(User::find(3));
+        $this->be(User::findOrFail(3));
+
+        $team = Team::factory()->hasPlayers(10)->create();
+
+        $status = isset($parameters['status']) ? (bool) $parameters['status'] : false;
 
         $training = Training::factory()
-            ->setStatus($parameters['status'])
-            ->make();
+            ->setStatus($status)
+            ->make([
+                'team_id' => $team->id,
+            ]);
+
         $training->save();
 
         $parameters['id'] = $training->id;
 
-        $team = Team::factory()
-            ->hasPlayers(10)
-            ->create();
-
-        $user = $team->players->first();
+        $user = $team->players->firstOrFail();
 
         $user->roles()->sync(2);
 
@@ -591,9 +755,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingEditSuccessProvider()
+    public static function trainingEditSuccessProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -623,8 +787,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -641,8 +805,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -660,8 +824,8 @@ class TrainingTest extends TestCase
                     'status' => true,
                     'fundamentalId' => [1, 2, 3],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -680,8 +844,8 @@ class TrainingTest extends TestCase
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [1, 2, 3],
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -698,8 +862,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -716,8 +880,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $dateStart,
                     'dateEnd' => $dateEnd,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -734,8 +898,8 @@ class TrainingTest extends TestCase
                     'dateStart' => $today,
                     'dateEnd' => $todayPlusTwoHours,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingEdit' => self::$data,
@@ -748,9 +912,9 @@ class TrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingEditErrorProvider()
+    public static function trainingEditErrorProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -773,8 +937,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -789,8 +953,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TrainingCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TrainingCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -805,8 +969,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => $dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'TrainingCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'TrainingCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -821,8 +985,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => self::$dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => 'dateStart',
-                'expected_message' => 'TrainingEdit.date_start_before',
+                'typeMessageError' => 'dateStart',
+                'expectedMessage' => 'TrainingEdit.date_start_before',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -837,8 +1001,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => self::$dateEnd,
                     'status' => true,
                 ],
-                'type_message_error' => 'dateEnd',
-                'expected_message' => 'TrainingEdit.date_end_after',
+                'typeMessageError' => 'dateEnd',
+                'expectedMessage' => 'TrainingEdit.date_end_after',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -853,8 +1017,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => '08/10/2022 13:45:00',
                     'status' => true,
                 ],
-                'type_message_error' => 'dateEnd',
-                'expected_message' => 'TrainingEdit.date_end_date_format',
+                'typeMessageError' => 'dateEnd',
+                'expectedMessage' => 'TrainingEdit.date_end_date_format',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -869,8 +1033,8 @@ class TrainingTest extends TestCase
                     'dateEnd' => self::$dateEndError,
                     'status' => true,
                 ],
-                'type_message_error' => 'dateStart',
-                'expected_message' => 'TrainingEdit.date_start_date_format',
+                'typeMessageError' => 'dateStart',
+                'expectedMessage' => 'TrainingEdit.date_start_date_format',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -887,8 +1051,8 @@ class TrainingTest extends TestCase
                     'fundamentalId' => [1],
                     'specificFundamentalId' => [13],
                 ],
-                'type_message_error' => 'specificFundamentalId',
-                'expected_message' => 'TrainingEdit.specific_fundamentals_not_relationship',
+                'typeMessageError' => 'specificFundamentalId',
+                'expectedMessage' => 'TrainingEdit.specific_fundamentals_not_relationship',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingEdit,
@@ -904,31 +1068,40 @@ class TrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider trainingDeleteProvider
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function trainingDelete(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('trainingDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function training_delete(
+        array $data,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
 
-        $training = Training::factory()->make();
-        $training->save();
+        $team = Team::factory()->create();
 
-        $parameters['id'] = $training->id;
+        $training = Training::factory()
+            ->setTeamId($team->id)
+            ->create();
+
+        /** @var array<string, mixed> $params */
+        $params = $data;
+
+        $params['id'] = $training->id;
 
         if ($data['error'] != null) {
-            $parameters['id'] = $data['error'];
+            unset($params['error']);
+            $params['id'] = $data['error'];
         }
 
         $response = $this->graphQL(
             'trainingDelete',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,
@@ -945,9 +1118,9 @@ class TrainingTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function trainingDeleteProvider()
+    public static function trainingDeleteProvider(): array
     {
         $trainingDelete = ['trainingDelete'];
 
@@ -956,8 +1129,8 @@ class TrainingTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'trainingDelete' => [self::$data],
@@ -969,8 +1142,8 @@ class TrainingTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingDelete,
@@ -981,8 +1154,8 @@ class TrainingTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'typeMessageError' => 'id',
+                'expectedMessage' => 'The selected id is invalid.',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $trainingDelete,

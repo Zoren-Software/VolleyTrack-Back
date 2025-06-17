@@ -7,9 +7,9 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CheckTrainingCancelled implements Rule
 {
-    private ?int $trainingId;
+    private int $trainingId;
 
-    private ?Training $training;
+    private Training $training;
 
     /**
      * Create a new rule instance.
@@ -18,10 +18,10 @@ class CheckTrainingCancelled implements Rule
      */
     public function __construct(
         ?int $trainingId,
-        Training $training = null
+        ?Training $training = null
     ) {
-        $this->trainingId = $trainingId;
-        $this->training = $training ?? new Training();
+        $this->trainingId = $trainingId ?? 0;
+        $this->training = $training ?? new Training;
     }
 
     /**
@@ -33,7 +33,7 @@ class CheckTrainingCancelled implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->training = $this->training->find($this->trainingId);
+        $this->training = $this->training->findOrFail($this->trainingId);
 
         return $this->training->status;
     }

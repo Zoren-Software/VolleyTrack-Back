@@ -18,11 +18,14 @@ class ExternalAccessTokenTableSeeder extends Seeder
         /**
          * NOTE - Criando token se já não existir
          */
+        $token = ExternalAccessToken::find(1);
 
-        ExternalAccessToken::updateOrCreate([
-            'id' => 1,
-        ], [
-            'token' => Hash::make('123'),
-        ]);
+        // Se o registro não existir, então criamos um novo
+        if (is_null($token)) {
+            ExternalAccessToken::create([
+                'id' => 1,
+                'token' => Hash::make('123'),
+            ]);
+        }
     }
 }

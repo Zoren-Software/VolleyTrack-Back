@@ -4,8 +4,6 @@ namespace App\Notifications\Training;
 
 use App\Models\ConfirmationTraining;
 use App\Models\Training;
-use App\Models\TrainingConfig;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification as IlluminateNotification;
@@ -16,64 +14,52 @@ class Notification extends IlluminateNotification implements ShouldQueue
 
     public Training $training;
 
-    public $confirmationTraining;
+    public ?ConfirmationTraining $confirmationTraining = null;
 
+    /**
+     * @var string
+     */
     public $tenant;
 
     /**
      * Create a new notification instance.
      *
+     *
      * @return void
      */
-    public function __construct(Training $training, ConfirmationTraining $confirmationTraining = null)
+    public function __construct(Training $training, ?ConfirmationTraining $confirmationTraining = null)
     {
         $this->training = $training;
         $this->confirmationTraining = $confirmationTraining;
-        $this->tenant = tenant('id');
+
+        $tenantId = tenant('id');
+
+        if (!is_string($tenantId)) {
+            throw new \RuntimeException('Tenant ID must be a string');
+        }
+
+        $this->tenant = $tenantId;
+
         $this->afterCommit();
     }
 
     /**
      * Get the notification's delivery channels.
      *
+     * NOTE - Todas as notificações Training agora são apenas via sistema (database).
+     *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string>
      */
-    public function via(
-        User $notifiable,
-        $mock = 'notMock',
-        $notificationTechnicianByEmail = false,
-        $notificationTeamByEmail = false
-    ) {
-        $this->queue = 'emails';
-
-        $notificationTechnicianByEmail =
-            $mock == 'notMock'
-                // @codeCoverageIgnoreStart
-                ? TrainingConfig::first()->notification_technician_by_email
-                // @codeCoverageIgnoreEnd
-                : $notificationTechnicianByEmail;
-
-        $notificationTeamByEmail =
-            $mock == 'notMock'
-            // @codeCoverageIgnoreStart
-            ? TrainingConfig::first()->notification_team_by_email
-            // @codeCoverageIgnoreEnd
-            : $notificationTeamByEmail;
-
-        if (
-            $notificationTechnicianByEmail || $notificationTeamByEmail
-        ) {
-            return ['database', 'mail'];
-        }
-
+    public function via($notifiable)
+    {
         return ['database'];
     }
 
     /**
      * Get the tags that should be assigned to the job.
      *
-     * @return array<int, string>
+     * @return array<string>
      */
     public function tags(): array
     {

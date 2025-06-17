@@ -20,10 +20,19 @@ class RunTenantMigrations implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /**
+     * @var string
+     */
     protected $tenantId;
 
+    /**
+     * @var string
+     */
     protected $email;
 
+    /**
+     * @var string
+     */
     protected $name;
 
     public function __construct(string $tenantId, string $email, string $name)
@@ -43,13 +52,17 @@ class RunTenantMigrations implements ShouldQueue
                 'id' => $this->tenantId,
             ]);
 
-            $tenant->domains()->create(['domain' => $this->tenantId . '.' . env('APP_HOST')]);
+            $host = config('app.host');
+
+            $tenant->domains()->create([
+                'domain' => $this->tenantId . '.' . (is_string($host) ? $host : ''),
+            ]);
 
             tenancy()->initialize($this->tenantId);
 
-            Artisan::call('tenants:seed', ['--tenants' => $this->tenantId]);
+            Artisan::call('tenants:seed', ['--tenants' => $this->tenantId, '--force' => true]);
 
-            $user = new User();
+            $user = new User;
             $user->name = $this->name;
             $user->email = $this->email;
             $user->password = Hash::make(Str::random(8) . '@volleyball');

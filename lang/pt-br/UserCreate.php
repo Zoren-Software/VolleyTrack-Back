@@ -23,4 +23,5 @@ return [
     'role_id_required' => 'O campo permissão é obrigatório.',
     'cpf_unique' => 'Este CPF já foi registrado.',
     'rg_unique' => 'Este RG já foi registrado.',
+    'send_email_nofification_required' => 'O campo notificação por e-mail é obrigatório.',
 ];

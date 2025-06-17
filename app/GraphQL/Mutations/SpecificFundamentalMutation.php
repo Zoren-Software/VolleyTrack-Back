@@ -15,25 +15,26 @@ final class SpecificFundamentalMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): SpecificFundamental
     {
         if (isset($args['id'])) {
-            $this->specificFundamental = $this->specificFundamental->find(
-                $args['id']
-            );
-            $this->specificFundamental->update(
-                $args
-            );
+            $found = $this->specificFundamental->find($args['id']);
+
+            if (!$found instanceof SpecificFundamental) {
+                throw new \Exception('SpecificFundamental not found.');
+            }
+
+            $this->specificFundamental = $found;
+            $this->specificFundamental->update($args);
         } else {
-            $this->specificFundamental = $this->specificFundamental->create(
-                $args
-            );
+            $this->specificFundamental = $this->specificFundamental->create($args);
         }
 
         if (isset($args['fundamental_id'])) {
+            // @phpstan-ignore-next-line
             $this->specificFundamental->fundamentals()->syncWithoutDetaching($args['fundamental_id']);
         }
 
@@ -41,16 +42,26 @@ final class SpecificFundamentalMutation
     }
 
     /**
-     * @param  null  $_
+     * @param  mixed  $rootValue
      * @param  array<string, mixed>  $args
+     * @return array<SpecificFundamental>
      */
-    public function delete($rootValue, array $args, GraphQLContext $context)
+    public function delete($rootValue, array $args, GraphQLContext $context): array
     {
+        /** @var array<int>|null $ids */
+        $ids = isset($args['id']) && is_array($args['id']) ? $args['id'] : null;
+
+        if ($ids === null) {
+            throw new \RuntimeException('Parâmetro "id" inválido ou ausente.');
+        }
+
         $specificFundamentals = [];
-        foreach ($args['id'] as $id) {
-            $this->specificFundamental = $this->specificFundamental->findOrFail($id);
-            $specificFundamentals[] = $this->specificFundamental;
-            $this->specificFundamental->delete();
+
+        foreach ($ids as $id) {
+            /** @var SpecificFundamental $specificFundamental */
+            $specificFundamental = SpecificFundamental::findOrFail($id);
+            $specificFundamentals[] = $specificFundamental;
+            $specificFundamental->delete();
         }
 
         return $specificFundamentals;

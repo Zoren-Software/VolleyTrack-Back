@@ -10,6 +10,8 @@ class PositionsUsers extends Pivot
 {
     use LogsActivity;
 
+    protected $table = 'positions_users';
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *

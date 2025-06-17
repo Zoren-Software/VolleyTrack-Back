@@ -3,18 +3,18 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\SpecificFundamental;
+use Illuminate\Database\Eloquent\Builder;
 
 class SpecificFundamentalQuery
 {
     /**
-     * @codeCoverageIgnore
-     *
-     * @param  null  $_
+     * @param  mixed  $_
      * @param  array{}  $args
+     * @return Builder<SpecificFundamental>
      */
-    public function list($_, array $args)
+    public function list($_, array $args): Builder
     {
-        $specificFundamental = new SpecificFundamental();
+        $specificFundamental = new SpecificFundamental;
 
         return $specificFundamental->list($args);
     }

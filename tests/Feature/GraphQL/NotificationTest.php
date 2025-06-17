@@ -4,16 +4,20 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Notification;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'type',
@@ -25,14 +29,33 @@ class NotificationTest extends TestCase
         'updatedAt',
     ];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Notification::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+    }
+
     /**
-     * A basic feature test example.
-     *
-     * @test
-     *
      * @return void
      */
-    public function notificationList()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notification_list()
     {
         $user = User::factory()->create();
 
@@ -71,19 +94,20 @@ class NotificationTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider notificationReadProvider
-     *
-     * @test
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function notificationsRead(
-        $data,
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
-        $hasLogin
+    #[\PHPUnit\Framework\Attributes\DataProvider('notificationReadProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifications_read(
+        array $data,
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasLogin
     ) {
         if ($hasLogin) {
             $user = User::factory()->create();
@@ -109,8 +133,10 @@ class NotificationTest extends TestCase
         }
 
         if ($parameters['id'] && $hasLogin) {
-            $notification = $user->notifications()->first();
+            $notification = $user->notifications()->firstOrFail();
             $parameters['id'] = [$notification->id];
+        } else {
+            unset($parameters['id']);
         }
 
         $response = $this->graphQL(
@@ -141,9 +167,9 @@ class NotificationTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function notificationReadProvider()
+    public static function notificationReadProvider(): array
     {
         return [
             'read the last 10 notifications, success' => [
@@ -156,8 +182,8 @@ class NotificationTest extends TestCase
                     'recentToDeleteCount' => 10,
                     'id' => false,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'notificationsRead' => [
@@ -177,8 +203,8 @@ class NotificationTest extends TestCase
                     'recentToDeleteCount' => 1,
                     'id' => false,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'notificationsRead' => [
@@ -198,8 +224,8 @@ class NotificationTest extends TestCase
                     'recentToDeleteCount' => 1,
                     'id' => true,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'notificationsRead' => [
@@ -218,8 +244,8 @@ class NotificationTest extends TestCase
                     'recentToDeleteCount' => 1,
                     'id' => false,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'Unauthenticated.',
+                'typeMessageError' => 'message',
+                'expectedMessage' => 'Unauthenticated.',
                 'expected' => [
                     'errors' => self::$errors,
                 ],

@@ -2,20 +2,25 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Models\ConfirmationTraining;
 use App\Models\Team;
 use App\Models\Training;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ConfirmationTrainingTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
-    private $role = 'technician';
+    private string $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'userId',
@@ -28,6 +33,34 @@ class ConfirmationTrainingTest extends TestCase
         'updatedAt',
     ];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->limparAmbiente();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Team::truncate();
+        Training::truncate();
+        ConfirmationTraining::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+    }
+
+    /**
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'view-confirmation-training');
@@ -38,16 +71,15 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider listProvider
-     *
+     * @param  array<int, string>  $expected
      * @return void
      */
-    public function confirmationsTrainingsList(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function confirmations_trainings_list(
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -90,14 +122,14 @@ class ConfirmationTrainingTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
     public static function listProvider()
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'confirmationsTraining' => [
@@ -111,8 +143,8 @@ class ConfirmationTrainingTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -126,17 +158,17 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider confirmPresenceProvider
-     *
-     * @test
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<int, string>  $expected
      * @return void
      */
-    public function confirmPresence(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('confirmPresenceProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function confirm_presence(
+        array $data,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         bool $hasPermission,
         bool $trainingCancelled
     ) {
@@ -149,7 +181,7 @@ class ConfirmationTrainingTest extends TestCase
             ->setStatus(!$trainingCancelled)
             ->create();
 
-        $confirmationTraining = $training->confirmationsTraining->first();
+        $confirmationTraining = $training->confirmationsTraining->firstOrFail();
 
         if ($data['error'] === null) {
             $parameters = [
@@ -159,10 +191,12 @@ class ConfirmationTrainingTest extends TestCase
                 'presence' => true,
             ];
         } else {
-            $parameters = $data['data_error'];
+            /** @var array<string, mixed> $parameters */
+            $parameters = $data['data_error']; // agora garantido como array
+
             if (
-                isset($data['data_error']['trainingId']) &&
-                $data['data_error']['trainingId'] == 'find'
+                isset($parameters['trainingId']) &&
+                $parameters['trainingId'] === 'find'
             ) {
                 $parameters['trainingId'] = $training->id;
             }
@@ -189,9 +223,9 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function confirmPresenceProvider()
+    public static function confirmPresenceProvider(): array
     {
         $confirmationTraining = ['confirmTraining'];
 
@@ -200,8 +234,8 @@ class ConfirmationTrainingTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'confirmPresence' => self::$data,
@@ -220,8 +254,8 @@ class ConfirmationTrainingTest extends TestCase
                         'presence' => true,
                     ],
                 ],
-                'type_message_error' => 'playerId',
-                'expected_message' => 'CheckPlayerIsInTraining.message_error',
+                'typeMessageError' => 'playerId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -238,8 +272,8 @@ class ConfirmationTrainingTest extends TestCase
                         'presence' => true,
                     ],
                 ],
-                'type_message_error' => 'playerId',
-                'expected_message' => 'CheckPlayerIsInTraining.playerId_required',
+                'typeMessageError' => 'playerId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.playerId_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -256,8 +290,8 @@ class ConfirmationTrainingTest extends TestCase
                         'presence' => true,
                     ],
                 ],
-                'type_message_error' => 'trainingId',
-                'expected_message' => 'CheckPlayerIsInTraining.trainingId_required',
+                'typeMessageError' => 'trainingId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.trainingId_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -274,8 +308,8 @@ class ConfirmationTrainingTest extends TestCase
                         'trainingId' => 'find',
                     ],
                 ],
-                'type_message_error' => 'presence',
-                'expected_message' => 'ConfirmTraining.presence_required',
+                'typeMessageError' => 'presence',
+                'expectedMessage' => 'ConfirmTraining.presence_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -290,8 +324,8 @@ class ConfirmationTrainingTest extends TestCase
                         'trainingId' => 'find',
                     ],
                 ],
-                'type_message_error' => 'trainingId',
-                'expected_message' => 'CheckTrainingCancelled.message_error',
+                'typeMessageError' => 'trainingId',
+                'expectedMessage' => 'CheckTrainingCancelled.message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -307,17 +341,17 @@ class ConfirmationTrainingTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider confirmTrainingProvider
-     *
-     * @test
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<int, string>  $expected
      * @return void
      */
-    public function confirmTraining(
-        $data,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('confirmTrainingProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function confirm_training(
+        array $data,
+        bool|string $typeMessageError,
+        bool|string $expectedMessage,
+        array $expected,
         bool $hasPermission,
         bool $trainingCancelled
     ) {
@@ -330,7 +364,7 @@ class ConfirmationTrainingTest extends TestCase
             ->setStatus(!$trainingCancelled)
             ->create();
 
-        $confirmationTraining = $training->confirmationsTraining->first();
+        $confirmationTraining = $training->confirmationsTraining->firstOrFail();
 
         if ($data['error'] !== true) {
             $parameters = [
@@ -343,10 +377,12 @@ class ConfirmationTrainingTest extends TestCase
                 ],
             ];
         } else {
+            /** @var array<string, mixed> $parameters */
             $parameters = $data['data_error'];
+
             if (
-                isset($data['data_error']['trainingId']) &&
-                $data['data_error']['trainingId'] == 'find'
+                isset($parameters['trainingId']) &&
+                $parameters['trainingId'] === 'find'
             ) {
                 $parameters['trainingId'] = $training->id;
             }
@@ -373,9 +409,9 @@ class ConfirmationTrainingTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function confirmTrainingProvider()
+    public static function confirmTrainingProvider(): array
     {
         $confirmationTraining = ['confirmTraining'];
 
@@ -385,8 +421,8 @@ class ConfirmationTrainingTest extends TestCase
                     'error' => null,
                     'data_error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'confirmTraining' => self::$data,
@@ -406,8 +442,8 @@ class ConfirmationTrainingTest extends TestCase
                         ],
                     ],
                 ],
-                'type_message_error' => 'playerId',
-                'expected_message' => 'CheckPlayerIsInTraining.message_error',
+                'typeMessageError' => 'playerId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -427,8 +463,8 @@ class ConfirmationTrainingTest extends TestCase
                         ],
                     ],
                 ],
-                'type_message_error' => 'playerId',
-                'expected_message' => 'CheckPlayerIsInTraining.playerId_required',
+                'typeMessageError' => 'playerId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.playerId_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -448,8 +484,8 @@ class ConfirmationTrainingTest extends TestCase
                         ],
                     ],
                 ],
-                'type_message_error' => 'trainingId',
-                'expected_message' => 'CheckPlayerIsInTraining.trainingId_required',
+                'typeMessageError' => 'trainingId',
+                'expectedMessage' => 'CheckPlayerIsInTraining.trainingId_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -464,8 +500,8 @@ class ConfirmationTrainingTest extends TestCase
                         'trainingId' => 'find',
                     ],
                 ],
-                'type_message_error' => 'status',
-                'expected_message' => 'CheckPlayerIsInTraining.status_required',
+                'typeMessageError' => 'status',
+                'expectedMessage' => 'CheckPlayerIsInTraining.status_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,
@@ -480,8 +516,8 @@ class ConfirmationTrainingTest extends TestCase
                         'trainingId' => 'find',
                     ],
                 ],
-                'type_message_error' => 'trainingId',
-                'expected_message' => 'CheckTrainingCancelled.message_error',
+                'typeMessageError' => 'trainingId',
+                'expectedMessage' => 'CheckTrainingCancelled.message_error',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $confirmationTraining,

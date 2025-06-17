@@ -1,25 +1,23 @@
 <?php
 
-namespace Tests\Feature\Tenant;
+namespace Tests\Feature\Horizon;
 
 use Tests\TestCase;
 
 class HorizonRoutesTest extends TestCase
 {
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $tenant = 'horizon';
+    protected string $tenant = 'horizon';
 
     /**
      * A basic test route horizon for login.
      *
-     * @test
-     *
-     * @dataProvider routesProvider
-     *
      * @return void
      */
-    public function routeLoginHorizon(string $route)
+    #[\PHPUnit\Framework\Attributes\DataProvider('routesProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function route_login_horizon(string $route)
     {
         $response = $this->get($this->tenantUrl . $route);
 
@@ -27,9 +25,9 @@ class HorizonRoutesTest extends TestCase
     }
 
     /**
-     * @return [type]
+     * @return array<string, array<int, string>>
      */
-    public static function routesProvider()
+    public static function routesProvider(): array
     {
         return [
             'home dashboard horizon redirect' => [

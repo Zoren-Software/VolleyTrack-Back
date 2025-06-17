@@ -4,35 +4,37 @@ namespace App\Rules;
 
 use App\Models\Training;
 use Illuminate\Contracts\Validation\InvokableRule;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ValidTrainingDeletion implements InvokableRule
 {
-    private $trainingIds;
-
-    public function __construct($trainingIds)
-    {
-        $this->trainingIds = $trainingIds;
-    }
-
     /**
      * Run the validation rule.
      *
      * @codeCoverageIgnore
      *
      * @param  string  $attribute
-     * @param  mixed  $value
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     * @return void
      */
-    public function __invoke($attribute, $trainingIds, $fail)
+    public function __invoke($attribute, mixed $value, \Closure $fail): void
     {
-        foreach ($trainingIds as $id) {
-            $training = Training::with(['confirmationsTraining' => function ($query) {
+        if (!is_iterable($value)) {
+            $fail('O valor informado para exclusão de treinos deve ser uma lista de IDs.');
+
+            return;
+        }
+
+        foreach ($value as $id) {
+            if (!is_scalar($id)) {
+                continue; // Ou você pode lançar erro aqui, se quiser
+            }
+
+            $training = Training::with(['confirmationsTraining' => function (HasMany $query) {
                 $query->where('presence', true);
             }])->find($id);
 
             if ($training && $training->confirmationsTraining->isNotEmpty()) {
-                $fail("O treino com ID $id não pode ser deletado pois possui confirmações de presença neste treino.");
+                $fail('O treino com ID ' . (string) $id . ' não pode ser deletado pois possui confirmações de presença neste treino.');
             }
         }
     }

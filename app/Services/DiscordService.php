@@ -5,34 +5,48 @@ namespace App\Services;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 final class DiscordService extends Model
 {
+    /**
+     * @var string
+     */
     private $webhookErrors;
 
+    /**
+     * @var string
+     */
+    /** @phpstan-ignore-next-line */
     private $webhookPayments;
 
+    /**
+     * @var GuzzleClient
+     */
     private $client;
 
     /**
      * @codeCoverageIgnore
+     *
+     * @throws \RuntimeException
      */
     public function __construct(GuzzleClient $client)
     {
         $this->client = $client;
 
-        $this->webhookErrors = config('services.discord.webhook_errors');
-        $this->webhookPayments = config('services.discord.webhook_payments');
+        $webhookErrors = config('services.discord.webhook_errors');
+        $webhookPayments = config('services.discord.webhook_payments');
 
-        if (!$this->webhookErrors || !$this->webhookPayments) {
-            throw new \Throwable('Variáveis de conexão do Discord não declaradas');
+        if (!is_string($webhookErrors) || !is_string($webhookPayments)) {
+            Log::error('Discord webhooks not configured properly');
+            throw new \RuntimeException('Discord webhooks must be strings');
         }
+
+        $this->webhookErrors = $webhookErrors;
+        $this->webhookPayments = $webhookPayments;
     }
 
     /**
-     * @param  Throwable  $exception
-     * @param  string  $message
-     *
      * @codeCoverageIgnore
      */
     public function sendError(\Throwable $error, string $author): void
@@ -77,12 +91,12 @@ final class DiscordService extends Model
                 ],
             ];
 
-            if (auth()->user()) {
-                $data['embeds'][0]['fields'][] = [
-                    'name' => 'User ID:',
-                    'value' => auth()->user()->id,
-                ];
-            }
+            // if (auth()->user()) {
+            //     $data['embeds'][0]['fields'][] = [
+            //         'name' => 'User ID:',
+            //         'value' => auth()->user()->id,
+            //     ];
+            // }
 
             $this->client->post(
                 $this->webhookErrors,
@@ -91,7 +105,9 @@ final class DiscordService extends Model
                 ]
             );
         } catch (ClientException $e) {
-            throw new \Throwable('Erro ao enviar mensagem para o Discord: ' . $e->getMessage());
+
+            // fazer mensagem de erro
+            Log::error('Erro ao enviar mensagem para o Discord: ' . $e->getMessage());
         }
     }
 }

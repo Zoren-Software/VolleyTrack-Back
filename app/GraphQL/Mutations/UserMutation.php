@@ -18,78 +18,124 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @return [type]
+     * @param  array<string, mixed>  $args
      */
-    public function make($rootValue, array $args, GraphQLContext $context)
+    public function make($rootValue, array $args, GraphQLContext $context): User
     {
-        if (isset($args['id'])) {
-            $this->user = $this->user->findOrFail($args['id']);
+        $userLogged = $context->user();
+
+        if (!$userLogged instanceof User) {
+            throw new \Exception('User not authenticated.');
         }
 
-        $this->user->name = $args['name'];
-        $this->user->email = $args['email'];
+        if (isset($args['id'])) {
+            $id = $args['id'];
 
-        if (isset($args['password']) && $args['password'] !== null && $args['password'] !== '') {
+            if (!is_numeric($id)) {
+                throw new \RuntimeException('O ID do usuário deve ser numérico.');
+            }
+
+            /** @var User $user */
+            $user = User::findOrFail((int) $id);
+            $this->user = $user;
+        }
+
+        $name = $args['name'] ?? null;
+        $email = $args['email'] ?? null;
+
+        if (!is_string($name) || !is_string($email)) {
+            throw new \RuntimeException('Nome e e-mail devem ser strings válidas.');
+        }
+
+        $this->user->name = $name;
+        $this->user->email = $email;
+
+        if (!empty($args['password'])) {
+            if (!is_string($args['password'])) {
+                throw new \RuntimeException('A senha deve ser uma string.');
+            }
             $this->user->makePassword($args['password']);
         }
 
         $this->user->save();
 
-        if (!isset($args['id'])) {
-            $this->user->sendConfirmEmailAndCreatePasswordNotification(tenant('id'), false);
+        if (!isset($args['id']) &&
+            ($args['sendEmailNotification'] ?? false) &&
+            $this->user->email_verified_at === null
+        ) {
+            $tenantId = tenant('id');
+            if (!is_string($tenantId)) {
+                throw new \RuntimeException('Tenant ID deve ser uma string.');
+            }
+
+            $this->user->sendConfirmEmailAndCreatePasswordNotification($tenantId, false);
         }
 
         $this->user->updateOrNewInformation($args);
 
-        $this->user->roles()->sync($args['roleId']);
+        $roleId = $args['roleId'] ?? null;
+        $positionId = $args['positionId'] ?? null;
 
-        $this->user->positions()->sync($args['positionId']);
+        if (!is_array($roleId)) {
+            throw new \RuntimeException('O roleId deve ser um array.');
+        }
+
+        if (!is_array($positionId)) {
+            throw new \RuntimeException('O positionId deve ser um array.');
+        }
+
+        $this->user->roles()->sync($roleId);
+        $this->user->positions()->sync($positionId);
 
         $this->relationTeams($this->user, $args, $context);
 
-        $this->user->user_id = $context->user()->id;
+        $this->user->user_id = $userLogged->id;
 
         $this->user->touch();
 
-        return $this->user;
+        return $this->user->fresh() ?? $this->user;
     }
 
     /**
-     * @param  mixed  $user
-     * @param  mixed  $args
-     * @param  mixed  $context
-     * @return [type]
+     * @param  array<string, mixed>  $args
      */
-    private function relationTeams($user, $args, $context)
+    private function relationTeams(User $user, array $args, GraphQLContext $context): void
     {
-        // NOTE - Obtém os IDs dos times atualmente associados ao usuário
+        $userLogged = $context->user();
+
+        if (!$userLogged instanceof User) {
+            throw new \Exception('User not authenticated.');
+        }
+
+        $teamIds = $args['teamId'] ?? [];
+
+        if (!is_array($teamIds)) {
+            throw new \RuntimeException('O campo teamId deve ser um array de IDs.');
+        }
+
+        /** @var array<int|string> $teamIds */
         $currentTeamsIds = $user->teams()->pluck('teams.id')->toArray();
 
-        // NOTE - Sincroniza e obtém os detalhes das alterações
-        $changes = $user->teams()->sync($args['teamId']);
+        /** @var array{attached: array<int>, detached: array<int>, updated: array<int>} $changes */
+        $changes = $user->teams()->sync($teamIds);
 
-        // NOTE - IDs dos times que foram removidos
-        $removedTeamsIds = array_diff($currentTeamsIds, $args['teamId']);
-
-        // NOTE - IDs dos times que foram adicionados
+        $removedTeamsIds = array_diff($currentTeamsIds, $teamIds);
         $addedTeamsIds = $changes['attached'];
 
-        // NOTE - Atualiza o 'updated_at' dos times removidos
         foreach ($removedTeamsIds as $teamId) {
             $team = Team::find($teamId);
-            if ($team) {
+            if ($team instanceof Team) {
                 $team->touch();
-                $team->user_id = $context->user()->id;
+                $team->user_id = $userLogged->id;
                 $team->save();
             }
         }
 
-        // NOTE - Atualiza o 'updated_at' dos times adicionados
         foreach ($addedTeamsIds as $teamId) {
             $team = Team::find($teamId);
-            if ($team) {
+            if ($team instanceof Team) {
                 $team->touch();
-                $team->user_id = $context->user()->id;
+                $team->user_id = $userLogged->id;
                 $team->save();
             }
         }
@@ -97,13 +143,25 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @return [type]
+     * @param  array<string, mixed>  $args
+     * @return array<User>
      */
-    public function delete($rootValue, array $args, GraphQLContext $context)
+    public function delete($rootValue, array $args, GraphQLContext $context): array
     {
         $users = [];
-        foreach ($args['id'] as $id) {
-            $this->user = $this->user->findOrFail($id);
+
+        $ids = $args['id'] ?? null;
+
+        if (!is_array($ids)) {
+            throw new \RuntimeException('O campo id deve ser um array.');
+        }
+
+        /** @var array<int|string> $ids */
+        foreach ($ids as $id) {
+            /** @var User $user */
+            $user = User::findOrFail($id);
+
+            $this->user = $user;
             $users[] = $this->user;
             $this->user->delete();
         }
@@ -113,14 +171,24 @@ final class UserMutation
 
     /**
      * @param  mixed  $rootValue
-     * @return [type]
+     * @param  array<string, mixed>  $args
      */
-    public function setPassword($rootValue, array $args, GraphQLContext $context)
+    public function setPassword($rootValue, array $args, GraphQLContext $context): User
     {
-        $this->user = User::where([
+        $user = User::where([
             'set_password_token' => $args['token'],
             'email' => $args['email'],
         ])->first();
+
+        if (!$user) {
+            throw new \Exception('Invalid token or email.');
+        }
+
+        if (!isset($args['password']) || !is_string($args['password'])) {
+            throw new \RuntimeException('A senha fornecida é inválida.');
+        }
+
+        $this->user = $user;
 
         $this->user->password = Hash::make($args['password']);
         $this->user->user_id = $this->user->id;
@@ -128,5 +196,22 @@ final class UserMutation
         $this->user->save();
 
         return $this->user;
+    }
+
+    /**
+     * @param  mixed  $rootValue
+     * @param  array<string, mixed>  $args
+     * @return array<string, string>
+     */
+    public function forgotPassword($rootValue, array $args, GraphQLContext $context): array
+    {
+        $this->user = new User;
+
+        $this->user->sendForgotPasswordNotification($args);
+
+        return [
+            'status' => 'success',
+            'message' => trans('UserForgotPassword.message_success_send_email'),
+        ];
     }
 }

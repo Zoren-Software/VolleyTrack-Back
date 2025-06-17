@@ -1,6 +1,5 @@
 /node_modules
 /public/hot
-/public/docs
 /public/storage
 /storage/*.key
 /vendor
@@ -22,3 +21,4 @@ reports
 html
 /portainer-data
 .scribe/
+/coverage-cache

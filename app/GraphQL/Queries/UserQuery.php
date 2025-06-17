@@ -3,18 +3,18 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserQuery
 {
     /**
-     * @codeCoverageIgnore
-     *
-     * @param  null  $_
+     * @param  mixed  $_
      * @param  array{}  $args
+     * @return Builder<User>
      */
-    public function list($_, array $args)
+    public function list($_, array $args): Builder
     {
-        $user = new User();
+        $user = new User;
 
         return $user->list($args);
     }

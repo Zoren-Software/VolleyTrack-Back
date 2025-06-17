@@ -4,19 +4,24 @@ namespace Tests\Feature\GraphQL;
 
 use App\Models\Fundamental;
 use App\Models\SpecificFundamental;
+use Database\Seeders\Tenants\FundamentalTableSeeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class SpecificFundamentalTest extends TestCase
 {
-    protected $graphql = true;
+    protected bool $graphql = true;
 
-    protected $tenancy = true;
+    protected bool $tenancy = true;
 
-    protected $login = true;
+    protected bool $login = true;
 
-    private $role = 'technician';
+    private string $role = 'technician';
 
+    /**
+     * @var array<int, string>
+     */
     public static $data = [
         'id',
         'name',
@@ -25,6 +30,36 @@ class SpecificFundamentalTest extends TestCase
         'updatedAt',
     ];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->limparAmbiente();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->limparAmbiente();
+
+        parent::tearDown();
+    }
+
+    private function limparAmbiente(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        SpecificFundamental::truncate();
+        Fundamental::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed([
+            FundamentalTableSeeder::class,
+        ]);
+    }
+
+    /**
+     * @return void
+     */
     private function setPermissions(bool $hasPermission)
     {
         $this->checkPermission($hasPermission, $this->role, 'edit-specific-fundamental');
@@ -34,18 +69,18 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Listagem de todos os fundamentos especificos.
      *
+     * @param  array<string, mixed>  $expected
+     *
      * @author Maicon Cerutti
-     *
-     * @test
-     *
-     * @dataProvider listProvider
      *
      * @return void
      */
-    public function specificFundamentalsList(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('listProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamentals_list(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -81,14 +116,14 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function listProvider()
+    public static function listProvider(): array
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentals' => [
@@ -102,8 +137,8 @@ class SpecificFundamentalTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -115,18 +150,18 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Listagem de um fundamento especifico.
      *
-     * @test
+     * @param  array<string, mixed>  $expected
      *
      * @author Maicon Cerutti
      *
-     * @dataProvider infoProvider
-     *
      * @return void
      */
-    public function specificFundamentalInfo(
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
+    #[\PHPUnit\Framework\Attributes\DataProvider('infoProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_info(
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
         bool $hasPermission
     ) {
         $this->setPermissions($hasPermission);
@@ -158,14 +193,14 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function infoProvider()
+    public static function infoProvider(): array
     {
         return [
             'with permission' => [
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamental' => self::$data,
@@ -174,8 +209,8 @@ class SpecificFundamentalTest extends TestCase
                 'hasPermission' => true,
             ],
             'without permission' => [
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                 ],
@@ -187,23 +222,28 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Método de criação de um fundamento especifico.
      *
-     * @dataProvider specificFundamentalCreateProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function specificFundamentalCreate(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
-        $hasPermission,
-        $addRelationship
+    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_create(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission,
+        bool $addRelationship
     ) {
         $this->setPermissions($hasPermission);
+
+        if ($parameters['name'] === 'nameExistent') {
+            $specificFundamental = SpecificFundamental::factory()->create();
+            $parameters['name'] = $specificFundamental->name;
+        }
 
         $fundamental = Fundamental::factory()->make();
         $fundamental->save();
@@ -229,9 +269,9 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function specificFundamentalCreateProvider()
+    public static function specificFundamentalCreateProvider(): array
     {
         $faker = Faker::create();
         $userId = 1;
@@ -244,86 +284,86 @@ class SpecificFundamentalTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
-                'add_relationship' => true,
+                'addRelationship' => true,
             ],
             'create specific fundamental, no relationship, success' => [
                 [
                     'name' => $nameExistent,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalCreate' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'create specific fundamental without permission, expected error' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalCreate,
                 ],
                 'hasPermission' => false,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is not unique, expected error' => [
                 [
-                    'name' => $nameExistent,
+                    'name' => 'nameExistent',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalCreate.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalCreate.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalCreate,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalCreate.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalCreate.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalCreate,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalCreate.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalCreate.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalCreate,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
         ];
     }
@@ -331,21 +371,21 @@ class SpecificFundamentalTest extends TestCase
     /**
      * Método de edição de um fundamento especifico.
      *
-     * @dataProvider specificFundamentalEditProvider
-     *
-     * @test
-     *
      * @author Maicon Cerutti
      *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function specificFundamentalEdit(
-        $parameters,
-        $typeMessageError,
-        $expectedMessage,
-        $expected,
-        $hasPermission,
-        $addRelationship
+    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalEditProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_edit(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission,
+        bool $addRelationship
     ) {
         $this->setPermissions($hasPermission);
 
@@ -384,9 +424,9 @@ class SpecificFundamentalTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string, mixed>>
      */
-    public static function specificFundamentalEditProvider()
+    public static function specificFundamentalEditProvider(): array
     {
         $faker = Faker::create();
         $userId = 2;
@@ -398,85 +438,85 @@ class SpecificFundamentalTest extends TestCase
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => false,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'edit specific fundamental, no relationship, success' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'edit specific fundamental, with relationship, success' => [
                 [
                     'name' => $faker->name,
                     'userId' => $userId,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalEdit' => self::$data,
                     ],
                 ],
                 'hasPermission' => true,
-                'add_relationship' => true,
+                'addRelationship' => true,
             ],
             'name field is not unique, expected error' => [
                 [
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalEdit.name_unique',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalEdit.name_unique',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is required, expected error' => [
                 [
                     'name' => ' ',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalEdit.name_required',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalEdit.name_required',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
                     'name' => 'AB',
                     'userId' => $userId,
                 ],
-                'type_message_error' => 'name',
-                'expected_message' => 'SpecificFundamentalEdit.name_min',
+                'typeMessageError' => 'name',
+                'expectedMessage' => 'SpecificFundamentalEdit.name_min',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $fundamentalEdit,
                 ],
                 'hasPermission' => true,
-                'add_relationship' => false,
+                'addRelationship' => false,
             ],
         ];
     }
@@ -486,28 +526,37 @@ class SpecificFundamentalTest extends TestCase
      *
      * @author Maicon Cerutti
      *
-     * @test
-     *
-     * @dataProvider specificFundamentalDeleteProvider
-     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $expected
      * @return void
      */
-    public function specificFundamentalDelete($data, $typeMessageError, $expectedMessage, $expected, $hasPermission)
-    {
+    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalDeleteProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_delete(
+        array $data,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission
+    ) {
         $this->setPermissions($hasPermission);
 
         $specificFundamental = SpecificFundamental::factory()->make();
         $specificFundamental->save();
 
-        $parameters['id'] = $specificFundamental->id;
+        /** @var array<string, mixed> $params */
+        $params = $data;
+
+        $params['id'] = $specificFundamental->id;
 
         if ($data['error'] != null) {
-            $parameters['id'] = $data['error'];
+            unset($params['error']);
+            $params['id'] = $data['error'];
         }
 
         $response = $this->graphQL(
             'specificFundamentalDelete',
-            $parameters,
+            $params,
             self::$data,
             'mutation',
             false,
@@ -524,7 +573,7 @@ class SpecificFundamentalTest extends TestCase
     /**
      * @author Maicon Cerutti
      *
-     * @return void
+     * @return array<string, array<int|string, mixed>>
      */
     public static function specificFundamentalDeleteProvider()
     {
@@ -535,8 +584,8 @@ class SpecificFundamentalTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => false,
-                'expected_message' => false,
+                'typeMessageError' => false,
+                'expectedMessage' => false,
                 'expected' => [
                     'data' => [
                         'specificFundamentalDelete' => [self::$data],
@@ -548,8 +597,8 @@ class SpecificFundamentalTest extends TestCase
                 [
                     'error' => null,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => self::$unauthorized,
+                'typeMessageError' => 'message',
+                'expectedMessage' => self::$unauthorized,
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalDelete,
@@ -560,8 +609,8 @@ class SpecificFundamentalTest extends TestCase
                 [
                     'error' => 9999,
                 ],
-                'type_message_error' => 'message',
-                'expected_message' => 'internal',
+                'typeMessageError' => 'message',
+                'expectedMessage' => 'internal',
                 'expected' => [
                     'errors' => self::$errors,
                     'data' => $specificFundamentalDelete,

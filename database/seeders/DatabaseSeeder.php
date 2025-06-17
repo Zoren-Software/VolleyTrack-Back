@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ExternalAccessTokenTableSeeder::class,
+            DomainsDevTableSeeder::class,
         ]);
     }
 }
