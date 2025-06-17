@@ -26,7 +26,7 @@ class TotalTablesTenantTest extends TestCase
         $tenantString = is_scalar($tenantId) || $tenantId === null ? (string) $tenantId : 'desconhecido';
 
         $this->assertEquals(
-            31,
+            38,
             $totalTables,
             PHP_EOL . PHP_EOL .
             'O número total de tabelas está incorreto.' . PHP_EOL .
