@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,8 +28,8 @@ class TrainingFactory extends Factory
 
         return [
             'name' => $this->faker->city . ' TRAINING',
-            'user_id' => 1,
-            'team_id' => 1,
+            'user_id' => User::factory(),
+            'team_id' => Team::factory(),
             'status' => true,
             'description' => $this->faker->text,
             'date_start' => $dateStart,

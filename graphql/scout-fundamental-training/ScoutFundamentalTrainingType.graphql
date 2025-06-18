@@ -1,0 +1,35 @@
+"Fundamentals"
+type ScoutFundamentalTraining {
+    "Unique primary key."
+    id: ID!
+
+    "UserId editing the fundamental."
+    userId: Int @rename(attribute: "user_id")
+    
+    "User editing the fundamental."
+    user: User @belongsTo
+
+    "PlayerId editing the fundamental."
+    playerId: Int @rename(attribute: "player_id")
+
+    "Player relationship"
+    player: User @belongsTo
+
+    "TrainingId editing the fundamental."
+    trainingId: Int @rename(attribute: "training_id")
+
+    "Training relationship"
+    training: Training @belongsTo
+
+    "PositionId editing the fundamental."
+    positionId: Int @rename(attribute: "position_id")
+
+    "Position relationship"
+    position: Position @belongsTo
+
+    "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    
+    "Date updated. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}

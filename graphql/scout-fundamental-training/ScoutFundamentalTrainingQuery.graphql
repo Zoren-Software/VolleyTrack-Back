@@ -1,0 +1,19 @@
+extend type Query @guard {
+    
+    "Find a single fundamental by an identifying attribute"
+    scoutFundamentalTraining(
+        id: ID!
+        @eq
+    ): ScoutFundamentalTraining
+        @can(ability: "view", resolved: true)
+        @find
+
+    "List multiple fundamentals."
+    scoutFundamentalTrainings(
+        "Specific filter search trainings."
+        filter: ScoutFundamentalTrainingSearchInput
+
+    ): [ScoutFundamentalTraining!]!
+        @paginate(defaultCount: 10, maxCount: 100, builder: "App\\GraphQL\\Queries\\ScoutFundamentalTrainingQuery@list")
+        @can(ability: "view", resolved: true)
+}

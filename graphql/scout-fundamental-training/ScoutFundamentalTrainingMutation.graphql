@@ -1,0 +1,27 @@
+
+extend type Mutation @guard {
+    scoutFundamentalTrainingCreate(
+        userId: Int! @rename(attribute: "user_id")
+        playerId: Int! @rename(attribute: "player_id")
+        trainingId: [Int] @rename(attribute: "training_id")
+        positionId: [Int] @rename(attribute: "position_id")
+    ): ScoutFundamentalTraining
+        @field(resolver: "ScoutFundamentalTrainingMutation@make") 
+        @validator
+        @can(ability: "create")
+
+    scoutFundamentalTrainingEdit(
+        id: Int!
+        userId: Int! @rename(attribute: "user_id") 
+        playerId: Int! @rename(attribute: "player_id")
+        trainingId: [Int] @rename(attribute: "training_id")
+        positionId: [Int] @rename(attribute: "position_id")
+    ): ScoutFundamentalTraining
+        @field(resolver: "ScoutFundamentalTrainingMutation@make")
+        @validator
+        @can(ability: "edit")
+
+    scoutFundamentalTrainingDelete(id: [ID!]!): [ScoutFundamentalTraining]
+        @field(resolver: "ScoutFundamentalTrainingMutation@delete")
+        @can(ability: "delete")
+}

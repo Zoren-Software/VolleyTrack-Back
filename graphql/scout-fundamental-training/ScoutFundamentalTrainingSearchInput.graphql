@@ -1,0 +1,18 @@
+"ScoutFundamentalTrainingSearchInput"
+input ScoutFundamentalTrainingSearchInput {
+
+    "String to search for in users name"
+    search: String
+
+    "Filter by users ids"
+    usersIds: [Int]
+
+    "Filter by players ids"
+    playersIds: [Int]
+
+    "Filter by trainings ids"
+    trainingsIds: [Int]
+
+    "Filter by positions ids"
+    positionsIds: [Int]
+}

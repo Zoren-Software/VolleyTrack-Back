@@ -62,6 +62,9 @@
     <testsuite name="User">
       <file>./tests/Feature/GraphQL/UserTest.php</file>
     </testsuite>
+    <testsuite name="ScoutFundamentalTraining">
+      <file>./tests/Feature/GraphQL/ScoutFundamentalTrainingTest.php</file>
+    </testsuite>
     <testsuite name="ConfirmationTraining">
       <file>./tests/Feature/GraphQL/ConfirmationTrainingTest.php</file>
     </testsuite>
