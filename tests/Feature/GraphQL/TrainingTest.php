@@ -134,7 +134,7 @@ class TrainingTest extends TestCase
         $team = Team::factory()
             ->create();
 
-        $training = Training::factory()
+        Training::factory()
             ->setTeamId($team->id)
             ->create();
 
