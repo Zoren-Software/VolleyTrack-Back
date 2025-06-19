@@ -3,6 +3,8 @@
 namespace Tests\Feature\GraphQL;
 
 use App\Models\ScoutFundamentalTraining;
+use App\Models\Training;
+use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -94,8 +96,6 @@ class ScoutFundamentalTrainingTest extends TestCase
             'query',
             false
         );
-
-        // dd($response->json());
 
         $this->assertMessageError(
             $typeMessageError,
@@ -211,6 +211,82 @@ class ScoutFundamentalTrainingTest extends TestCase
                 ],
                 'hasPermission' => false,
             ],
+        ];
+    }
+
+
+    /**
+     * Método de criação de um fundamento especifico.
+     *
+     * @author Maicon Cerutti
+     *
+     * @param  array<string, mixed>  $parameters
+     * @param  array<string, mixed>  $expected
+     * @return void
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function specific_fundamental_create(
+        array $parameters,
+        string|bool $typeMessageError,
+        string|bool $expectedMessage,
+        array $expected,
+        bool $hasPermission,
+    ) {
+        $this->setPermissions($hasPermission);
+
+        $training = Training::factory()->make();
+        $training->save();
+
+        $parameters['trainingId'] = $training->id;
+
+        $player = $training->team->players()->get()->random();  
+
+        $parameters['playerId'] = $player->id;
+        $parameters['positionId'] = $player->positions()->get()->random()->id;
+
+        $response = $this->graphQL(
+            'scoutFundamentalTrainingCreate',
+            $parameters,
+            self::$data,
+            'mutation',
+            false,
+            true
+        );
+
+        dd($response->json());
+
+        $this->assertMessageError($typeMessageError, $response, $hasPermission, $expectedMessage);
+
+        $response
+            ->assertJsonStructure($expected)
+            ->assertStatus(200);
+    }
+
+    /**
+     * @return array<string, array<int|string, mixed>>
+     */
+    public static function specificFundamentalCreateProvider(): array
+    {
+        $userId = 1;
+        $scoutFundamentalTrainingCreate = ['scoutFundamentalTrainingCreate'];
+        $faker = Faker::create();
+
+        return [
+            'create scout fundamental training, with relationship, success' => [
+                [
+                    
+                ],
+                'typeMessageError' => false,
+                'expectedMessage' => false,
+                'expected' => [
+                    'data' => [
+                        'scoutFundamentalTrainingCreate' => self::$data,
+                    ],
+                ],
+                'hasPermission' => true,
+            ],
+            
         ];
     }
 }

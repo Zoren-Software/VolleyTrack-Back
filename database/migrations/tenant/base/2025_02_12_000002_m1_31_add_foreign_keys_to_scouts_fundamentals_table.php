@@ -27,7 +27,7 @@ return new class extends Migration
             if (Schema::hasTable($tableName)) {
                 Schema::table($tableName, function (Blueprint $table) use (&$tableName) {
                     $fkUser = $tableName . '_user_id_foreign';
-                    $fkScout = $tableName . '_scout_fundamental_id_foreign';
+                    $fkScout = $tableName . '_scout_fundamental_training_id_foreign';
 
                     if (!hasForeignKeyExist($tableName, $fkUser)) {
                         $table->foreign('user_id', $fkUser)
@@ -35,7 +35,7 @@ return new class extends Migration
                     }
 
                     if (!hasForeignKeyExist($tableName, $fkScout)) {
-                        $table->foreign('scout_fundamental_id', $fkScout)
+                        $table->foreign('scout_fundamental_training_id', $fkScout)
                             ->references('id')->on('scout_fundamentals_training')->onDelete('cascade');
                     }
                 });
@@ -52,7 +52,7 @@ return new class extends Migration
             if (Schema::hasTable($tableName)) {
                 Schema::table($tableName, function (Blueprint $table) use (&$tableName) {
                     $fkUser = $tableName . '_user_id_foreign';
-                    $fkScout = $tableName . '_scout_fundamental_id_foreign';
+                    $fkScout = $tableName . '_scout_fundamental_training_id_foreign';
 
                     if (hasForeignKeyExist($tableName, $fkUser)) {
                         $table->dropForeign($fkUser);

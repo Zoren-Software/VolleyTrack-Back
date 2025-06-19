@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\NotificationSetting;
 use App\Models\NotificationType;
+use App\Models\Position;
 use App\Models\User;
 use App\Models\UserInformation;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -48,6 +49,9 @@ class UserFactory extends Factory
             // Deve ser igual ao que está no UserObserver
             // e no NotificationSettingsSeeder que deve apenas executar uma vez no deploy
             $types = NotificationType::where('is_active', true)->get();
+
+            $positions = Position::first();
+            $user->positions()->attach($positions);
 
             foreach ($types as $type) {
                 if ($type->id != null) {

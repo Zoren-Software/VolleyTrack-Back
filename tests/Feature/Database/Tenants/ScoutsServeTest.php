@@ -12,7 +12,7 @@ class ScoutsServeTest extends TenantBase
     protected static array $fieldTypes = [
         'id' => ['type' => 'bigint', 'unsigned' => true],
         'user_id' => ['type' => 'bigint', 'unsigned' => true],
-        'scout_fundamental_id' => ['type' => 'bigint', 'unsigned' => true],
+        'scout_fundamental_training_id' => ['type' => 'bigint', 'unsigned' => true],
         'total_a' => ['type' => 'int'],
         'total_b' => ['type' => 'int'],
         'total_c' => ['type' => 'int'],
@@ -37,7 +37,7 @@ class ScoutsServeTest extends TenantBase
      */
     protected static array $foreignKeys = [
         'scouts_serve_user_id_foreign',
-        'scouts_serve_scout_fundamental_id_foreign',
+        'scouts_serve_scout_fundamental_training_id_foreign',
     ];
 
     /**

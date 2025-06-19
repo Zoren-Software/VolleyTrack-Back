@@ -25,7 +25,7 @@ return new class extends Migration
                 Schema::create($table, function (Blueprint $table) {
                     $table->id();
                     $table->unsignedBigInteger('user_id');
-                    $table->unsignedBigInteger('scout_fundamental_id');
+                    $table->unsignedBigInteger('scout_fundamental_training_id');
                     $table->integer('total_a');
                     $table->integer('total_b');
                     $table->integer('total_c');
