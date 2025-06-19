@@ -2,6 +2,13 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Models\ScoutFundamentalTraining;
+use App\Models\ScoutsAttack;
+use App\Models\ScoutsBlock;
+use App\Models\ScoutsDefense;
+use App\Models\ScoutsReception;
+use App\Models\ScoutsServe;
+use App\Models\ScoutsSetAssist;
 use App\Models\Team;
 use App\Models\TeamsUsers;
 use App\Models\Training;
@@ -107,6 +114,13 @@ class TrainingTest extends TestCase
         Team::truncate();
         Training::truncate();
         TeamsUsers::truncate();
+        ScoutsAttack::truncate();
+        ScoutsBlock::truncate();
+        ScoutsDefense::truncate();
+        ScoutsReception::truncate();
+        ScoutsServe::truncate();
+        ScoutsSetAssist::truncate();
+        ScoutFundamentalTraining::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
@@ -363,6 +377,8 @@ class TrainingTest extends TestCase
             $hasPermission,
             $expectedMessage
         );
+
+        dd($response->json());
 
         $response
             ->assertJsonStructure($expected)

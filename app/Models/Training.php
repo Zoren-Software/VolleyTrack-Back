@@ -269,6 +269,43 @@ class Training extends Model
                 ]);
             }
 
+            $scoutFundamentalTraining = ScoutFundamentalTraining::create([
+                'user_id' => auth()->user()->id ?? null,
+                'player_id' => $player->id,
+                'team_id' => $this->team_id,
+                'training_id' => $this->id,
+            ]);
+
+            $scoutFundamentalTraining->scoutsAttack()->create([
+                'user_id' => auth()->user()->id ?? null,
+                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
+            ]);
+
+            $scoutFundamentalTraining->scoutsBlock()->create([
+                'user_id' => auth()->user()->id ?? null,
+                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
+            ]);
+
+            $scoutFundamentalTraining->scoutsDefense()->create([
+                'user_id' => auth()->user()->id ?? null,
+                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
+            ]);
+
+            $scoutFundamentalTraining->scoutsReception()->create([
+                'user_id' => auth()->user()->id ?? null,
+                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
+            ]);
+
+            $scoutFundamentalTraining->scoutsServe()->create([
+                'user_id' => auth()->user()->id ?? null,
+                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
+            ]);
+
+            $scoutFundamentalTraining->scoutsSetAssist()->create([
+                'user_id' => auth()->user()->id ?? null,
+                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
+            ]);
+
             /** @var \App\Models\ConfirmationTraining $confirmationTraining */
             if (
                 $player->email_verified_at &&

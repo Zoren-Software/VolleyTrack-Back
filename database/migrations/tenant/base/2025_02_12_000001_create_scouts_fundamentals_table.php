@@ -26,10 +26,18 @@ return new class extends Migration
                     $table->id();
                     $table->unsignedBigInteger('user_id');
                     $table->unsignedBigInteger('scout_fundamental_training_id');
-                    $table->integer('total_a');
-                    $table->integer('total_b');
-                    $table->integer('total_c');
-                    $table->integer('total');
+                    $table->integer('total_a')
+                        ->nullable(false)
+                        ->default();
+                    $table->integer('total_b')
+                        ->nullable(false)
+                        ->default(0);
+                    $table->integer('total_c')
+                        ->nullable(false)
+                        ->default(0);
+                    $table->integer('total')
+                        ->nullable(false)
+                        ->default(0);
                     $table->timestamps();
                     $table->softDeletes();
                 });

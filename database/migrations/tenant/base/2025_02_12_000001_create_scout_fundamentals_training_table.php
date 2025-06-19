@@ -14,7 +14,8 @@ return new class extends Migration
                 $table->unsignedBigInteger('user_id');
                 $table->unsignedBigInteger('player_id');
                 $table->unsignedBigInteger('training_id');
-                $table->unsignedBigInteger('position_id');
+                $table->unsignedBigInteger('position_id')
+                    ->nullable();
                 $table->timestamps();
                 $table->softDeletes();
             });

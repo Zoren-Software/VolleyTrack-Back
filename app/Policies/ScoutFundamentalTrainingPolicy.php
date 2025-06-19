@@ -10,14 +10,6 @@ class ScoutFundamentalTrainingPolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new team instance.
-     */
-    public function create(User $user): bool
-    {
-        return $user->hasPermissionTo('edit-team');
-    }
-
-    /**
      * Edit a team instance.
      */
     public function edit(User $user): bool

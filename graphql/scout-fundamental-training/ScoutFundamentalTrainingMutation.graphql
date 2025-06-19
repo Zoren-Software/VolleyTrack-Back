@@ -1,14 +1,6 @@
 
 extend type Mutation @guard {
-    scoutFundamentalTrainingCreate(
-        playerId: Int! @rename(attribute: "player_id")
-        trainingId: Int @rename(attribute: "training_id")
-        positionId: Int @rename(attribute: "position_id")
-    ): ScoutFundamentalTraining
-        @field(resolver: "ScoutFundamentalTrainingMutation@make") 
-        @validator
-        @can(ability: "create")
-
+    "Edit a scout fundamental training"
     scoutFundamentalTrainingEdit(
         id: Int!
         playerId: Int! @rename(attribute: "player_id")

@@ -19,6 +19,12 @@ class PositionsUsers extends Pivot
      */
     public $incrementing = true;
 
+    protected $fillable = [
+        'user_id',
+        'position_id',
+        'main_position',
+    ];
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ScoutFundamentalTraining extends Model
 {
@@ -64,6 +65,56 @@ class ScoutFundamentalTraining extends Model
         /** @phpstan-ignore-next-line */
         return $this->belongsTo(Position::class);
     }
+
+    /**
+     * @return HasMany<ScoutsAttack, ScoutFundamentalTraining>
+     */
+    public function scoutsAttack(): HasMany
+    {
+        return $this->hasMany(ScoutsAttack::class);
+    }
+
+    /**
+     * @return HasMany<ScoutsBlock, ScoutFundamentalTraining>
+     */
+    public function scoutsBlock(): HasMany
+    {
+        return $this->hasMany(ScoutsBlock::class);
+    }
+
+    /**
+     * @return HasMany<ScoutsDefense, ScoutFundamentalTraining>
+     */
+    public function scoutsDefense(): HasMany
+    {
+        return $this->hasMany(ScoutsDefense::class);
+    }
+
+    /**
+     * @return HasMany<ScoutsReception, ScoutFundamentalTraining>
+     */
+    public function scoutsReception(): HasMany
+    {
+        return $this->hasMany(ScoutsReception::class);
+    }
+
+    /**
+     * @return HasMany<ScoutsServe, ScoutFundamentalTraining>
+     */
+    public function scoutsServe(): HasMany
+    {
+        return $this->hasMany(ScoutsServe::class);
+    }
+
+    /**
+     * @return HasMany<ScoutsSetAssist, ScoutFundamentalTraining>
+     */
+    public function scoutsSetAssist(): HasMany
+    {
+        return $this->hasMany(ScoutsSetAssist::class);
+    }
+
+
 
     /**
      * @param  array<string, mixed>  $args

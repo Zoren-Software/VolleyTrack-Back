@@ -224,9 +224,9 @@ class ScoutFundamentalTrainingTest extends TestCase
      * @param  array<string, mixed>  $expected
      * @return void
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalCreateProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('specificFundamentalEditProvider')]
     #[\PHPUnit\Framework\Attributes\Test]
-    public function specific_fundamental_create(
+    public function specific_fundamental_edit(
         array $parameters,
         string|bool $typeMessageError,
         string|bool $expectedMessage,
@@ -245,8 +245,10 @@ class ScoutFundamentalTrainingTest extends TestCase
         $parameters['playerId'] = $player->id;
         $parameters['positionId'] = $player->positions()->get()->random()->id;
 
+        // TODO - Buscar o scout fundamental training pelo id do treino já criado
+
         $response = $this->graphQL(
-            'scoutFundamentalTrainingCreate',
+            'scoutFundamentalTrainingEdit',
             $parameters,
             self::$data,
             'mutation',
@@ -266,10 +268,10 @@ class ScoutFundamentalTrainingTest extends TestCase
     /**
      * @return array<string, array<int|string, mixed>>
      */
-    public static function specificFundamentalCreateProvider(): array
+    public static function specificFundamentalEditProvider(): array
     {
         $userId = 1;
-        $scoutFundamentalTrainingCreate = ['scoutFundamentalTrainingCreate'];
+        $scoutFundamentalTrainingEdit = ['scoutFundamentalTrainingEdit'];
         $faker = Faker::create();
 
         return [
