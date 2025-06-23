@@ -117,6 +117,22 @@ class Training extends Model
         return $this->hasMany(ConfirmationTraining::class);
     }
 
+    /**
+     * @phpstan-return HasMany<ScoutFundamentalTraining, Training>
+     *
+     * @return HasMany<ScoutFundamentalTraining, Training>
+     */
+    public function scoutFundamentalsTraining(): HasMany
+    {
+        /** @phpstan-ignore-next-line */
+        return $this->hasMany(ScoutFundamentalTraining::class);
+    }
+
+    /**
+     * @phpstan-return LogOptions
+     *
+     * @return LogOptions
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

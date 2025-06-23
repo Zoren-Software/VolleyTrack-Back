@@ -378,11 +378,20 @@ class TrainingTest extends TestCase
             $expectedMessage
         );
 
-        dd($response->json());
-
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
+
+        // TODO - Fiz essas validações, agora falta fazer o retorno dessas informações na API
+        // TODO - Criei o relacionamento também
+
+        $this->assertDatabaseCount('scout_fundamentals_training', 9);
+        $this->assertDatabaseCount('scouts_attack', 9);
+        $this->assertDatabaseCount('scouts_block', 9);
+        $this->assertDatabaseCount('scouts_defense', 9);
+        $this->assertDatabaseCount('scouts_reception', 9);
+        $this->assertDatabaseCount('scouts_serve', 9);
+        $this->assertDatabaseCount('scouts_set_assist', 9);
     }
 
     /**
