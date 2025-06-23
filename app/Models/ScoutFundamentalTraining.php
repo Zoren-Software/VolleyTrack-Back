@@ -114,8 +114,6 @@ class ScoutFundamentalTraining extends Model
         return $this->hasMany(ScoutsSetAssist::class);
     }
 
-
-
     /**
      * @param  array<string, mixed>  $args
      * @return Builder<ScoutFundamentalTraining>

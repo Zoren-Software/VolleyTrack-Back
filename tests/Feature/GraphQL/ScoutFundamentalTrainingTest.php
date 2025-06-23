@@ -214,7 +214,6 @@ class ScoutFundamentalTrainingTest extends TestCase
         ];
     }
 
-
     /**
      * Método de criação de um fundamento especifico.
      *
@@ -240,7 +239,7 @@ class ScoutFundamentalTrainingTest extends TestCase
 
         $parameters['trainingId'] = $training->id;
 
-        $player = $training->team->players()->get()->random();  
+        $player = $training->team->players()->get()->random();
 
         $parameters['playerId'] = $player->id;
         $parameters['positionId'] = $player->positions()->get()->random()->id;
@@ -277,7 +276,7 @@ class ScoutFundamentalTrainingTest extends TestCase
         return [
             'create scout fundamental training, with relationship, success' => [
                 [
-                    
+
                 ],
                 'typeMessageError' => false,
                 'expectedMessage' => false,
@@ -288,7 +287,7 @@ class ScoutFundamentalTrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
             ],
-            
+
         ];
     }
 }

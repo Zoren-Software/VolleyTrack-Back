@@ -130,8 +130,6 @@ class Training extends Model
 
     /**
      * @phpstan-return LogOptions
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
