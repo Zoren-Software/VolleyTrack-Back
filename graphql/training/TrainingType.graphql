@@ -27,6 +27,9 @@ type Training {
     "Confirmations Training relation."
     confirmationsTraining: [ConfirmationTraining] @hasMany
 
+    "Scout Fundamentals Training relation."
+    scoutFundamentalsTraining: [ScoutFundamentalTraining] @hasMany
+
     "Metrics to confirm the intention to attend training and attendance metrics."
     confirmationTrainingMetrics: ConfirmationTrainingMetrics @field(resolver: "App\\GraphQL\\Queries\\ConfirmationTrainingQuery@metrics")
 

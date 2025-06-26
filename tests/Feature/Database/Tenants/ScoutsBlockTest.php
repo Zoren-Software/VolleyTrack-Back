@@ -16,7 +16,6 @@ class ScoutsBlockTest extends TenantBase
         'total_a' => ['type' => 'int'],
         'total_b' => ['type' => 'int'],
         'total_c' => ['type' => 'int'],
-        'total' => ['type' => 'int'],
         'created_at' => ['type' => 'timestamp', 'nullable' => true],
         'updated_at' => ['type' => 'timestamp', 'nullable' => true],
         'deleted_at' => ['type' => 'timestamp', 'nullable' => true],

@@ -1,0 +1,22 @@
+type ScoutAttack {
+    "Unique primary key."
+    id: ID!
+
+    "Scout Fundamental Training ID."
+    scoutFundamentalTrainingId: Int @rename(attribute: "scout_fundamental_training_id")
+
+    "Scout Fundamental Training relationship."
+    scoutFundamentalTraining: ScoutFundamentalTraining @belongsTo
+
+    "Total attack A"
+    total_a: Int
+
+    "Total attack B"
+    total_b: Int
+
+    "Total attack C"
+    total_c: Int
+
+    "Total"
+    total: Int
+}

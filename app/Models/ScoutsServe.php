@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class ScoutsServe extends Model
 {
@@ -32,5 +33,17 @@ class ScoutsServe extends Model
     public function scoutFundamentalTraining(): BelongsTo
     {
         return $this->belongsTo(ScoutFundamentalTraining::class);
+    }
+
+    /**
+     * Return the total of the scouts serve.
+     * 
+     * @return Attribute<int, never>
+     */
+    public function total(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value + $this->total_a + $this->total_b + $this->total_c,
+        );
     }
 }

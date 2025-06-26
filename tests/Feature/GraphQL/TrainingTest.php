@@ -306,7 +306,8 @@ class TrainingTest extends TestCase
         string|bool $typeMessageError,
         string|bool $expectedMessage,
         array $expected,
-        bool $hasPermission
+        bool $hasPermission,
+        int $countScoutsRegisters,
     ) {
         $this->setPermissions($hasPermission);
 
@@ -382,16 +383,13 @@ class TrainingTest extends TestCase
             ->assertJsonStructure($expected)
             ->assertStatus(200);
 
-        // TODO - Fiz essas validações, agora falta fazer o retorno dessas informações na API
-        // TODO - Criei o relacionamento também
-
-        $this->assertDatabaseCount('scout_fundamentals_training', 9);
-        $this->assertDatabaseCount('scouts_attack', 9);
-        $this->assertDatabaseCount('scouts_block', 9);
-        $this->assertDatabaseCount('scouts_defense', 9);
-        $this->assertDatabaseCount('scouts_reception', 9);
-        $this->assertDatabaseCount('scouts_serve', 9);
-        $this->assertDatabaseCount('scouts_set_assist', 9);
+        $this->assertDatabaseCount('scout_fundamentals_training', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_attack', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_block', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_defense', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_reception', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_serve', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_set_assist', $countScoutsRegisters);
     }
 
     /**
@@ -435,6 +433,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => false,
+                'countScoutsRegisters' => 0,
             ],
             'create training with minimal parameters and send email player, success' => [
                 [
@@ -453,6 +452,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 9,
             ],
             'create training with minimal parameters and send email technician, success' => [
                 [
@@ -471,6 +471,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 9,
             ],
             'create training with minimal parameters, success' => [
                 [
@@ -489,6 +490,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 9,
             ],
             'create training with full parameters, success' => [
                 [
@@ -507,6 +509,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 9,
             ],
             'create training with relationship fundamentals, success' => [
                 [
@@ -526,6 +529,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 9,
             ],
             'create training with relationship specific fundamental, success' => [
                 [
@@ -546,6 +550,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 9,
             ],
             'create training with notification if training date is current day, success' => [
                 [
@@ -566,6 +571,7 @@ class TrainingTest extends TestCase
                     ],
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 9,
             ],
         ];
     }
@@ -604,6 +610,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 0,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -620,6 +627,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 0,
             ],
             'dateStart must be less than dateEnd, expected error' => [
                 [
@@ -636,6 +644,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 0,
             ],
             'dateEnd must be greater than dateStart, expected error' => [
                 [
@@ -652,6 +661,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 0,
             ],
             'dateEnd without correct formatting, expected error' => [
                 [
@@ -668,6 +678,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 0,
             ],
             'dateStart without correct formatting, expected error' => [
                 [
@@ -684,6 +695,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 0,
             ],
             'specific fundamentals unrelated to fundamentals on record, expected error' => [
                 [
@@ -702,6 +714,7 @@ class TrainingTest extends TestCase
                     'data' => $trainingCreate,
                 ],
                 'hasPermission' => true,
+                'countScoutsRegisters' => 0,
             ],
         ];
     }
@@ -724,7 +737,8 @@ class TrainingTest extends TestCase
         string|bool $expectedMessage,
         array $expected,
         bool $hasPermission,
-        bool $cancellation
+        bool $cancellation,
+        int $countScoutsRegisters,
     ) {
         $this->setPermissions($hasPermission);
 
@@ -777,9 +791,19 @@ class TrainingTest extends TestCase
         $response
             ->assertJsonStructure($expected)
             ->assertStatus(200);
+
+        $this->assertDatabaseCount('scout_fundamentals_training', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_attack', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_block', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_defense', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_reception', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_serve', $countScoutsRegisters);
+        $this->assertDatabaseCount('scouts_set_assist', $countScoutsRegisters);
     }
 
     /**
+     * TODO - Trabalhando agora aqui, para fazer as edições
+     *
      * @return array<string, array<int|string, mixed>>
      */
     public static function trainingEditSuccessProvider(): array
@@ -821,6 +845,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 9,
             ],
             'edit training with full parameters, success' => [
                 [
@@ -839,6 +864,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 9,
             ],
             'edit training with relationship fundamentals, success' => [
                 [
@@ -858,6 +884,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 9,
             ],
             'edit training with relationship specific fundamental, success' => [
                 [
@@ -878,6 +905,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 9,
             ],
             'edit training cancel, success' => [
                 [
@@ -896,6 +924,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => true,
+                'countScoutsRegisters' => 9,
             ],
             'edit training reactivate, success' => [
                 [
@@ -914,6 +943,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 9,
             ],
             'edit training with notification if training date is current day, success' => [
                 [
@@ -932,6 +962,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 9,
             ],
         ];
     }
@@ -970,6 +1001,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => false,
                 'cancellation' => false,
+                'countScoutsRegisters' => 0,
             ],
             'name field is required, expected error' => [
                 [
@@ -986,6 +1018,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 0,
             ],
             'name field is min 3 characteres, expected error' => [
                 [
@@ -1002,6 +1035,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 0,
             ],
             'dateStart must be less than dateEnd, expected error' => [
                 [
@@ -1018,6 +1052,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 0,
             ],
             'dateEnd must be greater than dateStart, expected error' => [
                 [
@@ -1034,6 +1069,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 0,
             ],
             'dateEnd without correct formatting, expected error' => [
                 [
@@ -1050,6 +1086,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 0,
             ],
             'dateStart without correct formatting, expected error' => [
                 [
@@ -1066,6 +1103,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 0,
             ],
             'specific fundamentals unrelated to fundamentals on record, expected error' => [
                 [
@@ -1084,6 +1122,7 @@ class TrainingTest extends TestCase
                 ],
                 'hasPermission' => true,
                 'cancellation' => false,
+                'countScoutsRegisters' => 0,
             ],
         ];
     }

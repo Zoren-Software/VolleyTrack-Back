@@ -1,0 +1,22 @@
+type ScoutServe {
+    "Unique primary key."
+    id: ID!
+
+    "Scout Fundamental Training ID."
+    scoutFundamentalTrainingId: Int @rename(attribute: "scout_fundamental_training_id")
+
+    "Scout Fundamental Training relationship."
+    scoutFundamentalTraining: ScoutFundamentalTraining @belongsTo
+
+    "Total serve A"
+    total_a: Int
+
+    "Total serve B"
+    total_b: Int
+
+    "Total serve C"
+    total_c: Int
+
+    "Total"
+    total: Int
+}

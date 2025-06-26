@@ -8,6 +8,12 @@
 #import training/*.graphql
 #import training-config/*.graphql
 #import sanctum/*.graphql
+#import scout-attack/*.graphql
+#import scout-block/*.graphql
+#import scout-defense/*.graphql
+#import scout-reception/*.graphql
+#import scout-serve/*.graphql
+#import scout-set-assist/*.graphql
 #import role/*.graphql
 #import fundamental/*.graphql
 #import specific-fundamental/*.graphql

@@ -27,6 +27,24 @@ type ScoutFundamentalTraining {
     "Position relationship"
     position: Position @belongsTo
 
+    "Scouts Attack relation."
+    scoutsAttack: [ScoutAttack] @hasMany
+
+    "Scouts Block relation."
+    scoutsBlock: [ScoutBlock] @hasMany
+
+    "Scouts Defense relation."
+    scoutsDefense: [ScoutDefense] @hasMany
+
+    "Scouts Reception relation."
+    scoutsReception: [ScoutReception] @hasMany
+
+    "Scouts Serve relation."
+    scoutsServe: [ScoutServe] @hasMany
+
+    "Scouts Set Assist relation."
+    scoutsSetAssist: [ScoutSetAssist] @hasMany
+
     "Date created. A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
     createdAt: DateTime! @rename(attribute: "created_at")
     

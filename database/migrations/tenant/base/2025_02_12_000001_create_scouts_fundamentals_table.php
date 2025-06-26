@@ -35,9 +35,6 @@ return new class extends Migration
                     $table->integer('total_c')
                         ->nullable(false)
                         ->default(0);
-                    $table->integer('total')
-                        ->nullable(false)
-                        ->default(0);
                     $table->timestamps();
                     $table->softDeletes();
                 });

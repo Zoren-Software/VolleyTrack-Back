@@ -258,67 +258,60 @@ class Training extends Model
         $daysNotification = $daysNotification ?? TrainingConfig::first()->days_notification ?? 0;
 
         $this->team->players()->each(function (User $player) use ($trainingId, $daysNotification) {
-            $confirmationTraining = $this->confirmationsTraining()
-                ->where('training_id', $trainingId)
-                ->where('player_id', $player->id)
-                ->first();
-
-            if ($trainingId === null || $confirmationTraining === null) {
-                $confirmationTraining = $this->confirmationsTraining()->create([
-                    'user_id' => auth()->user()->id ?? null,
-                    'player_id' => $player->id,
-                    'team_id' => $this->team_id,
+            $confirmationTraining = $this->confirmationsTraining()->updateOrCreate(
+                [
                     'training_id' => $this->id,
+                    'player_id' => $player->id,
+                ],
+                [
+                    'user_id' => auth()->user()->id ?? null,
+                    'team_id' => $this->team_id,
                     'status' => 'pending',
                     'presence' => false,
-                ]);
-            } else {
-                $confirmationTraining->update([
-                    'user_id' => auth()->user()->id ?? null,
-                    'player_id' => $player->id,
-                    'team_id' => $this->team_id,
+                ]
+            );
+
+            $scoutFundamentalTraining = ScoutFundamentalTraining::updateOrCreate(
+                [
                     'training_id' => $this->id,
-                    'status' => 'pending',
-                    'presence' => false,
-                ]);
-            }
-
-            $scoutFundamentalTraining = ScoutFundamentalTraining::create([
-                'user_id' => auth()->user()->id ?? null,
-                'player_id' => $player->id,
-                'team_id' => $this->team_id,
-                'training_id' => $this->id,
-            ]);
-
-            $scoutFundamentalTraining->scoutsAttack()->create([
-                'user_id' => auth()->user()->id ?? null,
-                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
-            ]);
-
-            $scoutFundamentalTraining->scoutsBlock()->create([
-                'user_id' => auth()->user()->id ?? null,
-                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
-            ]);
-
-            $scoutFundamentalTraining->scoutsDefense()->create([
-                'user_id' => auth()->user()->id ?? null,
-                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
-            ]);
-
-            $scoutFundamentalTraining->scoutsReception()->create([
-                'user_id' => auth()->user()->id ?? null,
-                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
-            ]);
-
-            $scoutFundamentalTraining->scoutsServe()->create([
-                'user_id' => auth()->user()->id ?? null,
-                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
-            ]);
-
-            $scoutFundamentalTraining->scoutsSetAssist()->create([
-                'user_id' => auth()->user()->id ?? null,
-                'scout_fundamental_training_id' => $scoutFundamentalTraining->id,
-            ]);
+                    'player_id' => $player->id,
+                ],
+                [
+                    'user_id' => auth()->user()->id ?? null,
+                    'team_id' => $this->team_id,
+                    'position_id' => $player->positions()?->first()?->id,
+                ]
+            );
+            
+            $scoutFundamentalTraining->scoutsAttack()->updateOrCreate(
+                ['scout_fundamental_training_id' => $scoutFundamentalTraining->id],
+                ['user_id' => auth()->user()->id ?? null]
+            );
+            
+            $scoutFundamentalTraining->scoutsBlock()->updateOrCreate(
+                ['scout_fundamental_training_id' => $scoutFundamentalTraining->id],
+                ['user_id' => auth()->user()->id ?? null]
+            );
+            
+            $scoutFundamentalTraining->scoutsDefense()->updateOrCreate(
+                ['scout_fundamental_training_id' => $scoutFundamentalTraining->id],
+                ['user_id' => auth()->user()->id ?? null]
+            );
+            
+            $scoutFundamentalTraining->scoutsReception()->updateOrCreate(
+                ['scout_fundamental_training_id' => $scoutFundamentalTraining->id],
+                ['user_id' => auth()->user()->id ?? null]
+            );
+            
+            $scoutFundamentalTraining->scoutsServe()->updateOrCreate(
+                ['scout_fundamental_training_id' => $scoutFundamentalTraining->id],
+                ['user_id' => auth()->user()->id ?? null]
+            );
+            
+            $scoutFundamentalTraining->scoutsSetAssist()->updateOrCreate(
+                ['scout_fundamental_training_id' => $scoutFundamentalTraining->id],
+                ['user_id' => auth()->user()->id ?? null]
+            );
 
             /** @var \App\Models\ConfirmationTraining $confirmationTraining */
             if (
